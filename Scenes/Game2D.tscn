@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cf1cjj8xlhblr"]
+
+[sub_resource type="Animation" id="Animation_1h1gb"]
+resource_name = "test_animation"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vy3lb"]
+_data = {
+&"test_animation": SubResource("Animation_1h1gb")
+}
+
+[node name="Node2D" type="Node2D"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_vy3lb")
+}
