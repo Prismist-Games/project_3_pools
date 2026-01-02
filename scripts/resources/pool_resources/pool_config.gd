@@ -23,24 +23,7 @@ const AffixEffect = preload("pool_affix_effect.gd")
 func get_affix_id() -> StringName:
 	if affix_data != null and affix_data.id != &"":
 		return affix_data.id
-	## 兼容旧 enum（仅对内置词缀做映射；扩展词缀请使用 affix_data.id）
-	match affix:
-		Constants.AffixType.TRADE_IN:
-			return &"trade_in"
-		Constants.AffixType.HARDENED:
-			return &"hardened"
-		Constants.AffixType.PURIFIED:
-			return &"purified"
-		Constants.AffixType.VOLATILE:
-			return &"volatile"
-		Constants.AffixType.FRAGMENTED:
-			return &"fragmented"
-		Constants.AffixType.PRECISE:
-			return &"precise"
-		Constants.AffixType.TARGETED:
-			return &"targeted"
-		_:
-			return &""
+	return &""
 
 
 func get_affix_effects() -> Array[AffixEffect]:

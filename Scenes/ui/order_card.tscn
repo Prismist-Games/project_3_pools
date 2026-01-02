@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5p8q2x8g2u2"]
+
+[ext_resource type="Script" uid="uid://b31llmajn0qlt" path="res://scripts/ui/order_card_ui.gd" id="1_script"]
+
+[node name="OrderCard" type="PanelContainer"]
+custom_minimum_size = Vector2(250, 180)
+offset_right = 250.0
+offset_bottom = 180.0
+script = ExtResource("1_script")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "订单需求:"
+horizontal_alignment = 1
+
+[node name="RequirementsLabel" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = "物品 x1"
+autowrap_mode = 3
+
+[node name="RewardLabel" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "奖励: 5 金币"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="RefreshButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "刷新 (2)"
+
+[node name="SubmitButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "提交"
+
+[connection signal="pressed" method="_on_refresh_button_pressed" from="VBoxContainer/HBoxContainer/RefreshButton" to="." commit=""]
+[connection signal="pressed" method="_on_submit_button_pressed" from="VBoxContainer/HBoxContainer/SubmitButton" to="." commit=""]
+

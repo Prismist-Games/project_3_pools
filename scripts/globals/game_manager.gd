@@ -52,6 +52,9 @@ var next_draw_extra_item: bool = false
 func _ready() -> void:
 	rng.randomize()
 	_load_game_config()
+	if game_config:
+		_gold = game_config.starting_gold
+		_tickets = game_config.starting_tickets
 	_load_items()
 	_load_skills()
 	_load_mainline_stages()

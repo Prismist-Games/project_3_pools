@@ -50,7 +50,7 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 			var new_item_instance = ItemInstance.new(new_item_data, rarity)
 			
 			# 移除旧物品，添加新物品
-			GameManager.remove_item(item_to_trade)
+			GameManager.remove_items([item_to_trade])
 			GameManager.add_item(new_item_instance)
 			
 			EventBus.item_obtained.emit(new_item_instance)

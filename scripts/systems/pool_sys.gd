@@ -9,7 +9,7 @@ var max_pools: int = 3
 func _ready() -> void:
 	if not GameManager.is_node_ready():
 		await GameManager.ready
-	refresh_pools()
+	call_deferred("refresh_pools")
 	EventBus.game_event.connect(_on_game_event)
 
 

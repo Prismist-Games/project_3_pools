@@ -11,7 +11,7 @@ func _ready() -> void:
 		await GameManager.ready
 	
 	# 初始生成订单
-	refresh_all_orders()
+	call_deferred("refresh_all_orders")
 	
 	EventBus.game_event.connect(_on_game_event)
 
