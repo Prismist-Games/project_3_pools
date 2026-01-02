@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "skill_time_freeze"
+name = "时间冻结"
+description = "刷新单个订单时，20% 概率不消耗该订单的剩余刷新次数。"
+type = "order"
+
+

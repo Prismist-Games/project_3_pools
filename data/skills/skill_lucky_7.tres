@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/skill_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/skills/effects/lucky_7_skill_effect.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = "skill_lucky_7"
+name = "幸运 7"
+description = "当前金币数量尾数为 7 时，抽到传说的概率翻倍。"
+type = "luck"
+effects = [ExtResource("2")]
+
+

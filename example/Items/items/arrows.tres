@@ -13,7 +13,5 @@ name = "arrows"
 description = "desc_arrows"
 max_stack_count = 20
 in_inventory_width = 2
-in_inventory_height = 1
 texture = SubResource("1")
 slot_flags = 5
-default_properties = {}

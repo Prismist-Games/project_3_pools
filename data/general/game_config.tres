@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="GameConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/game_config.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+starting_gold = 15
+starting_tickets = 0
+normal_draw_gold_cost = 5
+weight_common = 40.0
+weight_uncommon = 30.0
+weight_rare = 19.0
+weight_epic = 10.0
+weight_legendary = 1.0
+mainline_chance = 0.5
+mainline_ticket_cost = 10
+mainline_drop_rate = 0.3
+mainline_filler_legendary_rate = 0.1
+volatile_legendary_rate = 0.6
+hardened_high_rarity_multiplier = 1.2
+normal_orders_count = 4
+order_refreshes_per_order = 2
+
+

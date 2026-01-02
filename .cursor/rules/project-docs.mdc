@@ -1,4 +1,7 @@
-这份文档定义了将 React 原型迁移到 Godot 4 (GDScript) 的项目结构、命名规范和架构模式。请在生成代码时始终参考此文档作为核心上下文。
+---
+alwaysApply: true
+---
+这份文档定义了基于 Godot 4.5.1 (GDScript) 的游戏项目简介、结构、命名规范和架构模式。请在生成代码时始终参考此文档作为核心上下文。
 
 1. 项目背景与核心机制
     1.1 游戏概述
@@ -19,21 +22,21 @@
 
     1.3 关键数据定义
         A. 品质 (Rarity)
-            普通 (common): 40% 概率 | +0% 加成 | 回收值 0 | 颜色特征: 灰色 (Slate)
-            优秀 (uncommon): 30% 概率 | +10% 加成 | 回收值 0 | 颜色特征: 绿色 (Green)
-            稀有 (rare): 19% 概率 | +20% 加成 | 回收值 1 | 颜色特征: 蓝色 (Blue)
-            史诗 (epic): 10% 概率 | +40% 加成 | 回收值 2 | 颜色特征: 紫色 (Purple)
-            传说 (legendary): 1% 概率 | +100% 加成 | 回收值 4 | 颜色特征: 橙色 (Orange)
-            神话 (mythic): 0% 概率 | +300% 加成 | 回收值 10 | 颜色特征: 红色 (Rose) 
+            - 普通 (common): 40% 概率 | +0% 加成 | 回收值 0 | 颜色特征: 灰色 (Slate)
+            - 优秀 (uncommon): 30% 概率 | +10% 加成 | 回收值 0 | 颜色特征: 绿色 (Green)
+            - 稀有 (rare): 19% 概率 | +20% 加成 | 回收值 1 | 颜色特征: 蓝色 (Blue)
+            - 史诗 (epic): 10% 概率 | +40% 加成 | 回收值 2 | 颜色特征: 紫色 (Purple)
+            - 传说 (legendary): 1% 概率 | +100% 加成 | 回收值 4 | 颜色特征: 橙色 (Orange)
+            - 神话 (mythic): 0% 概率 | +300% 加成 | 回收值 10 | 颜色特征: 红色 (Rose) 
 
         B. 奖池词缀 (Affixes): 奖池生成的随机词缀，改变抽奖行为或物品属性
-            以旧换新 (Trade-in): 消耗背包 1 个物品，随机置换同品质物品。
-            硬化的 (Hardened): 稀有度概率提升，但物品 绝育 (Sterile)（不可合成）。
-            提纯的 (Purified): 保底产出稀有及以上。
-            波动的 (Volatile): 只有普通或传说，传说概率极高。
-            稀碎的 (Fragmented): 一次给 3 个物品，但必定是普通。
-            精准的 (Precise): 二选一 (交互式)。
-            有的放矢 (Targeted): 指定类型 (交互式)。
+            - 以旧换新 (Trade-in): 消耗背包 1 个物品，随机置换同品质物品。
+            - 硬化的 (Hardened): 稀有度概率提升，但物品 绝育 (Sterile)（不可合成）。
+            - 提纯的 (Purified): 保底产出稀有及以上。
+            - 波动的 (Volatile): 只有普通或传说，传说概率极高。
+            - 稀碎的 (Fragmented): 一次给 3 个物品，但必定是普通。
+            - 精准的 (Precise): 二选一 (交互式)。
+            - 有的放矢 (Targeted): 指定类型 (交互式)。
 
         C. 主线流程 (Mainline): 游戏分 5 个阶段，每个阶段需提交特定的神话级主线道具 + 一个随机史诗道具。
             阶段 1: 获得 "仙果" (Fruit) -> 解锁技能槽/新技能
@@ -93,7 +96,7 @@
     说明：独立的 UI/逻辑模块实例化。
 
 3. 文件目录结构 (File Structure)
-    请严格保持以下目录结构：
+    请大致保持以下目录结构, 可以根据之后变化微调：
     res://
     ├── assets/                 # 图片、字体、音频素材
     │   ├── icons/              # 技能和物品图标
@@ -101,7 +104,7 @@
     ├── data/                   # 静态数据资源 (Resources)
     │   ├── items/              # 具体物品资源实例 (.tres)
     │   ├── skills/             # 具体技能资源实例 (.tres)
-    │   └── balance/            # 平衡性配置 (GameConfig.tres)
+    │   └── general/            # 泛用游戏配置 (GameConfig.tres)
     ├── scenes/                 # 游戏场景 (.tscn)
     │   ├── main.tscn           # 游戏主入口
     │   ├── ui/                 # UI 组件场景
@@ -131,31 +134,34 @@
 4. 关键脚本设计规范
     A. 全局单例 (Autoloads)
         1. EventBus (scripts/globals/event_bus.gd)
-        作为被动技能系统的核心，所有主要游戏行为必须发出信号，供 SkillSystem 监听修改数据或触发特效。
-        signal order_completed(order_data: Dictionary)
-        signal item_obtained(item: ItemData)
-        signal inventory_updated(items: Array)
-        signal draw_requested(pool_type: String, cost: int) - 技能可能会修改 cost
-        signal turn_started() / signal turn_ended()
+            作为被动技能系统的核心，所有主要游戏行为必须发出信号，供 SkillSystem 监听修改数据或触发特效。
+            signal order_completed(order_data: Dictionary)
+            signal item_obtained(item: ItemData)
+            signal inventory_updated(items: Array)
+            signal draw_requested(pool_type: String, cost: int) - 技能可能会修改 cost
+            signal turn_started() / signal turn_ended()
 
         2. GameManager (scripts/globals/game_manager.gd)
-        管理 gold, tickets, mainline_progress。
-        管理 current_skills (Array[SkillData])。
-        不要在 Setter 中直接写 UI 更新逻辑，而是发出信号。
+            管理 gold, tickets, mainline_progress。
+            管理 current_skills (Array[SkillData])。
+            不要在 Setter 中直接写 UI 更新逻辑，而是发出信号。
 
     B. 资源定义 (Resources)
         1. SkillData (scripts/resources/skill_data.gd)
 
-        class_name SkillData extends Resource
+            class_name SkillData extends Resource
 
-        @export var id: String
-        @export var name: String
-        @export_multiline var description: String
-        @export var icon: Texture2D
-        @export var type: String # 'gold', 'luck', 'recycle' 等
-        # 可以考虑添加虚函数或枚举来定义技能逻辑类型
+            @export var id: String
+            @export var name: String
+            @export_multiline var description: String
+            @export var icon: Texture2D
+            @export var type: String # 'gold', 'luck', 'recycle' 等
+            # 可以考虑添加虚函数或枚举来定义技能逻辑类型
 
     C. UI 与逻辑分离
         UI 节点 (OrderCard.gd) 只负责显示数据和转发输入事件。
         System 节点 (InventorySystem.gd) 负责处理数据逻辑（如合成判断、扣除金币）。
         UI 通过 GameManager 或 EventBus 调用 System 的方法。
+
+    D. 让技能,奖池词缀,主线流程模块化, 能在不修改游戏逻辑的情况下方便地扩展,修改内容
+        

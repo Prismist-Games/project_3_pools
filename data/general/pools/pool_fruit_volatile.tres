@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="PoolConfig" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/pool_config.gd" id="1"]
+[ext_resource type="Resource" path="res://data/general/affixes/affix_volatile.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"fruit_volatile"
+pool_type = &"Fruit"
+affix = 0
+affix_data = ExtResource("2")
+gold_cost = 5
+ticket_cost = 0
+
+

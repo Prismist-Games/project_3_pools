@@ -15,6 +15,13 @@ run/main_scene="uid://cf1cjj8xlhblr"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Constants="*res://scripts/globals/constants.gd"
+EventBus="*res://scripts/globals/event_bus.gd"
+GameManager="*res://scripts/globals/game_manager.gd"
+SkillSystem="*res://scripts/systems/skill_sys.gd"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

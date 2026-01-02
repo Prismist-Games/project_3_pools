@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "skill_big_order_expert"
+name = "大订单专家"
+description = "完成需求物品数为 4 的订单时，额外获得 10 张奖券。"
+type = "order"

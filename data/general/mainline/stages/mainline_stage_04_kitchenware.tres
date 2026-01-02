@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="MainlineStageData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/mainline_stage_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/items/mainline_kitchenware.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+stage = 4
+stage_name = "阶段 4"
+mainline_item = ExtResource("2")
+
+
