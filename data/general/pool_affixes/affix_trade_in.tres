@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="PoolAffixData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/pool_resources/pool_affix_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/general/pool_affixes/effects/trade_in_affix_effect.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"trade_in"
+name = "以旧换新"
+description = "消耗 1 个背包物品，随机置换同品质物品（5% 概率升级）。"
+effects = Array[Resource("res://scripts/resources/pool_resources/pool_affix_effect.gd")]([ExtResource("2")])
+

@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://scripts/resources/skill_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/skills/effects/alchemy_effect.tres" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
 
 [resource]
-script = ExtResource("1")
+script = ExtResource("2")
 id = "skill_alchemy"
 name = "炼金术"
 description = "回收稀有及以上品质物品时，15% 概率获得 5 张奖券。"
 type = "recycle"
-
-
+effects = [ExtResource("1")]

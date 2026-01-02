@@ -1,10 +1,12 @@
-[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://scripts/resources/skill_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/skills/effects/auto_restock_effect.tres" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
 
 [resource]
-script = ExtResource("1")
+script = ExtResource("2")
 id = "skill_auto_restock"
 name = "自动补货"
 description = "完成任意订单后，下次抽奖额外获得 1 个物品。"
 type = "inventory"
+effects = [ExtResource("1")]

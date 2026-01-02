@@ -29,6 +29,9 @@ var item_count: int = 1
 ## 强制绝育（如 Hardened：true）
 var force_sterile: bool = false
 
+## 是否跳过标准抽奖逻辑（由词缀或技能处理交互）
+var skip_draw: bool = false
+
 ## 运行时结果（由抽奖系统填充）
 var result_items: Array[ItemInstance] = []
 

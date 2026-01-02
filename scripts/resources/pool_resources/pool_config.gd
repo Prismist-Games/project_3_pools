@@ -3,8 +3,8 @@ class_name PoolConfig
 
 ## 奖池配置（可作为静态预设，也可用于运行时 PoolState 的模板）。
 
-const AffixData = preload("res://scripts/resources/affix_data.gd")
-const AffixEffect = preload("res://scripts/resources/affix_effect.gd")
+const AffixData = preload("pool_affix_data.gd")
+const AffixEffect = preload("pool_affix_effect.gd")
 
 ## 唯一标识（用于配置/调试；允许为空，表示“未命名模板”）。
 @export var id: StringName = &""

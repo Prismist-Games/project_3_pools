@@ -12,6 +12,20 @@ func _ready() -> void:
 	
 	# 初始生成订单
 	refresh_all_orders()
+	
+	EventBus.game_event.connect(_on_game_event)
+
+
+func _on_game_event(event_id: StringName, payload: RefCounted) -> void:
+	if event_id == &"add_order_refreshes":
+		_add_refreshes_to_all_orders(1)
+
+
+func _add_refreshes_to_all_orders(amount: int) -> void:
+	for order in current_orders:
+		if not order.is_mainline:
+			order.refresh_count += amount
+	EventBus.orders_updated.emit(current_orders)
 
 
 func refresh_all_orders() -> void:
@@ -36,10 +50,10 @@ func refresh_order(index: int) -> void:
 		return
 		
 	# 技能检测上下文
-	var ctx = { "consume_refresh": true }
+	var ctx = ContextProxy.new({ "consume_refresh": true })
 	EventBus.game_event.emit(&"order_refresh_requested", ctx)
 	
-	if ctx.consume_refresh:
+	if ctx.get_value("consume_refresh"):
 		order.refresh_count -= 1
 	
 	if order.is_mainline:
@@ -121,9 +135,9 @@ func _generate_normal_order() -> OrderData:
 		var count = rng.randi_range(1, 2)
 		
 		# 技能：偷工减料
-		var ctx = { "item_count": count }
+		var ctx = ContextProxy.new({ "item_count": count })
 		EventBus.game_event.emit(&"order_requirement_generating", ctx)
-		count = ctx.item_count
+		count = ctx.get_value("item_count")
 			
 		order.requirements.append({
 			"item_id": item_data.id,

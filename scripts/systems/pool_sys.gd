@@ -10,6 +10,17 @@ func _ready() -> void:
 	if not GameManager.is_node_ready():
 		await GameManager.ready
 	refresh_pools()
+	EventBus.game_event.connect(_on_game_event)
+
+
+func _on_game_event(event_id: StringName, payload: Variant) -> void:
+	if event_id == &"pool_draw_completed":
+		var pool_id = payload.get("pool_id")
+		for i in range(current_pools.size()):
+			if current_pools[i].id == pool_id:
+				current_pools[i] = _generate_pool()
+				EventBus.pools_refreshed.emit(current_pools)
+				break
 
 
 func refresh_pools() -> void:
@@ -61,6 +72,15 @@ func draw_from_pool(index: int) -> bool:
 		if not GameManager.spend_tickets(ctx.ticket_cost):
 			return false
 			
+	# 如果被词缀或技能标记为跳过（通常是进入了某种交互流程）
+	if ctx.skip_draw:
+		# 注意：此时 gold/tickets 可能已经扣除（由词缀决定是否在 draw_requested 中修改 cost）
+		# 我们决定如果 skip_draw 为 true 且 cost > 0，则依然刷新奖池
+		if ctx.gold_cost > 0 or ctx.ticket_cost > 0:
+			current_pools[index] = _generate_pool()
+			EventBus.pools_refreshed.emit(current_pools)
+		return true
+
 	# 3. 执行抽奖
 	if ctx.pool_type == Constants.POOL_TYPE_MAINLINE:
 		_do_mainline_draw(ctx)
@@ -134,13 +154,21 @@ func _do_mainline_draw(ctx: DrawContext) -> void:
 
 func _generate_pool() -> PoolConfig:
 	var rng = GameManager.rng
+	var pool: PoolConfig
 	if GameManager.tickets >= 10 and GameManager.mainline_stage <= Constants.MAINLINE_STAGES:
 		var mainline_chance = 0.5
 		if GameManager.game_config != null:
 			mainline_chance = GameManager.game_config.mainline_chance
 		if rng.randf() < mainline_chance:
-			return _generate_mainline_pool()
-	return _generate_normal_pool()
+			pool = _generate_mainline_pool()
+		else:
+			pool = _generate_normal_pool()
+	else:
+		pool = _generate_normal_pool()
+	
+	# 分配唯一 ID，用于 Trade-in 等交互回调找到正确的奖池
+	pool.id = StringName(str(Time.get_ticks_msec()) + "_" + str(rng.randi()))
+	return pool
 
 
 func _generate_mainline_pool() -> PoolConfig:

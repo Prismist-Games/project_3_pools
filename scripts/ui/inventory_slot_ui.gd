@@ -10,8 +10,9 @@ signal synthesis_requested(idx1: int, idx2: int)
 var _index: int = -1
 var _item: ItemInstance = null
 
-# 静态变量用于跨格子追踪选中项（简单合成交互）
+# 静态变量用于交互模式
 static var selected_index: int = -1
+static var selection_mode_data: Dictionary = {}
 
 
 func setup(item: ItemInstance, index: int) -> void:
@@ -36,15 +37,27 @@ func setup(item: ItemInstance, index: int) -> void:
 	# 如果是当前选中项，高亮
 	if selected_index == _index:
 		self.modulate = self.modulate.lightened(0.5)
+	
+	# 如果处于选择模式，显示特殊颜色或提示
+	if not selection_mode_data.is_empty():
+		# 比如如果是 trade_in 模式，且不是主线物品，则允许点击
+		if selection_mode_data.get("type") == "trade_in":
+			if _item.data.is_mainline:
+				self.modulate.a = 0.3
+			else:
+				self.modulate = self.modulate.lerp(Color.GOLD, 0.3)
 
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
+			# 优先处理全局选择模式
+			if not selection_mode_data.is_empty():
+				_handle_selection_mode_click()
+				return
+				
 			if selected_index == -1:
 				selected_index = _index
-				# 这里由于是静态变量，需要通知 UI 刷新显示
-				# 简单起见，直接发信号让外部重新 rebuild inventory
 				EventBus.inventory_updated.emit(GameManager.inventory)
 			elif selected_index == _index:
 				selected_index = -1
@@ -53,5 +66,22 @@ func _on_gui_input(event: InputEvent) -> void:
 				synthesis_requested.emit(selected_index, _index)
 				selected_index = -1
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			salvage_requested.emit(_index)
+			if selection_mode_data.is_empty():
+				salvage_requested.emit(_index)
+
+
+func _handle_selection_mode_click() -> void:
+	var mode_type = selection_mode_data.get("type")
+	var callback = selection_mode_data.get("callback")
+	
+	if mode_type == "trade_in":
+		if _item.data.is_mainline:
+			return # 主线物品不可置换
+		
+		if callback is Callable:
+			callback.call(_item)
+		
+		# 完成后退出选择模式
+		selection_mode_data = {}
+		EventBus.inventory_updated.emit(GameManager.inventory)
 

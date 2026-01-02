@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="PoolAffixData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/pool_resources/pool_affix_data.gd" id="1"]
+[ext_resource type="Resource" path="res://data/general/pool_affixes/effects/hardened_affix_effect.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"hardened"
+name = "硬化的"
+description = "只有稀有及以上品质，但物品无法合成（绝育）。"
+effects = Array[Resource("res://scripts/resources/pool_resources/pool_affix_effect.gd")]([ExtResource("2")])
+

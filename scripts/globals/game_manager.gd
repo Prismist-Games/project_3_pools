@@ -14,7 +14,6 @@ signal mainline_stage_changed(stage: int)
 signal skills_changed(skills: Array)
 signal inventory_changed(items: Array)
 
-const MainlineStageData = preload("res://scripts/resources/mainline_stage_data.gd")
 
 const GAME_CONFIG_PATH: String = "res://data/general/game_config.tres"
 const ITEMS_DIR: String = "res://data/items"
@@ -224,7 +223,7 @@ func _load_resources_from_dir(dir_path: String, out_arr: Array, on_loaded_method
 
 func _on_item_loaded(item: Resource) -> void:
 	## 约定：ItemData 必须包含 `type: StringName` 字段。
-	if not item.has_property("type"):
+	if not "type" in item:
 		push_warning("ItemData 缺少 type 字段：%s" % item)
 		return
 	var pool_type: StringName = item.get("type")
@@ -263,3 +262,10 @@ func get_mainline_item_id_for_stage(stage: int) -> StringName:
 	if stage_data == null or stage_data.mainline_item == null:
 		return &""
 	return stage_data.mainline_item.id
+
+
+func has_skill(skill_id: String) -> bool:
+	for skill in current_skills:
+		if skill is SkillData and skill.id == skill_id:
+			return true
+	return false

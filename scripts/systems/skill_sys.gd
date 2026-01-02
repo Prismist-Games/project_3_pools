@@ -10,6 +10,13 @@ extends Node
 
 var _active_effects: Array[SkillEffect] = []
 
+## 技能状态（跨回合或跨操作的临时状态）
+var skill_state: Dictionary = {
+	"consecutive_commons": 0,      ## 连续抽到普通物品次数 (安慰奖)
+	"next_draw_guaranteed_rare": false, ## 下一次必定稀有 (时来运转/安慰奖)
+	"next_draw_extra_item": false  ## 下一次多给一个 (自动补货)
+}
+
 
 func _ready() -> void:
 	_rebuild_effects(GameManager.current_skills)
@@ -24,6 +31,8 @@ func _ready() -> void:
 		EventBus.draw_finished.connect(_on_draw_finished)
 	if not EventBus.order_completed.is_connected(_on_order_completed):
 		EventBus.order_completed.connect(_on_order_completed)
+	if not EventBus.item_obtained.is_connected(_on_item_obtained):
+		EventBus.item_obtained.connect(_on_item_obtained)
 
 	## 可扩展事件
 	if not EventBus.game_event.is_connected(_on_game_event):
@@ -40,6 +49,8 @@ func _exit_tree() -> void:
 		EventBus.draw_finished.disconnect(_on_draw_finished)
 	if EventBus.order_completed.is_connected(_on_order_completed):
 		EventBus.order_completed.disconnect(_on_order_completed)
+	if EventBus.item_obtained.is_connected(_on_item_obtained):
+		EventBus.item_obtained.disconnect(_on_item_obtained)
 	if EventBus.game_event.is_connected(_on_game_event):
 		EventBus.game_event.disconnect(_on_game_event)
 
@@ -77,6 +88,10 @@ func _on_draw_finished(context: RefCounted) -> void:
 
 func _on_order_completed(context: RefCounted) -> void:
 	_dispatch(&"order_completed", context)
+
+
+func _on_item_obtained(item: RefCounted) -> void:
+	_dispatch(&"item_obtained", item)
 
 
 func _on_game_event(event_id: StringName, context: RefCounted) -> void:

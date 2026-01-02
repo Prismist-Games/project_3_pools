@@ -19,6 +19,7 @@ const POOL_CARD_SCENE = preload("res://scenes/ui/pool_card.tscn")
 const ORDER_CARD_SCENE = preload("res://scenes/ui/order_card.tscn")
 const INVENTORY_SLOT_SCENE = preload("res://scenes/ui/inventory_slot.tscn")
 const SKILL_ICON_SCENE = preload("res://scenes/ui/skill_icon.tscn")
+const InventorySlotUI = preload("res://scripts/ui/inventory_slot_ui.gd")
 
 
 func _ready() -> void:
@@ -31,6 +32,8 @@ func _ready() -> void:
 	
 	EventBus.pools_refreshed.connect(_on_pools_refreshed)
 	EventBus.orders_updated.connect(_on_orders_updated)
+	EventBus.modal_requested.connect(_on_modal_requested)
+	EventBus.game_event.connect(_on_game_event)
 	
 	# 初始化显示
 	_on_gold_changed(GameManager.gold)
@@ -119,4 +122,74 @@ func _on_item_salvage_requested(index: int) -> void:
 
 func _on_item_synthesis_requested(idx1: int, idx2: int) -> void:
 	inventory_system.synthesize_items(idx1, idx2)
+
+
+func _on_game_event(event_id: StringName, payload: Variant) -> void:
+	if event_id == &"enter_selection_mode":
+		InventorySlotUI.selection_mode_data = payload
+		_on_inventory_changed(GameManager.inventory)
+
+
+func _on_modal_requested(modal_id: StringName, payload: Dictionary) -> void:
+	match modal_id:
+		&"precise_selection":
+			_handle_precise_selection(payload)
+		&"targeted_selection":
+			_handle_targeted_selection(payload)
+
+
+func _handle_precise_selection(payload: Dictionary) -> void:
+	var items: Array[ItemInstance] = payload.get("items", [])
+	var callback: Callable = payload.get("callback")
+	
+	var dialog = ConfirmationDialog.new()
+	dialog.title = "精准抽奖：二选一"
+	dialog.dialog_text = "请选择一个物品："
+	add_child(dialog)
+	
+	var h_box = HBoxContainer.new()
+	dialog.add_child(h_box)
+	
+	for item in items:
+		var btn = Button.new()
+		btn.text = "[%s] %s" % [Constants.rarity_display_name(item.rarity), item.get_display_name()]
+		btn.pressed.connect(func():
+			if callback.is_valid():
+				callback.call(item)
+			dialog.queue_free()
+		)
+		h_box.add_child(btn)
+	
+	dialog.get_ok_button().hide()
+	dialog.get_cancel_button().text = "放弃"
+	dialog.popup_centered()
+
+
+func _handle_targeted_selection(payload: Dictionary) -> void:
+	var items: Array[ItemData] = payload.get("items", [])
+	var callback: Callable = payload.get("callback")
+	
+	var dialog = AcceptDialog.new()
+	dialog.title = "有的放矢：选择类型"
+	add_child(dialog)
+	
+	var scroll = ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(300, 400)
+	dialog.add_child(scroll)
+	
+	var v_box = VBoxContainer.new()
+	scroll.add_child(v_box)
+	
+	for item_data in items:
+		var btn = Button.new()
+		btn.text = item_data.name
+		btn.pressed.connect(func():
+			if callback.is_valid():
+				callback.call(item_data)
+			dialog.queue_free()
+		)
+		v_box.add_child(btn)
+	
+	dialog.get_ok_button().hide()
+	dialog.popup_centered()
 
