@@ -1,4 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=7 format=3 uid="uid://cf1cjj8xlhblr"]
+
+[ext_resource type="Texture2D" uid="uid://btsuqm2u3wjvs" path="res://assets/sprites/square_outlined.png" id="1_vy3lb"]
+[ext_resource type="Texture2D" uid="uid://dh6xklxxuyvgw" path="res://assets/sprites/square_outline_only.png" id="2_h2tqe"]
+[ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="3_4wmcb"]
+[ext_resource type="Texture2D" uid="uid://boc71kjvr7ufn" path="res://assets/icons/spinning_top.png" id="3_fiado"]
 
 [sub_resource type="Animation" id="Animation_1h1gb"]
 resource_name = "test_animation"
@@ -8,9 +13,86 @@ _data = {
 &"test_animation": SubResource("Animation_1h1gb")
 }
 
-[node name="Node2D" type="Node2D"]
+[node name="Game2D" type="Node"]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_vy3lb")
 }
+
+[node name="Background" type="Node2D" parent="."]
+position = Vector2(1022, 766)
+
+[node name="Background_wall" type="NinePatchRect" parent="Background"]
+self_modulate = Color(0.3137255, 0.6431373, 0.93333334, 1)
+offset_left = -1590.0
+offset_top = -1016.0
+offset_right = 1623.0
+offset_bottom = 79.0
+texture = ExtResource("1_vy3lb")
+region_rect = Rect2(0, 0, 100, 100)
+patch_margin_left = 3
+patch_margin_top = 3
+patch_margin_right = 3
+patch_margin_bottom = 3
+
+[node name="Background_floor" type="NinePatchRect" parent="Background"]
+self_modulate = Color(0.9882353, 0.40392157, 0.3137255, 1)
+offset_left = -1590.0
+offset_top = 8.0
+offset_right = 1623.0
+offset_bottom = 1103.0
+texture = ExtResource("1_vy3lb")
+region_rect = Rect2(0, 0, 100, 100)
+patch_margin_left = 3
+patch_margin_top = 3
+patch_margin_right = 3
+patch_margin_bottom = 3
+
+[node name="ItemSlot" type="Sprite2D" parent="."]
+clip_children = 1
+position = Vector2(1075, 448)
+texture = ExtResource("1_vy3lb")
+
+[node name="Slot_background_right" type="Sprite2D" parent="ItemSlot"]
+self_modulate = Color(0.8156863, 0.49411765, 0.14901961, 1)
+position = Vector2(48, -1)
+texture = ExtResource("1_vy3lb")
+
+[node name="Slot_background_wall" type="Sprite2D" parent="ItemSlot"]
+self_modulate = Color(0.99215686, 0.63529414, 0.19607843, 1)
+position = Vector2(-42, -25)
+texture = ExtResource("1_vy3lb")
+
+[node name="Slot_background_floor" type="Sprite2D" parent="ItemSlot"]
+self_modulate = Color(0.99215686, 0.7411765, 0.22745098, 1)
+position = Vector2(1, 49)
+skew = -1.0471976
+texture = ExtResource("1_vy3lb")
+
+[node name="Slot_item_root" type="Sprite2D" parent="ItemSlot"]
+position = Vector2(-6, 15)
+
+[node name="Item_example" type="Sprite2D" parent="ItemSlot/Slot_item_root"]
+texture = ExtResource("3_fiado")
+
+[node name="Item_shadow" type="Sprite2D" parent="ItemSlot/Slot_item_root/Item_example"]
+self_modulate = Color(0, 0, 0, 0.39215687)
+show_behind_parent = true
+position = Vector2(0, 25)
+scale = Vector2(0.095, 0.025)
+texture = ExtResource("3_4wmcb")
+
+[node name="Slot_lid" type="Sprite2D" parent="ItemSlot"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+position = Vector2(0, -78)
+texture = ExtResource("1_vy3lb")
+
+[node name="Slot_led" type="Sprite2D" parent="ItemSlot/Slot_lid"]
+self_modulate = Color(0.74190307, 0, 0.14498982, 1)
+position = Vector2(0, 32.999996)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_vy3lb")
+
+[node name="Slot_outline" type="Sprite2D" parent="ItemSlot"]
+texture = ExtResource("2_h2tqe")
