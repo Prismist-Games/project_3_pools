@@ -18,12 +18,16 @@ config/icon="res://icon.svg"
 [autoload]
 
 AnimationDirector="*res://Scripts/animation_director.gd"
+Constants="*res://scripts/globals/constants.gd"
+EventBus="*res://scripts/globals/event_bus.gd"
+GameManager="*res://scripts/globals/game_manager.gd"
+SkillSystem="*res://scripts/systems/skill_sys.gd"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/stretch/mode="viewport"
+window/stretch/mode="canvas_items"
 
 [rendering]
 
