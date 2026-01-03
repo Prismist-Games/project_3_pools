@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MainlineStageData" load_steps=3 format=3 uid="uid://sro1at4t3tic"]
+
+[ext_resource type="Script" uid="uid://bhem1x3i1f4xh" path="res://scripts/resources/mainline_stage_data.gd" id="1"]
+[ext_resource type="Resource" uid="uid://bb8urvevtfact" path="res://data/items/mainline_kitchenware.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+stage = 4
+stage_name = "阶段 4"
+mainline_item = ExtResource("2")
+required_secondary_rarity = 3
+filler_rarity = 3
+unlocked_pool_types = Array[StringName]([&"Fruit", &"Medicine", &"Stationery", &"Kitchenware", &"Electronics"])
+has_synthesis = true
+synthesis_limit = 5
+has_pool_affixes = true
+has_order_refresh = true
+inventory_size = 9
+order_count = 4
+items_per_pool = 5
+weight_common = 40.0
+weight_uncommon = 30.0
+weight_rare = 20.0
+weight_epic = 10.0
+newly_unlocked_skill_ids = Array[String](["skill_negotiator", "skill_time_freeze", "skill_hard_order_expert"])

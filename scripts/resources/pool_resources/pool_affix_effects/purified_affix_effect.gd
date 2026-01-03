@@ -26,3 +26,4 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 		0.03  # LEGENDARY
 	])
 
+

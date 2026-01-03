@@ -46,7 +46,11 @@ func draw_from_pool(index: int) -> bool:
 	ctx.ticket_cost = pool.ticket_cost
 	
 	# 填充默认权重
-	if GameManager.game_config != null:
+	var stage_data = GameManager.current_stage_data
+	if stage_data != null:
+		ctx.rarity_weights = stage_data.get_weights()
+		ctx.item_count = stage_data.items_per_pool
+	elif GameManager.game_config != null:
 		var cfg = GameManager.game_config
 		ctx.rarity_weights = PackedFloat32Array([
 			cfg.weight_common,
@@ -104,7 +108,7 @@ func _do_normal_draw(ctx: DrawContext) -> void:
 	for i in range(ctx.item_count):
 		var rarity = ctx.force_rarity
 		if rarity == -1:
-			rarity = Constants.pick_weighted_index(ctx.rarity_weights, GameManager.rng)
+			rarity = Constants.get_script().pick_weighted_index(ctx.rarity_weights, GameManager.rng)
 			
 		rarity = maxi(rarity, ctx.min_rarity)
 		
@@ -122,27 +126,29 @@ func _do_normal_draw(ctx: DrawContext) -> void:
 
 func _do_mainline_draw(ctx: DrawContext) -> void:
 	var rng = GameManager.rng
+	var stage = GameManager.mainline_stage
+	var stage_data = GameManager.get_mainline_stage_data(stage)
+	
 	var drop_rate = 0.3
-	var filler_legendary_rate = 0.1
 	if GameManager.game_config != null:
 		drop_rate = GameManager.game_config.mainline_drop_rate
-		filler_legendary_rate = GameManager.game_config.mainline_filler_legendary_rate
 		
 	# 掉落规则：30% 概率掉落当前阶段主线道具（神话）
 	if rng.randf() < drop_rate:
-		var stage = GameManager.mainline_stage
-		var stage_data = GameManager.get_mainline_stage_data(stage)
-		if stage_data != null:
+		if stage_data != null and stage_data.mainline_item != null:
 			var item_instance = ItemInstance.new(stage_data.mainline_item, Constants.Rarity.MYTHIC, false)
 			ctx.result_items.append(item_instance)
 			GameManager.add_item(item_instance)
 			EventBus.item_obtained.emit(item_instance)
 			return
 
-	# 70% 概率掉落填充物 (史诗或传说)
+	# 70% 概率掉落填充物 (固定稀有度)
 	var rarity = Constants.Rarity.EPIC
-	if rng.randf() < filler_legendary_rate:
-		rarity = Constants.Rarity.LEGENDARY
+	if stage_data != null:
+		rarity = stage_data.filler_rarity
+		# 如果是阶段 5，且不是神话，有概率出传说
+		if stage == 5 and rng.randf() < 0.1:
+			rarity = Constants.Rarity.LEGENDARY
 		
 	var items = GameManager.all_items
 	var item_data = items.pick_random()
@@ -166,7 +172,7 @@ func _generate_pool() -> PoolConfig:
 	else:
 		pool = _generate_normal_pool()
 	
-	# 分配唯一 ID，用于 Trade-in 等交互回调找到正确的奖池
+	# 分配唯一 ID
 	pool.id = StringName(str(Time.get_ticks_msec()) + "_" + str(rng.randi()))
 	return pool
 
@@ -182,9 +188,43 @@ func _generate_mainline_pool() -> PoolConfig:
 
 func _generate_normal_pool() -> PoolConfig:
 	var pool = PoolConfig.new()
-	pool.pool_type = Constants.NORMAL_POOL_TYPES.pick_random()
-	pool.gold_cost = 5
+	var stage_data = GameManager.current_stage_data
+	var rng = GameManager.rng
+	
+	# 根据阶段选择池子类型
+	if stage_data != null and not stage_data.unlocked_pool_types.is_empty():
+		pool.pool_type = stage_data.unlocked_pool_types.pick_random()
+	else:
+		pool.pool_type = Constants.NORMAL_POOL_TYPES.pick_random()
+	
+	# 根据阶段设置费用
+	var base_cost = 5
 	if GameManager.game_config != null:
-		pool.gold_cost = GameManager.game_config.normal_draw_gold_cost
+		base_cost = GameManager.game_config.normal_draw_gold_cost
+	
+	if GameManager.mainline_stage == 1:
+		pool.gold_cost = 1
+	elif GameManager.mainline_stage == 2:
+		pool.gold_cost = base_cost
+	else:
+		# 阶段 3+ 价格波动 (e.g. 5 +/- 2, 最低为 1)
+		pool.gold_cost = clampi(base_cost + rng.randi_range(-2, 2), 1, 99)
+	
+	# 词缀处理
+	if stage_data != null and stage_data.has_pool_affixes:
+		_assign_random_affix(pool)
+			
 	return pool
+
+
+func _assign_random_affix(pool: PoolConfig) -> void:
+	# 1/3 概率生成词缀
+	if GameManager.rng.randf() >= 0.33:
+		return
+		
+	# 从缓存的词缀列表中随机挑选
+	# 这里需要 GameManager 先加载好 pool_affixes
+	var affixes = GameManager.get("all_pool_affixes")
+	if affixes != null and not affixes.is_empty():
+		pool.affix_data = affixes.pick_random()
 

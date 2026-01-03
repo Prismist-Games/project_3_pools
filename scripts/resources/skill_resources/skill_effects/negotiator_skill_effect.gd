@@ -18,3 +18,4 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if item.rarity >= rarity_threshold:
 		EventBus.game_event.emit(&"add_order_refreshes", null)
 
+

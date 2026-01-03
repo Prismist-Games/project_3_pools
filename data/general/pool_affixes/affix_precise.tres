@@ -10,3 +10,4 @@ name = "精准的"
 description = "二选一交互。"
 effects = Array[Resource("res://scripts/resources/pool_resources/pool_affix_effect.gd")]([ExtResource("2")])
 
+

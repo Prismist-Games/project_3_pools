@@ -1,7 +1,6 @@
-[gd_resource type="Resource" script_class="PurifiedAffixEffect" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="PurifiedAffixEffect" load_steps=2 format=3 uid="uid://dbuaiucj51qud"]
 
-[ext_resource type="Script" path="res://scripts/resources/pool_resources/pool_affix_effects/purified_affix_effect.gd" id="1"]
+[ext_resource type="Script" uid="uid://fd0lae2jh3sv" path="res://scripts/resources/pool_resources/pool_affix_effects/purified_affix_effect.gd" id="1"]
 
 [resource]
 script = ExtResource("1")
-

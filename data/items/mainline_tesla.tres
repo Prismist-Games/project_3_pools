@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://bfvwh6avharge"]
+
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="1_bfut2"]
+
+[resource]
+script = ExtResource("1_bfut2")
+id = &"mainline_tesla"
+name = "特斯拉"
+type = &"Electronics"
+is_mainline = true

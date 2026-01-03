@@ -19,6 +19,15 @@ func setup(item: ItemInstance, index: int) -> void:
 	_index = index
 	_item = item
 	
+	if item == null:
+		name_label.text = ""
+		rarity_label.text = ""
+		icon_rect.texture = null
+		self.modulate = Color.WHITE
+		self.modulate.a = 0.2 # 空格子半透明
+		return
+
+	self.modulate.a = 1.0
 	name_label.text = item.get_display_name()
 	rarity_label.text = Constants.rarity_display_name(item.rarity)
 	
@@ -49,6 +58,9 @@ func setup(item: ItemInstance, index: int) -> void:
 
 
 func _on_gui_input(event: InputEvent) -> void:
+	if _item == null:
+		return
+		
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			# 优先处理全局选择模式

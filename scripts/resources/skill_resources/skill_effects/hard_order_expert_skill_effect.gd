@@ -23,3 +23,4 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if has_hard:
 		ctx.reward_tickets += bonus_tickets
 
+

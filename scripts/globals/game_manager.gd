@@ -28,6 +28,11 @@ var _gold: int = 15
 var _tickets: int = 0
 var _mainline_stage: int = 1
 
+## 当前阶段的详细配置数据
+var current_stage_data: MainlineStageData:
+	get:
+		return get_mainline_stage_data(_mainline_stage)
+
 ## 技能槽：保存 SkillData（Resource）实例。
 var current_skills: Array = []
 
@@ -49,6 +54,11 @@ var next_draw_guaranteed_rare: bool = false
 var next_draw_extra_item: bool = false
 
 
+const POOL_AFFIXES_DIR: String = "res://data/general/pool_affixes"
+
+var all_pool_affixes: Array = []
+
+
 func _ready() -> void:
 	rng.randomize()
 	_load_game_config()
@@ -57,8 +67,18 @@ func _ready() -> void:
 		_tickets = game_config.starting_tickets
 	_load_items()
 	_load_skills()
+	_load_pool_affixes()
 	_load_mainline_stages()
 	_emit_full_state()
+
+
+func _load_pool_affixes() -> void:
+	all_pool_affixes.clear()
+	_load_resources_from_dir(POOL_AFFIXES_DIR, all_pool_affixes, "_on_pool_affix_loaded")
+
+
+func _on_pool_affix_loaded(_affix: Resource) -> void:
+	pass
 
 
 var gold: int:
@@ -272,3 +292,11 @@ func has_skill(skill_id: String) -> bool:
 		if skill is SkillData and skill.id == skill_id:
 			return true
 	return false
+
+
+func get_available_skills_for_current_stage() -> Array[SkillData]:
+	var result: Array[SkillData] = []
+	for skill in all_skills:
+		if skill is SkillData and skill.unlock_stage <= _mainline_stage:
+			result.append(skill)
+	return result

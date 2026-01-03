@@ -82,16 +82,23 @@ func _on_orders_updated(orders: Array) -> void:
 
 func _on_inventory_changed(items: Array) -> void:
 	# 更新背包格子
-	# 简单处理：清空并重新填满（实际可以做池化优化）
 	for child in inventory_grid.get_children():
 		child.queue_free()
 		
-	for i in items.size():
+	var total_slots = 6
+	if GameManager.current_stage_data != null:
+		total_slots = GameManager.current_stage_data.inventory_size
+		
+	for i in total_slots:
 		var slot = INVENTORY_SLOT_SCENE.instantiate()
 		inventory_grid.add_child(slot)
-		slot.setup(items[i], i)
-		slot.salvage_requested.connect(_on_item_salvage_requested)
-		slot.synthesis_requested.connect(_on_item_synthesis_requested)
+		
+		if i < items.size():
+			slot.setup(items[i], i)
+			slot.salvage_requested.connect(_on_item_salvage_requested)
+			slot.synthesis_requested.connect(_on_item_synthesis_requested)
+		else:
+			slot.setup(null, i)
 
 
 func _on_skills_changed(skills: Array) -> void:
@@ -152,7 +159,7 @@ func _handle_precise_selection(payload: Dictionary) -> void:
 	
 	for item in items:
 		var btn = Button.new()
-		btn.text = "[%s] %s" % [Constants.rarity_display_name(item.rarity), item.get_display_name()]
+		btn.text = "[%s] %s" % [Constants.get_script().rarity_display_name(item.rarity), item.get_display_name()]
 		btn.pressed.connect(func():
 			if callback.is_valid():
 				callback.call(item)

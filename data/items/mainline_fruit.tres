@@ -1,12 +1,10 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://dvvxhf7e020lq"]
 
-[ext_resource type="Script" path="res://scripts/resources/item_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="1_qkynf"]
 
 [resource]
-script = ExtResource("1")
-id = &"mainline_fruit"
+script = ExtResource("1_qkynf")
+id = &"mainline_01"
 name = "仙果"
 type = &"Fruit"
 is_mainline = true
-
-

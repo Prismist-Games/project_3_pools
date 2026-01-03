@@ -1,9 +1,10 @@
 [gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://8e1g5wp0o4f2"]
 
-[ext_resource type="Script" uid="uid://dg56ij46uw2ie" path="res://scripts/resources/item_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="1"]
 
 [resource]
 script = ExtResource("1")
 id = &"fruit_peach"
 name = "桃子"
 type = &"Fruit"
+

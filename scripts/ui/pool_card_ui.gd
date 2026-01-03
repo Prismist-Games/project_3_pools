@@ -36,3 +36,4 @@ func setup(config: PoolConfig, index: int) -> void:
 func _on_draw_button_pressed() -> void:
 	draw_requested.emit(_index)
 
+

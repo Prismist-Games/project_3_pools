@@ -20,3 +20,4 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 		if randf() < chance:
 			ctx.reward_tickets += bonus_tickets
 
+

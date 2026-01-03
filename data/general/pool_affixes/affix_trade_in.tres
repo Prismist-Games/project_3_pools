@@ -10,3 +10,4 @@ name = "以旧换新"
 description = "消耗 1 个背包物品，随机置换同品质物品（5% 概率升级）。"
 effects = Array[Resource("res://scripts/resources/pool_resources/pool_affix_effect.gd")]([ExtResource("2")])
 
+

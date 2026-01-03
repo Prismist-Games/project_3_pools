@@ -18,3 +18,4 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if ctx.submitted_items.size() >= count_threshold:
 		ctx.reward_tickets += bonus_tickets
 
+

@@ -53,3 +53,4 @@ func _on_submit_button_pressed() -> void:
 func _on_refresh_button_pressed() -> void:
 	refresh_requested.emit(_index)
 
+

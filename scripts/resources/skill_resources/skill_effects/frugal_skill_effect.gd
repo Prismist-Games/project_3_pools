@@ -18,3 +18,4 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if GameManager.gold < gold_threshold and ctx.pool_type != Constants.POOL_TYPE_MAINLINE:
 		ctx.gold_cost = maxi(1, ctx.gold_cost - discount_amount)
 
+

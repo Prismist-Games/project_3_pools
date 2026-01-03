@@ -18,3 +18,4 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if GameManager.gold < gold_threshold:
 		ctx.reward_gold += bonus_gold
 
+

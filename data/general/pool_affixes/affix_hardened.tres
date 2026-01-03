@@ -10,3 +10,4 @@ name = "硬化的"
 description = "只有稀有及以上品质，但物品无法合成（绝育）。"
 effects = Array[Resource("res://scripts/resources/pool_resources/pool_affix_effect.gd")]([ExtResource("2")])
 
+

@@ -25,3 +25,4 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 			ctx.reward_gold *= multiplier
 			ctx.reward_tickets *= multiplier
 
+

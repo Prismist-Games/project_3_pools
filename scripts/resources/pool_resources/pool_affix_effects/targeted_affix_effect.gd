@@ -38,3 +38,4 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 				EventBus.item_obtained.emit(item_instance)
 	})
 
+

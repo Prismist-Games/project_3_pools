@@ -8,5 +8,3 @@ class_name ItemData
 @export var type: StringName = &""
 @export var icon: Texture2D = null
 @export var is_mainline: bool = false
-
-

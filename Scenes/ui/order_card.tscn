@@ -49,3 +49,4 @@ text = "提交"
 [connection signal="pressed" method="_on_refresh_button_pressed" from="VBoxContainer/HBoxContainer/RefreshButton" to="." commit=""]
 [connection signal="pressed" method="_on_submit_button_pressed" from="VBoxContainer/HBoxContainer/SubmitButton" to="." commit=""]
 
+

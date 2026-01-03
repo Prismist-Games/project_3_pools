@@ -32,3 +32,4 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if total_weight <= 0.0:
 		ctx.rarity_weights[Constants.Rarity.RARE] = 1.0
 
+

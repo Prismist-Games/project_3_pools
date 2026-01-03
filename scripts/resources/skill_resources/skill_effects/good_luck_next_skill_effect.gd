@@ -27,3 +27,4 @@ func _handle_draw_requested(ctx: DrawContext) -> void:
 		ctx.min_rarity = Constants.Rarity.RARE
 		state.next_draw_guaranteed_rare = false
 
+

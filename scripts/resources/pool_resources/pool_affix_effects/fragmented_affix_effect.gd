@@ -23,3 +23,4 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	# 强制普通品质
 	ctx.force_rarity = Constants.Rarity.COMMON
 
+

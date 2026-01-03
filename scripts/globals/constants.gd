@@ -46,9 +46,9 @@ const NORMAL_POOL_TYPES: Array[String] = [
 
 const MAINLINE_ITEM_STAGE_1: StringName = &"mainline_fruit"
 const MAINLINE_ITEM_STAGE_2: StringName = &"mainline_medicine"
-const MAINLINE_ITEM_STAGE_3: StringName = &"mainline_stationery"
+const MAINLINE_ITEM_STAGE_3: StringName = &"mainline_magic_pen"
 const MAINLINE_ITEM_STAGE_4: StringName = &"mainline_kitchenware"
-const MAINLINE_ITEM_STAGE_5: StringName = &"mainline_electronics"
+const MAINLINE_ITEM_STAGE_5: StringName = &"mainline_tesla"
 
 static func mainline_item_id_for_stage(stage: int) -> StringName:
 	match stage:
@@ -117,6 +117,24 @@ static func rarity_salvage_value(rarity: int) -> int:
 			return 10
 		_:
 			return 0
+
+
+static func rarity_bonus(rarity: int) -> float:
+	match rarity:
+		Rarity.COMMON:
+			return 0.0
+		Rarity.UNCOMMON:
+			return 0.1
+		Rarity.RARE:
+			return 0.2
+		Rarity.EPIC:
+			return 0.4
+		Rarity.LEGENDARY:
+			return 1.0
+		Rarity.MYTHIC:
+			return 3.0
+		_:
+			return 0.0
 
 
 static func is_normal_pool_type(pool_type: StringName) -> bool:

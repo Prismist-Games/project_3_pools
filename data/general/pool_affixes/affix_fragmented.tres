@@ -10,3 +10,4 @@ name = "稀碎的"
 description = "一次获得 3 个物品，但必定是普通品质。"
 effects = Array[Resource("res://scripts/resources/pool_resources/pool_affix_effect.gd")]([ExtResource("2")])
 
+

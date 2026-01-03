@@ -8,6 +8,10 @@ func _ready() -> void:
 
 ## 合成两个物品
 func synthesize_items(idx1: int, idx2: int) -> bool:
+	var stage_data = GameManager.current_stage_data
+	if stage_data == null or not stage_data.has_synthesis:
+		return false
+
 	var items = GameManager.inventory
 	if idx1 < 0 or idx1 >= items.size() or idx2 < 0 or idx2 >= items.size() or idx1 == idx2:
 		return false
@@ -21,6 +25,10 @@ func synthesize_items(idx1: int, idx2: int) -> bool:
 		and not item1.sterile and not item2.sterile \
 		and item1.rarity < Constants.Rarity.MYTHIC:
 		
+		# 检查合成上限
+		if item1.rarity >= stage_data.synthesis_limit:
+			return false
+			
 		# 移除旧物品
 		var indices = [idx1, idx2]
 		indices.sort()
