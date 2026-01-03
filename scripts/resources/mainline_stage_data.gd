@@ -24,9 +24,9 @@ class_name MainlineStageData
 ## 解锁的奖池类型
 @export var unlocked_pool_types: Array[StringName] = []
 ## 是否解锁合成
-@export var has_synthesis: bool = false
+@export var has_merge: bool = false
 ## 合成上限（含）
-@export var synthesis_limit: Constants.Rarity = Constants.Rarity.COMMON
+@export var merge_limit: Constants.Rarity = Constants.Rarity.COMMON
 ## 是否解锁奖池词缀
 @export var has_pool_affixes: bool = false
 ## 是否解锁订单刷新

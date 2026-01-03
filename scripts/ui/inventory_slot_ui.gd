@@ -1,7 +1,7 @@
 extends PanelContainer
 
 signal salvage_requested(index: int)
-signal synthesis_requested(idx1: int, idx2: int)
+signal merge_requested(idx1: int, idx2: int)
 
 @onready var icon_rect: TextureRect = %IconRect
 @onready var name_label: Label = %NameLabel
@@ -75,7 +75,7 @@ func _on_gui_input(event: InputEvent) -> void:
 				selected_index = -1
 				EventBus.inventory_updated.emit(GameManager.inventory)
 			else:
-				synthesis_requested.emit(selected_index, _index)
+				merge_requested.emit(selected_index, _index)
 				selected_index = -1
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			if selection_mode_data.is_empty():

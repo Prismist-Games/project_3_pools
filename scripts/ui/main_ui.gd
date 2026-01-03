@@ -96,7 +96,7 @@ func _on_inventory_changed(items: Array) -> void:
 		if i < items.size():
 			slot.setup(items[i], i)
 			slot.salvage_requested.connect(_on_item_salvage_requested)
-			slot.synthesis_requested.connect(_on_item_synthesis_requested)
+			slot.merge_requested.connect(_on_item_merge_requested)
 		else:
 			slot.setup(null, i)
 
@@ -127,8 +127,8 @@ func _on_item_salvage_requested(index: int) -> void:
 	inventory_system.salvage_item(index)
 
 
-func _on_item_synthesis_requested(idx1: int, idx2: int) -> void:
-	inventory_system.synthesize_items(idx1, idx2)
+func _on_item_merge_requested(idx1: int, idx2: int) -> void:
+	inventory_system.merge_items(idx1, idx2)
 
 
 func _on_game_event(event_id: StringName, payload: Variant) -> void:

@@ -7,9 +7,9 @@ func _ready() -> void:
 	pass
 
 ## 合成两个物品
-func synthesize_items(idx1: int, idx2: int) -> bool:
+func merge_items(idx1: int, idx2: int) -> bool:
 	var stage_data = GameManager.current_stage_data
-	if stage_data == null or not stage_data.has_synthesis:
+	if stage_data == null or not stage_data.has_merge:
 		return false
 
 	var items = GameManager.inventory
@@ -26,7 +26,7 @@ func synthesize_items(idx1: int, idx2: int) -> bool:
 		and item1.rarity < Constants.Rarity.MYTHIC:
 		
 		# 检查合成上限
-		if item1.rarity >= stage_data.synthesis_limit:
+		if item1.rarity >= stage_data.merge_limit:
 			return false
 			
 		# 移除旧物品
