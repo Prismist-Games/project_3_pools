@@ -13,20 +13,24 @@ func _ready() -> void:
 	EventBus.game_event.connect(_on_game_event)
 
 
-func _on_game_event(event_id: StringName, payload: Variant) -> void:
+func _on_game_event(event_id: StringName, _payload: Variant) -> void:
 	if event_id == &"pool_draw_completed":
-		var pool_id = payload.get("pool_id")
-		for i in range(current_pools.size()):
-			if current_pools[i].id == pool_id:
-				current_pools[i] = _generate_pool()
-				EventBus.pools_refreshed.emit(current_pools)
-				break
+		refresh_pools()
 
 
 func refresh_pools() -> void:
 	current_pools.clear()
+	var excluded_types: Array[Constants.ItemType] = []
+	var excluded_affixes: Array[RefCounted] = [] # PoolAffixData
+	
 	for i in range(max_pools):
-		current_pools.append(_generate_pool())
+		var pool = _generate_pool(excluded_types, excluded_affixes)
+		current_pools.append(pool)
+		
+		# 记录已使用的类型和词缀
+		excluded_types.append(pool.item_type)
+		if pool.affix_data != null:
+			excluded_affixes.append(pool.affix_data)
 	
 	EventBus.pools_refreshed.emit(current_pools)
 
@@ -80,8 +84,7 @@ func draw_from_pool(index: int) -> bool:
 		# 注意：此时 gold/tickets 可能已经扣除（由词缀决定是否在 draw_requested 中修改 cost）
 		# 我们决定如果 skip_draw 为 true 且 cost > 0，则依然刷新奖池
 		if ctx.gold_cost > 0 or ctx.ticket_cost > 0:
-			current_pools[index] = _generate_pool()
-			EventBus.pools_refreshed.emit(current_pools)
+			refresh_pools()
 		return true
 
 	# 3. 执行抽奖
@@ -96,9 +99,8 @@ func draw_from_pool(index: int) -> bool:
 	# 5. 技能后处理
 	EventBus.draw_finished.emit(ctx)
 	
-	# 抽完后刷新该奖池
-	current_pools[index] = _generate_pool()
-	EventBus.pools_refreshed.emit(current_pools)
+	# 抽完后刷新所有奖池
+	refresh_pools()
 	
 	return true
 
@@ -160,19 +162,23 @@ func _do_mainline_draw(ctx: DrawContext) -> void:
 			EventBus.item_obtained.emit(item_instance)
 
 
-func _generate_pool() -> PoolConfig:
+func _generate_pool(excluded_types: Array[Constants.ItemType] = [], excluded_affixes: Array[RefCounted] = []) -> PoolConfig:
 	var rng = GameManager.rng
 	var pool: PoolConfig
-	if GameManager.tickets >= 10 and GameManager.mainline_stage <= Constants.MAINLINE_STAGES:
+	
+	# 检查是否可以生成核心奖池 (核心池类型唯一)
+	var can_mainline = Constants.ItemType.MAINLINE not in excluded_types
+	
+	if can_mainline and GameManager.tickets >= 10 and GameManager.mainline_stage <= Constants.MAINLINE_STAGES:
 		var mainline_chance = 0.5
 		if GameManager.game_config != null:
 			mainline_chance = GameManager.game_config.mainline_chance
 		if rng.randf() < mainline_chance:
 			pool = _generate_mainline_pool()
 		else:
-			pool = _generate_normal_pool()
+			pool = _generate_normal_pool(excluded_types, excluded_affixes)
 	else:
-		pool = _generate_normal_pool()
+		pool = _generate_normal_pool(excluded_types, excluded_affixes)
 	
 	# 分配唯一 ID
 	pool.id = StringName(str(Time.get_ticks_msec()) + "_" + str(rng.randi()))
@@ -188,27 +194,38 @@ func _generate_mainline_pool() -> PoolConfig:
 	return pool
 
 
-func _generate_normal_pool() -> PoolConfig:
+func _generate_normal_pool(excluded_types: Array[Constants.ItemType] = [], excluded_affixes: Array[RefCounted] = []) -> PoolConfig:
 	var pool = PoolConfig.new()
 	var stage_data = GameManager.current_stage_data
 	
-	# 1. 随机选择物品类型
-	if stage_data != null and not stage_data.unlocked_item_types.is_empty():
-		pool.item_type = stage_data.unlocked_item_types.pick_random()
-	else:
-		pool.item_type = Constants.get_normal_item_types().pick_random()
+	# 1. 随机选择物品类型，排除已使用的类型
+	var available_types: Array[Constants.ItemType] = []
+	var source_types: Array[Constants.ItemType] = []
 	
-	# 2. 随机选择词缀
+	if stage_data != null and not stage_data.unlocked_item_types.is_empty():
+		source_types = stage_data.unlocked_item_types
+	else:
+		source_types = Constants.get_normal_item_types()
+		
+	for t in source_types:
+		if t not in excluded_types:
+			available_types.append(t)
+	
+	if available_types.is_empty():
+		# 如果所有解锁类型都被占用了（理论上不应该，因为 max_pools=3, types=5），则随便选一个非空类型
+		pool.item_type = source_types.pick_random() if not source_types.is_empty() else Constants.ItemType.FRUIT
+	else:
+		pool.item_type = available_types.pick_random()
+	
+	# 2. 随机选择词缀，排除已使用的词缀
 	if stage_data != null and stage_data.has_pool_affixes:
-		_assign_random_affix(pool)
+		_assign_random_affix(pool, excluded_affixes)
 	
 	# 3. 计算费用
 	var initial_cost = 5
 	if GameManager.game_config != null:
 		initial_cost = GameManager.game_config.normal_draw_gold_cost
 	
-	# 只有在无词缀的情况下才使用初始价格
-	# 如果有词缀，则完全由词缀决定（如果词缀未设价格，则设为 0 或 1 作为保底，或者由你定义）
 	if pool.affix_data != null:
 		pool.gold_cost = pool.affix_data.base_gold_cost
 	else:
@@ -217,7 +234,13 @@ func _generate_normal_pool() -> PoolConfig:
 	return pool
 
 
-func _assign_random_affix(pool: PoolConfig) -> void:
-	var affixes = GameManager.all_pool_affixes
-	if not affixes.is_empty():
-		pool.affix_data = affixes.pick_random()
+func _assign_random_affix(pool: PoolConfig, excluded_affixes: Array[RefCounted] = []) -> void:
+	var all_affixes = GameManager.all_pool_affixes
+	var available_affixes: Array = []
+	
+	for aff in all_affixes:
+		if aff not in excluded_affixes:
+			available_affixes.append(aff)
+			
+	if not available_affixes.is_empty():
+		pool.affix_data = available_affixes.pick_random()
