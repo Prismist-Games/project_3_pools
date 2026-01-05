@@ -34,7 +34,14 @@ func setup(order: OrderData, index: int) -> void:
 	reward_label.text = "奖励: " + reward_text
 	
 	refresh_button.text = "刷新 (%d)" % order.refresh_count
-	refresh_button.disabled = order.refresh_count <= 0 or order.is_mainline
+	
+	var can_refresh_in_stage = true
+	var stage_data = GameManager.current_stage_data
+	if stage_data != null and not stage_data.has_order_refresh:
+		can_refresh_in_stage = false
+		
+	refresh_button.visible = can_refresh_in_stage and not order.is_mainline
+	refresh_button.disabled = order.refresh_count <= 0
 	
 	# 检查是否可以提交
 	submit_button.disabled = not order.can_fulfill(GameManager.inventory)
@@ -52,6 +59,7 @@ func _on_submit_button_pressed() -> void:
 
 func _on_refresh_button_pressed() -> void:
 	refresh_requested.emit(_index)
+
 
 
 

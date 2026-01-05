@@ -14,6 +14,7 @@ unlocked_item_types = Array[int]([1, 2, 3, 4, 5])
 has_merge = true
 merge_limit = 2
 has_pool_affixes = true
+has_order_refresh = true
 inventory_size = 8
 order_count = 3
 items_per_pool = 5

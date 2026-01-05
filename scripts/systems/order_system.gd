@@ -66,7 +66,7 @@ func refresh_order(index: int) -> void:
 	if order.is_mainline:
 		current_orders[index] = _generate_mainline_order()
 	else:
-		current_orders[index] = _generate_normal_order()
+		current_orders[index] = _generate_normal_order(order.refresh_count)
 		
 	EventBus.orders_updated.emit(current_orders)
 
@@ -142,7 +142,7 @@ func _should_generate_mainline_order() -> bool:
 	return GameManager.tickets >= 10 and GameManager.mainline_stage <= Constants.MAINLINE_STAGES
 
 
-func _generate_normal_order() -> OrderData:
+func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 	var order = OrderData.new()
 	var rng = GameManager.rng
 	var stage = GameManager.mainline_stage
@@ -189,9 +189,12 @@ func _generate_normal_order() -> OrderData:
 		_:
 			order.reward_gold = 5
 	
-	order.refresh_count = 2
-	if GameManager.game_config != null:
-		order.refresh_count = GameManager.game_config.order_refreshes_per_order
+	if force_refresh_count >= 0:
+		order.refresh_count = force_refresh_count
+	else:
+		order.refresh_count = 2
+		if GameManager.game_config != null:
+			order.refresh_count = GameManager.game_config.order_refreshes_per_order
 		
 	return order
 
