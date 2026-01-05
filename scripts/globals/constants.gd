@@ -78,7 +78,7 @@ const MAINLINE_ITEM_STAGE_3: StringName = &"mainline_magic_pen"
 const MAINLINE_ITEM_STAGE_4: StringName = &"mainline_kitchenware"
 const MAINLINE_ITEM_STAGE_5: StringName = &"mainline_tesla"
 
-static func mainline_item_id_for_stage(stage: int) -> StringName:
+func mainline_item_id_for_stage(stage: int) -> StringName:
 	match stage:
 		1:
 			return MAINLINE_ITEM_STAGE_1
@@ -93,7 +93,7 @@ static func mainline_item_id_for_stage(stage: int) -> StringName:
 		_:
 			return &""
 
-static func rarity_id(rarity: int) -> StringName:
+func rarity_id(rarity: int) -> StringName:
 	match rarity:
 		Rarity.COMMON:
 			return &"common"
@@ -111,7 +111,7 @@ static func rarity_id(rarity: int) -> StringName:
 			return &"unknown"
 
 
-static func rarity_display_name(rarity: int) -> String:
+func rarity_display_name(rarity: int) -> String:
 	match rarity:
 		Rarity.COMMON:
 			return "普通"
@@ -129,7 +129,7 @@ static func rarity_display_name(rarity: int) -> String:
 			return "未知"
 
 
-static func rarity_salvage_value(rarity: int) -> int:
+func rarity_salvage_value(rarity: int) -> int:
 	match rarity:
 		Rarity.COMMON:
 			return 0
@@ -147,7 +147,7 @@ static func rarity_salvage_value(rarity: int) -> int:
 			return 0
 
 
-static func rarity_bonus(rarity: int) -> float:
+func rarity_bonus(rarity: int) -> float:
 	match rarity:
 		Rarity.COMMON:
 			return 0.0
@@ -163,6 +163,41 @@ static func rarity_bonus(rarity: int) -> float:
 			return 3.0
 		_:
 			return 0.0
+
+
+enum UIMode {
+	NORMAL,   ## 整理模式
+	SUBMIT,   ## 提交模式
+	RECYCLE,  ## 回收模式
+	TRADE_IN  ## 以旧换新模式
+}
+
+## UX 规范颜色 (针对白色背景优化)
+const COLOR_TEXT_MAIN = Color("#0f172a") # 深蓝色文字 (Slate-900)
+const COLOR_BG_SLOT_EMPTY = Color("#f1f5f9") # 极浅灰色背景 (Slate-100)
+const COLOR_BORDER_SELECTED = Color("#2563eb") # 鲜蓝色边框
+const COLOR_RECYCLE_ACTION = Color("#ef4444") # 鲜红色边框
+
+func get_rarity_border_color(rarity: int) -> Color:
+	match rarity:
+		Rarity.COMMON: return Color("#94a3b8") # Slate-400
+		Rarity.UNCOMMON: return Color("#22c55e") # Green-500
+		Rarity.RARE: return Color("#3b82f6") # Blue-500
+		Rarity.EPIC: return Color("#a855f7") # Purple-500
+		Rarity.LEGENDARY: return Color("#f97316") # Orange-500
+		Rarity.MYTHIC: return Color("#e11d48") # Rose-600
+		_: return Color.BLACK
+
+func get_rarity_bg_color(rarity: int) -> Color:
+	# 在白色背景上，背景色需要稍微加深一点以便区分
+	match rarity:
+		Rarity.COMMON: return Color("#f1f5f9") # Slate-100
+		Rarity.UNCOMMON: return Color("#dcfce7") # Green-100
+		Rarity.RARE: return Color("#dbeafe") # Blue-100
+		Rarity.EPIC: return Color("#f3e8ff") # Purple-100
+		Rarity.LEGENDARY: return Color("#ffedd5") # Orange-100
+		Rarity.MYTHIC: return Color("#ffe4e6") # Rose-100
+		_: return Color.WHITE
 
 
 func pick_weighted_index(weights: PackedFloat32Array, rng: RandomNumberGenerator) -> int:

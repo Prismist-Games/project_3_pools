@@ -6,4 +6,4 @@
 script = ExtResource("1")
 starting_gold = 9999999
 normal_draw_gold_cost = 1
-debug_stage = 3
+debug_stage = 5

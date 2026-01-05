@@ -20,6 +20,18 @@ class_name MainlineStageData
 ## 主线池填充物的稀有度（阶段 1 为普通，阶段 2 为优秀...）
 @export var filler_rarity: Constants.Rarity = Constants.Rarity.COMMON
 
+@export_group("Order Requirements")
+@export var order_count: int = 2
+## 订单需求物品数量的权重：[1个, 2个, 3个, 4个]
+@export var order_item_count_weights: PackedFloat32Array = [0.0, 100.0, 0.0, 0.0]
+
+@export_subgroup("Order Rarity Weights")
+@export var order_weight_common: float = 100.0
+@export var order_weight_uncommon: float = 0.0
+@export var order_weight_rare: float = 0.0
+@export var order_weight_epic: float = 0.0
+@export var order_weight_legendary: float = 0.0
+
 @export_group("Unlocks")
 ## 解锁的物品类型奖池
 @export var unlocked_item_types: Array[Constants.ItemType] = []
@@ -32,16 +44,15 @@ class_name MainlineStageData
 ## 是否解锁订单刷新
 @export var has_order_refresh: bool = false
 
-@export_group("Parameters")
+@export_group("Inventory")
 @export var inventory_size: int = 6
-@export var order_count: int = 2
 
-@export_group("Rarity Weights")
-@export var weight_common: float = 100.0
-@export var weight_uncommon: float = 0.0
-@export var weight_rare: float = 0.0
-@export var weight_epic: float = 0.0
-@export var weight_legendary: float = 0.0
+@export_group("Pool Rarity Weights")
+@export var pool_weight_common: float = 100.0
+@export var pool_weight_uncommon: float = 0.0
+@export var pool_weight_rare: float = 0.0
+@export var pool_weight_epic: float = 0.0
+@export var pool_weight_legendary: float = 0.0
 
 @export_group("Skills")
 ## 本阶段新解锁的技能 ID 列表
@@ -49,10 +60,20 @@ class_name MainlineStageData
 
 func get_weights() -> PackedFloat32Array:
 	return PackedFloat32Array([
-		weight_common,
-		weight_uncommon,
-		weight_rare,
-		weight_epic,
-		weight_legendary,
+		pool_weight_common,
+		pool_weight_uncommon,
+		pool_weight_rare,
+		pool_weight_epic,
+		pool_weight_legendary,
 		0.0 # Mythic 通常不直接掉落，除非主线池
+	])
+
+
+func get_order_rarity_weights() -> PackedFloat32Array:
+	return PackedFloat32Array([
+		order_weight_common,
+		order_weight_uncommon,
+		order_weight_rare,
+		order_weight_epic,
+		order_weight_legendary
 	])

@@ -24,44 +24,41 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	
 	# 进入选择模式
 	# 我们发送一个 game_event，UI (Inventory) 会监听它
-	EventBus.game_event.emit(&"enter_selection_mode", {
+	var selection_data = ContextProxy.new({
 		"type": "trade_in",
 		"item_type": ctx.item_type,
 		"callback": func(item_to_trade: ItemInstance):
 			if item_to_trade == null:
 				return
 				
-			# 检查金币 (trade_in 消耗)
+			# 1. 检查金币 (trade_in 消耗)
 			if not GameManager.spend_gold(cost):
-				# 这里可能需要 UI 提示金币不足
 				return
 				
-			# 执行置换
+			# 2. 决定新物品品质 (5% 概率升级)
 			var rarity = item_to_trade.rarity
-			
-			# 5% 概率升级品质
 			if GameManager.rng.randf() < 0.05:
-				rarity = min(rarity + 1, Constants.Rarity.LEGENDARY)
+				rarity = min(rarity + 1, Constants.Rarity.MYTHIC)
 				
-			# 从奖池中抽取同品质物品
+			# 3. 从奖池中随机获取新物品数据
 			var pool_items = GameManager.get_items_for_type(ctx.item_type)
 			if pool_items.is_empty():
 				pool_items = GameManager.all_items
 			
+			if pool_items.is_empty():
+				push_error("Trade-in error: No items found in pool or global list.")
+				return
+			
 			var new_item_data = pool_items.pick_random()
 			var new_item_instance = ItemInstance.new(new_item_data, rarity)
 			
-			# 移除旧物品，添加新物品
+			# 4. 执行置换
 			GameManager.remove_items([item_to_trade])
-			GameManager.add_item(new_item_instance)
 			
 			EventBus.item_obtained.emit(new_item_instance)
 			
-			# 刷新奖池（因为我们使用了这次机会）
-			# 注意：这里的 ctx 是 draw_from_pool 里的局部变量，
-			# 我们需要确保 PoolSystem 知道这次交互完成了并刷新。
-			# 实际上，在 draw_from_pool 中我们设置了 skip_draw，
-			# 如果我们想要在 trade_in 成功后刷新，我们需要通知 PoolSystem。
-			EventBus.game_event.emit(&"pool_draw_completed", {"pool_id": ctx.pool_id})
+			# 5. 刷新奖池
+			EventBus.game_event.emit(&"pool_draw_completed", ContextProxy.new({"pool_id": ctx.pool_id}))
 	})
-
+	
+	EventBus.game_event.emit(&"enter_selection_mode", selection_data)

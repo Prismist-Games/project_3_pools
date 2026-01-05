@@ -3,63 +3,144 @@ extends PanelContainer
 signal submit_requested(index: int)
 signal refresh_requested(index: int)
 
+@onready var requirements_container: HBoxContainer = %RequirementsContainer
 @onready var requirements_label: Label = %RequirementsLabel
 @onready var reward_label: Label = %RewardLabel
 @onready var refresh_button: Button = %RefreshButton
 @onready var submit_button: Button = %SubmitButton
 
+const SLOT_SCENE = preload("res://scenes/ui/inventory_slot.tscn")
+
 var _index: int = -1
+
+
+func _ready() -> void:
+	EventBus.game_event.connect(_on_game_event)
+
+
+func _on_game_event(event_id: StringName, payload: Variant) -> void:
+	if event_id == &"order_card_shake_requested":
+		var data = payload
+		if payload is ContextProxy:
+			data = payload.data
+		
+		var target_idx = data.get("index")
+		if target_idx == _index:
+			_shake_card()
+
+
+func _shake_card() -> void:
+	var tween = create_tween()
+	var original_pos = position
+	for i in range(4):
+		tween.tween_property(self, "position", original_pos + Vector2(10, 0), 0.05)
+		tween.tween_property(self, "position", original_pos + Vector2(-10, 0), 0.05)
+	tween.tween_property(self, "position", original_pos, 0.05)
 
 
 func setup(order: OrderData, index: int) -> void:
 	_index = index
+	var dark_text = Constants.COLOR_TEXT_MAIN
 	
-	var req_text = ""
-	for req in order.requirements:
+	# 清理旧需求项
+	for child in requirements_container.get_children():
+		child.queue_free()
+	
+	var selected_items: Array[ItemInstance] = []
+	if GameManager.current_ui_mode == Constants.UIMode.SUBMIT:
+		for idx in GameManager.multi_selected_indices:
+			if idx >= 0 and idx < GameManager.inventory.size() and GameManager.inventory[idx]:
+				selected_items.append(GameManager.inventory[idx])
+	
+	var preview = order.calculate_preview_rewards(selected_items)
+	
+	# 实例化新需求项
+	for i in range(order.requirements.size()):
+		var req = order.requirements[i]
 		var item_id = req.item_id
 		var min_rarity = req.min_rarity
-		var count = req.count
 		
-		# 尝试获取友好名称（这里简化，直接用 ID）
-		var rarity_name = Constants.rarity_display_name(min_rarity)
-		req_text += "%s (%s) x%d\n" % [item_id, rarity_name, count]
+		# 获取 ItemData
+		var item_data = GameManager.get_item_data(item_id)
+		
+		var slot = SLOT_SCENE.instantiate()
+		requirements_container.add_child(slot)
+		
+		var is_fulfilled = i in preview.fulfilled_requirements
+		
+		# 调整格子的显示以适应订单卡片
+		slot.custom_minimum_size = Vector2(70, 90)
+		
+		if slot.has_method("setup_preview"):
+			slot.setup_preview(item_data, min_rarity, is_fulfilled)
 	
-	requirements_label.text = req_text
+	# 奖励预览
+	var reward_text = "奖励: "
+	if preview.is_satisfied:
+		if order.reward_gold > 0:
+			reward_text += "%d -> %d 金币 " % [order.reward_gold, preview.gold]
+		if order.reward_tickets > 0:
+			reward_text += "%d -> %d 奖券" % [order.reward_tickets, preview.tickets]
+		reward_label.add_theme_color_override("font_color", Color("#854d0e")) # 暖褐色
+	else:
+		if order.reward_gold > 0: reward_text += "%d 金币 " % order.reward_gold
+		if order.reward_tickets > 0: reward_text += "%d 奖券" % order.reward_tickets
+		reward_label.add_theme_color_override("font_color", dark_text)
 	
-	var reward_text = ""
-	if order.reward_gold > 0:
-		reward_text += "%d 金币 " % order.reward_gold
-	if order.reward_tickets > 0:
-		reward_text += "%d 奖券" % order.reward_tickets
-	reward_label.text = "奖励: " + reward_text
+	reward_label.text = ("✅ " if preview.is_satisfied else "") + reward_text
 	
 	refresh_button.text = "刷新 (%d)" % order.refresh_count
 	
-	var can_refresh_in_stage = true
+	var stage_allows_refresh = true
 	var stage_data = GameManager.current_stage_data
 	if stage_data != null and not stage_data.has_order_refresh:
-		can_refresh_in_stage = false
-		
-	refresh_button.visible = can_refresh_in_stage and not order.is_mainline
+		stage_allows_refresh = false
+	
+	# 主线订单或该阶段未解锁刷新时完全隐藏
+	refresh_button.visible = stage_allows_refresh and not order.is_mainline
+	# 次数用尽时变灰禁用，但保持可见
 	refresh_button.disabled = order.refresh_count <= 0
 	
-	# 检查是否可以提交
-	submit_button.disabled = not order.can_fulfill(GameManager.inventory)
+	# 背景样式
+	var style = get_theme_stylebox("panel").duplicate()
+	add_theme_stylebox_override("panel", style)
 	
-	if order.is_mainline:
-		# 主线订单背景颜色
-		self.modulate = Color.ORANGE
+	if preview.is_satisfied:
+		style.bg_color = Color("#fef9c3") # Yellow-50 (暖色)
+		style.border_color = Color("#eab308") # Gold
+		style.border_width_left = 4
+		style.border_width_top = 4
+		style.border_width_right = 4
+		style.border_width_bottom = 4
+	elif GameManager.current_ui_mode == Constants.UIMode.SUBMIT:
+		if GameManager.order_selection_index == _index:
+			style.border_color = Constants.COLOR_BORDER_SELECTED
+			style.border_width_left = 4
+			style.border_width_top = 4
+			style.border_width_right = 4
+			style.border_width_bottom = 4
+		else:
+			style.border_color = Color("#e2e8f0")
+			style.border_width_left = 2
+			style.border_width_top = 2
+			style.border_width_right = 2
+			style.border_width_bottom = 2
 	else:
-		self.modulate = Color.WHITE
+		if order.is_mainline:
+			style.bg_color = Color("#faf5ff")
+			style.border_color = Color("#a855f7")
+		else:
+			style.bg_color = Color.WHITE
+			style.border_color = Color("#e2e8f0")
+	
+	submit_button.visible = false # 全局按钮已移至底部
 
 
-func _on_submit_button_pressed() -> void:
-	submit_requested.emit(_index)
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			submit_requested.emit(_index)
 
 
 func _on_refresh_button_pressed() -> void:
 	refresh_requested.emit(_index)
-
-
-
-

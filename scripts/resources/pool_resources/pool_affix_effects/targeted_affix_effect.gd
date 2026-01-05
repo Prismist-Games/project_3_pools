@@ -31,7 +31,6 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 			if selected_data != null:
 				var rarity = Constants.pick_weighted_index(ctx.rarity_weights, GameManager.rng)
 				var item_instance = ItemInstance.new(selected_data, rarity)
-				GameManager.add_item(item_instance)
 				EventBus.item_obtained.emit(item_instance)
 	})
 

@@ -35,7 +35,6 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 		"items": items,
 		"callback": func(selected_item: ItemInstance):
 			if selected_item != null:
-				GameManager.add_item(selected_item)
 				EventBus.item_obtained.emit(selected_item)
 	})
 

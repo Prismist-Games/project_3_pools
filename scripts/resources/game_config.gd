@@ -6,6 +6,7 @@ class_name GameConfig
 @export var starting_gold: int = 15
 @export var starting_tickets: int = 0
 @export var normal_draw_gold_cost: int = 5
+@export var inventory_size: int = 10
 
 # --- 调试与关卡 ---
 @export_group("Debug")

@@ -10,12 +10,8 @@ func _ready() -> void:
 	if not GameManager.is_node_ready():
 		await GameManager.ready
 	call_deferred("refresh_pools")
-	EventBus.game_event.connect(_on_game_event)
-
-
-func _on_game_event(event_id: StringName, _payload: Variant) -> void:
-	if event_id == &"pool_draw_completed":
-		refresh_pools()
+	# 奖池刷新的时机改为在玩家获取新物品时
+	EventBus.item_obtained.connect(func(_item): call_deferred("refresh_pools"))
 
 
 func refresh_pools() -> void:
@@ -82,9 +78,7 @@ func draw_from_pool(index: int) -> bool:
 	# 如果被词缀或技能标记为跳过（通常是进入了某种交互流程）
 	if ctx.skip_draw:
 		# 注意：此时 gold/tickets 可能已经扣除（由词缀决定是否在 draw_requested 中修改 cost）
-		# 我们决定如果 skip_draw 为 true 且 cost > 0，则依然刷新奖池
-		if ctx.gold_cost > 0 or ctx.ticket_cost > 0:
-			refresh_pools()
+		# 此时不再立即刷新，而是等待词缀逻辑最终触发 item_obtained
 		return true
 
 	# 3. 执行抽奖
@@ -98,9 +92,6 @@ func draw_from_pool(index: int) -> bool:
 	
 	# 5. 技能后处理
 	EventBus.draw_finished.emit(ctx)
-	
-	# 抽完后刷新所有奖池
-	refresh_pools()
 	
 	return true
 
@@ -121,7 +112,6 @@ func _do_normal_draw(ctx: DrawContext) -> void:
 		var item_instance = ItemInstance.new(item_data, rarity, ctx.force_sterile)
 		ctx.result_items.append(item_instance)
 		
-		GameManager.add_item(item_instance)
 		EventBus.item_obtained.emit(item_instance)
 
 
@@ -158,7 +148,6 @@ func _do_mainline_draw(ctx: DrawContext) -> void:
 		
 		if item_instance:
 			ctx.result_items.append(item_instance)
-			GameManager.add_item(item_instance)
 			EventBus.item_obtained.emit(item_instance)
 
 

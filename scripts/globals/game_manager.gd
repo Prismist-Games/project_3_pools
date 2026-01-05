@@ -8,11 +8,30 @@ extends Node
 ## - 只管理“数据状态”，不要在 Setter 中直接写 UI 更新逻辑。
 ## - 状态变更通过信号广播，UI/Systems 监听后自行处理。
 
+## 当前 UI 交互模式
+var current_ui_mode: Constants.UIMode = Constants.UIMode.NORMAL:
+	set(value):
+		current_ui_mode = value
+		# 切换模式时清空临时选择
+		multi_selected_indices.clear()
+		if value != Constants.UIMode.SUBMIT:
+			order_selection_index = -1
+		ui_mode_changed.emit(current_ui_mode)
+
+## 多选列表 (用于提交或回收)
+var multi_selected_indices: Array[int] = []
+
 signal gold_changed(value: int)
 signal tickets_changed(value: int)
 signal mainline_stage_changed(stage: int)
 signal skills_changed(skills: Array)
 signal inventory_changed(items: Array)
+signal pending_item_changed(item: ItemInstance)
+signal pending_queue_changed(items: Array[ItemInstance])
+signal pending_items_count_changed(count: int)
+signal selected_slot_index_changed(index: int)
+signal order_selection_changed(index: int)
+signal ui_mode_changed(mode: Constants.UIMode)
 
 
 const GAME_CONFIG_PATH: String = "res://data/general/game_config.tres"
@@ -39,6 +58,40 @@ var current_skills: Array[SkillData] = []
 ## 背包：保存 ItemInstance（RefCounted）实例。
 var inventory: Array[ItemInstance] = []
 
+## 当前鼠标/手指正“拿着”的、刚抽到的新物品，尚未放入背包。
+## 背包满时，新物品会进入该队列，一个一个处理。
+var pending_items: Array[ItemInstance] = []
+
+var pending_item: ItemInstance:
+	get:
+		return pending_items[0] if not pending_items.is_empty() else null
+	set(value):
+		if value == null:
+			if not pending_items.is_empty():
+				pending_items.remove_at(0)
+		else:
+			pending_items.append(value)
+		
+		pending_item_changed.emit(pending_item)
+		pending_queue_changed.emit(pending_items)
+		pending_items_count_changed.emit(pending_items.size())
+
+## 当前选中的背包格子索引，用于移动物品。
+var selected_slot_index: int = -1:
+	set(value):
+		selected_slot_index = value
+		selected_slot_index_changed.emit(selected_slot_index)
+
+## 当前正准备提交的订单索引 (-1 表示不在提交模式)
+var order_selection_index: int = -1:
+	set(value):
+		order_selection_index = value
+		selected_indices_for_order.clear()
+		order_selection_changed.emit(order_selection_index)
+
+## 当前为订单选中的背包物品索引列表
+var selected_indices_for_order: Array[int] = []
+
 ## 运行时缓存：按 type (Constants.ItemType) 分组的 ItemData (Resource)。
 var items_by_type: Dictionary = {}
 var all_items: Array[ItemData] = []
@@ -47,6 +100,7 @@ var all_skills: Array[SkillData] = []
 ## 主线阶段配置（由 MainlineStageData.tres 组成）
 var mainline_stages: Array[MainlineStageData] = []
 var _mainline_stage_map: Dictionary = {} # stage(int) -> MainlineStageData
+var _item_map: Dictionary = {} # id(StringName) -> ItemData
 
 ## 技能状态（供 SkillSystem 使用）
 var consecutive_common_draws: int = 0
@@ -62,11 +116,19 @@ var all_pool_affixes: Array[PoolAffixData] = []
 func _ready() -> void:
 	rng.randomize()
 	_load_game_config()
+	
+	# 初始化背包空间
+	var inv_size = 10
 	if game_config:
 		_gold = game_config.starting_gold
 		_tickets = game_config.starting_tickets
+		inv_size = game_config.inventory_size
 		if game_config.debug_stage > 0:
 			_mainline_stage = game_config.debug_stage
+			
+	inventory.resize(inv_size)
+	inventory.fill(null)
+	
 	_load_items()
 	_load_skills()
 	_load_pool_affixes()
@@ -130,28 +192,39 @@ func spend_tickets(amount: int) -> bool:
 	return true
 
 
-func add_item(item: ItemInstance) -> void:
-	inventory.append(item)
-	inventory_changed.emit(inventory)
+func add_item(item: ItemInstance) -> bool:
+	for i in range(inventory.size()):
+		if inventory[i] == null:
+			inventory[i] = item
+			inventory_changed.emit(inventory)
+			return true
+	return false
 
 
 func remove_item_at(index: int) -> ItemInstance:
 	if index < 0 or index >= inventory.size():
 		return null
-	var removed: ItemInstance = inventory.pop_at(index)
+	var removed: ItemInstance = inventory[index]
+	inventory[index] = null
 	inventory_changed.emit(inventory)
 	return removed
 
 
 func remove_items(items: Array) -> void:
 	for it: Variant in items:
-		inventory.erase(it)
+		var idx = inventory.find(it)
+		if idx != -1:
+			inventory[idx] = null
 	inventory_changed.emit(inventory)
 
 
 func set_skills(skills: Array) -> void:
 	current_skills = skills.duplicate()
 	skills_changed.emit(current_skills)
+
+
+func get_item_data(item_id: StringName) -> ItemData:
+	return _item_map.get(item_id)
 
 
 func get_items_for_type(type: Constants.ItemType) -> Array[ItemData]:
@@ -213,6 +286,7 @@ func _load_game_config() -> void:
 func _load_items() -> void:
 	all_items.clear()
 	items_by_type.clear()
+	_item_map.clear()
 	_load_resources_from_dir(ITEMS_DIR, all_items, "_on_item_loaded")
 
 
@@ -257,6 +331,13 @@ func _load_resources_from_dir(dir_path: String, out_arr: Array, on_loaded_method
 
 
 func _on_item_loaded(item: Resource) -> void:
+	var item_data = item as ItemData
+	if item_data == null: return
+	
+	# 建立 ID 映射
+	if not item_data.id.is_empty():
+		_item_map[item_data.id] = item_data
+		
 	## 约定：ItemData 必须包含 `item_type: Constants.ItemType` 字段。
 	if not "item_type" in item:
 		push_warning("ItemData 缺少 item_type 字段：%s" % item)
