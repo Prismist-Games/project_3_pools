@@ -1,5 +1,4 @@
 extends Node
-class_name InventorySystem
 
 ## 背包系统：处理物品的添加、移除、合成和回收逻辑。
 

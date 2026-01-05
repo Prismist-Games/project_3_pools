@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://n0ibh3akv85j"]
+
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="1_8p4pt"]
+
+[resource]
+script = ExtResource("1_8p4pt")
+id = &"electronics_ac"
+name = "空调"
+item_type = 5

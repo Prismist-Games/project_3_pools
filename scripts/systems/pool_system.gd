@@ -1,5 +1,4 @@
 extends Node
-class_name PoolSystem
 
 ## 奖池系统：管理奖池生成、抽奖逻辑。
 

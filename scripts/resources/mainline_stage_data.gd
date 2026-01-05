@@ -4,7 +4,7 @@ class_name MainlineStageData
 ## 主线阶段定义（.tres 实例化）。
 ##
 ## 说明：
-## - 通过在 `res://data/general/mainline/stages/` 放置多个 MainlineStageData.tres，
+## - 通过在 `res://data/mainline/stages/` 放置多个 MainlineStageData.tres，
 ##   即可新增/调整主线阶段，无需修改游戏逻辑代码。
 
 @export var stage: int = 1

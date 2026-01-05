@@ -1,396 +1,240 @@
 extends Node
-## 注意：该脚本以 Autoload（单例名：GameManager）方式使用，
-## 因此不声明 `class_name GameManager`，避免与 Autoload 全局名冲突。
 
-## 全局游戏状态管理（Autoload）。
-##
-## 规则：
-## - 只管理“数据状态”，不要在 Setter 中直接写 UI 更新逻辑。
-## - 状态变更通过信号广播，UI/Systems 监听后自行处理。
+## GameManager (Autoload)
+## 核心游戏状态管理器，负责持有数值、背包、主线进度及全局资源引用。
 
-## 当前 UI 交互模式
-var current_ui_mode: Constants.UIMode = Constants.UIMode.NORMAL:
-	set(value):
-		current_ui_mode = value
-		# 切换模式时清空临时选择
-		multi_selected_indices.clear()
-		if value != Constants.UIMode.SUBMIT:
-			order_selection_index = -1
-		ui_mode_changed.emit(current_ui_mode)
-
-## 多选列表 (用于提交或回收)
-var multi_selected_indices: Array[int] = []
-
-signal gold_changed(value: int)
-signal tickets_changed(value: int)
+# --- 信号 ---
+signal gold_changed(amount: int)
+signal tickets_changed(amount: int)
 signal mainline_stage_changed(stage: int)
-signal skills_changed(skills: Array)
-signal inventory_changed(items: Array)
-signal pending_item_changed(item: ItemInstance)
-signal pending_queue_changed(items: Array[ItemInstance])
-signal pending_items_count_changed(count: int)
-signal selected_slot_index_changed(index: int)
+signal inventory_changed(inventory: Array[ItemInstance])
+signal skills_changed(skills: Array[SkillData])
+signal pending_queue_changed(queue: Array[ItemInstance])
 signal order_selection_changed(index: int)
-signal ui_mode_changed(mode: Constants.UIMode)
+signal ui_mode_changed(mode: int)
 
+# --- 核心数值 ---
+var gold: int = 0:
+	set(v):
+		gold = v
+		gold_changed.emit(gold)
 
-const GAME_CONFIG_PATH: String = "res://data/general/game_config.tres"
-const ITEMS_DIR: String = "res://data/items"
-const SKILLS_DIR: String = "res://data/skills"
-const MAINLINE_STAGES_DIR: String = "res://data/general/mainline/stages"
+var tickets: int = 0:
+	set(v):
+		tickets = v
+		tickets_changed.emit(tickets)
 
-var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var mainline_stage: int = 1:
+	set(v):
+		mainline_stage = v
+		_update_current_stage_data()
+		mainline_stage_changed.emit(mainline_stage)
 
-var game_config: Resource
-
-var _gold: int = 15
-var _tickets: int = 0
-var _mainline_stage: int = 1
-
-## 当前阶段的详细配置数据
-var current_stage_data: MainlineStageData:
-	get:
-		return get_mainline_stage_data(_mainline_stage)
-
-## 技能槽：保存 SkillData（Resource）实例。
-var current_skills: Array[SkillData] = []
-
-## 背包：保存 ItemInstance（RefCounted）实例。
+# --- 背包与状态 ---
 var inventory: Array[ItemInstance] = []
-
-## 当前鼠标/手指正“拿着”的、刚抽到的新物品，尚未放入背包。
-## 背包满时，新物品会进入该队列，一个一个处理。
+var current_skills: Array[SkillData] = []:
+	set(v):
+		current_skills = v
+		skills_changed.emit(current_skills)
 var pending_items: Array[ItemInstance] = []
 
+## pending_item 代表当前正在处理的（浮动在鼠标上或等待放置的）物品
+## 其 getter/setter 会自动维护一个待处理队列 (pending_items)
 var pending_item: ItemInstance:
 	get:
 		return pending_items[0] if not pending_items.is_empty() else null
-	set(value):
-		if value == null:
+	set(v):
+		if v == null:
 			if not pending_items.is_empty():
-				pending_items.remove_at(0)
+				pending_items.pop_front()
+				pending_queue_changed.emit(pending_items)
 		else:
-			pending_items.append(value)
-		
-		pending_item_changed.emit(pending_item)
-		pending_queue_changed.emit(pending_items)
-		pending_items_count_changed.emit(pending_items.size())
+			if not v in pending_items:
+				pending_items.append(v)
+				pending_queue_changed.emit(pending_items)
 
-## 当前选中的背包格子索引，用于移动物品。
-var selected_slot_index: int = -1:
-	set(value):
-		selected_slot_index = value
-		selected_slot_index_changed.emit(selected_slot_index)
+var current_ui_mode: Constants.UIMode = Constants.UIMode.NORMAL:
+	set(v):
+		current_ui_mode = v
+		ui_mode_changed.emit(current_ui_mode)
 
-## 当前正准备提交的订单索引 (-1 表示不在提交模式)
+# --- UI 辅助状态 ---
+var multi_selected_indices: Array[int] = []
+## selected_indices_for_order 是 multi_selected_indices 的别名，兼容部分系统逻辑
+var selected_indices_for_order: Array[int]:
+	get: return multi_selected_indices
+	set(v): multi_selected_indices = v
+
 var order_selection_index: int = -1:
-	set(value):
-		order_selection_index = value
-		selected_indices_for_order.clear()
+	set(v):
+		order_selection_index = v
 		order_selection_changed.emit(order_selection_index)
 
-## 当前为订单选中的背包物品索引列表
-var selected_indices_for_order: Array[int] = []
+var selected_slot_index: int = -1
 
-## 运行时缓存：按 type (Constants.ItemType) 分组的 ItemData (Resource)。
-var items_by_type: Dictionary = {}
+# --- 资源引用 ---
+var game_config: GameConfig
+var current_stage_data: MainlineStageData
+
 var all_items: Array[ItemData] = []
 var all_skills: Array[SkillData] = []
-
-## 主线阶段配置（由 MainlineStageData.tres 组成）
-var mainline_stages: Array[MainlineStageData] = []
-var _mainline_stage_map: Dictionary = {} # stage(int) -> MainlineStageData
-var _item_map: Dictionary = {} # id(StringName) -> ItemData
-
-## 技能状态（供 SkillSystem 使用）
-var consecutive_common_draws: int = 0
-var next_draw_guaranteed_rare: bool = false
-var next_draw_extra_item: bool = false
-
-
-const POOL_AFFIXES_DIR: String = "res://data/general/pool_affixes"
-
 var all_pool_affixes: Array[PoolAffixData] = []
+var all_stages: Array[MainlineStageData] = []
 
+var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+
+# --- 初始化 ---
 
 func _ready() -> void:
 	rng.randomize()
-	_load_game_config()
+	_load_resources()
+	_initialize_game_state()
+
+func _load_resources() -> void:
+	# 加载核心配置
+	game_config = load("res://data/general/game_config.tres")
+	if not game_config:
+		push_error("GameManager: 无法加载 GameConfig (res://data/general/game_config.tres)!")
+		return
+
+	# 加载所有物品资源
+	all_items.assign(_load_all_from_dir(game_config.items_dir, "ItemData"))
+	# 加载所有技能资源
+	all_skills.assign(_load_all_from_dir(game_config.skills_dir, "SkillData"))
+	# 加载所有奖池词缀资源
+	all_pool_affixes.assign(_load_all_from_dir(game_config.pool_affixes_dir, "PoolAffixData"))
+	# 加载所有主线阶段数据
+	all_stages.assign(_load_all_from_dir(game_config.mainline_stages_dir, "MainlineStageData"))
+	all_stages.sort_custom(func(a, b): return a.stage < b.stage)
+
+func _initialize_game_state() -> void:
+	gold = game_config.starting_gold
+	tickets = game_config.starting_tickets
 	
 	# 初始化背包空间
-	var inv_size = 10
-	if game_config:
-		_gold = game_config.starting_gold
-		_tickets = game_config.starting_tickets
-		inv_size = game_config.inventory_size
-		if game_config.debug_stage > 0:
-			_mainline_stage = game_config.debug_stage
-			
-	inventory.resize(inv_size)
+	inventory.clear()
+	inventory.resize(game_config.inventory_size)
 	inventory.fill(null)
 	
-	_load_items()
-	_load_skills()
-	_load_pool_affixes()
-	_load_mainline_stages()
-	_emit_full_state()
+	# 设置初始主线进度
+	if game_config.debug_stage > 0:
+		mainline_stage = game_config.debug_stage
+	else:
+		mainline_stage = 1
+	
+	_update_current_stage_data()
 
+func _update_current_stage_data() -> void:
+	current_stage_data = get_mainline_stage_data(mainline_stage)
+	if current_stage_data:
+		# 根据当前阶段调整背包大小
+		if inventory.size() != current_stage_data.inventory_size:
+			var old_size = inventory.size()
+			inventory.resize(current_stage_data.inventory_size)
+			# 如果扩容，填充 null
+			if current_stage_data.inventory_size > old_size:
+				for i in range(old_size, current_stage_data.inventory_size):
+					inventory[i] = null
+			inventory_changed.emit(inventory)
 
-func _load_pool_affixes() -> void:
-	all_pool_affixes.clear()
-	_load_resources_from_dir(POOL_AFFIXES_DIR, all_pool_affixes, "_on_pool_affix_loaded")
-
-
-func _on_pool_affix_loaded(_affix: Resource) -> void:
-	pass
-
-
-var gold: int:
-	get:
-		return _gold
-	set(value):
-		_set_gold(value)
-
-
-var tickets: int:
-	get:
-		return _tickets
-	set(value):
-		_set_tickets(value)
-
-
-var mainline_stage: int:
-	get:
-		return _mainline_stage
-	set(value):
-		_set_mainline_stage(value)
-
+# --- 经济与状态方法 ---
 
 func add_gold(amount: int) -> void:
-	_set_gold(_gold + amount)
-
+	gold += amount
 
 func spend_gold(amount: int) -> bool:
-	if amount <= 0:
+	if gold >= amount:
+		gold -= amount
 		return true
-	if _gold < amount:
-		return false
-	_set_gold(_gold - amount)
-	return true
-
-
-func add_tickets(amount: int) -> void:
-	_set_tickets(_tickets + amount)
-
-
-func spend_tickets(amount: int) -> bool:
-	if amount <= 0:
-		return true
-	if _tickets < amount:
-		return false
-	_set_tickets(_tickets - amount)
-	return true
-
-
-func add_item(item: ItemInstance) -> bool:
-	for i in range(inventory.size()):
-		if inventory[i] == null:
-			inventory[i] = item
-			inventory_changed.emit(inventory)
-			return true
 	return false
 
+func add_tickets(amount: int) -> void:
+	tickets += amount
 
-func remove_item_at(index: int) -> ItemInstance:
-	if index < 0 or index >= inventory.size():
-		return null
-	var removed: ItemInstance = inventory[index]
-	inventory[index] = null
-	inventory_changed.emit(inventory)
-	return removed
-
-
-func remove_items(items: Array) -> void:
-	for it: Variant in items:
-		var idx = inventory.find(it)
-		if idx != -1:
-			inventory[idx] = null
-	inventory_changed.emit(inventory)
-
-
-func set_skills(skills: Array) -> void:
-	current_skills = skills.duplicate()
-	skills_changed.emit(current_skills)
-
-
-func get_item_data(item_id: StringName) -> ItemData:
-	return _item_map.get(item_id)
-
-
-func get_items_for_type(type: Constants.ItemType) -> Array[ItemData]:
-	if not items_by_type.has(type):
-		return []
-	var res: Array[ItemData] = []
-	res.assign(items_by_type[type] as Array)
-	return res
-
-
-func get_all_normal_items() -> Array[ItemData]:
-	var result: Array[ItemData] = []
-	for type in items_by_type:
-		if Constants.is_normal_type(type):
-			result.append_array(items_by_type[type])
-	return result
-
-
-func _emit_full_state() -> void:
-	gold_changed.emit(_gold)
-	tickets_changed.emit(_tickets)
-	mainline_stage_changed.emit(_mainline_stage)
-	skills_changed.emit(current_skills)
-	inventory_changed.emit(inventory)
-
-
-func _set_gold(value: int) -> void:
-	var clamped: int = maxi(value, 0)
-	if clamped == _gold:
-		return
-	_gold = clamped
-	gold_changed.emit(_gold)
-
-
-func _set_tickets(value: int) -> void:
-	var clamped: int = maxi(value, 0)
-	if clamped == _tickets:
-		return
-	_tickets = clamped
-	tickets_changed.emit(_tickets)
-
-
-func _set_mainline_stage(value: int) -> void:
-	var clamped: int = maxi(value, 1)
-	if clamped == _mainline_stage:
-		return
-	_mainline_stage = clamped
-	mainline_stage_changed.emit(_mainline_stage)
-
-
-func _load_game_config() -> void:
-	if ResourceLoader.exists(GAME_CONFIG_PATH):
-		game_config = load(GAME_CONFIG_PATH)
-		return
-	push_warning("GameConfig 缺失：%s（将使用默认代码路径）" % GAME_CONFIG_PATH)
-	game_config = null
-
-
-func _load_items() -> void:
-	all_items.clear()
-	items_by_type.clear()
-	_item_map.clear()
-	_load_resources_from_dir(ITEMS_DIR, all_items, "_on_item_loaded")
-
-
-func _load_skills() -> void:
-	all_skills.clear()
-	_load_resources_from_dir(SKILLS_DIR, all_skills, "_on_skill_loaded")
-
-
-func _load_mainline_stages() -> void:
-	mainline_stages.clear()
-	_mainline_stage_map.clear()
-	_load_resources_from_dir(MAINLINE_STAGES_DIR, mainline_stages, "_on_mainline_stage_loaded")
-	mainline_stages.sort_custom(func(a: MainlineStageData, b: MainlineStageData) -> bool:
-		return a.stage < b.stage
-	)
-
-
-func _load_resources_from_dir(dir_path: String, out_arr: Array, on_loaded_method: String) -> void:
-	var dir: DirAccess = DirAccess.open(dir_path)
-	if dir == null:
-		push_warning("目录不存在：%s" % dir_path)
-		return
-
-	dir.list_dir_begin()
-	while true:
-		var file_name: String = dir.get_next()
-		if file_name.is_empty():
-			break
-		if dir.current_is_dir():
-			continue
-		if not file_name.ends_with(".tres"):
-			continue
-		var res_path: String = "%s/%s" % [dir_path, file_name]
-		var res: Resource = load(res_path)
-		if res == null:
-			push_warning("资源加载失败：%s" % res_path)
-			continue
-		out_arr.append(res)
-		if has_method(on_loaded_method):
-			call(on_loaded_method, res)
-	dir.list_dir_end()
-
-
-func _on_item_loaded(item: Resource) -> void:
-	var item_data = item as ItemData
-	if item_data == null: return
-	
-	# 建立 ID 映射
-	if not item_data.id.is_empty():
-		_item_map[item_data.id] = item_data
-		
-	## 约定：ItemData 必须包含 `item_type: Constants.ItemType` 字段。
-	if not "item_type" in item:
-		push_warning("ItemData 缺少 item_type 字段：%s" % item)
-		return
-	var type: Constants.ItemType = item.get("item_type")
-	if not items_by_type.has(type):
-		var typed_arr: Array[ItemData] = []
-		items_by_type[type] = typed_arr
-	(items_by_type[type] as Array[ItemData]).append(item as ItemData)
-
-
-func _on_skill_loaded(_skill: Resource) -> void:
-	pass
-
-
-func _on_mainline_stage_loaded(stage_res: Resource) -> void:
-	var stage_data: MainlineStageData = stage_res as MainlineStageData
-	if stage_data == null:
-		push_warning("MainlineStageData 类型不匹配：%s" % stage_res)
-		return
-	if stage_data.stage <= 0:
-		push_warning("MainlineStageData.stage 非法：%s" % stage_data)
-		return
-	_mainline_stage_map[stage_data.stage] = stage_data
-
-
-func get_mainline_stage_count() -> int:
-	return mainline_stages.size()
-
-
-func get_mainline_stage_data(stage: int) -> MainlineStageData:
-	if _mainline_stage_map.has(stage):
-		return _mainline_stage_map[stage] as MainlineStageData
-	return null
-
-
-func get_mainline_item_id_for_stage(stage: int) -> StringName:
-	var stage_data: MainlineStageData = get_mainline_stage_data(stage)
-	if stage_data == null or stage_data.mainline_item == null:
-		return &""
-	return stage_data.mainline_item.id
-
+func spend_tickets(amount: int) -> bool:
+	if tickets >= amount:
+		tickets -= amount
+		return true
+	return false
 
 func has_skill(skill_id: String) -> bool:
 	for skill in current_skills:
-		if skill is SkillData and skill.id == skill_id:
+		if skill.id == skill_id:
 			return true
 	return false
 
-
-func get_available_skills_for_current_stage() -> Array[SkillData]:
-	var result: Array[SkillData] = []
+func get_selectable_skills(count: int = 3) -> Array[SkillData]:
+	var available: Array[SkillData] = []
 	for skill in all_skills:
-		if skill is SkillData and skill.unlock_stage <= _mainline_stage:
-			result.append(skill)
+		# 只有满足解锁阶段，且当前未拥有的技能才可供选择
+		if skill.unlock_stage <= mainline_stage and not has_skill(skill.id):
+			available.append(skill)
+	
+	available.shuffle()
+	return available.slice(0, count)
+
+func add_skill(skill: SkillData) -> bool:
+	if current_skills.size() < Constants.SKILL_SLOTS:
+		current_skills.append(skill)
+		skills_changed.emit(current_skills)
+		return true
+	return false
+
+func replace_skill(index: int, new_skill: SkillData) -> void:
+	if index >= 0 and index < current_skills.size():
+		current_skills[index] = new_skill
+		skills_changed.emit(current_skills)
+
+# --- 数据查询方法 ---
+
+func get_item_data(item_id: String) -> ItemData:
+	for item in all_items:
+		if item.id == item_id:
+			return item
+	return null
+
+func get_items_for_type(type: Constants.ItemType) -> Array[ItemData]:
+	var result: Array[ItemData] = []
+	for item in all_items:
+		if item.item_type == type:
+			result.append(item)
+	return result
+
+func get_all_normal_items() -> Array[ItemData]:
+	var result: Array[ItemData] = []
+	for item in all_items:
+		if Constants.is_normal_type(item.item_type):
+			result.append(item)
+	return result
+
+func get_mainline_stage_data(stage_idx: int) -> MainlineStageData:
+	for s in all_stages:
+		if s.stage == stage_idx:
+			return s
+	return null
+
+func remove_items(items_to_remove: Array[ItemInstance]) -> void:
+	var changed = false
+	for i in range(inventory.size()):
+		if inventory[i] in items_to_remove:
+			inventory[i] = null
+			changed = true
+	if changed:
+		inventory_changed.emit(inventory)
+
+# --- 内部工具 ---
+
+func _load_all_from_dir(path: String, _type_name: String) -> Array:
+	var result = []
+	var dir = DirAccess.open(path)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if not dir.current_is_dir() and file_name.ends_with(".tres"):
+				var full_path = path.path_join(file_name)
+				var res = load(full_path)
+				if res:
+					result.append(res)
+			file_name = dir.get_next()
 	return result

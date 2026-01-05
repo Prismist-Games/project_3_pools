@@ -32,8 +32,11 @@ config/icon="res://icon.svg"
 
 Constants="*res://scripts/globals/constants.gd"
 EventBus="*res://scripts/globals/event_bus.gd"
-GameManager="*res://scripts/globals/game_manager.gd"
 SkillSystem="*res://scripts/systems/skill_system.gd"
+GameManager="*res://scripts/globals/game_manager.gd"
+InventorySystem="*res://scripts/systems/inventory_system.gd"
+OrderSystem="*res://scripts/systems/order_system.gd"
+PoolSystem="*res://scripts/systems/pool_system.gd"
 
 [editor_plugins]
 

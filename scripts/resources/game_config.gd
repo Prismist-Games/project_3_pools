@@ -2,6 +2,12 @@ extends Resource
 class_name GameConfig
 
 # --- 基础经济配置 ---
+@export_group("Paths")
+@export_dir var items_dir: String = "res://data/items"
+@export_dir var skills_dir: String = "res://data/skills"
+@export_dir var pool_affixes_dir: String = "res://data/pool_affixes"
+@export_dir var mainline_stages_dir: String = "res://data/mainline/stages"
+
 @export_group("Economy", "starting_")
 @export var starting_gold: int = 15
 @export var starting_tickets: int = 0

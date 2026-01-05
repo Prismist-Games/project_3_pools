@@ -40,16 +40,24 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 			if GameManager.rng.randf() < 0.05:
 				rarity = min(rarity + 1, Constants.Rarity.MYTHIC)
 				
-			# 3. 从奖池中随机获取新物品数据
-			var pool_items = GameManager.get_items_for_type(ctx.item_type)
+			# 3. 从奖池中随机获取新物品数据 (确保产出物品与投入的不同)
+			var pool_items: Array[ItemData] = GameManager.get_items_for_type(ctx.item_type)
 			if pool_items.is_empty():
 				pool_items = GameManager.all_items
 			
-			if pool_items.is_empty():
-				push_error("Trade-in error: No items found in pool or global list.")
+			# 过滤掉当前交换的物品
+			var filtered_items: Array = pool_items.filter(func(d): return d != item_to_trade.item_data)
+			
+			# 如果过滤后为空（说明池子里只有这一个物品类型），尝试从全局普通物品中选取
+			if filtered_items.is_empty():
+				var all_normal: Array[ItemData] = GameManager.get_all_normal_items()
+				filtered_items = all_normal.filter(func(d): return d != item_to_trade.item_data)
+			
+			if filtered_items.is_empty():
+				push_error("Trade-in error: No items found to replace " + item_to_trade.item_data.item_name)
 				return
 			
-			var new_item_data = pool_items.pick_random()
+			var new_item_data = filtered_items.pick_random()
 			var new_item_instance = ItemInstance.new(new_item_data, rarity)
 			
 			# 4. 执行置换

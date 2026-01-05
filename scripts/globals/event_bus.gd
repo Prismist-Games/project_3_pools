@@ -6,15 +6,11 @@ extends Node
 ## - 重要游戏行为必须发出信号，供 SkillSystem 等监听并“被动改写”上下文。
 ## - UI 只监听信号与转发输入，不直接耦合到具体系统实现。
 
-signal turn_started()
-signal turn_ended()
-
 ## 约定：context 为 RefCounted（通常是自定义上下文对象），可被监听者原地改写。
 signal draw_requested(context: RefCounted)
 signal draw_finished(context: RefCounted)
 
 signal item_obtained(item: RefCounted)
-signal inventory_updated(items: Array)
 
 signal pools_refreshed(pools: Array)
 signal orders_updated(orders: Array)

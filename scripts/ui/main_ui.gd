@@ -17,10 +17,6 @@ extends Control
 # 新增待定物品容器引用
 @onready var pending_container: Control = %PendingContainer
 
-@onready var pool_system: PoolSystem = $PoolSystem
-@onready var inventory_system: InventorySystem = $InventorySystem
-@onready var order_system: OrderSystem = $OrderSystem
-
 const POOL_CARD_SCENE = preload("res://scenes/ui/pool_card.tscn")
 const ORDER_CARD_SCENE = preload("res://scenes/ui/order_card.tscn")
 const INVENTORY_SLOT_SCENE = preload("res://scenes/ui/inventory_slot.tscn")
@@ -71,7 +67,7 @@ func _apply_white_background_styles() -> void:
 func _on_ui_mode_changed(_mode: Constants.UIMode) -> void:
 	_update_ui_mode_display()
 	_on_inventory_changed(GameManager.inventory)
-	_on_orders_updated(order_system.current_orders)
+	_on_orders_updated(OrderSystem.current_orders)
 
 
 func _update_ui_mode_display() -> void:
@@ -119,7 +115,7 @@ func _update_ui_mode_display() -> void:
 			submit_mode_label.text = "提交模式：请选择物品并点击订单填充"
 			submit_mode_label.add_theme_color_override("font_color", Constants.COLOR_BORDER_SELECTED)
 			submit_mode_button.text = "确认提交"
-			submit_mode_button.disabled = true 
+			submit_mode_button.disabled = true
 			
 			var selected_items: Array[ItemInstance] = []
 			for idx in GameManager.multi_selected_indices:
@@ -127,12 +123,12 @@ func _update_ui_mode_display() -> void:
 					selected_items.append(GameManager.inventory[idx])
 			
 			if GameManager.order_selection_index != -1:
-				var order = order_system.current_orders[GameManager.order_selection_index]
+				var order = OrderSystem.current_orders[GameManager.order_selection_index]
 				if order.validate_selection(selected_items).valid:
 					submit_mode_button.disabled = false
 			else:
 				# 如果没选特定订单，只要有任何一个订单被满足，就允许提交
-				for order in order_system.current_orders:
+				for order in OrderSystem.current_orders:
 					if order.validate_selection(selected_items).valid:
 						submit_mode_button.disabled = false
 						break
@@ -157,7 +153,7 @@ func _update_ui_mode_display() -> void:
 func _on_submit_mode_button_pressed() -> void:
 	if GameManager.pending_item != null:
 		# 放弃新物品逻辑
-		inventory_system.salvage_item_instance(GameManager.pending_item)
+		InventorySystem.salvage_item_instance(GameManager.pending_item)
 		GameManager.pending_item = null
 		return
 
@@ -166,7 +162,7 @@ func _on_submit_mode_button_pressed() -> void:
 			GameManager.current_ui_mode = Constants.UIMode.SUBMIT
 			GameManager.order_selection_index = -1
 		Constants.UIMode.SUBMIT:
-			var success = order_system.submit_order(GameManager.order_selection_index, GameManager.multi_selected_indices)
+			var success = OrderSystem.submit_order(GameManager.order_selection_index, GameManager.multi_selected_indices)
 			if success:
 				GameManager.current_ui_mode = Constants.UIMode.NORMAL
 		Constants.UIMode.RECYCLE, Constants.UIMode.TRADE_IN:
@@ -200,7 +196,7 @@ func _execute_multi_salvage() -> void:
 	indices.sort()
 	indices.reverse()
 	for idx in indices:
-		inventory_system.salvage_item(idx)
+		InventorySystem.salvage_item(idx)
 	GameManager.multi_selected_indices.clear()
 
 
@@ -212,12 +208,12 @@ func _on_pending_queue_changed(items: Array[ItemInstance]) -> void:
 	for i in range(items.size()):
 		var slot = INVENTORY_SLOT_SCENE.instantiate()
 		pending_container.add_child(slot)
-		slot.setup(items[i], -1) 
+		slot.setup(items[i], -1)
 		
 		if i == 0:
-			slot.modulate = Color(1.2, 1.2, 1.2, 1.0) 
+			slot.modulate = Color(1.2, 1.2, 1.2, 1.0)
 		else:
-			slot.modulate = Color(0.7, 0.7, 0.7, 0.8) 
+			slot.modulate = Color(0.7, 0.7, 0.7, 0.8)
 	
 	# 控制整个待定区域（包括标题）的显示/隐藏
 	var section = pending_container.get_parent()
@@ -228,7 +224,7 @@ func _on_pending_queue_changed(items: Array[ItemInstance]) -> void:
 
 
 func _on_order_selection_changed(_index: int) -> void:
-	_on_orders_updated(order_system.current_orders)
+	_on_orders_updated(OrderSystem.current_orders)
 	_on_inventory_changed(GameManager.inventory)
 
 
@@ -275,7 +271,7 @@ func _on_inventory_changed(items: Array) -> void:
 		child.queue_free()
 		
 	var total_slots = GameManager.inventory.size()
-	if total_slots == 0: total_slots = 10 
+	if total_slots == 0: total_slots = 10
 		
 	for i in total_slots:
 		var slot = INVENTORY_SLOT_SCENE.instantiate()
@@ -288,13 +284,13 @@ func _on_inventory_changed(items: Array) -> void:
 	
 	# 如果处于提交模式，背包变动（如选择物品）需要刷新订单卡片的奖励预览
 	if GameManager.current_ui_mode == Constants.UIMode.SUBMIT:
-		_on_orders_updated(order_system.current_orders)
+		_on_orders_updated(OrderSystem.current_orders)
 	
 	_update_ui_mode_display()
 
 
 func _on_slot_clicked(index: int) -> void:
-	inventory_system.handle_slot_click(index)
+	InventorySystem.handle_slot_click(index)
 
 
 func _on_skills_changed(skills: Array) -> void:
@@ -308,7 +304,7 @@ func _on_skills_changed(skills: Array) -> void:
 
 
 func _on_pool_draw_requested(index: int) -> void:
-	pool_system.draw_from_pool(index)
+	PoolSystem.draw_from_pool(index)
 
 
 func _on_order_submit_requested(index: int) -> void:
@@ -318,7 +314,7 @@ func _on_order_submit_requested(index: int) -> void:
 	
 	# 2. 执行智能填充逻辑
 	GameManager.order_selection_index = index
-	var order = order_system.current_orders[index]
+	var order = OrderSystem.current_orders[index]
 	var smart_indices = order.find_smart_selection(GameManager.inventory)
 	
 	# 冲突处理：智能填充直接覆盖多选列表
@@ -338,11 +334,11 @@ func _on_order_submit_requested(index: int) -> void:
 
 
 func _on_order_refresh_requested(index: int) -> void:
-	order_system.refresh_order(index)
+	OrderSystem.refresh_order(index)
 
 
 func _on_item_salvage_requested(index: int) -> void:
-	inventory_system.salvage_item(index)
+	InventorySystem.salvage_item(index)
 
 
 func _on_item_merge_requested(_idx1: int, _idx2: int) -> void:
@@ -362,14 +358,61 @@ func _on_game_event(event_id: StringName, payload: Variant) -> void:
 		_on_inventory_changed(GameManager.inventory)
 
 
-func _on_modal_requested(modal_id: StringName, payload: Dictionary) -> void:
+func _on_modal_requested(modal_id: StringName, payload: Variant) -> void:
+	# 兼容 null payload
+	var data = {}
+	if payload is Dictionary:
+		data = payload
+		
 	match modal_id:
+		&"skill_select":
+			_handle_skill_selection(data)
 		&"precise_selection":
-			_handle_precise_selection(payload)
+			_handle_precise_selection(data)
 		&"targeted_selection":
-			_handle_targeted_selection(payload)
+			_handle_targeted_selection(data)
 		&"general_confirmation":
-			_handle_general_confirmation(payload)
+			_handle_general_confirmation(data)
+
+
+func _handle_skill_selection(_payload: Dictionary) -> void:
+	var skills = GameManager.get_selectable_skills(3)
+	if skills.is_empty():
+		return
+		
+	var dialog = AcceptDialog.new()
+	dialog.title = "解锁新技能"
+	add_child(dialog)
+	
+	var v_box = VBoxContainer.new()
+	dialog.add_child(v_box)
+	
+	var label = Label.new()
+	label.text = "请选择一个技能加入你的技能槽："
+	v_box.add_child(label)
+	
+	var h_box = HBoxContainer.new()
+	v_box.add_child(h_box)
+	
+	for skill in skills:
+		var btn = Button.new()
+		btn.custom_minimum_size = Vector2(150, 100)
+		btn.text = "%s\n\n%s" % [skill.name, skill.description]
+		btn.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		
+		btn.pressed.connect(func():
+			if GameManager.current_skills.size() < Constants.SKILL_SLOTS:
+				GameManager.add_skill(skill)
+			else:
+				# TODO: 技能槽满时的替换逻辑
+				# 暂时直接添加（演示用，实际应弹出替换面板）
+				GameManager.add_skill(skill)
+			dialog.queue_free()
+		)
+		h_box.add_child(btn)
+	
+	dialog.get_ok_button().hide() # 必须通过点击按钮关闭
+	dialog.popup_centered()
 
 
 func _handle_general_confirmation(payload: Dictionary) -> void:

@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://db4mv1oyojyai"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://iotbyu585u7t"]
 
 [ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="1"]
 
 [resource]
 script = ExtResource("1")
-id = &"electronics_radio"
-name = "收音机"
+id = &"electronics_computer"
+name = "电脑"
 item_type = 5

@@ -1,5 +1,4 @@
 extends Node
-class_name OrderSystem
 
 ## 订单系统：管理订单生成、刷新、提交。
 
@@ -57,7 +56,7 @@ func refresh_order(index: int) -> void:
 		return
 		
 	# 技能检测上下文
-	var ctx = ContextProxy.new({ "consume_refresh": true })
+	var ctx = ContextProxy.new({"consume_refresh": true})
 	EventBus.game_event.emit(&"order_refresh_requested", ctx)
 	
 	if ctx.get_value("consume_refresh"):
@@ -250,7 +249,7 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 		var count = rng.randi_range(1, target_total_items - current_total)
 		
 		# 技能：偷工减料
-		var ctx = ContextProxy.new({ "item_count": count })
+		var ctx = ContextProxy.new({"item_count": count})
 		EventBus.game_event.emit(&"order_requirement_generating", ctx)
 		count = ctx.get_value("item_count")
 		
