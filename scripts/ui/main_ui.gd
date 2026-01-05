@@ -199,4 +199,3 @@ func _handle_targeted_selection(payload: Dictionary) -> void:
 	
 	dialog.get_ok_button().hide()
 	dialog.popup_centered()
-

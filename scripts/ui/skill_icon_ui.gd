@@ -11,3 +11,4 @@ func setup(skill: SkillData) -> void:
 	self.tooltip_text = "%s: %s" % [skill.name, skill.description]
 
 
+

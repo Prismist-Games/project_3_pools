@@ -19,3 +19,4 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 		EventBus.game_event.emit(&"add_order_refreshes", null)
 
 
+

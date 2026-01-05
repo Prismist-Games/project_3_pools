@@ -7,7 +7,7 @@ class_name DrawContext
 ## - System 创建 ctx -> emit `EventBus.draw_requested(ctx)`（或 `game_event`）-> 读取被改写后的 ctx 执行抽奖。
 
 var pool_id: StringName = &""
-var pool_type: StringName = &""
+var item_type: Constants.ItemType = Constants.ItemType.NONE
 var affix_id: StringName = &""
 
 var gold_cost: int = 0
@@ -58,5 +58,3 @@ func multiply_rarity_weight(rarity: int, multiplier: float) -> void:
 	if rarity < Constants.Rarity.COMMON or rarity > Constants.Rarity.LEGENDARY:
 		return
 	rarity_weights[rarity] = maxf(rarity_weights[rarity] * multiplier, 0.0)
-
-

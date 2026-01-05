@@ -39,7 +39,7 @@ var current_skills: Array = []
 ## 背包：保存 ItemInstance（RefCounted）实例。
 var inventory: Array = []
 
-## 运行时缓存：按 type（StringName）分组的 ItemData（Resource）。
+## 运行时缓存：按 type (Constants.ItemType) 分组的 ItemData (Resource)。
 var items_by_type: Dictionary = {}
 var all_items: Array = []
 var all_skills: Array = []
@@ -65,6 +65,8 @@ func _ready() -> void:
 	if game_config:
 		_gold = game_config.starting_gold
 		_tickets = game_config.starting_tickets
+		if game_config.debug_stage > 0:
+			_mainline_stage = game_config.debug_stage
 	_load_items()
 	_load_skills()
 	_load_pool_affixes()
@@ -152,10 +154,18 @@ func set_skills(skills: Array) -> void:
 	skills_changed.emit(current_skills)
 
 
-func get_items_for_type(pool_type: StringName) -> Array:
-	if not items_by_type.has(pool_type):
+func get_items_for_type(type: Constants.ItemType) -> Array:
+	if not items_by_type.has(type):
 		return []
-	return (items_by_type[pool_type] as Array).duplicate()
+	return (items_by_type[type] as Array).duplicate()
+
+
+func get_all_normal_items() -> Array:
+	var result = []
+	for type in items_by_type:
+		if Constants.is_normal_type(type):
+			result.append_array(items_by_type[type])
+	return result
 
 
 func _emit_full_state() -> void:
@@ -245,14 +255,14 @@ func _load_resources_from_dir(dir_path: String, out_arr: Array, on_loaded_method
 
 
 func _on_item_loaded(item: Resource) -> void:
-	## 约定：ItemData 必须包含 `type: StringName` 字段。
-	if not "type" in item:
-		push_warning("ItemData 缺少 type 字段：%s" % item)
+	## 约定：ItemData 必须包含 `item_type: Constants.ItemType` 字段。
+	if not "item_type" in item:
+		push_warning("ItemData 缺少 item_type 字段：%s" % item)
 		return
-	var pool_type: StringName = item.get("type")
-	if not items_by_type.has(pool_type):
-		items_by_type[pool_type] = []
-	(items_by_type[pool_type] as Array).append(item)
+	var type: Constants.ItemType = item.get("item_type")
+	if not items_by_type.has(type):
+		items_by_type[type] = []
+	(items_by_type[type] as Array).append(item)
 
 
 func _on_skill_loaded(_skill: Resource) -> void:

@@ -9,7 +9,7 @@ const AffixEffect = preload("pool_affix_effect.gd")
 ## 唯一标识（用于配置/调试；允许为空，表示“未命名模板”）。
 @export var id: StringName = &""
 
-@export var pool_type: StringName = &""
+@export var item_type: Constants.ItemType = Constants.ItemType.NONE
 ## 旧字段：保留兼容（对应 Constants.AffixType）。
 @export var affix: int = 0
 
@@ -37,4 +37,3 @@ func dispatch_affix_event(event_id: StringName, context: RefCounted) -> void:
 		if eff == null:
 			continue
 		eff.on_event(event_id, context)
-

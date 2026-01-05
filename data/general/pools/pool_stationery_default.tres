@@ -1,10 +1,9 @@
-[gd_resource type="Resource" script_class="PoolConfig" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="PoolConfig" load_steps=3 format=3 uid="uid://ciclr1wyijjjj"]
 
-[ext_resource type="Script" path="res://scripts/resources/pool_config.gd" id="1"]
+[ext_resource type="Script" uid="uid://bjab6r3gs4ryu" path="res://scripts/resources/pool_resources/pool_config.gd" id="1"]
+[ext_resource type="Resource" uid="uid://deiby1yxcy1f4" path="res://data/general/pool_affixes/affix_purified.tres" id="1_w1xwe"]
 
 [resource]
 script = ExtResource("1")
-pool_type = &"Stationery"
-affix = 0
-gold_cost = 5
-ticket_cost = 0
+item_type = 3
+affix_data = ExtResource("1_w1xwe")

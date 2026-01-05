@@ -6,8 +6,9 @@
 script = ExtResource("1")
 id = &"medicine_pill"
 name = "药丸"
-type = &"Medicine"
+item_type = 2
 is_mainline = false
+
 
 
 

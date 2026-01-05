@@ -21,8 +21,8 @@ class_name MainlineStageData
 @export var filler_rarity: Constants.Rarity = Constants.Rarity.COMMON
 
 @export_group("Unlocks")
-## 解锁的奖池类型
-@export var unlocked_pool_types: Array[StringName] = []
+## 解锁的物品类型奖池
+@export var unlocked_item_types: Array[Constants.ItemType] = []
 ## 是否解锁合成
 @export var has_merge: bool = false
 ## 合成上限（含）
@@ -57,5 +57,3 @@ func get_weights() -> PackedFloat32Array:
 		weight_legendary,
 		0.0 # Mythic 通常不直接掉落，除非主线池
 	])
-
-

@@ -8,6 +8,8 @@ class_name TradeInAffixEffect
 ## 4. 小概率 (5%) 升级品质。
 ## 5. 消耗: 1 金币
 
+@export var cost: int = 1
+
 
 func on_event(event_id: StringName, context: RefCounted) -> void:
 	if event_id != &"draw_requested":
@@ -24,13 +26,13 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	# 我们发送一个 game_event，UI (Inventory) 会监听它
 	EventBus.game_event.emit(&"enter_selection_mode", {
 		"type": "trade_in",
-		"pool_type": ctx.pool_type,
+		"item_type": ctx.item_type,
 		"callback": func(item_to_trade: ItemInstance):
 			if item_to_trade == null:
 				return
 				
-			# 检查金币 (trade_in 消耗 1)
-			if not GameManager.spend_gold(1):
+			# 检查金币 (trade_in 消耗)
+			if not GameManager.spend_gold(cost):
 				# 这里可能需要 UI 提示金币不足
 				return
 				
@@ -42,7 +44,7 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 				rarity = min(rarity + 1, Constants.Rarity.LEGENDARY)
 				
 			# 从奖池中抽取同品质物品
-			var pool_items = GameManager.get_items_for_type(ctx.pool_type)
+			var pool_items = GameManager.get_items_for_type(ctx.item_type)
 			if pool_items.is_empty():
 				pool_items = GameManager.all_items
 			

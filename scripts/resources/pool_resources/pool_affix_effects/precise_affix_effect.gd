@@ -16,9 +16,6 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if ctx == null:
 		return
 	
-	# 修改消耗
-	ctx.gold_cost = 2
-	
 	# 标记跳过标准抽奖逻辑
 	ctx.skip_draw = true
 	
@@ -26,7 +23,7 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	var items: Array[ItemInstance] = []
 	for i in range(2):
 		var rarity = Constants.pick_weighted_index(ctx.rarity_weights, GameManager.rng)
-		var pool_items = GameManager.get_items_for_type(ctx.pool_type)
+		var pool_items = GameManager.get_items_for_type(ctx.item_type)
 		if pool_items.is_empty():
 			pool_items = GameManager.all_items
 		var item_data = pool_items.pick_random()
@@ -41,5 +38,6 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 				GameManager.add_item(selected_item)
 				EventBus.item_obtained.emit(selected_item)
 	})
+
 
 

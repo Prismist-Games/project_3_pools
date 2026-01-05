@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1")
-pool_type = &"Mainline"
+item_type = 6
 affix = 0
 gold_cost = 0
 ticket_cost = 10

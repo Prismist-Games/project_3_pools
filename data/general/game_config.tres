@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1")
 starting_gold = 9999999
-starting_tickets = 99999
+debug_stage = 3

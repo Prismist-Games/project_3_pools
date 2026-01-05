@@ -6,4 +6,4 @@
 script = ExtResource("1_3ayoi")
 id = &"mainline_03"
 name = "神笔"
-is_mainline = true
+item_type = 6

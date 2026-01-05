@@ -6,5 +6,6 @@
 script = ExtResource("1")
 id = &"fruit_peach"
 name = "桃子"
-type = &"Fruit"
+item_type = 1
+
 

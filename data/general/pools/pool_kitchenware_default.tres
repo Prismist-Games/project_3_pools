@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1")
-pool_type = &"Kitchenware"
+item_type = 4
 affix = 0
 gold_cost = 5
 ticket_cost = 0

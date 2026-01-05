@@ -6,5 +6,4 @@
 script = ExtResource("1")
 id = &"electronics_battery"
 name = "电池"
-type = &"Electronics"
-
+item_type = 5

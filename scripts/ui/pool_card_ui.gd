@@ -12,9 +12,9 @@ var _index: int = -1
 
 func setup(config: PoolConfig, index: int) -> void:
 	_index = index
-	title_label.text = config.pool_type
+	title_label.text = Constants.type_to_display_name(config.item_type)
 	
-	if config.pool_type == Constants.POOL_TYPE_MAINLINE:
+	if config.item_type == Constants.ItemType.MAINLINE:
 		title_label.text = "主线奖池"
 		self.modulate = Color.GOLD
 	else:
@@ -35,5 +35,6 @@ func setup(config: PoolConfig, index: int) -> void:
 
 func _on_draw_button_pressed() -> void:
 	draw_requested.emit(_index)
+
 
 

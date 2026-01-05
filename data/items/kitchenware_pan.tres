@@ -6,8 +6,9 @@
 script = ExtResource("1")
 id = &"kitchenware_pan"
 name = "平底锅"
-type = &"Kitchenware"
+item_type = 4
 is_mainline = false
+
 
 
 

@@ -16,14 +16,11 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if ctx == null:
 		return
 	
-	# 修改消耗
-	ctx.gold_cost = 4
-	
 	# 标记跳过标准抽奖逻辑
 	ctx.skip_draw = true
 	
 	# 获取该奖池所有可能的物品
-	var possible_items = GameManager.get_items_for_type(ctx.pool_type)
+	var possible_items = GameManager.get_items_for_type(ctx.item_type)
 	if possible_items.is_empty():
 		possible_items = GameManager.all_items
 		
@@ -37,5 +34,6 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 				GameManager.add_item(item_instance)
 				EventBus.item_obtained.emit(item_instance)
 	})
+
 
 

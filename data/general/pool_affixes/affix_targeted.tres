@@ -9,4 +9,6 @@ script = ExtResource("1")
 id = &"targeted"
 name = "有的放矢"
 description = "指定类型交互。"
+base_gold_cost = 4
 effects = Array[ExtResource("1_v0gia")]([ExtResource("2")])
+

@@ -6,5 +6,6 @@
 script = ExtResource("1")
 id = &"stationery_pen"
 name = "钢笔"
-type = &"Stationery"
+item_type = 3
+
 

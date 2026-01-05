@@ -51,7 +51,7 @@ func setup(item: ItemInstance, index: int) -> void:
 	if not selection_mode_data.is_empty():
 		# 比如如果是 trade_in 模式，且不是主线物品，则允许点击
 		if selection_mode_data.get("type") == "trade_in":
-			if _item.data.is_mainline:
+			if _item.item_data.item_type == Constants.ItemType.MAINLINE:
 				self.modulate.a = 0.3
 			else:
 				self.modulate = self.modulate.lerp(Color.GOLD, 0.3)
@@ -87,7 +87,7 @@ func _handle_selection_mode_click() -> void:
 	var callback = selection_mode_data.get("callback")
 	
 	if mode_type == "trade_in":
-		if _item.data.is_mainline:
+		if _item.item_data.item_type == Constants.ItemType.MAINLINE:
 			return # 主线物品不可置换
 		
 		if callback is Callable:

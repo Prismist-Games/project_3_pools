@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://c6j7r2x8g2u5"]
 
 [ext_resource type="Script" uid="uid://cffp5ey5r80o3" path="res://scripts/ui/main_ui.gd" id="1_main_ui"]
-[ext_resource type="Script" uid="uid://ctli1fxy8tr4y" path="res://scripts/systems/pool_sys.gd" id="2_pool_sys"]
-[ext_resource type="Script" uid="uid://ckh2sari812yx" path="res://scripts/systems/inventory_sys.gd" id="3_inv_sys"]
-[ext_resource type="Script" uid="uid://cvhcqrbwgr42v" path="res://scripts/systems/order_sys.gd" id="4_order_sys"]
+[ext_resource type="Script" uid="uid://ctli1fxy8tr4y" path="res://scripts/systems/pool_system.gd" id="2_pool_sys"]
+[ext_resource type="Script" uid="uid://ckh2sari812yx" path="res://scripts/systems/inventory_system.gd" id="3_inv_sys"]
+[ext_resource type="Script" uid="uid://cvhcqrbwgr42v" path="res://scripts/systems/order_system.gd" id="4_order_sys"]
 
 [node name="MainUI" type="Control"]
 layout_mode = 3
@@ -147,5 +147,3 @@ script = ExtResource("3_inv_sys")
 
 [node name="OrderSystem" type="Node" parent="."]
 script = ExtResource("4_order_sys")
-
-

@@ -40,7 +40,7 @@ func draw_from_pool(index: int) -> bool:
 	# 创建上下文
 	var ctx = DrawContext.new()
 	ctx.pool_id = pool.id
-	ctx.pool_type = pool.pool_type
+	ctx.item_type = pool.item_type
 	ctx.affix_id = pool.get_affix_id()
 	ctx.gold_cost = pool.gold_cost
 	ctx.ticket_cost = pool.ticket_cost
@@ -86,7 +86,7 @@ func draw_from_pool(index: int) -> bool:
 		return true
 
 	# 3. 执行抽奖
-	if ctx.pool_type == Constants.POOL_TYPE_MAINLINE:
+	if ctx.item_type == Constants.ItemType.MAINLINE:
 		_do_mainline_draw(ctx)
 	else:
 		_do_normal_draw(ctx)
@@ -108,13 +108,13 @@ func _do_normal_draw(ctx: DrawContext) -> void:
 	for i in range(ctx.item_count):
 		var rarity = ctx.force_rarity
 		if rarity == -1:
-			rarity = Constants.get_script().pick_weighted_index(ctx.rarity_weights, GameManager.rng)
+			rarity = Constants.pick_weighted_index(ctx.rarity_weights, GameManager.rng)
 			
 		rarity = maxi(rarity, ctx.min_rarity)
 		
-		var items = GameManager.get_items_for_type(ctx.pool_type)
+		var items = GameManager.get_items_for_type(ctx.item_type)
 		if items.is_empty():
-			items = GameManager.all_items
+			items = GameManager.get_all_normal_items()
 			
 		var item_data = items.pick_random()
 		var item_instance = ItemInstance.new(item_data, rarity, ctx.force_sterile)
@@ -150,7 +150,7 @@ func _do_mainline_draw(ctx: DrawContext) -> void:
 		if stage == 5 and rng.randf() < 0.1:
 			rarity = Constants.Rarity.LEGENDARY
 		
-	var items = GameManager.all_items
+	var items = GameManager.get_all_normal_items()
 	var item_data = items.pick_random()
 	var filler_instance = ItemInstance.new(item_data, rarity, false)
 	ctx.result_items.append(filler_instance)
@@ -179,7 +179,7 @@ func _generate_pool() -> PoolConfig:
 
 func _generate_mainline_pool() -> PoolConfig:
 	var pool = PoolConfig.new()
-	pool.pool_type = Constants.POOL_TYPE_MAINLINE
+	pool.item_type = Constants.ItemType.MAINLINE
 	pool.ticket_cost = 10
 	if GameManager.game_config != null:
 		pool.ticket_cost = GameManager.game_config.mainline_ticket_cost
@@ -189,42 +189,33 @@ func _generate_mainline_pool() -> PoolConfig:
 func _generate_normal_pool() -> PoolConfig:
 	var pool = PoolConfig.new()
 	var stage_data = GameManager.current_stage_data
-	var rng = GameManager.rng
 	
-	# 根据阶段选择池子类型
-	if stage_data != null and not stage_data.unlocked_pool_types.is_empty():
-		pool.pool_type = stage_data.unlocked_pool_types.pick_random()
+	# 1. 随机选择物品类型
+	if stage_data != null and not stage_data.unlocked_item_types.is_empty():
+		pool.item_type = stage_data.unlocked_item_types.pick_random()
 	else:
-		pool.pool_type = Constants.NORMAL_POOL_TYPES.pick_random()
+		pool.item_type = Constants.get_normal_item_types().pick_random()
 	
-	# 根据阶段设置费用
-	var base_cost = 5
-	if GameManager.game_config != null:
-		base_cost = GameManager.game_config.normal_draw_gold_cost
-	
-	if GameManager.mainline_stage == 1:
-		pool.gold_cost = 1
-	elif GameManager.mainline_stage == 2:
-		pool.gold_cost = base_cost
-	else:
-		# 阶段 3+ 价格波动 (e.g. 5 +/- 2, 最低为 1)
-		pool.gold_cost = clampi(base_cost + rng.randi_range(-2, 2), 1, 99)
-	
-	# 词缀处理
+	# 2. 随机选择词缀
 	if stage_data != null and stage_data.has_pool_affixes:
 		_assign_random_affix(pool)
+	
+	# 3. 计算费用
+	var initial_cost = 5
+	if GameManager.game_config != null:
+		initial_cost = GameManager.game_config.normal_draw_gold_cost
+	
+	# 只有在无词缀的情况下才使用初始价格
+	# 如果有词缀，则完全由词缀决定（如果词缀未设价格，则设为 0 或 1 作为保底，或者由你定义）
+	if pool.affix_data != null:
+		pool.gold_cost = pool.affix_data.base_gold_cost
+	else:
+		pool.gold_cost = initial_cost
 			
 	return pool
 
 
 func _assign_random_affix(pool: PoolConfig) -> void:
-	# 1/3 概率生成词缀
-	if GameManager.rng.randf() >= 0.33:
-		return
-		
-	# 从缓存的词缀列表中随机挑选
-	# 这里需要 GameManager 先加载好 pool_affixes
-	var affixes = GameManager.get("all_pool_affixes")
-	if affixes != null and not affixes.is_empty():
+	var affixes = GameManager.all_pool_affixes
+	if not affixes.is_empty():
 		pool.affix_data = affixes.pick_random()
-

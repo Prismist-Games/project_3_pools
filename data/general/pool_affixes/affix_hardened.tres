@@ -1,13 +1,13 @@
-[gd_resource type="Resource" script_class="PoolAffixData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="PoolAffixData" load_steps=4 format=3 uid="uid://ceiby1yxcy1f4"]
 
-[ext_resource type="Script" path="res://scripts/resources/pool_resources/pool_affix_data.gd" id="1"]
-[ext_resource type="Resource" path="res://data/general/pool_affixes/effects/hardened_affix_effect.tres" id="2"]
+[ext_resource type="Script" uid="uid://d1725wsbx1i5" path="res://scripts/resources/pool_resources/pool_affix_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://6f2x8h4j1lal" path="res://scripts/resources/pool_resources/pool_affix_effect.gd" id="1_v0gia"]
+[ext_resource type="Resource" uid="uid://wwk1u2hb3440" path="res://data/general/pool_affixes/effects/hardened_affix_effect.tres" id="2"]
 
 [resource]
 script = ExtResource("1")
 id = &"hardened"
 name = "硬化的"
-description = "只有稀有及以上品质，但物品无法合成（绝育）。"
-effects = Array[Resource("res://scripts/resources/pool_resources/pool_affix_effect.gd")]([ExtResource("2")])
-
-
+description = "稀有度概率提升，但物品绝育 (不可合成)。"
+base_gold_cost = 7
+effects = Array[ExtResource("1_v0gia")]([ExtResource("2")])

@@ -15,14 +15,15 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if ctx == null: return
 	
 	if ctx.submitted_items.size() > 1:
-		var first_type = ctx.submitted_items[0].item_data.type
+		var first_type = ctx.submitted_items[0].item_data.item_type
 		var consistent = true
 		for i in range(1, ctx.submitted_items.size()):
-			if ctx.submitted_items[i].item_data.type != first_type:
+			if ctx.submitted_items[i].item_data.item_type != first_type:
 				consistent = false
 				break
 		if consistent:
 			ctx.reward_gold *= multiplier
 			ctx.reward_tickets *= multiplier
+
 
 

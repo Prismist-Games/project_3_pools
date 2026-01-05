@@ -18,3 +18,4 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 		ctx.gold_cost = maxi(0, ctx.gold_cost - discount_amount)
 
 
+

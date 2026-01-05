@@ -10,6 +10,6 @@ class_name PoolAffixData
 @export var id: StringName = &""
 @export var name: String = ""
 @export_multiline var description: String = ""
+## 该词缀对奖池金币消耗的基础设定（如果为 0，则使用全局默认值）
+@export var base_gold_cost: int = 0
 @export var effects: Array[PoolAffixEffect] = []
-
-

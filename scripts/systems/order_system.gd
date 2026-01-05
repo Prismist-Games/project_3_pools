@@ -155,8 +155,9 @@ func _generate_normal_order() -> OrderData:
 		target_total_items = rng.randi_range(3, 4)
 	
 	var current_total: int = 0
+	var normal_items = GameManager.get_all_normal_items()
 	while current_total < target_total_items:
-		var item_data = GameManager.all_items.pick_random()
+		var item_data = normal_items.pick_random()
 		var count = rng.randi_range(1, target_total_items - current_total)
 		
 		# 技能：偷工减料
@@ -210,7 +211,7 @@ func _generate_mainline_order() -> OrderData:
 		})
 		
 		# 根据阶段数据决定副物品需求
-		var secondary_item = GameManager.all_items.pick_random()
+		var secondary_item = GameManager.get_all_normal_items().pick_random()
 		order.requirements.append({
 			"item_id": secondary_item.id,
 			"min_rarity": stage_data.required_secondary_rarity,

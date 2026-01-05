@@ -20,7 +20,7 @@ config/icon="res://icon.svg"
 Constants="*res://scripts/globals/constants.gd"
 EventBus="*res://scripts/globals/event_bus.gd"
 GameManager="*res://scripts/globals/game_manager.gd"
-SkillSystem="*res://scripts/systems/skill_sys.gd"
+SkillSystem="*res://scripts/systems/skill_system.gd"
 
 [rendering]
 

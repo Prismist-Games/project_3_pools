@@ -6,5 +6,4 @@
 script = ExtResource("1")
 id = &"fruit_banana"
 name = "香蕉"
-type = &"Fruit"
-
+item_type = 1

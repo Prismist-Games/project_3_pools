@@ -9,5 +9,3 @@ class_name PoolAffixEffect
 
 func on_event(_event_id: StringName, _context: RefCounted) -> void:
 	pass
-
-

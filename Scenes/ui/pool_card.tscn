@@ -44,3 +44,4 @@ text = "抽奖"
 [connection signal="pressed" method="_on_draw_button_pressed" from="VBoxContainer/DrawButton" to="." commit=""]
 
 
+

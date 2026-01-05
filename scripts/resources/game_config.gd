@@ -7,6 +7,11 @@ class_name GameConfig
 @export var starting_tickets: int = 0
 @export var normal_draw_gold_cost: int = 5
 
+# --- 调试与关卡 ---
+@export_group("Debug")
+## 如果大于 0，游戏启动时将强制进入该阶段（用于调试）
+@export var debug_stage: int = 0
+
 # --- 抽奖权重 (归一化处理) ---
 @export_group("Rarity Weights", "weight_")
 @export var weight_common: float = 40.0

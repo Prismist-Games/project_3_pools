@@ -5,6 +5,5 @@ class_name ItemData
 
 @export var id: StringName = &""
 @export var name: String = ""
-@export var type: StringName = &""
+@export var item_type: Constants.ItemType = Constants.ItemType.NONE
 @export var icon: Texture2D = null
-@export var is_mainline: bool = false

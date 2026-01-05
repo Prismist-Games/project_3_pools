@@ -20,3 +20,4 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 			context.get("data")["item_count"] = maxi(1, current_count - reduction)
 
 
+

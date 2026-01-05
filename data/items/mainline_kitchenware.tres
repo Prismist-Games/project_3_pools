@@ -6,5 +6,4 @@
 script = ExtResource("1_5tgvm")
 id = &"mainline_go"
 name = "金铲铲"
-type = &"Kitchenware"
-is_mainline = true
+item_type = 6

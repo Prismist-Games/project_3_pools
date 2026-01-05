@@ -26,23 +26,51 @@ enum Rarity {
 # 	TARGETED, ## 有的放矢（指定类型）
 # }
 
+enum ItemType {
+	NONE,
+	FRUIT,
+	MEDICINE,
+	STATIONERY,
+	KITCHENWARE,
+	ELECTRONICS,
+	MAINLINE,
+}
+
 const SKILL_SLOTS: int = 3
 const MAINLINE_STAGES: int = 5
 
-const POOL_TYPE_FRUIT: StringName = &"Fruit"
-const POOL_TYPE_MEDICINE: StringName = &"Medicine"
-const POOL_TYPE_STATIONERY: StringName = &"Stationery"
-const POOL_TYPE_KITCHENWARE: StringName = &"Kitchenware"
-const POOL_TYPE_ELECTRONICS: StringName = &"Electronics"
-const POOL_TYPE_MAINLINE: StringName = &"Mainline"
+## 获取所有普通物品类型
+func get_normal_item_types() -> Array[ItemType]:
+	return [
+		ItemType.FRUIT,
+		ItemType.MEDICINE,
+		ItemType.STATIONERY,
+		ItemType.KITCHENWARE,
+		ItemType.ELECTRONICS
+	]
 
-const NORMAL_POOL_TYPES: Array[String] = [
-	"Fruit",
-	"Medicine",
-	"Stationery",
-	"Kitchenware",
-	"Electronics",
-]
+func is_normal_type(type: ItemType) -> bool:
+	return type != ItemType.NONE and type != ItemType.MAINLINE
+
+func type_to_string(type: ItemType) -> StringName:
+	match type:
+		ItemType.FRUIT: return &"Fruit"
+		ItemType.MEDICINE: return &"Medicine"
+		ItemType.STATIONERY: return &"Stationery"
+		ItemType.KITCHENWARE: return &"Kitchenware"
+		ItemType.ELECTRONICS: return &"Electronics"
+		ItemType.MAINLINE: return &"Mainline"
+		_: return &"None"
+
+func type_to_display_name(type: ItemType) -> String:
+	match type:
+		ItemType.FRUIT: return "水果"
+		ItemType.MEDICINE: return "药品"
+		ItemType.STATIONERY: return "文具"
+		ItemType.KITCHENWARE: return "厨具"
+		ItemType.ELECTRONICS: return "电器"
+		ItemType.MAINLINE: return "核心"
+		_: return "其他"
 
 const MAINLINE_ITEM_STAGE_1: StringName = &"mainline_fruit"
 const MAINLINE_ITEM_STAGE_2: StringName = &"mainline_medicine"
@@ -137,11 +165,7 @@ static func rarity_bonus(rarity: int) -> float:
 			return 0.0
 
 
-static func is_normal_pool_type(pool_type: StringName) -> bool:
-	return pool_type != POOL_TYPE_MAINLINE and NORMAL_POOL_TYPES.has(String(pool_type))
-
-
-static func pick_weighted_index(weights: PackedFloat32Array, rng: RandomNumberGenerator) -> int:
+func pick_weighted_index(weights: PackedFloat32Array, rng: RandomNumberGenerator) -> int:
 	## 从权重数组中抽取一个 index。
 	var total: float = 0.0
 	for w: float in weights:
