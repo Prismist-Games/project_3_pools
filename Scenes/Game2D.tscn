@@ -1,10 +1,32 @@
-[gd_scene load_steps=9 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=28 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Texture2D" uid="uid://btsuqm2u3wjvs" path="res://assets/sprites/square_outlined.png" id="1_vy3lb"]
-[ext_resource type="Texture2D" uid="uid://dh6xklxxuyvgw" path="res://assets/sprites/square_outline_only.png" id="2_h2tqe"]
-[ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://Scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
+[ext_resource type="Texture2D" uid="uid://caieb4p7g0f64" path="res://assets/sprites/item_slots/基地-4.png" id="2_bobrt"]
+[ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="3_4wmcb"]
 [ext_resource type="Texture2D" uid="uid://boc71kjvr7ufn" path="res://assets/icons/spinning_top.png" id="3_fiado"]
+[ext_resource type="Texture2D" uid="uid://oxm0lvuajhqy" path="res://assets/sprites/item_slots/基地-1.png" id="4_fkxe6"]
+[ext_resource type="Texture2D" uid="uid://cglvasc20q3mu" path="res://assets/sprites/item_slots/基地-2.png" id="5_d4ywt"]
+[ext_resource type="Texture2D" uid="uid://coaai2i4vi1sh" path="res://assets/sprites/item_slots/基地-3.png" id="6_t8rsn"]
+[ext_resource type="Texture2D" uid="uid://bb0jex82xogr2" path="res://assets/sprites/item_slots/基地-8.png" id="7_o2140"]
+[ext_resource type="Texture2D" uid="uid://dlywfo3j61bw8" path="res://assets/sprites/item_slots/基地-6.png" id="10_aiivw"]
+[ext_resource type="Texture2D" uid="uid://cemheosuktfhj" path="res://assets/sprites/item_slots/基地-5.png" id="11_bobrt"]
+[ext_resource type="Texture2D" uid="uid://7s7gx5sytssb" path="res://assets/sprites/item_slots/基地-6 2.png" id="11_fkxe6"]
+[ext_resource type="Texture2D" uid="uid://cpcef3r3dbaxq" path="res://assets/sprites/大窗户加显示/基地-7.png" id="13_d4ywt"]
+[ext_resource type="Texture2D" uid="uid://b3avhgwq0587y" path="res://assets/sprites/大窗户加显示/基地-1.png" id="14_o2140"]
+[ext_resource type="Texture2D" uid="uid://dpnahy8wmkeso" path="res://assets/sprites/大窗户加显示/基地-2.png" id="15_aiivw"]
+[ext_resource type="Texture2D" uid="uid://fjhknpwtlo4g" path="res://assets/sprites/大窗户加显示/基地-3.png" id="16_cu6b6"]
+[ext_resource type="Texture2D" uid="uid://cyuji8mwm0rx8" path="res://assets/sprites/大窗户加显示/基地-4.png" id="17_ivepa"]
+[ext_resource type="Texture2D" uid="uid://dte0aovryatd4" path="res://assets/sprites/大窗户加显示/基地-9.png" id="18_8xmv6"]
+[ext_resource type="Texture2D" uid="uid://fnqmsybn8c5r" path="res://assets/sprites/大窗户加显示/基地-6.png" id="18_ivepa"]
+[ext_resource type="Texture2D" uid="uid://dhd8bxltte0u1" path="res://assets/sprites/大窗户加显示/基地-8.png" id="19_sojbq"]
+[ext_resource type="Texture2D" uid="uid://law2mtdijaeb" path="res://assets/sprites/大窗户加显示/基地-11.png" id="21_axkhv"]
+[ext_resource type="Texture2D" uid="uid://c17ii0rmjfv1n" path="res://assets/sprites/大窗户加显示/基地-13.png" id="22_7j7pe"]
+[ext_resource type="Texture2D" uid="uid://430ts7sfdtgx" path="res://assets/sprites/大窗户加显示/基地-10.png" id="23_o2lnr"]
+[ext_resource type="Texture2D" uid="uid://bh2rrdftruk78" path="res://assets/sprites/大窗户加显示/基地-12.png" id="24_y6c7h"]
+
+[sub_resource type="Animation" id="Animation_ovo1l"]
+length = 0.001
 
 [sub_resource type="Animation" id="Animation_1h1gb"]
 resource_name = "test_animation"
@@ -12,38 +34,13 @@ length = 2.0000033
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("The Machine/Item Slots Grid/Item Slot/Slot_lid:position:y")
+tracks/0/path = NodePath("The Machine/Item Slots Grid/Item Slot_root/Item Slot_mask/Item Slot_lid:position:y")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "handle_modes": PackedInt32Array(0, 0, 0, 0),
 "points": PackedFloat32Array(50, -0.25, 0, 0.16666667, -0.44581604, 40, -0.06666666, -0.15211868, 0.10000001, -0.04801178, 40, -0.10000522, -0.24551217, 0.25982118, 0.63785934, -50, -0.23333335, 0.7887497, 0, 0),
 "times": PackedFloat32Array(0, 0.2, 1.0333333, 1.8333334)
-}
-
-[sub_resource type="Animation" id="Animation_ovo1l"]
-length = 0.001
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("The Machine/Item Slots Grid/Item Slot/Slot_lid:position:x")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(50, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("The Machine/Item Slots Grid/Item Slot/Slot_lid:position:y")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(50, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vy3lb"]
@@ -89,71 +86,142 @@ position = Vector2(1744.75, 564.75)
 texture = ExtResource("1_vy3lb")
 
 [node name="Item Slots Grid" type="GridContainer" parent="The Machine"]
-offset_left = -354.75
-offset_top = -48.75
-offset_right = -254.75
-offset_bottom = 51.25
+offset_left = -456.75
+offset_top = 17.25
+offset_right = -171.75
+offset_bottom = 309.25
 columns = 4
 
-[node name="Item Slot" type="TextureRect" parent="The Machine/Item Slots Grid"]
-clip_children = 1
+[node name="Item Slot_root" type="Control" parent="The Machine/Item Slots Grid"]
 layout_mode = 2
-mouse_filter = 0
+mouse_filter = 1
 mouse_default_cursor_shape = 2
-texture = ExtResource("1_vy3lb")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot"]
+[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root"]
+clip_children = 1
+texture = ExtResource("2_bobrt")
+
+[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root/Item Slot_mask"]
+position = Vector2(16, 6)
+script = ExtResource("2_ovo1l")
+color = Color(0.99215686, 0.5921569, 0.18431373, 1)
+
+[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root/Item Slot_mask/Item Slot_backgrounds"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+texture = ExtResource("4_fkxe6")
+
+[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root/Item Slot_mask/Item Slot_backgrounds"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+texture = ExtResource("5_d4ywt")
+
+[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root/Item Slot_mask/Item Slot_backgrounds"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+texture = ExtResource("6_t8rsn")
+
+[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root/Item Slot_mask/Item Slot_backgrounds"]
+texture = ExtResource("7_o2140")
+
+[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root/Item Slot_mask"]
+position = Vector2(-1, 30)
+scale = Vector2(0.5, 0.5)
+
+[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root/Item Slot_mask/Item Slot_item_root"]
+texture = ExtResource("3_fiado")
+
+[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root/Item Slot_mask/Item Slot_item_root/Item_example"]
+self_modulate = Color(0, 0, 0, 0.39215687)
+show_behind_parent = true
+position = Vector2(6.000001, 156)
+scale = Vector2(0.6, 0.1)
+texture = ExtResource("3_4wmcb")
+
+[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root/Item Slot_mask"]
+self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
+position = Vector2(0, -43)
+texture = ExtResource("10_aiivw")
+
+[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root/Item Slot_mask/Item Slot_lid"]
+self_modulate = Color(0.74190307, 0, 0.14498982, 1)
+position = Vector2(0, 136)
+texture = ExtResource("11_fkxe6")
+
+[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root"]
+texture = ExtResource("11_bobrt")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root"]
 root_node = NodePath("../../../..")
 libraries = {
 &"": SubResource("AnimationLibrary_vy3lb")
 }
 
-[node name="Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot"]
+[node name="Lottery Slots Grid" type="GridContainer" parent="The Machine"]
+offset_left = -845.75
+offset_top = -654.75
+offset_right = -805.75
+offset_bottom = -614.75
+
+[node name="Lottery Slot_root" type="Control" parent="The Machine/Lottery Slots Grid"]
+layout_mode = 2
+
+[node name="Lottery Slot_mask" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root"]
+clip_children = 2
+texture = ExtResource("13_d4ywt")
+
+[node name="Lottery Slot_backgrounds" type="Node2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root/Lottery Slot_mask"]
 script = ExtResource("2_ovo1l")
-color = Color(0.5933852, 0.0045445054, 0.6139842, 1)
+color = Color(0.10980392, 0.654902, 0.91764706, 1)
 
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot/Slot_backgrounds"]
-modulate = Color(0.5933852, 0.0045445054, 0.6139842, 1)
-self_modulate = Color(0.7, 0.7, 0.7, 1)
-position = Vector2(98, 49)
-texture = ExtResource("1_vy3lb")
+[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root/Lottery Slot_mask/Lottery Slot_backgrounds"]
+modulate = Color(0.10980392, 0.654902, 0.91764706, 1)
+texture = ExtResource("14_o2140")
 
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot/Slot_backgrounds"]
-modulate = Color(0.5933852, 0.0045445054, 0.6139842, 1)
-position = Vector2(8, 25)
-texture = ExtResource("1_vy3lb")
+[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root/Lottery Slot_mask/Lottery Slot_backgrounds"]
+modulate = Color(0.10980392, 0.654902, 0.91764706, 1)
+texture = ExtResource("15_aiivw")
 
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot/Slot_backgrounds"]
-modulate = Color(0.5933852, 0.0045445054, 0.6139842, 1)
-self_modulate = Color(1.25516, 1.25516, 1.25516, 1)
-position = Vector2(51, 99)
-skew = -1.0471978
-texture = ExtResource("1_vy3lb")
+[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root/Lottery Slot_mask/Lottery Slot_backgrounds"]
+modulate = Color(0.10980392, 0.654902, 0.91764706, 1)
+texture = ExtResource("16_cu6b6")
 
-[node name="Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot"]
-position = Vector2(48, 64)
+[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root/Lottery Slot_mask/Lottery Slot_backgrounds"]
+texture = ExtResource("17_ivepa")
 
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot/Slot_item_root"]
+[node name="Lottery Slot_item_root" type="Node2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root/Lottery Slot_mask"]
+position = Vector2(-23, 50)
+
+[node name="Item_example" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root/Lottery Slot_mask/Lottery Slot_item_root"]
 texture = ExtResource("3_fiado")
 
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot/Slot_item_root/Item_example"]
+[node name="Item_shadow" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root/Lottery Slot_mask/Lottery Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
 show_behind_parent = true
-position = Vector2(0, 25)
-scale = Vector2(0.095, 0.025)
+position = Vector2(6.000001, 164)
+scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot"]
-self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(50, 50)
-texture = ExtResource("1_vy3lb")
+[node name="Lottery Slot_lid" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root/Lottery Slot_mask"]
+modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+texture = ExtResource("18_8xmv6")
 
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot/Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 32.999996)
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("1_vy3lb")
+[node name="Lottery Slot_outline" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root"]
+modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
+texture = ExtResource("18_ivepa")
 
-[node name="Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot"]
-position = Vector2(50, 50)
-texture = ExtResource("2_h2tqe")
+[node name="Shadow" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root/Lottery Slot_outline"]
+texture = ExtResource("19_sojbq")
+
+[node name="Lottery Slot_right_screen" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root"]
+modulate = Color(0.7490196, 0.7529412, 0.9843137, 1)
+texture = ExtResource("21_axkhv")
+
+[node name="Lottery Slot_right_screen_outline" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root/Lottery Slot_right_screen"]
+modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
+texture = ExtResource("22_7j7pe")
+
+[node name="Lottery Slot_top_screen" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root"]
+modulate = Color(0.61960787, 0.9137255, 0.40392157, 1)
+texture = ExtResource("23_o2lnr")
+
+[node name="Lottery Slot_top_screen_outline" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root/Lottery Slot_top_screen"]
+modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
+texture = ExtResource("24_y6c7h")

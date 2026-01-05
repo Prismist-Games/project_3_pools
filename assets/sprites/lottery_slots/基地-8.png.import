@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://boc71kjvr7ufn"
-path="res://.godot/imported/spinning_top.png-7e5d467e4d9ccd72c1d4b7bcd5ba098a.ctex"
+uid="uid://dhd8bxltte0u1"
+path="res://.godot/imported/基地-8.png-45d9a7d7bfa727e05b8439e67ed6a85c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/spinning_top.png"
-dest_files=["res://.godot/imported/spinning_top.png-7e5d467e4d9ccd72c1d4b7bcd5ba098a.ctex"]
+source_file="res://assets/sprites/lottery_slots/基地-8.png"
+dest_files=["res://.godot/imported/基地-8.png-45d9a7d7bfa727e05b8439e67ed6a85c.ctex"]
 
 [params]
 
@@ -36,5 +36,5 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
-process/size_limit=600
+process/size_limit=0
 detect_3d/compress_to=1
