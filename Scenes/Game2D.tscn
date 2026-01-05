@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=39 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Texture2D" uid="uid://btsuqm2u3wjvs" path="res://assets/sprites/square_outlined.png" id="1_vy3lb"]
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://caieb4p7g0f64" path="res://assets/sprites/item_slots/基地-4.png" id="17_ivepa"]
 [ext_resource type="Texture2D" uid="uid://dte0aovryatd4" path="res://assets/sprites/lottery_slots/基地-9.png" id="18_8xmv6"]
 [ext_resource type="Texture2D" uid="uid://dlywfo3j61bw8" path="res://assets/sprites/item_slots/基地-6.png" id="18_ivepa"]
+[ext_resource type="Texture2D" uid="uid://1h4st4oq2muh" path="res://icon.svg" id="19_7rf4k"]
 [ext_resource type="Texture2D" uid="uid://fnqmsybn8c5r" path="res://assets/sprites/lottery_slots/基地-6.png" id="19_mfdr7"]
 [ext_resource type="Texture2D" uid="uid://bb0jex82xogr2" path="res://assets/sprites/item_slots/基地-8.png" id="19_sojbq"]
 [ext_resource type="Texture2D" uid="uid://dhd8bxltte0u1" path="res://assets/sprites/lottery_slots/基地-8.png" id="20_xpfcn"]
@@ -210,8 +211,11 @@ scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
 [node name="Lottery Slot_lid" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root/Lottery Slot_mask"]
-modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 texture = ExtResource("18_8xmv6")
+
+[node name="Lottery Slot_lid_icon" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root/Lottery Slot_mask/Lottery Slot_lid"]
+texture = ExtResource("19_7rf4k")
 
 [node name="Lottery Slot_outline" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root"]
 modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
@@ -269,6 +273,20 @@ texture = ExtResource("28_mfdr7")
 [node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Quest Slots Grid/Quest Slot_root/Quest Slot_mask/Quest Slot_background"]
 texture = ExtResource("29_xpfcn")
 
+[node name="Quest Reward Label" type="RichTextLabel" parent="The Machine/Quest Slots Grid/Quest Slot_root/Quest Slot_mask"]
+offset_left = -412.0
+offset_top = -115.0
+offset_right = 477.0
+offset_bottom = 78.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 141
+bbcode_enabled = true
+text = "33 [s]25[/s]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="Quest Slot Items Grid" type="HBoxContainer" parent="The Machine/Quest Slots Grid/Quest Slot_root/Quest Slot_mask"]
 offset_left = -310.0
 offset_top = 13.0
@@ -292,7 +310,7 @@ texture = ExtResource("3_4wmcb")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Machine/Quest Slots Grid/Quest Slot_root/Quest Slot_mask"]
 modulate = Color(0.8627451, 0.7764706, 0, 1)
-position = Vector2(0, -84)
+position = Vector2(0, -166)
 texture = ExtResource("30_iq50s")
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Machine/Quest Slots Grid/Quest Slot_root"]
@@ -331,6 +349,20 @@ texture = ExtResource("28_mfdr7")
 
 [node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Main Quest Slot_root/Main Quest Slot_mask/Main Quest Slot_background"]
 texture = ExtResource("29_xpfcn")
+
+[node name="Main Quest Reward Label" type="RichTextLabel" parent="The Machine/Main Quest Slot_root/Main Quest Slot_mask"]
+offset_left = -412.0
+offset_top = -115.0
+offset_right = 477.0
+offset_bottom = 78.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 141
+bbcode_enabled = true
+text = "33 [s]25[/s]"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="Main Quest Slot Items Grid" type="HBoxContainer" parent="The Machine/Main Quest Slot_root/Main Quest Slot_mask"]
 offset_left = -310.0
