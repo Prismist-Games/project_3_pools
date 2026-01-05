@@ -49,7 +49,6 @@ func draw_from_pool(index: int) -> bool:
 	var stage_data = GameManager.current_stage_data
 	if stage_data != null:
 		ctx.rarity_weights = stage_data.get_weights()
-		ctx.item_count = stage_data.items_per_pool
 	elif GameManager.game_config != null:
 		var cfg = GameManager.game_config
 		ctx.rarity_weights = PackedFloat32Array([
@@ -133,29 +132,32 @@ func _do_mainline_draw(ctx: DrawContext) -> void:
 	if GameManager.game_config != null:
 		drop_rate = GameManager.game_config.mainline_drop_rate
 		
-	# 掉落规则：30% 概率掉落当前阶段主线道具（神话）
-	if rng.randf() < drop_rate:
-		if stage_data != null and stage_data.mainline_item != null:
-			var item_instance = ItemInstance.new(stage_data.mainline_item, Constants.Rarity.MYTHIC, false)
+	for i in range(ctx.item_count):
+		var item_instance: ItemInstance = null
+		
+		# 一次抽奖（即便产出多个）通常只允许一个主线道具，其余为填充物
+		var should_drop_mainline = (i == 0) and (rng.randf() < drop_rate)
+		
+		if should_drop_mainline and stage_data != null and stage_data.mainline_item != null:
+			item_instance = ItemInstance.new(stage_data.mainline_item, Constants.Rarity.MYTHIC, false)
+		else:
+			# 掉落填充物逻辑
+			var rarity = Constants.Rarity.EPIC
+			if stage_data != null:
+				rarity = stage_data.filler_rarity
+				# 如果是阶段 5，且不是神话，有概率出传说
+				if stage == 5 and rng.randf() < 0.1:
+					rarity = Constants.Rarity.LEGENDARY
+			
+			var items = GameManager.get_all_normal_items()
+			if not items.is_empty():
+				var item_data = items.pick_random()
+				item_instance = ItemInstance.new(item_data, rarity, false)
+		
+		if item_instance:
 			ctx.result_items.append(item_instance)
 			GameManager.add_item(item_instance)
 			EventBus.item_obtained.emit(item_instance)
-			return
-
-	# 70% 概率掉落填充物 (固定稀有度)
-	var rarity = Constants.Rarity.EPIC
-	if stage_data != null:
-		rarity = stage_data.filler_rarity
-		# 如果是阶段 5，且不是神话，有概率出传说
-		if stage == 5 and rng.randf() < 0.1:
-			rarity = Constants.Rarity.LEGENDARY
-		
-	var items = GameManager.get_all_normal_items()
-	var item_data = items.pick_random()
-	var filler_instance = ItemInstance.new(item_data, rarity, false)
-	ctx.result_items.append(filler_instance)
-	GameManager.add_item(filler_instance)
-	EventBus.item_obtained.emit(filler_instance)
 
 
 func _generate_pool() -> PoolConfig:

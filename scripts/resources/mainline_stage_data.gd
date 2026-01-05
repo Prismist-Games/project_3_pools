@@ -35,7 +35,6 @@ class_name MainlineStageData
 @export_group("Parameters")
 @export var inventory_size: int = 6
 @export var order_count: int = 2
-@export var items_per_pool: int = 3
 
 @export_group("Rarity Weights")
 @export var weight_common: float = 100.0
