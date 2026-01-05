@@ -20,7 +20,7 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	ctx.skip_draw = true
 	
 	# 获取该奖池所有可能的物品
-	var possible_items = GameManager.get_items_for_type(ctx.item_type)
+	var possible_items: Array[ItemData] = GameManager.get_items_for_type(ctx.item_type)
 	if possible_items.is_empty():
 		possible_items = GameManager.all_items
 		

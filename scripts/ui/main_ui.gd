@@ -146,7 +146,8 @@ func _on_modal_requested(modal_id: StringName, payload: Dictionary) -> void:
 
 
 func _handle_precise_selection(payload: Dictionary) -> void:
-	var items: Array[ItemInstance] = payload.get("items", [])
+	var items: Array[ItemInstance] = []
+	items.assign(payload.get("items", []))
 	var callback: Callable = payload.get("callback")
 	
 	var dialog = ConfirmationDialog.new()
@@ -173,7 +174,8 @@ func _handle_precise_selection(payload: Dictionary) -> void:
 
 
 func _handle_targeted_selection(payload: Dictionary) -> void:
-	var items: Array[ItemData] = payload.get("items", [])
+	var items: Array[ItemData] = []
+	items.assign(payload.get("items", []))
 	var callback: Callable = payload.get("callback")
 	
 	var dialog = AcceptDialog.new()

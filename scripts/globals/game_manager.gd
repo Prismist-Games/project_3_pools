@@ -34,15 +34,15 @@ var current_stage_data: MainlineStageData:
 		return get_mainline_stage_data(_mainline_stage)
 
 ## 技能槽：保存 SkillData（Resource）实例。
-var current_skills: Array = []
+var current_skills: Array[SkillData] = []
 
 ## 背包：保存 ItemInstance（RefCounted）实例。
-var inventory: Array = []
+var inventory: Array[ItemInstance] = []
 
 ## 运行时缓存：按 type (Constants.ItemType) 分组的 ItemData (Resource)。
 var items_by_type: Dictionary = {}
-var all_items: Array = []
-var all_skills: Array = []
+var all_items: Array[ItemData] = []
+var all_skills: Array[SkillData] = []
 
 ## 主线阶段配置（由 MainlineStageData.tres 组成）
 var mainline_stages: Array[MainlineStageData] = []
@@ -56,7 +56,7 @@ var next_draw_extra_item: bool = false
 
 const POOL_AFFIXES_DIR: String = "res://data/general/pool_affixes"
 
-var all_pool_affixes: Array = []
+var all_pool_affixes: Array[PoolAffixData] = []
 
 
 func _ready() -> void:
@@ -130,15 +130,15 @@ func spend_tickets(amount: int) -> bool:
 	return true
 
 
-func add_item(item: RefCounted) -> void:
+func add_item(item: ItemInstance) -> void:
 	inventory.append(item)
 	inventory_changed.emit(inventory)
 
 
-func remove_item_at(index: int) -> RefCounted:
+func remove_item_at(index: int) -> ItemInstance:
 	if index < 0 or index >= inventory.size():
 		return null
-	var removed: RefCounted = inventory.pop_at(index)
+	var removed: ItemInstance = inventory.pop_at(index)
 	inventory_changed.emit(inventory)
 	return removed
 
@@ -154,14 +154,16 @@ func set_skills(skills: Array) -> void:
 	skills_changed.emit(current_skills)
 
 
-func get_items_for_type(type: Constants.ItemType) -> Array:
+func get_items_for_type(type: Constants.ItemType) -> Array[ItemData]:
 	if not items_by_type.has(type):
 		return []
-	return (items_by_type[type] as Array).duplicate()
+	var res: Array[ItemData] = []
+	res.assign(items_by_type[type] as Array)
+	return res
 
 
-func get_all_normal_items() -> Array:
-	var result = []
+func get_all_normal_items() -> Array[ItemData]:
+	var result: Array[ItemData] = []
 	for type in items_by_type:
 		if Constants.is_normal_type(type):
 			result.append_array(items_by_type[type])
@@ -261,8 +263,9 @@ func _on_item_loaded(item: Resource) -> void:
 		return
 	var type: Constants.ItemType = item.get("item_type")
 	if not items_by_type.has(type):
-		items_by_type[type] = []
-	(items_by_type[type] as Array).append(item)
+		var typed_arr: Array[ItemData] = []
+		items_by_type[type] = typed_arr
+	(items_by_type[type] as Array[ItemData]).append(item as ItemData)
 
 
 func _on_skill_loaded(_skill: Resource) -> void:
