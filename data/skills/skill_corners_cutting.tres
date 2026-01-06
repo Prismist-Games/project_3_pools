@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
+
+[ext_resource type="Resource" path="res://data/skills/effects/corners_cutting_effect.tres" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
+
+[resource]
+script = ExtResource("2")
+id = "skill_corners_cutting"
+name = "偷工减料"
+description = "刷新出新订单时，20% 概率使订单需求数量 -1（最低为 1）。"
+type = "order"
+effects = [ExtResource("1")]

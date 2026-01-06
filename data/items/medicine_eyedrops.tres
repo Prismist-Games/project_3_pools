@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://dlkr6towk4b7b"]
+
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="1_kalof"]
+
+[resource]
+script = ExtResource("1_kalof")
+id = &"medicine_eyedrops"
+name = "滴眼液"
+item_type = 2

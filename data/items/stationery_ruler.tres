@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://cejvckjgdgwf5"]
+
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="1_24onr"]
+
+[resource]
+script = ExtResource("1_24onr")
+id = &"stationery_ruler"
+name = "尺子"
+item_type = 3

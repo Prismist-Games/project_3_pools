@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Lucky7SkillEffect" load_steps=2 format=3]
+
+[ext_resource type="Script" uid="uid://mnhk2tbbjry4" path="res://scripts/resources/skill_resources/skill_effects/lucky_7_skill_effect.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+last_digit = 7
+legendary_multiplier = 2.0
+
+
+
+
+
+
+
+

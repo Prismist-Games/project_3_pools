@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"kitchenware_pan"
+name = "平底锅"
+item_type = 4
+is_mainline = false
+
+
+
+

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
+
+[ext_resource type="Resource" path="res://data/skills/effects/hard_order_expert_effect.tres" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
+
+[resource]
+script = ExtResource("2")
+id = "skill_hard_order_expert"
+name = "困难订单专家"
+description = "完成需要史诗以上品质物品的订单时，额外获得 15 张奖券。"
+type = "order"
+effects = [ExtResource("1")]

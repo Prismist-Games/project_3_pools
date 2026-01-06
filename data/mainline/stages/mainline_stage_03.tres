@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="MainlineStageData" load_steps=3 format=3 uid="uid://cblh7l7ihg3ug"]
+
+[ext_resource type="Resource" uid="uid://doo3xbtq0fu08" path="res://data/items/mainline_magic_pen.tres" id="1_7brqc"]
+[ext_resource type="Script" uid="uid://bhem1x3i1f4xh" path="res://scripts/resources/mainline_stage_data.gd" id="2_gvwl1"]
+
+[resource]
+script = ExtResource("2_gvwl1")
+stage = 3
+stage_name = "阶段 3"
+mainline_item = ExtResource("1_7brqc")
+required_secondary_rarity = 2
+order_item_count_weights = PackedFloat32Array(0, 50, 50, 0)
+order_weight_common = 60.0
+order_weight_uncommon = 30.0
+order_weight_rare = 10.0
+order_weight_epic = 0.0
+order_weight_legendary = 0.0
+filler_rarity = 2
+unlocked_item_types = Array[int]([1, 2, 3, 4, 5])
+has_merge = true
+merge_limit = 2
+has_pool_affixes = true
+has_order_refresh = true
+inventory_size = 8
+order_count = 3
+items_per_pool = 5
+weight_common = 50.0
+weight_uncommon = 30.0
+weight_rare = 20.0
+newly_unlocked_skill_ids = Array[String](["skill_frugal", "skill_vip_discount", "skill_corners_cutting", "skill_big_order_expert"])

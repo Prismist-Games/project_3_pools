@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PoolAffixData" load_steps=4 format=3]
+
+[ext_resource type="Script" uid="uid://d1725wsbx1i5" path="res://scripts/resources/pool_resources/pool_affix_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://6f2x8h4j1lal" path="res://scripts/resources/pool_resources/pool_affix_effect.gd" id="1_v0gia"]
+[ext_resource type="Resource" path="res://data/pool_affixes/effects/volatile_affix_effect.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"volatile"
+name = "波动的"
+description = "仅产出普通或传说 (传说概率极高)。"
+base_gold_cost = 8
+effects = Array[ExtResource("1_v0gia")]([ExtResource("2")])

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="GameConfig" load_steps=2 format=3 uid="uid://d3kl01sndds73"]
+
+[ext_resource type="Script" uid="uid://dmjtd0oxhv6f4" path="res://scripts/resources/game_config.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+starting_gold = 9999999
+starting_tickets = 999999
+normal_draw_gold_cost = 1
+debug_stage = 4

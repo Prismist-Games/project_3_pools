@@ -1,0 +1,116 @@
+---
+alwaysApply: true
+description: "project-overview"
+globs:
+---
+# project-overview
+
+这份文档定义了基于 **Godot 4.5.1 (GDScript)** 的游戏项目核心逻辑、结构、命名规范和架构模式。
+
+## 1. 项目背景与核心机制
+
+### 1.1 游戏概述
+
+一款库存管理与订单完成游戏。玩家消耗资源抽取物品，整理背包，合成升级，完成订单，最终收集 5 个传说级主线道具通关。
+
+### 1.2 核心循环
+
+1. **资源获取**: 拥有 **金币 (Gold)** 和 **奖券 (Tickets)**。
+2. **抽奖 (Draw)**: 界面显示 3 个随机 **奖池 (Pools)**。每个池有特定类型及随机 **词缀 (Affix)**。
+3. **整理与合成**:
+   * **合成**: 两个同名、同品质且非“绝育”物品可升阶。
+   * **回收**: 换取少量金币。
+4. **订单 (Orders)**: 4 个普通订单 + 1 个主线订单。满足品质和种类要求后提交，获得奖励。
+
+### 1.3 关键数据定义
+
+#### A. 品质 (Rarity)
+
+
+| 品质                 | 概率 | 加成  | 回收值 | 颜色特征      |
+| :--------------------- | :----- | :------ | :------- | :-------------- |
+| **普通 (common)**    | 40%  | +0%   | 0      | 灰色 (Slate)  |
+| **优秀 (uncommon)**  | 30%  | +10%  | 0      | 绿色 (Green)  |
+| **稀有 (rare)**      | 19%  | +20%  | 1      | 蓝色 (Blue)   |
+| **史诗 (epic)**      | 10%  | +40%  | 2      | 紫色 (Purple) |
+| **传说 (legendary)** | 1%   | +100% | 4      | 橙色 (Orange) |
+| **神话 (mythic)**    | 0%   | +300% | 10     | 红色 (Rose)   |
+
+#### B. 奖池词缀 (Affixes)
+
+* **以旧换新 (Trade-in)**: 消耗背包 1 个物品，随机置换同品质物品。
+* **硬化的 (Hardened)**: 稀有度概率提升，但物品 **绝育 (Sterile)** (不可合成)。
+* **提纯的 (Purified)**: 保底产出稀有及以上。
+* **波动的 (Volatile)**: 仅产出普通或传说 (传说概率极高)。
+* **稀碎的 (Fragmented)**: 产出 3 个物品，但必定是普通。
+* **精准的 (Precise)**: 二选一交互。
+* **有的放矢 (Targeted)**: 指定类型交互。
+
+#### C. 主线流程 (Mainline)
+
+分 5 阶段，每阶段需提交神话级主线道具 + 1 个随机史诗道具：
+
+* 阶段 1: 仙果 (Fruit) -> 解锁技能
+* 阶段 2: 灵丹 (Medicine)
+* 阶段 3: 神笔 (Stationery)
+* 阶段 4: 金铲铲 (Kitchenware)
+* 阶段 5: 特斯拉 (Electronics) -> 通关
+
+#### D. 奖池机制
+
+* **普通池**: 消耗金币。
+* **主线池**: 持有奖券 > 10 且未通关时，50% 概率替代普通池。
+  * 消耗: 10 奖券。
+  * 掉落: 30% 当前阶段神话道具；70% 填充物 (史诗 90%, 传说 10%)。
+
+### 1.4 技能系统 (Skill System)
+
+* **机制**: 被动触发，3 个技能槽。
+* **典型技能**:
+  * 【贫困救济】: 金币 < 5 时，订单奖励 +10。
+  * 【幸运 7】: 金币尾数为 7 时，传说概率翻倍。
+  * 【精打细算】: 金币 < 10 时，抽奖消耗 -2 (最低为 1)。
+  * 【炼金术】: 回收稀有+物品，15% 获 5 张奖券。
+  * 【谈判专家】: 抽到史诗+物品，订单刷新次数 +1。
+  * 【强迫症】: 提交同种类订单，奖励翻倍。
+
+## 2. 核心架构模式
+
+* **GameCore / Context** -> `Autoload` (Singletons): `GameManager` 管理数值，`EventBus` 管理通信。
+* **useState** -> `Variables` + `Setter/Signal`: 变量修改必须发出信号。
+* **useEffect** -> `Signal Connection`: 监听信号执行回调。
+* **JSON Data Configs** -> `Custom Resources (.tres)`: 继承自 `Resource` 的类。
+* **Components** -> `Scenes (.tscn)`: 独立的 UI/逻辑模块。
+
+## 3. 文件目录结构
+
+res://
+├── assets/                 # 素材 (icons, fonts, sounds, sprites)
+├── data/                   # 静态资源实例 (.tres)
+├── scenes/                 # 场景文件 (.tscn)
+│   ├── main.tscn           # 入口
+│   ├── ui/                 # UI 组件 (order_card, pool_card, inventory_slot)
+│   └── managers/           # 逻辑节点
+├── scripts/                # GDScript (.gd)
+│   ├── globals/            # Autoload (game_manager, event_bus, constants)
+│   ├── resources/          # 类定义 (item_data, skill_data, pool_config)
+│   ├── systems/            # 核心系统 (inventory_sys, order_sys, skill_sys)
+│   └── ui/                 # UI 脚本## 4. 开发规范
+
+### 4.1 全局单例 (Autoloads)
+
+1. **EventBus**: 技能系统核心。所有主要行为必须发出信号。
+   * `order_completed(order_data: Dictionary)`
+   * `item_obtained(item: ItemData)`
+   * `draw_requested(pool_type: String, cost: int)`
+2. **GameManager**: 管理金币、奖券、主线进度及当前技能池。
+
+### 4.2 UI 与逻辑分离
+
+* **UI 节点**: 仅负责显示数据和转发输入。
+* **System 节点**: 负责处理数据逻辑 (合成、扣费)。
+* **通信**: UI 通过 `GameManager` 或 `EventBus` 调用 `System`。
+
+### 4.3 模块化要求
+
+技能、词缀和主线逻辑必须高度模块化，确保在不修改核心逻辑的情况下可扩展新内容。

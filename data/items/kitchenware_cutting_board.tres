@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://1m12tvmtrk3r"]
+
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="1_h4xw5"]
+
+[resource]
+script = ExtResource("1_h4xw5")
+id = &"kitchenware_cutting_board"
+name = "菜板"
+item_type = 4

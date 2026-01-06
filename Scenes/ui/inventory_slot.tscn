@@ -1,0 +1,45 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7t8q2x8g2u3"]
+
+[ext_resource type="Script" uid="uid://g3iaadcnw0b3" path="res://scripts/ui/inventory_slot_ui.gd" id="1_script"]
+
+[node name="InventorySlot" type="PanelContainer"]
+custom_minimum_size = Vector2(80, 100)
+offset_right = 80.0
+offset_bottom = 100.0
+mouse_filter = 0
+script = ExtResource("1_script")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="IconRect" type="TextureRect" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NameLabel" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "物品名"
+horizontal_alignment = 1
+clip_text = true
+
+[node name="RarityLabel" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "普通"
+horizontal_alignment = 1
+
+[connection signal="gui_input" method="_on_gui_input" from="." to="." commit=""]
+
+
+
+
+
+

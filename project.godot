@@ -8,6 +8,19 @@
 
 config_version=5
 
+[addons]
+
+resources_spreadsheet_view/array_color_tint=100.0
+resources_spreadsheet_view/color_rows=true
+resources_spreadsheet_view/array_min_width=128.0
+resources_spreadsheet_view/resource_preview_size=32.0
+resources_spreadsheet_view/clip_headers=false
+resources_spreadsheet_view/dupe_arrays=true
+resources_spreadsheet_view/context_menu_on_leftclick=false
+resources_spreadsheet_view/fold_docks=true
+resources_spreadsheet_view/resource_cell_label_mode=1
+resources_spreadsheet_view/freeze_first_column=true
+
 [application]
 
 config/name="Project 3 Pools"
@@ -17,17 +30,25 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-AnimationDirector="*res://Scripts/animation_director.gd"
 Constants="*res://scripts/globals/constants.gd"
 EventBus="*res://scripts/globals/event_bus.gd"
 GameManager="*res://scripts/globals/game_manager.gd"
-SkillSystem="*res://scripts/systems/skill_sys.gd"
+SkillSystem="*res://scripts/systems/skill_system.gd"
+UnlockManager="*res://scripts/globals/unlock_manager.gd"
+InventorySystem="*res://scripts/systems/inventory_system.gd"
+OrderSystem="*res://scripts/systems/order_system.gd"
+PoolSystem="*res://scripts/systems/pool_system.gd"
+AnimationDirector="*res://scripts/systems/animation_director.gd"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/resources_spreadsheet_view/plugin.cfg")
 
 [rendering]
 
