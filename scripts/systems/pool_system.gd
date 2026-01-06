@@ -188,12 +188,7 @@ func _generate_normal_pool(excluded_types: Array[Constants.ItemType] = [], exclu
 	
 	# 1. 随机选择物品类型，排除已使用的类型
 	var available_types: Array[Constants.ItemType] = []
-	var source_types: Array[Constants.ItemType] = []
-	
-	if stage_data != null and not stage_data.unlocked_item_types.is_empty():
-		source_types = stage_data.unlocked_item_types
-	else:
-		source_types = Constants.get_normal_item_types()
+	var source_types: Array[Constants.ItemType] = UnlockManager.get_unlocked_item_types()
 		
 	for t in source_types:
 		if t not in excluded_types:
@@ -206,7 +201,7 @@ func _generate_normal_pool(excluded_types: Array[Constants.ItemType] = [], exclu
 		pool.item_type = available_types.pick_random()
 	
 	# 2. 随机选择词缀，排除已使用的词缀
-	if stage_data != null and stage_data.has_pool_affixes:
+	if UnlockManager.is_unlocked(UnlockManager.Feature.POOL_AFFIXES):
 		_assign_random_affix(pool, excluded_affixes)
 	
 	# 3. 计算费用

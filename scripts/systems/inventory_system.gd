@@ -179,11 +179,11 @@ func can_merge(item_a: ItemInstance, item_b: ItemInstance) -> bool:
 	if item_a.rarity >= Constants.Rarity.MYTHIC: return false
 	if item_a.sterile or item_b.sterile: return false
 	
-	# 检查阶段限制
-	var stage_data = GameManager.current_stage_data
-	if stage_data != null:
-		if not stage_data.has_merge: return false
-		if item_a.rarity >= stage_data.merge_limit: return false
+	# 检查 UnlockManager 合成解锁状态
+	if not UnlockManager.is_unlocked(UnlockManager.Feature.MERGE):
+		return false
+	if item_a.rarity >= UnlockManager.merge_limit:
+		return false
 		
 	return true
 

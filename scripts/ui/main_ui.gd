@@ -21,7 +21,10 @@ const POOL_CARD_SCENE = preload("res://scenes/ui/pool_card.tscn")
 const ORDER_CARD_SCENE = preload("res://scenes/ui/order_card.tscn")
 const INVENTORY_SLOT_SCENE = preload("res://scenes/ui/inventory_slot.tscn")
 const SKILL_ICON_SCENE = preload("res://scenes/ui/skill_icon.tscn")
+const DEBUG_CONSOLE_SCENE = preload("res://scenes/ui/debug_console.tscn")
 const InventorySlotUI = preload("res://scripts/ui/inventory_slot_ui.gd")
+
+var _debug_console: Control = null
 
 
 func _ready() -> void:
@@ -147,7 +150,7 @@ func _update_ui_mode_display() -> void:
 			submit_mode_button.disabled = false
 			recycle_mode_button.text = "确认回收"
 			recycle_mode_button.disabled = false
-		Constants.UIMode.TRADE_IN:
+		Constants.UIMode.REPLACE:
 			submit_mode_label.text = "以旧换新：请选择置换目标"
 			submit_mode_label.add_theme_color_override("font_color", Color.GOLDENROD)
 			submit_mode_button.text = "取消"
@@ -170,7 +173,7 @@ func _on_submit_mode_button_pressed() -> void:
 			var success = OrderSystem.submit_order(GameManager.order_selection_index, InventorySystem.multi_selected_indices)
 			if success:
 				GameManager.current_ui_mode = Constants.UIMode.NORMAL
-		Constants.UIMode.RECYCLE, Constants.UIMode.TRADE_IN:
+		Constants.UIMode.RECYCLE, Constants.UIMode.REPLACE:
 			# 在回收或以旧换新模式下，该按钮作为“取消”
 			_cancel_current_mode()
 
@@ -183,7 +186,7 @@ func _on_recycle_mode_button_pressed() -> void:
 			if not InventorySystem.multi_selected_indices.is_empty():
 				_execute_multi_recycle()
 			GameManager.current_ui_mode = Constants.UIMode.NORMAL
-		Constants.UIMode.SUBMIT, Constants.UIMode.TRADE_IN:
+		Constants.UIMode.SUBMIT, Constants.UIMode.REPLACE:
 			# 在提交或以旧换新模式下，该按钮作为“取消”
 			_cancel_current_mode()
 
@@ -363,7 +366,7 @@ func _on_game_event(event_id: StringName, payload: Variant) -> void:
 		
 		InventorySlotUI.selection_mode_data = data
 		if data.get("type") == "trade_in":
-			GameManager.current_ui_mode = Constants.UIMode.TRADE_IN
+			GameManager.current_ui_mode = Constants.UIMode.REPLACE
 		
 		_on_inventory_changed(InventorySystem.inventory)
 
@@ -512,3 +515,18 @@ func _handle_targeted_selection(payload: Dictionary) -> void:
 	
 	dialog.get_ok_button().hide()
 	dialog.popup_centered()
+
+
+func _input(event: InputEvent) -> void:
+	# F12 打开/关闭调试控制台
+	if event is InputEventKey and event.pressed and event.keycode == KEY_F12:
+		_toggle_debug_console()
+		get_viewport().set_input_as_handled()
+
+
+func _toggle_debug_console() -> void:
+	if _debug_console == null:
+		_debug_console = DEBUG_CONSOLE_SCENE.instantiate()
+		add_child(_debug_console)
+	else:
+		_debug_console.visible = not _debug_console.visible

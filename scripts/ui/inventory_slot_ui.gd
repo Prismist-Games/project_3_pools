@@ -227,7 +227,7 @@ func _update_interaction_visuals(style: StyleBoxFlat) -> void:
 			else:
 				if _item:
 					self.modulate.a = 0.8
-		Constants.UIMode.TRADE_IN:
+		Constants.UIMode.REPLACE:
 			# 以旧换新模式：非主线物品高亮，主线变暗
 			if _item:
 				if _item.item_data.item_type == Constants.ItemType.MAINLINE:
@@ -246,7 +246,7 @@ func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			# 1. 优先处理特殊选择模式 (Trade-in)
-			if GameManager.current_ui_mode == Constants.UIMode.TRADE_IN:
+			if GameManager.current_ui_mode == Constants.UIMode.REPLACE:
 				_handle_selection_mode_click()
 				return
 			

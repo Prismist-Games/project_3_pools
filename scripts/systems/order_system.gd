@@ -61,9 +61,9 @@ func refresh_all_orders() -> void:
 func refresh_order(index: int) -> void:
 	if index < 0 or index >= current_orders.size():
 		return
-		
-	var stage_data = GameManager.current_stage_data
-	if stage_data != null and not stage_data.has_order_refresh:
+	
+	# 检查订单刷新是否已解锁
+	if not UnlockManager.is_unlocked(UnlockManager.Feature.ORDER_REFRESH):
 		return
 
 	var order = current_orders[index]

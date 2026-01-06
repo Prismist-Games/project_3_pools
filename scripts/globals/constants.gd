@@ -15,17 +15,6 @@ enum Rarity {
 	MYTHIC,
 }
 
-# enum AffixType {
-# 	NONE,
-# 	TRADE_IN, ## 以旧换新
-# 	HARDENED, ## 硬化的（更高品质 + 绝育）
-# 	PURIFIED, ## 提纯的（保底稀有及以上）
-# 	VOLATILE, ## 波动的（仅普通/传说，传说更高）
-# 	FRAGMENTED, ## 稀碎的（一次 3 个，必定普通）
-# 	PRECISE, ## 精准的（二选一）
-# 	TARGETED, ## 有的放矢（指定类型）
-# }
-
 enum ItemType {
 	NONE,
 	FRUIT,
@@ -169,7 +158,7 @@ enum UIMode {
 	NORMAL, ## 整理模式
 	SUBMIT, ## 提交模式
 	RECYCLE, ## 回收模式
-	TRADE_IN ## 以旧换新模式
+	REPLACE ## 以旧换新模式
 }
 
 ## UX 规范颜色 (针对白色背景优化)

@@ -1,0 +1,177 @@
+[gd_scene load_steps=2 format=3 uid="uid://dm5n2cwj6kxqy"]
+
+[ext_resource type="Script" path="res://scripts/ui/debug_console_ui.gd" id="1_debug"]
+
+[node name="DebugConsole" type="PanelContainer"]
+custom_minimum_size = Vector2(320, 0)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -340.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 400.0
+grow_horizontal = 0
+script = ExtResource("1_debug")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "🔧 Debug Console"
+theme_override_font_sizes/font_size = 18
+
+[node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "✕"
+flat = true
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="FeaturesLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "功能开关"
+theme_override_font_sizes/font_size = 14
+
+[node name="FeatureContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="MergeToggle" type="CheckButton" parent="MarginContainer/VBoxContainer/FeatureContainer"]
+layout_mode = 2
+text = "合成"
+metadata/feature = 0
+
+[node name="PoolAffixesToggle" type="CheckButton" parent="MarginContainer/VBoxContainer/FeatureContainer"]
+layout_mode = 2
+text = "奖池词缀"
+metadata/feature = 1
+
+[node name="OrderRefreshToggle" type="CheckButton" parent="MarginContainer/VBoxContainer/FeatureContainer"]
+layout_mode = 2
+text = "订单刷新"
+metadata/feature = 2
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ItemTypesLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "物品类型"
+theme_override_font_sizes/font_size = 14
+
+[node name="ItemTypeContainer" type="HFlowContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 4
+
+[node name="FruitToggle" type="CheckButton" parent="MarginContainer/VBoxContainer/ItemTypeContainer"]
+layout_mode = 2
+disabled = true
+button_pressed = true
+text = "水果"
+
+[node name="MedicineToggle" type="CheckButton" parent="MarginContainer/VBoxContainer/ItemTypeContainer"]
+layout_mode = 2
+text = "药品"
+metadata/feature = 3
+
+[node name="StationeryToggle" type="CheckButton" parent="MarginContainer/VBoxContainer/ItemTypeContainer"]
+layout_mode = 2
+text = "文具"
+metadata/feature = 4
+
+[node name="KitchenwareToggle" type="CheckButton" parent="MarginContainer/VBoxContainer/ItemTypeContainer"]
+layout_mode = 2
+text = "厨具"
+metadata/feature = 5
+
+[node name="ElectronicsToggle" type="CheckButton" parent="MarginContainer/VBoxContainer/ItemTypeContainer"]
+layout_mode = 2
+text = "电器"
+metadata/feature = 6
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ActionsLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "手动刷新"
+theme_override_font_sizes/font_size = 14
+
+[node name="RefreshButtonsRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="ApplyButton" type="Button" parent="MarginContainer/VBoxContainer/RefreshButtonsRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "立即应用更改"
+
+[node name="HSeparator4" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ValuesLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "数值配置"
+theme_override_font_sizes/font_size = 14
+
+[node name="MergeLimitRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MergeLimitRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "合成上限"
+
+[node name="MergeLimitOption" type="OptionButton" parent="MarginContainer/VBoxContainer/MergeLimitRow"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="InventorySizeRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/InventorySizeRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "背包大小"
+
+[node name="InventorySizeSpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/InventorySizeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+max_value = 20.0
+value = 6.0
+
+[node name="HSeparator5" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="QuickActions" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="UnlockAllButton" type="Button" parent="MarginContainer/VBoxContainer/QuickActions"]
+layout_mode = 2
+text = "全部解锁"
+
+[node name="LockAllButton" type="Button" parent="MarginContainer/VBoxContainer/QuickActions"]
+layout_mode = 2
+text = "全部锁定"

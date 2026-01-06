@@ -20,7 +20,7 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	
 	# 标记跳过标准逻辑，且先不扣费（置换成功后再扣）
 	ctx.skip_draw = true
-	ctx.gold_cost = 0 
+	ctx.gold_cost = 0
 	
 	# 进入选择模式
 	# 我们发送一个 game_event，UI (Inventory) 会监听它
@@ -61,7 +61,7 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 			var new_item_instance = ItemInstance.new(new_item_data, rarity)
 			
 			# 4. 执行置换
-			GameManager.remove_items([item_to_trade])
+			InventorySystem.remove_items([item_to_trade])
 			
 			EventBus.item_obtained.emit(new_item_instance)
 			
