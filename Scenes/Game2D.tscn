@@ -269,6 +269,15 @@ background_down_offset = -265.0
 self_modulate = Color(0.99607843, 0.90588236, 0.28627452, 1)
 texture = ExtResource("18_xqbja")
 
+[node name="Input Area" type="Control" parent="The Machine/TheMachineSwitch_Recycle"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -127.0
+offset_top = -170.0
+offset_right = 106.0
+offset_bottom = 169.0
+mouse_default_cursor_shape = 2
+
 [node name="TheMachineSwitch_Submit" type="Node2D" parent="The Machine"]
 position = Vector2(1846.25, 1107.25)
 
@@ -332,6 +341,15 @@ background_down_offset = -265.0
 [node name="Switch_fill" type="Sprite2D" parent="The Machine/TheMachineSwitch_Submit/Switch_handle"]
 self_modulate = Color(0.2509804, 0.6392157, 0.67058825, 1)
 texture = ExtResource("18_xqbja")
+
+[node name="Input Area" type="Control" parent="The Machine/TheMachineSwitch_Submit"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -126.0
+offset_top = -168.0
+offset_right = 104.0
+offset_bottom = 168.0
+mouse_default_cursor_shape = 2
 
 [node name="TheMachineDisplayFill" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.08235294, 0.53333336, 0.6313726, 1)
@@ -417,441 +435,15 @@ texture = ExtResource("11_fkxe6")
 [node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root"]
 texture = ExtResource("11_bobrt")
 
+[node name="Input Area" type="Control" parent="The Machine/Item Slots Grid/Item Slot_root"]
+anchors_preset = 0
+offset_left = -136.0
+offset_top = -138.0
+offset_right = 138.0
+offset_bottom = 138.0
+mouse_default_cursor_shape = 2
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
-
-[node name="Item Slot_root2" type="Control" parent="The Machine/Item Slots Grid"]
-layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root2"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root2/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root2/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root2/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root2/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root2/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root2/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
-
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root2/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root2/Item Slot_mask/Item Slot_item_root/Item_example"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root2/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -43)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root2/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root2"]
-texture = ExtResource("11_bobrt")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root2"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
-
-[node name="Item Slot_root3" type="Control" parent="The Machine/Item Slots Grid"]
-layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root3"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root3/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root3/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root3/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root3/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root3/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root3/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
-
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root3/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root3/Item Slot_mask/Item Slot_item_root/Item_example"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root3/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -43)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root3/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root3"]
-texture = ExtResource("11_bobrt")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root3"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
-
-[node name="Item Slot_root4" type="Control" parent="The Machine/Item Slots Grid"]
-layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root4"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root4/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root4/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root4/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root4/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root4/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root4/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
-
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root4/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root4/Item Slot_mask/Item Slot_item_root/Item_example"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root4/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -43)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root4/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root4"]
-texture = ExtResource("11_bobrt")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root4"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
-
-[node name="Item Slot_root5" type="Control" parent="The Machine/Item Slots Grid"]
-layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root5"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root5/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root5/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root5/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root5/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root5/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root5/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
-
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root5/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root5/Item Slot_mask/Item Slot_item_root/Item_example"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root5/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -43)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root5/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root5"]
-texture = ExtResource("11_bobrt")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root5"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
-
-[node name="Item Slot_root6" type="Control" parent="The Machine/Item Slots Grid"]
-layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root6"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root6/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root6/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root6/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root6/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root6/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root6/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
-
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root6/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root6/Item Slot_mask/Item Slot_item_root/Item_example"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root6/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -43)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root6/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root6"]
-texture = ExtResource("11_bobrt")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root6"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
-
-[node name="Item Slot_root7" type="Control" parent="The Machine/Item Slots Grid"]
-layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root7"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root7/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root7/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root7/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root7/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root7/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root7/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
-
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root7/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root7/Item Slot_mask/Item Slot_item_root/Item_example"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root7/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -43)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root7/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root7"]
-texture = ExtResource("11_bobrt")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root7"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
-
-[node name="Item Slot_root8" type="Control" parent="The Machine/Item Slots Grid"]
-layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root8"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root8/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root8/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root8/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root8/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root8/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root8/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
-
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root8/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root8/Item Slot_mask/Item Slot_item_root/Item_example"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root8/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -43)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root8/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root8"]
-texture = ExtResource("11_bobrt")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root8"]
 root_node = NodePath("../../../..")
 libraries = {
 &"": SubResource("AnimationLibrary_vy3lb")
@@ -933,6 +525,14 @@ texture = ExtResource("23_o2lnr")
 modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
 texture = ExtResource("24_y6c7h")
 
+[node name="Input Area" type="Control" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1"]
+anchors_preset = 0
+offset_left = -289.0
+offset_top = -235.0
+offset_right = 265.0
+offset_bottom = 287.0
+mouse_default_cursor_shape = 2
+
 [node name="Lottery Slot_root_2" type="Control" parent="The Machine/Lottery Slots Grid"]
 layout_mode = 2
 
@@ -1002,6 +602,14 @@ texture = ExtResource("23_o2lnr")
 modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
 texture = ExtResource("24_y6c7h")
 
+[node name="Input Area" type="Control" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2"]
+anchors_preset = 0
+offset_left = -289.0
+offset_top = -235.0
+offset_right = 265.0
+offset_bottom = 287.0
+mouse_default_cursor_shape = 2
+
 [node name="Lottery Slot_root_3" type="Control" parent="The Machine/Lottery Slots Grid"]
 layout_mode = 2
 
@@ -1070,6 +678,14 @@ texture = ExtResource("23_o2lnr")
 [node name="Lottery Slot_top_screen_outline" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_3/Lottery Slot_top_screen"]
 modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
 texture = ExtResource("24_y6c7h")
+
+[node name="Input Area" type="Control" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_3"]
+anchors_preset = 0
+offset_left = -289.0
+offset_top = -235.0
+offset_right = 265.0
+offset_bottom = 287.0
+mouse_default_cursor_shape = 2
 
 [node name="The Rabbit" type="Node2D" parent="."]
 position = Vector2(-545, 1074)
@@ -1290,6 +906,14 @@ texture = ExtResource("26_a718j")
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_outline"]
 texture = ExtResource("27_0phgb")
 
+[node name="Input Area" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1"]
+anchors_preset = 0
+offset_left = -461.0
+offset_top = -127.0
+offset_right = 711.0
+offset_bottom = 162.0
+mouse_default_cursor_shape = 2
+
 [node name="Refresh Button" type="TextureButton" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1"]
 self_modulate = Color(0.9411765, 0.36078432, 0.38039216, 1)
 layout_mode = 0
@@ -1404,6 +1028,14 @@ texture = ExtResource("26_a718j")
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_outline"]
 texture = ExtResource("27_0phgb")
+
+[node name="Input Area" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2"]
+anchors_preset = 0
+offset_left = -461.0
+offset_top = -127.0
+offset_right = 711.0
+offset_bottom = 162.0
+mouse_default_cursor_shape = 2
 
 [node name="Refresh Button" type="TextureButton" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2"]
 self_modulate = Color(0.9411765, 0.36078432, 0.38039216, 1)
@@ -1520,6 +1152,14 @@ texture = ExtResource("26_a718j")
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_outline"]
 texture = ExtResource("27_0phgb")
 
+[node name="Input Area" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3"]
+anchors_preset = 0
+offset_left = -461.0
+offset_top = -127.0
+offset_right = 711.0
+offset_bottom = 162.0
+mouse_default_cursor_shape = 2
+
 [node name="Refresh Button" type="TextureButton" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3"]
 self_modulate = Color(0.9411765, 0.36078432, 0.38039216, 1)
 layout_mode = 0
@@ -1634,6 +1274,14 @@ texture = ExtResource("26_a718j")
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_outline"]
 texture = ExtResource("27_0phgb")
+
+[node name="Input Area" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4"]
+anchors_preset = 0
+offset_left = -461.0
+offset_top = -127.0
+offset_right = 711.0
+offset_bottom = 162.0
+mouse_default_cursor_shape = 2
 
 [node name="Refresh Button" type="TextureButton" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4"]
 self_modulate = Color(0.9411765, 0.36078432, 0.38039216, 1)
@@ -1798,3 +1446,11 @@ texture = ExtResource("33_0ehwc")
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/Main Quest Slot_root/Quest Slot_outline"]
 texture = ExtResource("34_oeaov")
+
+[node name="Input Area" type="Control" parent="The Rabbit/Main Quest Slot_root"]
+anchors_preset = 0
+offset_left = -461.0
+offset_top = -127.0
+offset_right = 614.0
+offset_bottom = 162.0
+mouse_default_cursor_shape = 2
