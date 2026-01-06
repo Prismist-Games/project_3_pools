@@ -1,4 +1,4 @@
-[gd_scene load_steps=107 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=108 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
 [ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
@@ -103,6 +103,7 @@
 [ext_resource type="Texture2D" uid="uid://ctkkq7iwtmubj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_3.png" id="94_i65o3"]
 [ext_resource type="Texture2D" uid="uid://dfn54hrs485jj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_4.png" id="95_bttk6"]
 [ext_resource type="Texture2D" uid="uid://da0ig7cexq40g" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_5.png" id="96_jf2x3"]
+[ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="99_anim"]
 
 [sub_resource type="Animation" id="Animation_ovo1l"]
 length = 0.001
@@ -131,7 +132,7 @@ _data = {
 [node name="Game2D" type="Node"]
 
 [node name="Background" type="Node2D" parent="."]
-position = Vector2(1022, 766)
+position = Vector2(3008, 1674.25)
 
 [node name="Background_floor" type="Sprite2D" parent="Background"]
 texture = ExtResource("2_vave4")
@@ -141,7 +142,7 @@ texture = ExtResource("2_xqbja")
 
 [node name="The Machine" type="Node2D" parent="."]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(1744.75, 564.75)
+position = Vector2(3730.75, 1473)
 
 [node name="TheMachineTopBehind" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
@@ -688,7 +689,7 @@ offset_bottom = 287.0
 mouse_default_cursor_shape = 2
 
 [node name="The Rabbit" type="Node2D" parent="."]
-position = Vector2(-545, 1074)
+position = Vector2(1441, 1982.25)
 
 [node name="TheRabbitLeftArm" type="Sprite2D" parent="The Rabbit"]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
@@ -1454,3 +1455,7 @@ offset_top = -127.0
 offset_right = 614.0
 offset_bottom = 162.0
 mouse_default_cursor_shape = 2
+
+[node name="Animator" type="Node" parent="The Rabbit"]
+script = ExtResource("99_anim")
+max_eye_offset = 32.0
