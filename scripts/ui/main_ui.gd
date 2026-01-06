@@ -29,11 +29,16 @@ func _ready() -> void:
 	GameManager.gold_changed.connect(_on_gold_changed)
 	GameManager.tickets_changed.connect(_on_tickets_changed)
 	GameManager.mainline_stage_changed.connect(_on_mainline_stage_changed)
-	GameManager.inventory_changed.connect(_on_inventory_changed)
-	GameManager.skills_changed.connect(_on_skills_changed)
-	GameManager.pending_queue_changed.connect(_on_pending_queue_changed)
+	# InventorySystem 信号
+	InventorySystem.inventory_changed.connect(_on_inventory_changed)
+	InventorySystem.pending_queue_changed.connect(_on_pending_queue_changed)
+	InventorySystem.multi_selection_changed.connect(_on_multi_selection_changed)
+	
 	GameManager.order_selection_changed.connect(_on_order_selection_changed)
 	GameManager.ui_mode_changed.connect(_on_ui_mode_changed)
+	
+	# SkillSystem 信号 (Refactored)
+	SkillSystem.skills_changed.connect(_on_skills_changed)
 	
 	EventBus.pools_refreshed.connect(_on_pools_refreshed)
 	EventBus.orders_updated.connect(_on_orders_updated)
@@ -51,9 +56,9 @@ func _ready() -> void:
 	_on_gold_changed(GameManager.gold)
 	_on_tickets_changed(GameManager.tickets)
 	_on_mainline_stage_changed(GameManager.mainline_stage)
-	_on_inventory_changed(GameManager.inventory)
-	_on_skills_changed(GameManager.current_skills)
-	_on_pending_queue_changed(GameManager.pending_items)
+	_on_inventory_changed(InventorySystem.inventory)
+	_on_skills_changed(SkillSystem.current_skills)
+	_on_pending_queue_changed(InventorySystem.pending_items)
 
 
 func _apply_white_background_styles() -> void:
@@ -66,13 +71,13 @@ func _apply_white_background_styles() -> void:
 
 func _on_ui_mode_changed(_mode: Constants.UIMode) -> void:
 	_update_ui_mode_display()
-	_on_inventory_changed(GameManager.inventory)
+	_on_inventory_changed(InventorySystem.inventory)
 	_on_orders_updated(OrderSystem.current_orders)
 
 
 func _update_ui_mode_display() -> void:
 	var mode = GameManager.current_ui_mode
-	var has_pending = GameManager.pending_item != null
+	var has_pending = InventorySystem.pending_item != null
 	# 只有在普通模式且没有待定物品时，才被视为“真正的普通模式”
 	var is_normal = mode == Constants.UIMode.NORMAL and not has_pending
 	
@@ -90,7 +95,7 @@ func _update_ui_mode_display() -> void:
 
 	# 特殊处理：有待定物品时的 UI 显示
 	if has_pending:
-		var count = GameManager.pending_items.size()
+		var count = InventorySystem.pending_items.size()
 		if count > 1:
 			submit_mode_label.text = "背包已满！还有 %d 个物品待处理，请替换或放弃" % count
 		else:
@@ -118,9 +123,9 @@ func _update_ui_mode_display() -> void:
 			submit_mode_button.disabled = true
 			
 			var selected_items: Array[ItemInstance] = []
-			for idx in GameManager.multi_selected_indices:
-				if idx >= 0 and idx < GameManager.inventory.size() and GameManager.inventory[idx]:
-					selected_items.append(GameManager.inventory[idx])
+			for idx in InventorySystem.multi_selected_indices:
+				if idx >= 0 and idx < InventorySystem.inventory.size() and InventorySystem.inventory[idx]:
+					selected_items.append(InventorySystem.inventory[idx])
 			
 			if GameManager.order_selection_index != -1:
 				var order = OrderSystem.current_orders[GameManager.order_selection_index]
@@ -151,10 +156,10 @@ func _update_ui_mode_display() -> void:
 
 
 func _on_submit_mode_button_pressed() -> void:
-	if GameManager.pending_item != null:
+	if InventorySystem.pending_item != null:
 		# 放弃新物品逻辑
-		InventorySystem.salvage_item_instance(GameManager.pending_item)
-		GameManager.pending_item = null
+		InventorySystem.salvage_item_instance(InventorySystem.pending_item)
+		InventorySystem.pending_item = null
 		return
 
 	match GameManager.current_ui_mode:
@@ -162,7 +167,7 @@ func _on_submit_mode_button_pressed() -> void:
 			GameManager.current_ui_mode = Constants.UIMode.SUBMIT
 			GameManager.order_selection_index = -1
 		Constants.UIMode.SUBMIT:
-			var success = OrderSystem.submit_order(GameManager.order_selection_index, GameManager.multi_selected_indices)
+			var success = OrderSystem.submit_order(GameManager.order_selection_index, InventorySystem.multi_selected_indices)
 			if success:
 				GameManager.current_ui_mode = Constants.UIMode.NORMAL
 		Constants.UIMode.RECYCLE, Constants.UIMode.TRADE_IN:
@@ -175,7 +180,7 @@ func _on_recycle_mode_button_pressed() -> void:
 		Constants.UIMode.NORMAL:
 			GameManager.current_ui_mode = Constants.UIMode.RECYCLE
 		Constants.UIMode.RECYCLE:
-			if not GameManager.multi_selected_indices.is_empty():
+			if not InventorySystem.multi_selected_indices.is_empty():
 				_execute_multi_salvage()
 			GameManager.current_ui_mode = Constants.UIMode.NORMAL
 		Constants.UIMode.SUBMIT, Constants.UIMode.TRADE_IN:
@@ -185,19 +190,19 @@ func _on_recycle_mode_button_pressed() -> void:
 
 func _cancel_current_mode() -> void:
 	GameManager.current_ui_mode = Constants.UIMode.NORMAL
-	GameManager.multi_selected_indices.clear()
+	InventorySystem.multi_selected_indices.clear()
 	GameManager.order_selection_index = -1
 	InventorySlotUI.selection_mode_data = {}
-	_on_inventory_changed(GameManager.inventory)
+	_on_inventory_changed(InventorySystem.inventory)
 
 
 func _execute_multi_salvage() -> void:
-	var indices = GameManager.multi_selected_indices.duplicate()
+	var indices = InventorySystem.multi_selected_indices.duplicate()
 	indices.sort()
 	indices.reverse()
 	for idx in indices:
 		InventorySystem.salvage_item(idx)
-	GameManager.multi_selected_indices.clear()
+	InventorySystem.multi_selected_indices.clear()
 
 
 func _on_pending_queue_changed(items: Array[ItemInstance]) -> void:
@@ -225,7 +230,7 @@ func _on_pending_queue_changed(items: Array[ItemInstance]) -> void:
 
 func _on_order_selection_changed(_index: int) -> void:
 	_on_orders_updated(OrderSystem.current_orders)
-	_on_inventory_changed(GameManager.inventory)
+	_on_inventory_changed(InventorySystem.inventory)
 
 
 func _on_gold_changed(val: int) -> void:
@@ -270,7 +275,7 @@ func _on_inventory_changed(items: Array) -> void:
 	for child in inventory_grid.get_children():
 		child.queue_free()
 		
-	var total_slots = GameManager.inventory.size()
+	var total_slots = InventorySystem.inventory.size()
 	if total_slots == 0: total_slots = 10
 		
 	for i in total_slots:
@@ -287,6 +292,10 @@ func _on_inventory_changed(items: Array) -> void:
 		_on_orders_updated(OrderSystem.current_orders)
 	
 	_update_ui_mode_display()
+
+
+func _on_multi_selection_changed(_indices: Array[int]) -> void:
+	_on_inventory_changed(InventorySystem.inventory)
 
 
 func _on_slot_clicked(index: int) -> void:
@@ -315,21 +324,22 @@ func _on_order_submit_requested(index: int) -> void:
 	# 2. 执行智能填充逻辑
 	GameManager.order_selection_index = index
 	var order = OrderSystem.current_orders[index]
-	var smart_indices = order.find_smart_selection(GameManager.inventory)
+	var smart_indices = order.find_smart_selection(InventorySystem.inventory)
 	
 	# 冲突处理：智能填充直接覆盖多选列表
-	GameManager.multi_selected_indices = smart_indices
+	# 使用 setter 触发信号
+	InventorySystem.selected_indices_for_order = smart_indices
 	
 	# 获取对应的 ItemInstance 列表进行验证
 	var selected_items: Array[ItemInstance] = []
 	for idx in smart_indices:
-		selected_items.append(GameManager.inventory[idx])
+		selected_items.append(InventorySystem.inventory[idx])
 	
 	# 检查库存是否完全满足
 	if not order.validate_selection(selected_items).valid:
 		EventBus.game_event.emit(&"order_card_shake_requested", ContextProxy.new({"index": index}))
 	
-	GameManager.inventory_changed.emit(GameManager.inventory)
+	InventorySystem.inventory_changed.emit(InventorySystem.inventory)
 	_update_ui_mode_display()
 
 
@@ -355,7 +365,7 @@ func _on_game_event(event_id: StringName, payload: Variant) -> void:
 		if data.get("type") == "trade_in":
 			GameManager.current_ui_mode = Constants.UIMode.TRADE_IN
 		
-		_on_inventory_changed(GameManager.inventory)
+		_on_inventory_changed(InventorySystem.inventory)
 
 
 func _on_modal_requested(modal_id: StringName, payload: Variant) -> void:
@@ -376,7 +386,7 @@ func _on_modal_requested(modal_id: StringName, payload: Variant) -> void:
 
 
 func _handle_skill_selection(_payload: Dictionary) -> void:
-	var skills = GameManager.get_selectable_skills(3)
+	var skills = SkillSystem.get_selectable_skills(3)
 	if skills.is_empty():
 		return
 		
@@ -401,12 +411,12 @@ func _handle_skill_selection(_payload: Dictionary) -> void:
 		btn.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		
 		btn.pressed.connect(func():
-			if GameManager.current_skills.size() < Constants.SKILL_SLOTS:
-				GameManager.add_skill(skill)
+			if SkillSystem.current_skills.size() < Constants.SKILL_SLOTS:
+				SkillSystem.add_skill(skill)
 			else:
 				# TODO: 技能槽满时的替换逻辑
 				# 暂时直接添加（演示用，实际应弹出替换面板）
-				GameManager.add_skill(skill)
+				SkillSystem.add_skill(skill)
 			dialog.queue_free()
 		)
 		h_box.add_child(btn)

@@ -48,9 +48,9 @@ func setup(order: OrderData, index: int) -> void:
 	
 	var selected_items: Array[ItemInstance] = []
 	if GameManager.current_ui_mode == Constants.UIMode.SUBMIT:
-		for idx in GameManager.multi_selected_indices:
-			if idx >= 0 and idx < GameManager.inventory.size() and GameManager.inventory[idx]:
-				selected_items.append(GameManager.inventory[idx])
+		for idx in InventorySystem.multi_selected_indices:
+			if idx >= 0 and idx < InventorySystem.inventory.size() and InventorySystem.inventory[idx]:
+				selected_items.append(InventorySystem.inventory[idx])
 	
 	var preview = order.calculate_preview_rewards(selected_items)
 	

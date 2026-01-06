@@ -19,12 +19,12 @@ static var selection_mode_data: Dictionary = {}
 func _ready() -> void:
 	# 确保即使没有编辑器设置样式，也能看到格子边框
 	var style = StyleBoxFlat.new()
-	style.bg_color = Color(0.15, 0.15, 0.15, 1.0) 
+	style.bg_color = Color(0.15, 0.15, 0.15, 1.0)
 	style.border_width_left = 2
 	style.border_width_top = 2
 	style.border_width_right = 2
 	style.border_width_bottom = 2
-	style.border_color = Color(0.4, 0.4, 0.4, 1.0) 
+	style.border_color = Color(0.4, 0.4, 0.4, 1.0)
 	style.set_corner_radius_all(4)
 	add_theme_stylebox_override("panel", style)
 	
@@ -89,7 +89,7 @@ func setup_preview(item_data: ItemData, rarity: int, is_fulfilled: bool = false)
 		style.border_width_top = 2
 		style.border_width_right = 2
 		style.border_width_bottom = 2
-		style.bg_color.a = 1.0 
+		style.bg_color.a = 1.0
 		
 		name_label.add_theme_color_override("font_color", Constants.COLOR_TEXT_MAIN)
 		rarity_label.add_theme_color_override("font_color", Constants.get_rarity_border_color(rarity).darkened(0.2))
@@ -157,7 +157,7 @@ func _update_visuals() -> void:
 			style.border_width_top = 2
 			style.border_width_right = 2
 			style.border_width_bottom = 2
-			style.bg_color.a = 1.0 
+			style.bg_color.a = 1.0
 		
 		# 强制设置深色字体
 		name_label.add_theme_color_override("font_color", Constants.COLOR_TEXT_MAIN)
@@ -175,7 +175,7 @@ func _update_interaction_visuals(style: StyleBoxFlat) -> void:
 	if not style: return
 	
 	var mode = GameManager.current_ui_mode
-	var is_multi_selected = _index in GameManager.multi_selected_indices
+	var is_multi_selected = _index in InventorySystem.multi_selected_indices
 	
 	# 重置整体透明度
 	self.modulate = Color.WHITE
@@ -193,7 +193,7 @@ func _update_interaction_visuals(style: StyleBoxFlat) -> void:
 			_checkbox.hide()
 
 	# 基础高亮：整理模式的单选
-	if mode == Constants.UIMode.NORMAL and GameManager.selected_slot_index == _index:
+	if mode == Constants.UIMode.NORMAL and InventorySystem.selected_slot_index == _index:
 		style.border_color = Color("#f59e0b") # Amber-500
 		style.border_width_left = 4
 		style.border_width_top = 4
@@ -253,11 +253,12 @@ func _on_gui_input(event: InputEvent) -> void:
 			# 2. 处理多选模式 (提交/回收)
 			if GameManager.current_ui_mode in [Constants.UIMode.SUBMIT, Constants.UIMode.RECYCLE]:
 				if _item != null:
-					if _index in GameManager.multi_selected_indices:
-						GameManager.multi_selected_indices.erase(_index)
+					if _index in InventorySystem.multi_selected_indices:
+						InventorySystem.multi_selected_indices.erase(_index)
 					else:
-						GameManager.multi_selected_indices.append(_index)
-					GameManager.inventory_changed.emit(GameManager.inventory)
+						InventorySystem.multi_selected_indices.append(_index)
+					# 手动触发信号以更新 UI
+					InventorySystem.multi_selection_changed.emit(InventorySystem.multi_selected_indices)
 				return
 
 			# 3. 普通整理模式
@@ -286,4 +287,4 @@ func _handle_selection_mode_click() -> void:
 		# 完成后退出选择模式
 		selection_mode_data = {}
 		GameManager.current_ui_mode = Constants.UIMode.NORMAL
-		GameManager.inventory_changed.emit(GameManager.inventory)
+		InventorySystem.inventory_changed.emit(InventorySystem.inventory)

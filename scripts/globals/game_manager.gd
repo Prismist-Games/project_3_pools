@@ -1,15 +1,16 @@
 extends Node
 
 ## GameManager (Autoload)
-## 核心游戏状态管理器，负责持有数值、背包、主线进度及全局资源引用。
+## 核心游戏状态管理器，负责持有数值、主线进度及全局资源引用。
+## 
+## 修改记录:
+## - [Refactor] 背包/选中状态已移动至 InventorySystem。
+## - [Refactor] 技能状态已移动至 SkillSystem。
 
 # --- 信号 ---
 signal gold_changed(amount: int)
 signal tickets_changed(amount: int)
 signal mainline_stage_changed(stage: int)
-signal inventory_changed(inventory: Array[ItemInstance])
-signal skills_changed(skills: Array[SkillData])
-signal pending_queue_changed(queue: Array[ItemInstance])
 signal order_selection_changed(index: int)
 signal ui_mode_changed(mode: int)
 
@@ -30,29 +31,7 @@ var mainline_stage: int = 1:
 		_update_current_stage_data()
 		mainline_stage_changed.emit(mainline_stage)
 
-# --- 背包与状态 ---
-var inventory: Array[ItemInstance] = []
-var current_skills: Array[SkillData] = []:
-	set(v):
-		current_skills = v
-		skills_changed.emit(current_skills)
-var pending_items: Array[ItemInstance] = []
-
-## pending_item 代表当前正在处理的（浮动在鼠标上或等待放置的）物品
-## 其 getter/setter 会自动维护一个待处理队列 (pending_items)
-var pending_item: ItemInstance:
-	get:
-		return pending_items[0] if not pending_items.is_empty() else null
-	set(v):
-		if v == null:
-			if not pending_items.is_empty():
-				pending_items.pop_front()
-				pending_queue_changed.emit(pending_items)
-		else:
-			if not v in pending_items:
-				pending_items.append(v)
-				pending_queue_changed.emit(pending_items)
-
+# --- UI 状态 ---
 var current_ui_mode: Constants.UIMode = Constants.UIMode.NORMAL:
 	set(v):
 		current_ui_mode = v
@@ -111,10 +90,9 @@ func _initialize_game_state() -> void:
 	gold = game_config.starting_gold
 	tickets = game_config.starting_tickets
 	
-	# 初始化背包空间
-	inventory.clear()
-	inventory.resize(game_config.inventory_size)
-	inventory.fill(null)
+	# 初始化背包空间 (委托给 InventorySystem)
+	# 注意：GameManager 初始化时 InventorySystem 可能尚未 _ready，但作为 Autoload 节点已存在。
+	InventorySystem.initialize_inventory(game_config.inventory_size)
 	
 	# 设置初始主线进度
 	if game_config.debug_stage > 0:
@@ -127,15 +105,8 @@ func _initialize_game_state() -> void:
 func _update_current_stage_data() -> void:
 	current_stage_data = get_mainline_stage_data(mainline_stage)
 	if current_stage_data:
-		# 根据当前阶段调整背包大小
-		if inventory.size() != current_stage_data.inventory_size:
-			var old_size = inventory.size()
-			inventory.resize(current_stage_data.inventory_size)
-			# 如果扩容，填充 null
-			if current_stage_data.inventory_size > old_size:
-				for i in range(old_size, current_stage_data.inventory_size):
-					inventory[i] = null
-			inventory_changed.emit(inventory)
+		# 根据当前阶段调整背包大小 (委托给 InventorySystem)
+		InventorySystem.resize_inventory(current_stage_data.inventory_size)
 
 # --- 经济与状态方法 ---
 
@@ -156,34 +127,6 @@ func spend_tickets(amount: int) -> bool:
 		tickets -= amount
 		return true
 	return false
-
-func has_skill(skill_id: String) -> bool:
-	for skill in current_skills:
-		if skill.id == skill_id:
-			return true
-	return false
-
-func get_selectable_skills(count: int = 3) -> Array[SkillData]:
-	var available: Array[SkillData] = []
-	for skill in all_skills:
-		# 只有满足解锁阶段，且当前未拥有的技能才可供选择
-		if skill.unlock_stage <= mainline_stage and not has_skill(skill.id):
-			available.append(skill)
-	
-	available.shuffle()
-	return available.slice(0, count)
-
-func add_skill(skill: SkillData) -> bool:
-	if current_skills.size() < Constants.SKILL_SLOTS:
-		current_skills.append(skill)
-		skills_changed.emit(current_skills)
-		return true
-	return false
-
-func replace_skill(index: int, new_skill: SkillData) -> void:
-	if index >= 0 and index < current_skills.size():
-		current_skills[index] = new_skill
-		skills_changed.emit(current_skills)
 
 # --- 数据查询方法 ---
 
@@ -213,14 +156,6 @@ func get_mainline_stage_data(stage_idx: int) -> MainlineStageData:
 			return s
 	return null
 
-func remove_items(items_to_remove: Array[ItemInstance]) -> void:
-	var changed = false
-	for i in range(inventory.size()):
-		if inventory[i] in items_to_remove:
-			inventory[i] = null
-			changed = true
-	if changed:
-		inventory_changed.emit(inventory)
 
 # --- 内部工具 ---
 

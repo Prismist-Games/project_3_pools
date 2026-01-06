@@ -97,7 +97,7 @@ func _submit_single_order(index: int, selected_indices: Array[int]) -> bool:
 		return false
 		
 	var order = current_orders[index]
-	var inventory = GameManager.inventory
+	var inventory = InventorySystem.inventory
 	
 	var selected_items: Array[ItemInstance] = []
 	for idx in selected_indices:
@@ -112,11 +112,7 @@ func _submit_single_order(index: int, selected_indices: Array[int]) -> bool:
 	_execute_submission(order, selected_items, validation.total_overflow_bonus)
 	
 	# 消耗物品
-	for it in selected_items:
-		var inv_idx = inventory.find(it)
-		if inv_idx != -1:
-			inventory[inv_idx] = null
-	GameManager.inventory_changed.emit(inventory)
+	InventorySystem.remove_items(selected_items)
 	
 	# 替换订单
 	if order.is_mainline:
@@ -130,7 +126,7 @@ func _submit_single_order(index: int, selected_indices: Array[int]) -> bool:
 
 
 func _submit_all_satisfied(selected_indices: Array[int]) -> bool:
-	var inventory = GameManager.inventory
+	var inventory = InventorySystem.inventory
 	var selected_items: Array[ItemInstance] = []
 	for idx in selected_indices:
 		if idx >= 0 and idx < inventory.size() and inventory[idx] != null:
@@ -166,11 +162,7 @@ func _submit_all_satisfied(selected_indices: Array[int]) -> bool:
 			current_orders[idx] = _generate_normal_order()
 			
 	# 最后统一消耗选中的物品
-	for it in selected_items:
-		var inv_idx = inventory.find(it)
-		if inv_idx != -1:
-			inventory[inv_idx] = null
-	GameManager.inventory_changed.emit(inventory)
+	InventorySystem.remove_items(selected_items)
 	
 	EventBus.orders_updated.emit(current_orders)
 	return true
@@ -185,9 +177,8 @@ func _execute_submission(order: OrderData, items_to_consume: Array[ItemInstance]
 	context.submitted_items = items_to_consume
 	context.meta["is_mainline"] = order.is_mainline
 	
-	# 特殊技能逻辑（强迫症：全同类奖励翻倍）
-	_apply_base_skill_logic(context)
-	
+
+	# PVT: logic moved to SkillEffects (PovertyReliefSkillEffect, OcdSkillEffect)
 	# 发出信号让技能系统进一步修改
 	EventBus.order_completed.emit(context)
 	
@@ -200,26 +191,6 @@ func _execute_submission(order: OrderData, items_to_consume: Array[ItemInstance]
 		GameManager.mainline_stage += 1
 		if GameManager.mainline_stage <= Constants.MAINLINE_STAGES:
 			EventBus.modal_requested.emit(&"skill_select", null)
-
-
-func _apply_base_skill_logic(context: OrderCompletedContext) -> void:
-	# 强迫症 (ocd): 若提交物品全为同类，奖励翻倍
-	if GameManager.has_skill("ocd"):
-		if context.submitted_items.size() > 1:
-			var first_type = context.submitted_items[0].item_data.item_type
-			var all_same = true
-			for it in context.submitted_items:
-				if it.item_data.item_type != first_type:
-					all_same = false
-					break
-			if all_same:
-				context.reward_gold *= 2
-				context.reward_tickets *= 2
-				
-	# 贫困救济 (poverty_relief): 金币 < 5 时，订单奖励 +10
-	if GameManager.has_skill("poverty_relief"):
-		if GameManager.gold < 5:
-			context.reward_gold += 10
 
 
 func _check_and_add_mainline_order() -> void:
@@ -275,7 +246,7 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 		if stage_data:
 			var weights = stage_data.get_order_rarity_weights()
 			if weights.size() >= 5:
-				min_rarity = Constants.pick_weighted_index(weights, rng)
+				min_rarity = Constants.pick_weighted_index(weights, rng) as Constants.Rarity
 		
 		total_rarity_score += min_rarity * count
 			
