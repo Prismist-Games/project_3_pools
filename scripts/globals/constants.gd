@@ -129,7 +129,7 @@ func rarity_display_name(rarity: int) -> String:
 			return "未知"
 
 
-func rarity_salvage_value(rarity: int) -> int:
+func rarity_recycle_value(rarity: int) -> int:
 	match rarity:
 		Rarity.COMMON:
 			return 0
@@ -166,10 +166,10 @@ func rarity_bonus(rarity: int) -> float:
 
 
 enum UIMode {
-	NORMAL,   ## 整理模式
-	SUBMIT,   ## 提交模式
-	RECYCLE,  ## 回收模式
-	TRADE_IN  ## 以旧换新模式
+	NORMAL, ## 整理模式
+	SUBMIT, ## 提交模式
+	RECYCLE, ## 回收模式
+	TRADE_IN ## 以旧换新模式
 }
 
 ## UX 规范颜色 (针对白色背景优化)

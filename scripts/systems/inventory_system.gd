@@ -1,6 +1,6 @@
 extends Node
 
-## 背包系统：处理物品的添加、移除、合成和回收逻辑。
+## 背包系统：处理物品的添加、移除、合并和回收逻辑。
 ## 
 ## 状态管理 (Refactored):
 ## - 负责持有 inventory, pending_item, selected_slot_index 等状态。
@@ -124,14 +124,14 @@ func handle_slot_click(index: int) -> void:
 			inventory[index] = pending
 			self.pending_item = null
 		else:
-			# 2. 目标格子有物品 -> 判定合成
-			if can_synthesize(pending, target_item):
-				# 合成
-				_perform_synthesis(pending, target_item, index)
+			# 2. 目标格子有物品 -> 判定合并
+			if can_merge(pending, target_item):
+				# 合并
+				_perform_merge(pending, target_item, index)
 				self.pending_item = null
 			else:
 				# 替换/回收: 旧物品被挤掉
-				salvage_item_instance(target_item)
+				recycle_item_instance(target_item)
 				inventory[index] = pending
 				self.pending_item = null
 	else:
@@ -157,10 +157,10 @@ func handle_slot_click(index: int) -> void:
 				inventory[index] = source_item
 				inventory[selected_idx] = null
 			else:
-				# 判定合成: 检查是否满足合成规则
-				if can_synthesize(source_item, target_item):
-					# 合成
-					_perform_synthesis(source_item, target_item, index)
+				# 判定合并: 检查是否满足合并规则
+				if can_merge(source_item, target_item):
+					# 合并
+					_perform_merge(source_item, target_item, index)
 					inventory[selected_idx] = null
 				else:
 					# 交换
@@ -171,8 +171,8 @@ func handle_slot_click(index: int) -> void:
 	
 	inventory_changed.emit(inventory)
 
-## 判定是否可以合成
-func can_synthesize(item_a: ItemInstance, item_b: ItemInstance) -> bool:
+## 判定是否可以合并
+func can_merge(item_a: ItemInstance, item_b: ItemInstance) -> bool:
 	if item_a == null or item_b == null: return false
 	if item_a.item_data.id != item_b.item_data.id: return false
 	if item_a.rarity != item_b.rarity: return false
@@ -187,35 +187,35 @@ func can_synthesize(item_a: ItemInstance, item_b: ItemInstance) -> bool:
 		
 	return true
 
-## 执行合成
-func _perform_synthesis(item_a: ItemInstance, _item_b: ItemInstance, target_index: int) -> void:
+## 执行合并
+func _perform_merge(item_a: ItemInstance, _item_b: ItemInstance, target_index: int) -> void:
 	var next_rarity = item_a.rarity + 1
 	var new_item = ItemInstance.new(item_a.item_data, next_rarity)
 	inventory[target_index] = new_item
 
 ## 回收物品实例
-func salvage_item_instance(item: ItemInstance) -> void:
+func recycle_item_instance(item: ItemInstance) -> void:
 	if item == null: return
 	
-	var context = SalvageContext.new()
+	var context = RecycleContext.new()
 	context.item = item
-	context.reward_gold = Constants.rarity_salvage_value(item.rarity)
+	context.reward_gold = Constants.rarity_recycle_value(item.rarity)
 	
-	EventBus.game_event.emit(&"salvage_requested", context)
+	EventBus.game_event.emit(&"recycle_requested", context)
 	
 	if context.reward_gold > 0:
 		GameManager.add_gold(context.reward_gold)
 	if context.reward_tickets > 0:
 		GameManager.add_tickets(context.reward_tickets)
 		
-	EventBus.game_event.emit(&"salvage_finished", context)
+	EventBus.game_event.emit(&"recycle_finished", context)
 
 ## 回收指定索引的物品
-func salvage_item(index: int) -> void:
+func recycle_item(index: int) -> void:
 	if index < 0 or index >= inventory.size(): return
 	var item = inventory[index]
 	if item != null:
-		salvage_item_instance(item)
+		recycle_item_instance(item)
 		inventory[index] = null
 		inventory_changed.emit(inventory)
 

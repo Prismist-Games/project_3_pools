@@ -10,18 +10,12 @@ class_name AlchemySkillEffect
 
 
 func on_event(event_id: StringName, context: RefCounted) -> void:
-	if event_id != &"salvage_requested":
+	if event_id != &"recycle_requested":
 		return
 		
-	var ctx = context as SalvageContext
+	var ctx = context as RecycleContext
 	if ctx == null: return
 	
 	if ctx.item.rarity >= rarity_threshold:
 		if randf() < chance:
 			ctx.reward_tickets += bonus_tickets
-
-
-
-
-
-

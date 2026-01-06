@@ -1,7 +1,7 @@
 extends PanelContainer
 
 signal slot_clicked(index: int)
-signal salvage_requested(index: int)
+signal recycle_requested(index: int)
 
 @onready var icon_rect: TextureRect = %IconRect
 @onready var name_label: Label = %NameLabel
@@ -143,7 +143,7 @@ func _update_visuals() -> void:
 		
 		var rarity_text = Constants.rarity_display_name(_item.rarity)
 		if GameManager.current_ui_mode == Constants.UIMode.RECYCLE:
-			var val = Constants.rarity_salvage_value(_item.rarity)
+			var val = Constants.rarity_recycle_value(_item.rarity)
 			rarity_text += " (+%d)" % val
 		rarity_label.text = rarity_text
 		
@@ -267,7 +267,7 @@ func _on_gui_input(event: InputEvent) -> void:
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			# 右键快捷进入回收模式（可选）或者直接回收
 			if GameManager.current_ui_mode == Constants.UIMode.NORMAL and _item != null:
-				salvage_requested.emit(_index)
+				recycle_requested.emit(_index)
 
 
 func _handle_selection_mode_click() -> void:

@@ -97,12 +97,12 @@ func _update_ui_mode_display() -> void:
 	if has_pending:
 		var count = InventorySystem.pending_items.size()
 		if count > 1:
-			submit_mode_label.text = "背包已满！还有 %d 个物品待处理，请替换或放弃" % count
+			submit_mode_label.text = "背包已满！还有 %d 个物品待处理，请替换或丢弃" % count
 		else:
-			submit_mode_label.text = "背包已满！请点击格子替换或点击右侧放弃"
+			submit_mode_label.text = "背包已满！请点击格子替换或点击右端丢弃"
 		
 		submit_mode_label.add_theme_color_override("font_color", Color.FIREBRICK)
-		submit_mode_button.text = "放弃新物品"
+		submit_mode_button.text = "丢弃新物品"
 		submit_mode_button.disabled = false
 		recycle_mode_button.text = "回收模式"
 		recycle_mode_button.disabled = true
@@ -157,8 +157,8 @@ func _update_ui_mode_display() -> void:
 
 func _on_submit_mode_button_pressed() -> void:
 	if InventorySystem.pending_item != null:
-		# 放弃新物品逻辑
-		InventorySystem.salvage_item_instance(InventorySystem.pending_item)
+		# 丢弃新物品逻辑
+		InventorySystem.recycle_item_instance(InventorySystem.pending_item)
 		InventorySystem.pending_item = null
 		return
 
@@ -181,7 +181,7 @@ func _on_recycle_mode_button_pressed() -> void:
 			GameManager.current_ui_mode = Constants.UIMode.RECYCLE
 		Constants.UIMode.RECYCLE:
 			if not InventorySystem.multi_selected_indices.is_empty():
-				_execute_multi_salvage()
+				_execute_multi_recycle()
 			GameManager.current_ui_mode = Constants.UIMode.NORMAL
 		Constants.UIMode.SUBMIT, Constants.UIMode.TRADE_IN:
 			# 在提交或以旧换新模式下，该按钮作为“取消”
@@ -196,12 +196,12 @@ func _cancel_current_mode() -> void:
 	_on_inventory_changed(InventorySystem.inventory)
 
 
-func _execute_multi_salvage() -> void:
+func _execute_multi_recycle() -> void:
 	var indices = InventorySystem.multi_selected_indices.duplicate()
 	indices.sort()
 	indices.reverse()
 	for idx in indices:
-		InventorySystem.salvage_item(idx)
+		InventorySystem.recycle_item(idx)
 	InventorySystem.multi_selected_indices.clear()
 
 
@@ -285,7 +285,7 @@ func _on_inventory_changed(items: Array) -> void:
 		var item = items[i] if i < items.size() else null
 		slot.setup(item, i)
 		slot.slot_clicked.connect(_on_slot_clicked)
-		slot.salvage_requested.connect(_on_item_salvage_requested)
+		slot.recycle_requested.connect(_on_item_recycle_requested)
 	
 	# 如果处于提交模式，背包变动（如选择物品）需要刷新订单卡片的奖励预览
 	if GameManager.current_ui_mode == Constants.UIMode.SUBMIT:
@@ -347,8 +347,8 @@ func _on_order_refresh_requested(index: int) -> void:
 	OrderSystem.refresh_order(index)
 
 
-func _on_item_salvage_requested(index: int) -> void:
-	InventorySystem.salvage_item(index)
+func _on_item_recycle_requested(index: int) -> void:
+	InventorySystem.recycle_item(index)
 
 
 func _on_item_merge_requested(_idx1: int, _idx2: int) -> void:
