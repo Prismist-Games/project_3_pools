@@ -44,12 +44,9 @@ func _add_refreshes_to_all_orders(amount: int) -> void:
 
 func refresh_all_orders() -> void:
 	current_orders.clear()
-	var stage_data = GameManager.current_stage_data
-	var count = 4
-	if stage_data != null:
-		count = stage_data.order_count
-	elif GameManager.game_config != null:
-		count = GameManager.game_config.normal_orders_count
+	
+	# 使用 UnlockManager 控制订单数量
+	var count = UnlockManager.order_limit
 		
 	for i in range(count):
 		current_orders.append(_generate_normal_order())
@@ -214,27 +211,19 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 	var stage = GameManager.mainline_stage
 	var stage_data = GameManager.get_mainline_stage_data(stage)
 	
-	# 1. 决定需求总数
-	var target_total_items: int = 2
-	if stage_data and stage_data.order_item_count_weights.size() >= 4:
-		# index 0 -> 1个, index 1 -> 2个 ...
-		target_total_items = Constants.pick_weighted_index(stage_data.order_item_count_weights, rng) + 1
-	else:
-		# 回退逻辑
-		if stage >= 2 and stage <= 3:
-			target_total_items = 3
-		elif stage >= 4:
-			target_total_items = rng.randi_range(3, 4)
+	# 1. 决定需求项总数 (由 UnlockManager 控制范围)
+	# 注意：这里的数量是需求项的数量，每个需求项需要 1 个物品
+	var target_requirement_count: int = rng.randi_range(UnlockManager.order_item_req_min, UnlockManager.order_item_req_max)
 	
-	var current_total: int = 0
 	var normal_items = GameManager.get_all_normal_items()
 	var total_rarity_score: int = 0
 	
-	while current_total < target_total_items:
+	# 生成指定数量的需求项
+	for i in range(target_requirement_count):
 		var item_data = normal_items.pick_random()
-		var count = rng.randi_range(1, target_total_items - current_total)
+		var count = 1 # 每个需求项固定需要 1 个物品（validate_selection 不检查数量）
 		
-		# 技能：偷工减料
+		# 技能：偷工减料（保留接口，虽然当前实现下 count 固定为 1）
 		var ctx = ContextProxy.new({"item_count": count})
 		EventBus.game_event.emit(&"order_requirement_generating", ctx)
 		count = ctx.get_value("item_count")
@@ -255,14 +244,14 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 			"min_rarity": min_rarity,
 			"count": count
 		})
-		current_total += count
+
 	
 	# 3. 设定基础奖励：根据总物品数和品质深度加成
 	var is_gold_reward = rng.randf() < 0.5
 	# 每个品质等级提升 25% 基础奖励
 	var reward_multiplier = 1.0 + (total_rarity_score * 0.25)
 	
-	match target_total_items:
+	match target_requirement_count:
 		1:
 			if is_gold_reward: order.reward_gold = roundi(3 * reward_multiplier)
 			else: order.reward_tickets = roundi(5 * reward_multiplier)
@@ -275,6 +264,12 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 		4:
 			if is_gold_reward: order.reward_gold = roundi(15 * reward_multiplier)
 			else: order.reward_tickets = roundi(30 * reward_multiplier)
+		5:
+			if is_gold_reward: order.reward_gold = roundi(20 * reward_multiplier)
+			else: order.reward_tickets = roundi(40 * reward_multiplier)
+		6:
+			if is_gold_reward: order.reward_gold = roundi(25 * reward_multiplier)
+			else: order.reward_tickets = roundi(50 * reward_multiplier)
 		_:
 			order.reward_gold = roundi(5 * reward_multiplier)
 	

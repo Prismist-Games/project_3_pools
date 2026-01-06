@@ -11,6 +11,8 @@ extends Node
 signal unlock_changed(feature_id: StringName, unlocked: bool)
 signal merge_limit_changed(limit: Constants.Rarity)
 signal inventory_size_changed(size: int)
+signal order_limit_changed(limit: int)
+signal order_item_req_range_changed(min_val: int, max_val: int)
 
 ## 功能 ID 枚举
 enum Feature {
@@ -51,6 +53,27 @@ var inventory_size: int = 6:
 		# 同步到 InventorySystem
 		if InventorySystem:
 			InventorySystem.resize_inventory(inventory_size)
+
+## 订单总数上限
+var order_limit: int = 4:
+	set(v):
+		order_limit = v
+		order_limit_changed.emit(order_limit)
+
+## 单个订单需求物品数量范围
+var order_item_req_min: int = 1:
+	set(v):
+		order_item_req_min = v
+		if order_item_req_min > order_item_req_max:
+			order_item_req_max = order_item_req_min
+		order_item_req_range_changed.emit(order_item_req_min, order_item_req_max)
+
+var order_item_req_max: int = 2:
+	set(v):
+		order_item_req_max = v
+		if order_item_req_max < order_item_req_min:
+			order_item_req_min = order_item_req_max
+		order_item_req_range_changed.emit(order_item_req_min, order_item_req_max)
 
 
 func _ready() -> void:
