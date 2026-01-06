@@ -13,6 +13,21 @@ func _ready() -> void:
 	call_deferred("refresh_all_orders")
 	
 	EventBus.game_event.connect(_on_game_event)
+	
+	# 监听进度变化，动态添加主线任务
+	GameManager.mainline_stage_changed.connect(_on_mainline_stage_changed)
+	GameManager.tickets_changed.connect(_on_tickets_changed)
+
+
+func _on_mainline_stage_changed(_stage: int) -> void:
+	_check_and_add_mainline_order()
+	EventBus.orders_updated.emit(current_orders)
+
+
+func _on_tickets_changed(_tickets: int) -> void:
+	# 虽然移除了任务显示的奖券门槛，但保持监听以防未来逻辑变更
+	_check_and_add_mainline_order()
+	EventBus.orders_updated.emit(current_orders)
 
 
 func _on_game_event(event_id: StringName, _payload: RefCounted) -> void:
@@ -105,8 +120,8 @@ func _submit_single_order(index: int, selected_indices: Array[int]) -> bool:
 	
 	# 替换订单
 	if order.is_mainline:
-		_check_and_add_mainline_order()
 		current_orders.erase(order)
+		_check_and_add_mainline_order()
 	else:
 		current_orders[index] = _generate_normal_order()
 		
@@ -145,8 +160,8 @@ func _submit_all_satisfied(selected_indices: Array[int]) -> bool:
 		
 		# 替换
 		if order.is_mainline:
-			_check_and_add_mainline_order()
 			current_orders.remove_at(idx)
+			_check_and_add_mainline_order()
 		else:
 			current_orders[idx] = _generate_normal_order()
 			
@@ -219,7 +234,7 @@ func _check_and_add_mainline_order() -> void:
 
 
 func _should_generate_mainline_order() -> bool:
-	return GameManager.tickets >= 10 and GameManager.mainline_stage <= Constants.MAINLINE_STAGES
+	return GameManager.mainline_stage <= Constants.MAINLINE_STAGES
 
 
 func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
