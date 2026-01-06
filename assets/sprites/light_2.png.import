@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://l3mh726h5nay"
-path="res://.godot/imported/用-43.png-3f5e63fd5e5cf494881fa28c6e984f8f.ctex"
+uid="uid://cuq30wijqs4vm"
+path="res://.godot/imported/light_2.png-a171cb582883c57d5999eb0eefd8eabb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/the_rabbit/用-43.png"
-dest_files=["res://.godot/imported/用-43.png-3f5e63fd5e5cf494881fa28c6e984f8f.ctex"]
+source_file="res://assets/sprites/light_2.png"
+dest_files=["res://.godot/imported/light_2.png-a171cb582883c57d5999eb0eefd8eabb.ctex"]
 
 [params]
 

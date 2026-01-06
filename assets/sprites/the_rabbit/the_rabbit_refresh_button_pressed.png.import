@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://blf8a7h1ao06r"
-path="res://.godot/imported/用-40.png-fd0b97cb07b4aa348b126782a1c72307.ctex"
+uid="uid://ccfw8sduhx8rm"
+path="res://.godot/imported/the_rabbit_refresh_button_pressed.png-251e331601222bc7d78d0b1dd850a231.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/the_rabbit/用-40.png"
-dest_files=["res://.godot/imported/用-40.png-fd0b97cb07b4aa348b126782a1c72307.ctex"]
+source_file="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_pressed.png"
+dest_files=["res://.godot/imported/the_rabbit_refresh_button_pressed.png-251e331601222bc7d78d0b1dd850a231.ctex"]
 
 [params]
 

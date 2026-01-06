@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://du1t55k8boj6i"
-path="res://.godot/imported/the_rabbit_left_eye_fill_0001_the_rabbit_left_eyeball_fill.png-94651ff396c1820a04c2c3ef0f0ead4e.ctex"
+uid="uid://djo0fcuw1ico0"
+path="res://.godot/imported/light_1.png-72e9662c300fe3ec0f8250eabc5b84f8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/the_rabbit/the_rabbit_left_eye_fill_0001_the_rabbit_left_eyeball_fill.png"
-dest_files=["res://.godot/imported/the_rabbit_left_eye_fill_0001_the_rabbit_left_eyeball_fill.png-94651ff396c1820a04c2c3ef0f0ead4e.ctex"]
+source_file="res://assets/sprites/light_1.png"
+dest_files=["res://.godot/imported/light_1.png-72e9662c300fe3ec0f8250eabc5b84f8.ctex"]
 
 [params]
 
