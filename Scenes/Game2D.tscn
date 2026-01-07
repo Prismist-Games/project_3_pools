@@ -1,4 +1,4 @@
-[gd_scene load_steps=114 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=116 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
 [ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
@@ -35,7 +35,6 @@
 [ext_resource type="Texture2D" uid="uid://caieb4p7g0f64" path="res://assets/sprites/item_slots/基地-4.png" id="17_ivepa"]
 [ext_resource type="Texture2D" uid="uid://dscqm4kp5fmva" path="res://assets/sprites/the_machine/the_machine_front.png" id="17_tmso7"]
 [ext_resource type="Texture2D" uid="uid://w68mqbo8q5e2" path="res://assets/sprites/the_machine/the_machine_front_outline.png" id="18_2kwm8"]
-[ext_resource type="Texture2D" uid="uid://dte0aovryatd4" path="res://assets/sprites/lottery_slots/基地-9.png" id="18_8xmv6"]
 [ext_resource type="Texture2D" uid="uid://dlywfo3j61bw8" path="res://assets/sprites/item_slots/基地-6.png" id="18_ivepa"]
 [ext_resource type="Texture2D" uid="uid://tyc42trcd2xq" path="res://assets/sprites/the_machine_switch/基地-5.png" id="18_xqbja"]
 [ext_resource type="Texture2D" uid="uid://1h4st4oq2muh" path="res://icon.svg" id="19_7rf4k"]
@@ -61,6 +60,9 @@
 [ext_resource type="Texture2D" uid="uid://cyixck513ac1o" path="res://assets/sprites/quest_slots/基地-9.png" id="33_0ehwc"]
 [ext_resource type="Texture2D" uid="uid://ddymclsitprmc" path="res://assets/sprites/quest_slots/基地-8.png" id="34_oeaov"]
 [ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="37_50t6p"]
+[ext_resource type="Texture2D" uid="uid://b4cuujipxrcyu" path="res://assets/sprites/lottery_slots/lottery_slot_lid_fill.png" id="47_tiwwg"]
+[ext_resource type="Texture2D" uid="uid://cskvmcwmdj5ew" path="res://assets/sprites/icons/category_entertainment.png" id="48_ivmbw"]
+[ext_resource type="Texture2D" uid="uid://u8vv873f380j" path="res://assets/sprites/lottery_slots/lottery_slot_lid_outline.png" id="49_2a6p6"]
 [ext_resource type="Texture2D" uid="uid://cyo0chqrqd6p7" path="res://assets/sprites/the_machine/the_machine_description_display_fill.png" id="50_otpb1"]
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
 [ext_resource type="Texture2D" uid="uid://grqi0oqjnrae" path="res://assets/sprites/the_machine/the_machine_description_display_outline.png" id="51_017ef"]
@@ -1351,11 +1353,12 @@ texture = ExtResource("3_4wmcb")
 
 [node name="Lottery Slot_lid" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_mask"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(0, -408.25)
-texture = ExtResource("18_8xmv6")
+position = Vector2(0, -246.25)
+texture = ExtResource("47_tiwwg")
 
 [node name="Lottery Slot_lid_icon" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_mask/Lottery Slot_lid"]
-texture = ExtResource("19_7rf4k")
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+texture = ExtResource("48_ivmbw")
 
 [node name="Lottery Pool Name_label" type="RichTextLabel" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_mask/Lottery Slot_lid"]
 offset_left = -281.0
@@ -1366,6 +1369,10 @@ theme_override_font_sizes/normal_font_size = 41
 text = "POOL_NAME"
 scroll_active = false
 vertical_alignment = 1
+
+[node name="Lottery Slot_lid_outline" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_mask/Lottery Slot_lid"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+texture = ExtResource("49_2a6p6")
 
 [node name="Lottery Slot_outline" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0"]
 modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
@@ -1588,11 +1595,12 @@ texture = ExtResource("3_4wmcb")
 
 [node name="Lottery Slot_lid" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_mask"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(0, -408.25)
-texture = ExtResource("18_8xmv6")
+position = Vector2(0, -246.25)
+texture = ExtResource("47_tiwwg")
 
 [node name="Lottery Slot_lid_icon" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_mask/Lottery Slot_lid"]
-texture = ExtResource("19_7rf4k")
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+texture = ExtResource("48_ivmbw")
 
 [node name="Lottery Pool Name_label" type="RichTextLabel" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_mask/Lottery Slot_lid"]
 offset_left = -281.0
@@ -1603,6 +1611,10 @@ theme_override_font_sizes/normal_font_size = 41
 text = "POOL_NAME"
 scroll_active = false
 vertical_alignment = 1
+
+[node name="Lottery Slot_lid_outline" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_mask/Lottery Slot_lid"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+texture = ExtResource("49_2a6p6")
 
 [node name="Lottery Slot_outline" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1"]
 modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
@@ -1825,11 +1837,12 @@ texture = ExtResource("3_4wmcb")
 
 [node name="Lottery Slot_lid" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_mask"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(0, -408.25)
-texture = ExtResource("18_8xmv6")
+position = Vector2(0, -246.25)
+texture = ExtResource("47_tiwwg")
 
 [node name="Lottery Slot_lid_icon" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_mask/Lottery Slot_lid"]
-texture = ExtResource("19_7rf4k")
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+texture = ExtResource("48_ivmbw")
 
 [node name="Lottery Pool Name_label" type="RichTextLabel" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_mask/Lottery Slot_lid"]
 offset_left = -281.0
@@ -1840,6 +1853,10 @@ theme_override_font_sizes/normal_font_size = 41
 text = "POOL_NAME"
 scroll_active = false
 vertical_alignment = 1
+
+[node name="Lottery Slot_lid_outline" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_mask/Lottery Slot_lid"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+texture = ExtResource("49_2a6p6")
 
 [node name="Lottery Slot_outline" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2"]
 modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
