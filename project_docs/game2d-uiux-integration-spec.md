@@ -76,13 +76,15 @@
 
 - **金币**：`The Machine/TheMachineDisplayFill/Money_label`
 - **奖券**：`The Machine/TheMachineDisplayFill/Coupon_label`
+- **金币图标**：`The Machine/TheMachineDisplayFill/Money_label/Money_icon`
+- **奖券图标**：`The Machine/TheMachineDisplayFill/Coupon_label/Coupon_icon`
 - **绑定规则**：
   - `GameManager.gold_changed` → 更新 `Money_label.text`
   - `GameManager.tickets_changed` → 更新 `Coupon_label.text`
 
 ##### 3.1.3 背包格子（预摆最大数量）
 
-> 当前 `Game2D.tscn` 至少已存在 `Item Slot_root_0`；其余请在编辑器中按上限预摆到 `Item Slot_root_9`，并保持结构一致。
+> 当前 `Game2D.tscn` 已预摆 `Item Slot_root_0..9`（上限 10 格）。
 
 - **背包容器**：`The Machine/Item Slots Grid`（GridContainer）
 - **单格模板路径（以 `<slot_idx>` 表示）**：
@@ -93,7 +95,7 @@
   - 物品根：`.../Item Slot_mask/Item Slot_item_root`
   - 物品图标：`.../Item Slot_mask/Item Slot_item_root/Item_example`
   - 阴影：`.../Item Slot_mask/Item Slot_item_root/Item_example/Item_shadow`
-  - **物品词缀/标记**：`.../Item Slot_mask/Item Slot_item_root/Item_example/Item_affix`
+  - **物品词缀/标记**（图标 Sprite2D）：`.../Item Slot_mask/Item Slot_item_root/Item_example/Item_affix`
   - 盖子：`.../Item Slot_mask/Item Slot_lid`
   - **灯（rarity）**：`.../Item Slot_mask/Item Slot_lid/Slot_led`
   - 动画：`.../AnimationPlayer`
@@ -117,17 +119,23 @@
 - 每个 `Lottery Slot_root_<pool_idx>` 的关键可控节点：
   - 点击区域：`.../Input Area`
   - 物品显示根：`.../Lottery Slot_mask/Lottery Slot_item_root`
-  - **主显示物品**：`.../Lottery Slot_mask/Lottery Slot_item_root/Item_example`
-  - **队列槽位 1**：`.../Lottery Slot_mask/Lottery Slot_item_root/Item_example_queue_1`
-  - **队列槽位 2**：`.../Lottery Slot_mask/Lottery Slot_item_root/Item_example_queue_2`
+  - **主显示物品**：`.../Lottery Slot_mask/Lottery Slot_item_root/Item_main`
+  - **队列槽位 1**：`.../Lottery Slot_mask/Lottery Slot_item_root/Item_queue_1`
+  - **队列槽位 2**：`.../Lottery Slot_mask/Lottery Slot_item_root/Item_queue_2`
   - 盖子：`.../Lottery Slot_mask/Lottery Slot_lid`
   - **奖池名称**：`.../Lottery Slot_mask/Lottery Slot_lid/Lottery Pool Name_label`
+  - lid 轮廓：`.../Lottery Slot_mask/Lottery Slot_lid/Lottery Slot_lid_outline`
   - 顶部屏幕：`.../Lottery Slot_top_screen`
     - **Affix Label**：`.../Lottery Slot_top_screen/Affix Label`
     - **Price Label**：`.../Lottery Slot_top_screen/Price Label`
+    - **Price Icon**：`.../Lottery Slot_top_screen/Price Icon`
+  - 描述屏幕：`.../Lottery Slot_description_screen`
+    - 描述文本：`.../Lottery Slot_description_screen/Description Label`
   - 右侧屏幕：`.../Lottery Slot_right_screen`
     - **需求图标容器**：`.../Lottery Slot_right_screen/Lottery Required Items Icon Grid`
-    - icon 位：`.../Lottery Required Items Icon Grid/Item Icon_example`（TextureRect；建议在编辑器预摆多个 icon 位，运行时只改 texture/显隐）
+    - icon 位（0..4）：`.../Lottery Required Items Icon Grid/Item Icon_0..4`
+      - 状态覆盖（勾/叉）：`.../Lottery Required Items Icon Grid/Item Icon_<i>/Item Icon_status`
+        - **语义**：表示“该需求物品当前是否已被背包满足”（全局即时态）。不依赖 SUBMIT 多选；随 `InventorySystem.inventory_changed` 实时刷新。
   - 动画：`.../AnimationPlayer`
 
 ---
@@ -147,12 +155,20 @@
   - 点击区域：`.../Input Area`（**仅 SUBMIT 可点击**）
   - 订单遮罩：`.../Quest Slot_mask`
   - 背景：`.../Quest Slot_mask/Quest Slot_background`（挂 `slot_background_color_setter.gd`）
-  - 奖励文本：`.../Quest Slot_mask/Quest Reward Label`
+  - 奖励图标：`.../Quest Slot_mask/Quest Reward Icon`
+    - 奖励文本：`.../Quest Slot_mask/Quest Reward Icon/Quest Reward Label`
   - 需求物品容器：`.../Quest Slot_mask/Quest Slot Items Grid`
-    - icon 位：`.../Quest Slot Items Grid/Quest Slot Item_root`（建议预摆多个 icon 位；未预摆时可临时复制）
+    - 预摆 item 位（0..3）：`.../Quest Slot Items Grid/Quest Slot Item_root_0..3`
+      - 物品图标：`.../Quest Slot Item_root_<i>/Item_icon`
+      - 稀有度框：`.../Quest Slot Item_root_<i>/Item_icon/Item_rarity`
+      - 稀有度光束：`.../Quest Slot Item_root_<i>/Item_icon/Item_rarity/Item_rarity_beam`
+      - 需求标记：`.../Quest Slot Item_root_<i>/Item_icon/Item_requirement`
+      - 状态覆盖（勾/叉）：`.../Quest Slot Item_root_<i>/Item_icon/Item_status`
+        - **语义**：SUBMIT 模式下，用作“当前多选提交是否满足该需求”的高亮/提示（提交态）。随 `InventorySystem.multi_selection_changed` 刷新。
   - **订单盖子**：`.../Quest Slot_mask/Quest Slot_lid`
   - 单个刷新按钮：`.../Refresh Button`
     - 次数：`.../Refresh Button/Refresh Count Label`
+    - 刷新图标：`.../Refresh Button/Refresh Icon`
 
 ##### 3.2.3 主线订单（1 个）
 
@@ -196,11 +212,14 @@
 
 - `Lottery Required Items Icon Grid`：展示“当前订单中与该奖池类型相关的需求物品 icon”（最多 N 个，建议 1~3）
 - 刷新时机：`EventBus.orders_updated`、`EventBus.pools_refreshed`
-- **推荐口径**：预摆固定数量（建议 3 个）的 icon 位，运行时只改 `texture`/`visible`（避免运行时 duplicate）
+- **当前场景已预摆**：`Item Icon_0..4`（最多 5 个），运行时只改 `texture`/`visible`
+- **状态覆盖（Lottery）**：每个 `Item Icon_<i>` 下的 `Item Icon_status` 用于显示“当前背包是否已满足该需求”。
+  - **推荐显示策略**：满足显示绿色 tick；不满足则隐藏整个 `Item Icon_<i>`。
+  - **刷新时机**：`InventorySystem.inventory_changed` + `EventBus.orders_updated` + `EventBus.pools_refreshed`
 
 #### 4.4 订单奖励类别底色
 
-提交/刷新时，订单背景色用于表达“奖励类别”（而不是 rarity）：
+提交/刷新时，订单背景色与奖励图标用于表达“奖励类别”（而不是 rarity）：
 
 - **金币**（`reward_gold>0 && reward_tickets==0`）：#69d956
 - **奖券**（`reward_tickets>0 && reward_gold==0`）：#5290EC
@@ -208,6 +227,13 @@
 
 实现节点：`Quest Slot_background.color` / `Main Quest Slot_background.color`（通过 `slot_background_color_setter.gd`）。
 
+奖励图标节点（普通订单）：`The Rabbit/Quest Slots Grid/Quest Slot_root_<order_idx>/Quest Slot_mask/Quest Reward Icon`
+
+- **推荐图标策略**：
+  - 金币奖励：`Quest Reward Icon.texture = money_icon`
+  - 奖券奖励：`Quest Reward Icon.texture = coupon_icon`
+
+> 说明：主线订单没有Reward，不适用于改规则
 ---
 
 ### 5. 核心交互与动画时序（修订版）
@@ -232,8 +258,8 @@
   - 播放抽奖展示（可跳过）：盖子/屏幕闪烁/摇晃等
   - 调用 `PoolSystem.draw_from_pool(pool_idx)` 执行逻辑抽奖
   - **展示落点规则**：
-    - **自动入包成功**：在该 Lottery Slot 的 `Item_example` 短暂显示产物 → 飞入目标背包空槽 → 背包槽位背景/灯光变色
-    - **自动入包失败（背包满）**：产物留在该 Lottery Slot，写入 `InventorySystem.pending_items` 并在 `Item_example_queue_1/2` 展示队列（最多 3）
+    - **自动入包成功**：在该 Lottery Slot 的 `Item_main` 短暂显示产物 → 飞入目标背包空槽 → 背包槽位背景/灯光变色
+    - **自动入包失败（背包满）**：产物留在该 Lottery Slot，写入 `InventorySystem.pending_items` 并在 `Item_main`和（如超过1个）`Item_queue_1/2` 展示队列（最多 3）
   - `UI.unlock("draw")`
 
 > 关键实现点：当 `pending_items` 非空时，应记录“本次 pending 来源的 pool_idx”，用于把队列显示绑定到正确的 `Lottery Slot_root_<pool_idx>`。
@@ -266,8 +292,9 @@
 
 1. **关盖**（lid close）
 2. **更新内容**：
-   - 更新奖励文本（`Quest Reward Label` / `Main Quest Reward Label`）
+   - 更新奖励文本（`Quest Reward Icon/Quest Reward Label` / `Main Quest Reward Label`）
    - 更新背景色（`Quest Slot_background.color` / `Main Quest Slot_background.color`，用奖励类别色）
+   - 更新奖励图标（普通订单：`Quest Reward Icon.texture`）
 3. **开盖**（lid open）
 
 #### 5.6 交互式选择（使用 Lottery Slot 实现）
@@ -280,10 +307,10 @@
 - **展示规则（覆盖 Lottery Slot 正常状态）**：
   - 三个 `Lottery Slot_root_<pool_idx>` 分别展示 3 个技能候选项（来自 `SkillSystem.get_selectable_skills(3)`）。
   - `Lottery Pool Name_label`：显示技能名称（或“技能”+序号）。
-  - `Item_example`：显示技能图标（优先用 `SkillData.icon`；若无则用占位 icon）。
+  - `Item_main`：显示技能图标（优先用 `SkillData.icon`；若无则用占位 icon）。
   - `Affix Label`：显示技能关键词/简短描述（可选）。
   - `Price Label`：隐藏或显示为 “CHOOSE”。
-  - `Item_example_queue_1/2`：隐藏（技能选择不使用队列）。
+  - `Item_queue_1/2`：隐藏（技能选择不使用队列）。
 - **交互**：玩家点击任意一个 Lottery Slot → 选择该技能并关闭选择态。
   - 选择成功后：调用 `SkillSystem.add_skill(skill)`（若技能槽满，后续可扩展为替换流程）。
   - 退出后：恢复 Lottery Slot 显示为真实 pools（建议直接 `PoolSystem.refresh_pools()` 以确保一致）。
@@ -296,8 +323,8 @@
 - **展示规则（覆盖 Lottery Slot 正常状态）**：
   - 进入精准态时：**三个 Lottery Slot 全部重置显示**（清空池名/词缀/价格），并禁用“正常抽奖点击”。
   - 其中 **两个** Lottery Slot 抽出两个候选物品：
-    - `Item_example` 显示候选物品 icon
-    - `Item_example_queue_1/2` 隐藏
+    - `Item_main` 显示候选物品 icon
+    - `Item_queue_1/2` 隐藏
     - `Lottery Pool Name_label` 可显示物品名/稀有度（可选）
   - 第三个 Lottery Slot：置空并禁用点击（或显示 “CANCEL”）。
 - **交互**：玩家点击其中一个候选物品 Slot → 触发回调并退出精准态。
@@ -346,7 +373,7 @@
 - `InventorySystem.inventory_changed` → 更新每个 `Item Slot_root_<slot_idx>` 的：
   - `Item_example`、`Item_affix`、`Slot_led`、`Item Slot_backgrounds`
 - `InventorySystem.pending_queue_changed` → 更新“当前来源 Lottery Slot”的：
-  - `Item_example`、`Item_example_queue_1`、`Item_example_queue_2`
+  - `Item_main`、`Item_queue_1`、`Item_queue_2`
   - 并按 pending 状态禁用/启用 `Lottery Slot_root_*/Input Area`
 
 ---
@@ -376,10 +403,10 @@
 你现在的 `Game2D.tscn` 结构与动画诉求（稳定 NodePath、盖子/灯光/屏幕动画可控）更适合 **“预摆上限 slots + 运行时只改数据/贴图/显隐”**，不建议在热路径频繁实例化/销毁节点。
 
 - **推荐统一口径（强烈建议）**：
-  - **背包格子**：预摆 `Item Slot_root_0..9`，运行时只更新 `Item_example.texture`、`Item_affix.text`、`Slot_led.modulate`、`Item Slot_backgrounds.color` 等；空格子用 texture=null/visible=false。
-  - **Lottery Slot**：固定 3 个 `Lottery Slot_root_0..2`；每个 slot 内固定 3 个 item 显示位（`Item_example` + `queue_1` + `queue_2`）。
-  - **订单需求图标（Quest Slot Items Grid）**：建议同样预摆一个“最大需求数”的 icon 位（例如 4 或 6 个），超出则截断/缩放（你可以在 UX 上明确上限）。
-  - **Lottery Required Items Icon Grid**：建议预摆 3 个 icon 位（`Item Icon_0..2`）并只改 texture/显隐（避免运行时 duplicate）。
+  - **背包格子**：预摆 `Item Slot_root_0..9`，运行时只更新 `Item_example.texture`、`Item_affix.texture/visible`、`Slot_led.modulate`、`Item Slot_backgrounds.color` 等；空格子用 texture=null/visible=false。
+  - **Lottery Slot**：固定 3 个 `Lottery Slot_root_0..2`；每个 slot 内固定 3 个 item 显示位（`Item_main` + `Item_queue_1` + `Item_queue_2`）。
+  - **订单需求图标（Quest Slot Items Grid）**：已预摆 `Quest Slot Item_root_0..3`，运行时只改 `Item_icon.texture` / `Item_status.texture` / `visible` / `Item_rarity.self_modulate` / `Item_requirement.self_modulate`。
+  - **Lottery Required Items Icon Grid**：已预摆 `Item Icon_0..4`，运行时只改 `texture`/`visible` 与 `Item Icon_status`。
 - **例外（允许实例化）**：`targeted_selection` 的 5 选 1 成品弹窗（未来 UI），因其非高频且节点结构独立，做成独立 scene 动态实例化更合适。
 
 ---
@@ -387,7 +414,7 @@
 ### 8. 实现检查表（落地验收）
 
 - **节点接入**：能按本规范 NodePath 找到并更新全部新增节点：
-  - Skill Label/Icon、Money/Coupon、PoolName/Affix/Price、RequiredItemsGrid、Item_affix、Item_example_queue_1/2。
+  - Skill Label/Icon、Money/Coupon（含 icon）、PoolName/Affix/Price（含 Price Icon）、Description Label、RequiredItemsGrid（Item Icon_0..4 + status）、Item_affix（Sprite2D）、Item_main/Item_queue_1/2。
 - **门控**：
   - 订单仅 SUBMIT 可点；NORMAL 点击订单无效。
   - 右键能退出 SUBMIT/RECYCLE/REPLACE。
@@ -400,5 +427,48 @@
 - **逻辑一致性**：
   - 金币/奖券显示与 `GameManager` 一致。
   - 提交/回收对库存与奖励变更正确，且 UI 及时刷新。
+
+---
+
+### 9. 动画实现建议（落地方案）
+
+本项目的动画需求可以拆成三类：**可复用的“盖子/锁定态”**、**一次性的流程动画（抽奖/提交/刷新）**、**跨槽位飞行动画（物品飞来飞去）**。推荐组合：
+
+- **AnimationPlayer（推荐用于）**：盖子开合、开关拨动、屏幕闪烁、Rabbit/机器局部骨架/部件动画。优点是可视化关键帧、确定性强、易于“跳到最终帧”。
+- **Tween（推荐用于）**：数值补间（颜色渐变、缩放、轻微抖动）、飞行路径、UI 数字跳动。优点是写起来快、参数化强。
+- **AnimationTree（暂不推荐作为 MVP）**：当你明确需要“持续的状态机混合”（例如 lid 的 open/close 与 lock/unlock、hover、shake、多层叠加）且想在编辑器做 blend 时再引入。现阶段用 AnimationPlayer + 少量代码状态机更直接。
+
+#### 9.1 “带 lid 的 Slot”动画：建议每个 Slot 一个轻量状态机 + AnimationPlayer
+
+- **适用对象**：Item Slot、Lottery Slot、Quest Slot、Main Quest Slot（所有有 lid 的模块）。
+- **状态定义（示例）**：
+  - `UNLOCKED_OPEN`：可交互且 lid 开
+  - `LOCKED_CLOSED`：锁定/不可交互且 lid 关
+  - `BUSY_SEQUENCE`：正在执行一段流程动画（提交/刷新/抽奖）
+- **实现建议**：
+  - 每个 slot 内保留一个 `AnimationPlayer`，只提供最小动画集：`lid_open`、`lid_close`（必要时加 `shake`、`flash`）。
+  - 代码侧提供 `set_locked(is_locked)`，内部只做：若锁→play close；解锁→play open。
+  - 任何流程动画（抽奖/提交/刷新）都用“序列函数”串联：`await animation_finished` 或 tween 回调，结束后回到状态机的稳定态。
+
+#### 9.2 物品飞行动画（解决 mask 裁剪 + 不同槽位缩放）
+
+你提到的核心问题是：slot 内部普遍在 `Sprite2D.clip_children` 的 mask 下，子节点一旦飞出 mask 就会被裁剪；并且不同 slot 的物品 icon 视觉 scale 不一致。
+
+**推荐方案：ProxySprite 飞行（强烈建议）**
+
+- **原则**：飞行动画不在原 slot 节点树里做，而是在一个“不裁剪”的全局层里做；原节点只负责“起点隐藏/终点显示”。
+- **需要新增 1 个节点（建议写进实现任务）**：
+  - `Game2D/VfxLayer`（Node2D，放在最顶层，`z_index` 足够大；不要开启 clip）
+
+- **飞行步骤（通用）**：
+  1. 读取起点节点的“全局位置/全局缩放”（Item Slot 的 `Item_example`、Lottery 的 `Item_main`、订单的 `Item_icon` 等）。
+  2. 在 `VfxLayer` 中创建一个临时 `Sprite2D`（proxy），复制 texture，并把 `global_position/global_scale` 设为起点的当前值。
+  3. 隐藏起点真实节点（或置 alpha=0）。
+  4. tween proxy：\n     - `global_position` → 终点中心点（背包空槽的 `Item_example` 或 Lottery `Item_main`）\n     - `scale` → 终点期望 scale（按终点节点的全局 scale）\n     - 可选：加一段抛物线（用 `tween_method` 或分段 tween）
+  5. 动画结束：显示终点真实节点（并设置其 texture/颜色），删除 proxy。
+
+- **Control vs Node2D 的坐标处理**：
+  - `Sprite2D/Node2D`：直接用 `global_position`，缩放用 `global_transform.get_scale()`。
+  - `TextureRect/Control`：用 `get_global_rect()` 取中心点作为飞行起终点，并把 proxy 的 scale 映射到“你想看到的视觉大小”（通常用目标 Sprite2D 的 scale 作为准则）。
 
 

@@ -2179,27 +2179,39 @@ texture = ExtResource("28_mfdr7")
 [node name="Slot_background_outline" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot_background"]
 texture = ExtResource("29_xpfcn")
 
-[node name="Quest Reward Label" type="RichTextLabel" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask"]
-offset_left = -412.0
-offset_top = -115.0
-offset_right = 477.0
-offset_bottom = 78.0
+[node name="Quest Reward Icon" type="TextureRect" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask"]
+offset_left = -394.0
+offset_top = -50.25
+offset_right = -308.0
+offset_bottom = 15.75
+texture = ExtResource("51_8y6ih")
+
+[node name="Quest Reward Label" type="RichTextLabel" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Reward Icon"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 90.0
+offset_top = -97.0
+offset_right = 979.0
+offset_bottom = 96.0
+grow_vertical = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 141
 bbcode_enabled = true
 text = "33 [s]25[/s]"
 fit_content = true
 scroll_active = false
-horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask"]
-offset_left = -310.0
+offset_left = -203.0
 offset_top = 31.0
-offset_right = 890.0
+offset_right = 997.0
 offset_bottom = 71.0
 scale = Vector2(0.5, 0.5)
 theme_override_constants/separation = 325
+alignment = 2
 
 [node name="Quest Slot Item_root_0" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
@@ -2381,27 +2393,39 @@ texture = ExtResource("28_mfdr7")
 [node name="Slot_background_outline" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot_background"]
 texture = ExtResource("29_xpfcn")
 
-[node name="Quest Reward Label" type="RichTextLabel" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask"]
-offset_left = -412.0
-offset_top = -115.0
-offset_right = 477.0
-offset_bottom = 78.0
+[node name="Quest Reward Icon" type="TextureRect" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask"]
+offset_left = -394.0
+offset_top = -50.25
+offset_right = -308.0
+offset_bottom = 15.75
+texture = ExtResource("51_8y6ih")
+
+[node name="Quest Reward Label" type="RichTextLabel" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Reward Icon"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 90.0
+offset_top = -97.0
+offset_right = 979.0
+offset_bottom = 96.0
+grow_vertical = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 141
 bbcode_enabled = true
 text = "33 [s]25[/s]"
 fit_content = true
 scroll_active = false
-horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask"]
-offset_left = -310.0
+offset_left = -203.0
 offset_top = 31.0
-offset_right = 890.0
+offset_right = 997.0
 offset_bottom = 71.0
 scale = Vector2(0.5, 0.5)
 theme_override_constants/separation = 325
+alignment = 2
 
 [node name="Quest Slot Item_root_0" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
@@ -2533,6 +2557,7 @@ offset_left = 581.0
 offset_top = -90.0
 offset_right = 708.0
 offset_bottom = 51.0
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource("86_8ocj1")
 texture_pressed = ExtResource("87_jdak2")
 texture_hover = ExtResource("88_6kw3k")
@@ -2582,27 +2607,39 @@ texture = ExtResource("28_mfdr7")
 [node name="Slot_background_outline" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot_background"]
 texture = ExtResource("29_xpfcn")
 
-[node name="Quest Reward Label" type="RichTextLabel" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask"]
-offset_left = -412.0
-offset_top = -115.0
-offset_right = 477.0
-offset_bottom = 78.0
+[node name="Quest Reward Icon" type="TextureRect" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask"]
+offset_left = -394.0
+offset_top = -50.25
+offset_right = -308.0
+offset_bottom = 15.75
+texture = ExtResource("51_8y6ih")
+
+[node name="Quest Reward Label" type="RichTextLabel" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Reward Icon"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 90.0
+offset_top = -97.0
+offset_right = 979.0
+offset_bottom = 96.0
+grow_vertical = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 141
 bbcode_enabled = true
 text = "33 [s]25[/s]"
 fit_content = true
 scroll_active = false
-horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask"]
-offset_left = -310.0
+offset_left = -203.0
 offset_top = 31.0
-offset_right = 890.0
+offset_right = 997.0
 offset_bottom = 71.0
 scale = Vector2(0.5, 0.5)
 theme_override_constants/separation = 325
+alignment = 2
 
 [node name="Quest Slot Item_root_0" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
@@ -2734,6 +2771,7 @@ offset_left = 581.0
 offset_top = -90.0
 offset_right = 708.0
 offset_bottom = 51.0
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource("86_8ocj1")
 texture_pressed = ExtResource("87_jdak2")
 texture_hover = ExtResource("88_6kw3k")
@@ -2783,27 +2821,39 @@ texture = ExtResource("28_mfdr7")
 [node name="Slot_background_outline" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot_background"]
 texture = ExtResource("29_xpfcn")
 
-[node name="Quest Reward Label" type="RichTextLabel" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask"]
-offset_left = -412.0
-offset_top = -115.0
-offset_right = 477.0
-offset_bottom = 78.0
+[node name="Quest Reward Icon" type="TextureRect" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask"]
+offset_left = -394.0
+offset_top = -50.25
+offset_right = -308.0
+offset_bottom = 15.75
+texture = ExtResource("51_8y6ih")
+
+[node name="Quest Reward Label" type="RichTextLabel" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Reward Icon"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 90.0
+offset_top = -97.0
+offset_right = 979.0
+offset_bottom = 96.0
+grow_vertical = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 141
 bbcode_enabled = true
 text = "33 [s]25[/s]"
 fit_content = true
 scroll_active = false
-horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask"]
-offset_left = -310.0
+offset_left = -203.0
 offset_top = 31.0
-offset_right = 890.0
+offset_right = 997.0
 offset_bottom = 71.0
 scale = Vector2(0.5, 0.5)
 theme_override_constants/separation = 325
+alignment = 2
 
 [node name="Quest Slot Item_root_0" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
@@ -2935,6 +2985,7 @@ offset_left = 581.0
 offset_top = -90.0
 offset_right = 708.0
 offset_bottom = 51.0
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource("86_8ocj1")
 texture_pressed = ExtResource("87_jdak2")
 texture_hover = ExtResource("88_6kw3k")
@@ -3034,12 +3085,13 @@ texture = ExtResource("28_mfdr7")
 texture = ExtResource("29_xpfcn")
 
 [node name="Main Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/Main Quest Slot_root/Main Quest Slot_mask"]
-offset_left = -310.0
-offset_top = 13.0
-offset_right = 890.0
-offset_bottom = 53.0
+offset_left = -226.0
+offset_top = 19.75
+offset_right = 974.0
+offset_bottom = 59.75
 scale = Vector2(0.5, 0.5)
 theme_override_constants/separation = 400
+alignment = 2
 
 [node name="Main Quest Slot Item_root_0" type="Control" parent="The Rabbit/Main Quest Slot_root/Main Quest Slot_mask/Main Quest Slot Items Grid"]
 layout_mode = 2
