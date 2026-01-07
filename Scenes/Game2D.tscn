@@ -1,4 +1,4 @@
-[gd_scene load_steps=109 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=114 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
 [ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
@@ -48,6 +48,7 @@
 [ext_resource type="Texture2D" uid="uid://c17ii0rmjfv1n" path="res://assets/sprites/lottery_slots/基地-13.png" id="22_7j7pe"]
 [ext_resource type="Texture2D" uid="uid://430ts7sfdtgx" path="res://assets/sprites/lottery_slots/基地-10.png" id="23_o2lnr"]
 [ext_resource type="Texture2D" uid="uid://bh2rrdftruk78" path="res://assets/sprites/lottery_slots/基地-12.png" id="24_y6c7h"]
+[ext_resource type="Texture2D" uid="uid://d3xb6e3385m7k" path="res://assets/sprites/icons/coupon.png" id="25_ccvlu"]
 [ext_resource type="Texture2D" uid="uid://fcpknfhqe6td" path="res://assets/sprites/the_machine/the_machine_star.PNG" id="25_ue141"]
 [ext_resource type="Texture2D" uid="uid://bk6w30hxghp51" path="res://assets/sprites/quest_slots/基地-7.png" id="25_y6c7h"]
 [ext_resource type="Texture2D" uid="uid://b6sygmv0sgt3g" path="res://assets/sprites/quest_slots/基地-3.png" id="26_5jtl3"]
@@ -59,7 +60,9 @@
 [ext_resource type="Texture2D" uid="uid://bkthx68vhcd00" path="res://assets/sprites/quest_slots/基地-10.png" id="30_iq50s"]
 [ext_resource type="Texture2D" uid="uid://cyixck513ac1o" path="res://assets/sprites/quest_slots/基地-9.png" id="33_0ehwc"]
 [ext_resource type="Texture2D" uid="uid://ddymclsitprmc" path="res://assets/sprites/quest_slots/基地-8.png" id="34_oeaov"]
+[ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="37_50t6p"]
 [ext_resource type="Texture2D" uid="uid://cyo0chqrqd6p7" path="res://assets/sprites/the_machine/the_machine_description_display_fill.png" id="50_otpb1"]
+[ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
 [ext_resource type="Texture2D" uid="uid://grqi0oqjnrae" path="res://assets/sprites/the_machine/the_machine_description_display_outline.png" id="51_017ef"]
 [ext_resource type="Texture2D" uid="uid://dj5be2vipyhi4" path="res://assets/sprites/the_rabbit/the_rabbit_head_left.png" id="62_enqmm"]
 [ext_resource type="Texture2D" uid="uid://b067gbir0lby" path="res://assets/sprites/the_rabbit/the_rabbit_head_mid.png" id="63_6sdua"]
@@ -95,6 +98,7 @@
 [ext_resource type="Texture2D" uid="uid://djobi2frf8t4s" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_outline.png" id="86_f3s7l"]
 [ext_resource type="Texture2D" uid="uid://ca5ud3ae3x378" path="res://assets/sprites/the_rabbit/the_rabbit_right_foot.png" id="87_fs1h7"]
 [ext_resource type="Texture2D" uid="uid://ccfw8sduhx8rm" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_pressed.png" id="87_jdak2"]
+[ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="87_u8s40"]
 [ext_resource type="Texture2D" uid="uid://dslsns6p86ffx" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_hover.png" id="88_6kw3k"]
 [ext_resource type="Texture2D" uid="uid://dokmgcwoitk6l" path="res://assets/sprites/the_rabbit/the_rabbit_right_hand.png" id="88_yytn1"]
 [ext_resource type="Texture2D" uid="uid://b0qmpkep8t4hu" path="res://assets/sprites/the_rabbit/the_rabbit_right_leg.png" id="89_g7jj0"]
@@ -102,6 +106,7 @@
 [ext_resource type="Texture2D" uid="uid://blfi1cynn45pb" path="res://assets/sprites/the_rabbit/the_rabbit_wand_face.png" id="91_v12rw"]
 [ext_resource type="Texture2D" uid="uid://bta1pq0iskiiy" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_1.png" id="92_ishf8"]
 [ext_resource type="Texture2D" uid="uid://ba8n4bffxpxgp" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_2.png" id="93_yhupc"]
+[ext_resource type="Texture2D" uid="uid://4ds5uce4fmqb" path="res://assets/sprites/icons/refresh.png" id="94_017ef"]
 [ext_resource type="Texture2D" uid="uid://ctkkq7iwtmubj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_3.png" id="94_i65o3"]
 [ext_resource type="Texture2D" uid="uid://dfn54hrs485jj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_4.png" id="95_bttk6"]
 [ext_resource type="Texture2D" uid="uid://da0ig7cexq40g" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_5.png" id="96_jf2x3"]
@@ -270,7 +275,7 @@ texture = ExtResource("14_6b2j4")
 
 [node name="Switch_background_up" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask"]
 self_modulate = Color(0.99607843, 0.90588236, 0.28627452, 1)
-position = Vector2(-19, -48)
+position = Vector2(-19, -207.5)
 texture = ExtResource("15_fvhsr")
 
 [node name="Switch_off_label" type="RichTextLabel" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_background_up"]
@@ -288,22 +293,29 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Switch_background_down" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask"]
-position = Vector2(-19, 312)
+position = Vector2(-19, 152.5)
 texture = ExtResource("15_fvhsr")
 
 [node name="Switch_on_label" type="RichTextLabel" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_background_down"]
-offset_left = -88.0
-offset_top = -56.0
-offset_right = 96.0
-offset_bottom = -16.0
+offset_left = -95.5
+offset_top = -123.0
+offset_right = 88.5
+offset_bottom = -18.0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 26
-text = "123123123123"
+theme_override_font_sizes/normal_font_size = 76
+text = "123"
 fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
+
+[node name="Switch_on_icon" type="TextureRect" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_background_down"]
+offset_left = -33.5
+offset_top = 11.0
+offset_right = 52.5
+offset_bottom = 77.0
+texture = ExtResource("51_8y6ih")
 
 [node name="Switch_outline" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle"]
 texture = ExtResource("15_0dgko")
@@ -313,7 +325,7 @@ self_modulate = Color(0.80368084, 0.7189732, 0.019726291, 1)
 texture = ExtResource("16_2v31b")
 
 [node name="Switch_handle" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle" node_paths=PackedStringArray("background_up", "background_down")]
-position = Vector2(0, 47)
+position = Vector2(0, -112.5)
 texture = ExtResource("17_d4ujc")
 script = ExtResource("19_ue141")
 background_up = NodePath("../Switch_mask/Switch_background_up")
@@ -373,7 +385,7 @@ offset_right = 96.0
 offset_bottom = -16.0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 26
-text = "123123123123"
+text = "CONFIRM"
 fit_content = true
 scroll_active = false
 horizontal_alignment = 1
@@ -420,26 +432,52 @@ texture = ExtResource("21_ue141")
 texture = ExtResource("4_6b2j4")
 
 [node name="Money_label" type="RichTextLabel" parent="The Machine/TheMachineDisplayFill"]
-offset_left = -224.0
-offset_top = -118.25
-offset_right = -105.0
-offset_bottom = -48.5
-theme_override_font_sizes/normal_font_size = 51
+offset_left = -254.5
+offset_top = -168.5
+offset_right = 253.5
+offset_bottom = -31.5
+theme_override_font_sizes/normal_font_size = 100
 bbcode_enabled = true
 text = "123"
+fit_content = true
 scroll_active = false
+horizontal_alignment = 2
 vertical_alignment = 1
 
+[node name="Money_icon" type="TextureRect" parent="The Machine/TheMachineDisplayFill/Money_label"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -33.0
+offset_right = 86.0
+offset_bottom = 33.0
+grow_vertical = 2
+texture = ExtResource("51_8y6ih")
+
 [node name="Coupon_label" type="RichTextLabel" parent="The Machine/TheMachineDisplayFill"]
-offset_left = -224.0
-offset_top = -10.25
-offset_right = -105.0
-offset_bottom = 59.5
-theme_override_font_sizes/normal_font_size = 51
+offset_left = -265.5
+offset_top = 8.5
+offset_right = 259.5
+offset_bottom = 145.5
+theme_override_font_sizes/normal_font_size = 100
 bbcode_enabled = true
 text = "123"
+fit_content = true
 scroll_active = false
+horizontal_alignment = 2
 vertical_alignment = 1
+
+[node name="Coupon_icon" type="TextureRect" parent="The Machine/TheMachineDisplayFill/Coupon_label"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -33.0
+offset_right = 86.0
+offset_bottom = 33.0
+grow_vertical = 2
+texture = ExtResource("25_ccvlu")
 
 [node name="TheMachineLegacyFill" type="Sprite2D" parent="The Machine"]
 position = Vector2(447.25, 710)
@@ -491,8 +529,8 @@ texture = ExtResource("16_cu6b6")
 texture = ExtResource("19_sojbq")
 
 [node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
+position = Vector2(-0.5, 1.5)
+scale = Vector2(0.65, 0.65)
 
 [node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
@@ -504,17 +542,13 @@ position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="RichTextLabel" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_item_root/Item_example"]
-offset_left = -266.0
-offset_top = 108.0
-offset_right = 32.0
-offset_bottom = 206.0
-tooltip_text = "绝育的：xxxxxx"
-theme_override_font_sizes/normal_font_size = 86
-text = "绝育的"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_item_root/Item_example"]
+position = Vector2(139, -127)
+texture = ExtResource("37_50t6p")
+
+[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask"]
+position = Vector2(87.5, 94.5)
+texture = ExtResource("87_u8s40")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask"]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
@@ -573,8 +607,8 @@ texture = ExtResource("16_cu6b6")
 texture = ExtResource("19_sojbq")
 
 [node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
+position = Vector2(-0.5, 1.5)
+scale = Vector2(0.65, 0.65)
 
 [node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
@@ -586,17 +620,13 @@ position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="RichTextLabel" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_item_root/Item_example"]
-offset_left = -266.0
-offset_top = 108.0
-offset_right = 32.0
-offset_bottom = 206.0
-tooltip_text = "绝育的：xxxxxx"
-theme_override_font_sizes/normal_font_size = 86
-text = "绝育的"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_item_root/Item_example"]
+position = Vector2(139, -127)
+texture = ExtResource("37_50t6p")
+
+[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask"]
+position = Vector2(87.5, 94.5)
+texture = ExtResource("87_u8s40")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask"]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
@@ -655,8 +685,8 @@ texture = ExtResource("16_cu6b6")
 texture = ExtResource("19_sojbq")
 
 [node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
+position = Vector2(-0.5, 1.5)
+scale = Vector2(0.65, 0.65)
 
 [node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
@@ -668,17 +698,13 @@ position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="RichTextLabel" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_item_root/Item_example"]
-offset_left = -266.0
-offset_top = 108.0
-offset_right = 32.0
-offset_bottom = 206.0
-tooltip_text = "绝育的：xxxxxx"
-theme_override_font_sizes/normal_font_size = 86
-text = "绝育的"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_item_root/Item_example"]
+position = Vector2(139, -127)
+texture = ExtResource("37_50t6p")
+
+[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask"]
+position = Vector2(87.5, 94.5)
+texture = ExtResource("87_u8s40")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask"]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
@@ -737,8 +763,8 @@ texture = ExtResource("16_cu6b6")
 texture = ExtResource("19_sojbq")
 
 [node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
+position = Vector2(-0.5, 1.5)
+scale = Vector2(0.65, 0.65)
 
 [node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
@@ -750,17 +776,13 @@ position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="RichTextLabel" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_item_root/Item_example"]
-offset_left = -266.0
-offset_top = 108.0
-offset_right = 32.0
-offset_bottom = 206.0
-tooltip_text = "绝育的：xxxxxx"
-theme_override_font_sizes/normal_font_size = 86
-text = "绝育的"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_item_root/Item_example"]
+position = Vector2(139, -127)
+texture = ExtResource("37_50t6p")
+
+[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask"]
+position = Vector2(87.5, 94.5)
+texture = ExtResource("87_u8s40")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask"]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
@@ -819,8 +841,8 @@ texture = ExtResource("16_cu6b6")
 texture = ExtResource("19_sojbq")
 
 [node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
+position = Vector2(-0.5, 1.5)
+scale = Vector2(0.65, 0.65)
 
 [node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
@@ -832,17 +854,13 @@ position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="RichTextLabel" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_item_root/Item_example"]
-offset_left = -266.0
-offset_top = 108.0
-offset_right = 32.0
-offset_bottom = 206.0
-tooltip_text = "绝育的：xxxxxx"
-theme_override_font_sizes/normal_font_size = 86
-text = "绝育的"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_item_root/Item_example"]
+position = Vector2(139, -127)
+texture = ExtResource("37_50t6p")
+
+[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask"]
+position = Vector2(87.5, 94.5)
+texture = ExtResource("87_u8s40")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask"]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
@@ -901,8 +919,8 @@ texture = ExtResource("16_cu6b6")
 texture = ExtResource("19_sojbq")
 
 [node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
+position = Vector2(-0.5, 1.5)
+scale = Vector2(0.65, 0.65)
 
 [node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
@@ -914,17 +932,13 @@ position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="RichTextLabel" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_item_root/Item_example"]
-offset_left = -266.0
-offset_top = 108.0
-offset_right = 32.0
-offset_bottom = 206.0
-tooltip_text = "绝育的：xxxxxx"
-theme_override_font_sizes/normal_font_size = 86
-text = "绝育的"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_item_root/Item_example"]
+position = Vector2(139, -127)
+texture = ExtResource("37_50t6p")
+
+[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask"]
+position = Vector2(87.5, 94.5)
+texture = ExtResource("87_u8s40")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask"]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
@@ -983,8 +997,8 @@ texture = ExtResource("16_cu6b6")
 texture = ExtResource("19_sojbq")
 
 [node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
+position = Vector2(-0.5, 1.5)
+scale = Vector2(0.65, 0.65)
 
 [node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
@@ -996,17 +1010,13 @@ position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="RichTextLabel" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_item_root/Item_example"]
-offset_left = -266.0
-offset_top = 108.0
-offset_right = 32.0
-offset_bottom = 206.0
-tooltip_text = "绝育的：xxxxxx"
-theme_override_font_sizes/normal_font_size = 86
-text = "绝育的"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_item_root/Item_example"]
+position = Vector2(139, -127)
+texture = ExtResource("37_50t6p")
+
+[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask"]
+position = Vector2(87.5, 94.5)
+texture = ExtResource("87_u8s40")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask"]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
@@ -1065,8 +1075,8 @@ texture = ExtResource("16_cu6b6")
 texture = ExtResource("19_sojbq")
 
 [node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
+position = Vector2(-0.5, 1.5)
+scale = Vector2(0.65, 0.65)
 
 [node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
@@ -1078,17 +1088,13 @@ position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="RichTextLabel" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_item_root/Item_example"]
-offset_left = -266.0
-offset_top = 108.0
-offset_right = 32.0
-offset_bottom = 206.0
-tooltip_text = "绝育的：xxxxxx"
-theme_override_font_sizes/normal_font_size = 86
-text = "绝育的"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_item_root/Item_example"]
+position = Vector2(139, -127)
+texture = ExtResource("37_50t6p")
+
+[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask"]
+position = Vector2(87.5, 94.5)
+texture = ExtResource("87_u8s40")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask"]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
@@ -1147,8 +1153,8 @@ texture = ExtResource("16_cu6b6")
 texture = ExtResource("19_sojbq")
 
 [node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
+position = Vector2(-0.5, 1.5)
+scale = Vector2(0.65, 0.65)
 
 [node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
@@ -1160,17 +1166,13 @@ position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="RichTextLabel" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_item_root/Item_example"]
-offset_left = -266.0
-offset_top = 108.0
-offset_right = 32.0
-offset_bottom = 206.0
-tooltip_text = "绝育的：xxxxxx"
-theme_override_font_sizes/normal_font_size = 86
-text = "绝育的"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_item_root/Item_example"]
+position = Vector2(139, -127)
+texture = ExtResource("37_50t6p")
+
+[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask"]
+position = Vector2(87.5, 94.5)
+texture = ExtResource("87_u8s40")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask"]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
@@ -1229,8 +1231,8 @@ texture = ExtResource("16_cu6b6")
 texture = ExtResource("19_sojbq")
 
 [node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask"]
-position = Vector2(-1, 30)
-scale = Vector2(0.5, 0.5)
+position = Vector2(-0.5, 1.5)
+scale = Vector2(0.65, 0.65)
 
 [node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
@@ -1242,17 +1244,13 @@ position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="RichTextLabel" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_item_root/Item_example"]
-offset_left = -266.0
-offset_top = 108.0
-offset_right = 32.0
-offset_bottom = 206.0
-tooltip_text = "绝育的：xxxxxx"
-theme_override_font_sizes/normal_font_size = 86
-text = "绝育的"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_item_root/Item_example"]
+position = Vector2(139, -127)
+texture = ExtResource("37_50t6p")
+
+[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask"]
+position = Vector2(87.5, 94.5)
+texture = ExtResource("87_u8s40")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask"]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
@@ -1315,10 +1313,10 @@ texture = ExtResource("16_iq50s")
 texture = ExtResource("17_0ehwc")
 
 [node name="Lottery Slot_item_root" type="Node2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_mask"]
-position = Vector2(-23, 50)
+position = Vector2(-23, 61.75)
 
 [node name="Item_queue_2" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_mask/Lottery Slot_item_root"]
-position = Vector2(-207, 38.75)
+position = Vector2(-207, -19)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 
@@ -1330,7 +1328,7 @@ scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
 [node name="Item_queue_1" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_mask/Lottery Slot_item_root"]
-position = Vector2(-106, 37.75)
+position = Vector2(-116, 7)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 
@@ -1396,25 +1394,70 @@ layout_mode = 2
 texture = ExtResource("3_fiado")
 expand_mode = 5
 
+[node name="Item Icon_status" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_right_screen/Lottery Required Items Icon Grid/Item Icon_0"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("87_u8s40")
+expand_mode = 3
+
 [node name="Item Icon_1" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_right_screen/Lottery Required Items Icon Grid"]
 layout_mode = 2
 texture = ExtResource("3_fiado")
 expand_mode = 5
+
+[node name="Item Icon_status" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_right_screen/Lottery Required Items Icon Grid/Item Icon_1"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("87_u8s40")
+expand_mode = 3
 
 [node name="Item Icon_2" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_right_screen/Lottery Required Items Icon Grid"]
 layout_mode = 2
 texture = ExtResource("3_fiado")
 expand_mode = 5
 
+[node name="Item Icon_status" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_right_screen/Lottery Required Items Icon Grid/Item Icon_2"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("87_u8s40")
+expand_mode = 3
+
 [node name="Item Icon_3" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_right_screen/Lottery Required Items Icon Grid"]
 layout_mode = 2
 texture = ExtResource("3_fiado")
 expand_mode = 5
 
+[node name="Item Icon_status" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_right_screen/Lottery Required Items Icon Grid/Item Icon_3"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("87_u8s40")
+expand_mode = 3
+
 [node name="Item Icon_4" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_right_screen/Lottery Required Items Icon Grid"]
 layout_mode = 2
 texture = ExtResource("3_fiado")
 expand_mode = 5
+
+[node name="Item Icon_status" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_right_screen/Lottery Required Items Icon Grid/Item Icon_4"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("87_u8s40")
+expand_mode = 3
 
 [node name="Lottery Slot_top_screen" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0"]
 self_modulate = Color(0.61960787, 0.9137255, 0.40392157, 1)
@@ -1429,6 +1472,7 @@ offset_left = -84.0
 offset_top = -471.0
 offset_right = 267.0
 offset_bottom = -348.0
+theme_override_colors/default_color = Color(0.2592937, 0.2592937, 0.2592937, 1)
 theme_override_font_sizes/normal_font_size = 76
 bbcode_enabled = true
 text = "AFFIX"
@@ -1437,15 +1481,20 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="Price Label" type="RichTextLabel" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_top_screen"]
-offset_left = -274.0
+offset_left = -176.0
 offset_top = -471.0
-offset_right = 77.0
+offset_right = 175.0
 offset_bottom = -348.0
+theme_override_colors/default_color = Color(0.6052743, 0.6052743, 0.6052743, 1)
 theme_override_font_sizes/normal_font_size = 76
 bbcode_enabled = true
-text = "$9"
+text = "9"
 scroll_active = false
 vertical_alignment = 1
+
+[node name="Price Icon" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_top_screen"]
+position = Vector2(-234, -405.25)
+texture = ExtResource("51_8y6ih")
 
 [node name="Lottery Slot_description_screen" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0"]
 self_modulate = Color(0, 0.6509804, 1, 1)
@@ -1454,6 +1503,15 @@ texture = ExtResource("50_otpb1")
 
 [node name="Lottery Slot_description_screen_outline" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_description_screen"]
 texture = ExtResource("51_017ef")
+
+[node name="Description Label" type="RichTextLabel" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_description_screen"]
+offset_left = -394.0
+offset_top = -203.0
+offset_right = 368.0
+offset_bottom = 228.0
+theme_override_font_sizes/normal_font_size = 50
+text = "Description goes here"
+scroll_active = false
 
 [node name="Input Area" type="Control" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0"]
 anchors_preset = 0
@@ -1492,10 +1550,10 @@ texture = ExtResource("16_iq50s")
 texture = ExtResource("17_0ehwc")
 
 [node name="Lottery Slot_item_root" type="Node2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_mask"]
-position = Vector2(-23, 50)
+position = Vector2(-23, 61.75)
 
 [node name="Item_queue_2" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_mask/Lottery Slot_item_root"]
-position = Vector2(-207, 38.75)
+position = Vector2(-207, -19)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 
@@ -1507,7 +1565,7 @@ scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
 [node name="Item_queue_1" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_mask/Lottery Slot_item_root"]
-position = Vector2(-106, 37.75)
+position = Vector2(-116, 7)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 
@@ -1573,25 +1631,70 @@ layout_mode = 2
 texture = ExtResource("3_fiado")
 expand_mode = 5
 
+[node name="Item Icon_status" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_right_screen/Lottery Required Items Icon Grid/Item Icon_0"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("87_u8s40")
+expand_mode = 3
+
 [node name="Item Icon_1" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_right_screen/Lottery Required Items Icon Grid"]
 layout_mode = 2
 texture = ExtResource("3_fiado")
 expand_mode = 5
+
+[node name="Item Icon_status" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_right_screen/Lottery Required Items Icon Grid/Item Icon_1"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("87_u8s40")
+expand_mode = 3
 
 [node name="Item Icon_2" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_right_screen/Lottery Required Items Icon Grid"]
 layout_mode = 2
 texture = ExtResource("3_fiado")
 expand_mode = 5
 
+[node name="Item Icon_status" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_right_screen/Lottery Required Items Icon Grid/Item Icon_2"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("87_u8s40")
+expand_mode = 3
+
 [node name="Item Icon_3" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_right_screen/Lottery Required Items Icon Grid"]
 layout_mode = 2
 texture = ExtResource("3_fiado")
 expand_mode = 5
 
+[node name="Item Icon_status" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_right_screen/Lottery Required Items Icon Grid/Item Icon_3"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("87_u8s40")
+expand_mode = 3
+
 [node name="Item Icon_4" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_right_screen/Lottery Required Items Icon Grid"]
 layout_mode = 2
 texture = ExtResource("3_fiado")
 expand_mode = 5
+
+[node name="Item Icon_status" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_right_screen/Lottery Required Items Icon Grid/Item Icon_4"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("87_u8s40")
+expand_mode = 3
 
 [node name="Lottery Slot_top_screen" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1"]
 self_modulate = Color(0.61960787, 0.9137255, 0.40392157, 1)
@@ -1606,6 +1709,7 @@ offset_left = -84.0
 offset_top = -471.0
 offset_right = 267.0
 offset_bottom = -348.0
+theme_override_colors/default_color = Color(0.2592937, 0.2592937, 0.2592937, 1)
 theme_override_font_sizes/normal_font_size = 76
 bbcode_enabled = true
 text = "AFFIX"
@@ -1614,15 +1718,20 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="Price Label" type="RichTextLabel" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_top_screen"]
-offset_left = -274.0
+offset_left = -176.0
 offset_top = -471.0
-offset_right = 77.0
+offset_right = 175.0
 offset_bottom = -348.0
+theme_override_colors/default_color = Color(0.6052743, 0.6052743, 0.6052743, 1)
 theme_override_font_sizes/normal_font_size = 76
 bbcode_enabled = true
-text = "$9"
+text = "9"
 scroll_active = false
 vertical_alignment = 1
+
+[node name="Price Icon" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_top_screen"]
+position = Vector2(-234, -405.25)
+texture = ExtResource("51_8y6ih")
 
 [node name="Lottery Slot_description_screen" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1"]
 self_modulate = Color(0, 0.6509804, 1, 1)
@@ -1631,6 +1740,15 @@ texture = ExtResource("50_otpb1")
 
 [node name="Lottery Slot_description_screen_outline" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_description_screen"]
 texture = ExtResource("51_017ef")
+
+[node name="Description Label" type="RichTextLabel" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_description_screen"]
+offset_left = -394.0
+offset_top = -203.0
+offset_right = 368.0
+offset_bottom = 228.0
+theme_override_font_sizes/normal_font_size = 50
+text = "Description goes here"
+scroll_active = false
 
 [node name="Input Area" type="Control" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1"]
 anchors_preset = 0
@@ -1669,10 +1787,10 @@ texture = ExtResource("16_iq50s")
 texture = ExtResource("17_0ehwc")
 
 [node name="Lottery Slot_item_root" type="Node2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_mask"]
-position = Vector2(-23, 50)
+position = Vector2(-23, 61.75)
 
 [node name="Item_queue_2" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_mask/Lottery Slot_item_root"]
-position = Vector2(-207, 38.75)
+position = Vector2(-207, -19)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 
@@ -1684,7 +1802,7 @@ scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
 [node name="Item_queue_1" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_mask/Lottery Slot_item_root"]
-position = Vector2(-106, 37.75)
+position = Vector2(-116, 7)
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 
@@ -1750,25 +1868,70 @@ layout_mode = 2
 texture = ExtResource("3_fiado")
 expand_mode = 5
 
+[node name="Item Icon_status" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_right_screen/Lottery Required Items Icon Grid/Item Icon_0"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("87_u8s40")
+expand_mode = 3
+
 [node name="Item Icon_1" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_right_screen/Lottery Required Items Icon Grid"]
 layout_mode = 2
 texture = ExtResource("3_fiado")
 expand_mode = 5
+
+[node name="Item Icon_status" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_right_screen/Lottery Required Items Icon Grid/Item Icon_1"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("87_u8s40")
+expand_mode = 3
 
 [node name="Item Icon_2" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_right_screen/Lottery Required Items Icon Grid"]
 layout_mode = 2
 texture = ExtResource("3_fiado")
 expand_mode = 5
 
+[node name="Item Icon_status" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_right_screen/Lottery Required Items Icon Grid/Item Icon_2"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("87_u8s40")
+expand_mode = 3
+
 [node name="Item Icon_3" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_right_screen/Lottery Required Items Icon Grid"]
 layout_mode = 2
 texture = ExtResource("3_fiado")
 expand_mode = 5
 
+[node name="Item Icon_status" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_right_screen/Lottery Required Items Icon Grid/Item Icon_3"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("87_u8s40")
+expand_mode = 3
+
 [node name="Item Icon_4" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_right_screen/Lottery Required Items Icon Grid"]
 layout_mode = 2
 texture = ExtResource("3_fiado")
 expand_mode = 5
+
+[node name="Item Icon_status" type="TextureRect" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_right_screen/Lottery Required Items Icon Grid/Item Icon_4"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("87_u8s40")
+expand_mode = 3
 
 [node name="Lottery Slot_top_screen" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2"]
 self_modulate = Color(0.61960787, 0.9137255, 0.40392157, 1)
@@ -1783,6 +1946,7 @@ offset_left = -84.0
 offset_top = -471.0
 offset_right = 267.0
 offset_bottom = -348.0
+theme_override_colors/default_color = Color(0.2592937, 0.2592937, 0.2592937, 1)
 theme_override_font_sizes/normal_font_size = 76
 bbcode_enabled = true
 text = "AFFIX"
@@ -1791,15 +1955,20 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="Price Label" type="RichTextLabel" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_top_screen"]
-offset_left = -274.0
+offset_left = -176.0
 offset_top = -471.0
-offset_right = 77.0
+offset_right = 175.0
 offset_bottom = -348.0
+theme_override_colors/default_color = Color(0.6052743, 0.6052743, 0.6052743, 1)
 theme_override_font_sizes/normal_font_size = 76
 bbcode_enabled = true
-text = "$9"
+text = "9"
 scroll_active = false
 vertical_alignment = 1
+
+[node name="Price Icon" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_top_screen"]
+position = Vector2(-234, -405.25)
+texture = ExtResource("51_8y6ih")
 
 [node name="Lottery Slot_description_screen" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2"]
 self_modulate = Color(0, 0.6509804, 1, 1)
@@ -1808,6 +1977,15 @@ texture = ExtResource("50_otpb1")
 
 [node name="Lottery Slot_description_screen_outline" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_description_screen"]
 texture = ExtResource("51_017ef")
+
+[node name="Description Label" type="RichTextLabel" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_description_screen"]
+offset_left = -394.0
+offset_top = -203.0
+offset_right = 368.0
+offset_bottom = 228.0
+theme_override_font_sizes/normal_font_size = 50
+text = "Description goes here"
+scroll_active = false
 
 [node name="Input Area" type="Control" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2"]
 anchors_preset = 0
@@ -2028,6 +2206,10 @@ modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
 
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
+
 [node name="Quest Slot Item_root_1" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
 
@@ -2049,6 +2231,10 @@ texture = ExtResource("82_4tp6t")
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
+
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot Item_root_2" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
@@ -2072,6 +2258,10 @@ modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
 
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
+
 [node name="Quest Slot Item_root_3" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
 
@@ -2093,6 +2283,10 @@ texture = ExtResource("82_4tp6t")
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
+
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask"]
 modulate = Color(0.8627451, 0.7764706, 0, 1)
@@ -2120,6 +2314,7 @@ offset_left = 581.0
 offset_top = -90.0
 offset_right = 708.0
 offset_bottom = 51.0
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource("86_8ocj1")
 texture_pressed = ExtResource("87_jdak2")
 texture_hover = ExtResource("88_6kw3k")
@@ -2131,13 +2326,17 @@ offset_left = 30.0
 offset_top = 28.0
 offset_right = 115.0
 offset_bottom = 130.0
+mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 61
 bbcode_enabled = true
-text = "2
-"
+text = "2"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Refresh Icon" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Refresh Button"]
+position = Vector2(73, 80.75)
+texture = ExtResource("94_017ef")
 
 [node name="Quest Slot_root_2" type="Control" parent="The Rabbit/Quest Slots Grid"]
 layout_mode = 2
@@ -2209,6 +2408,10 @@ modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
 
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
+
 [node name="Quest Slot Item_root_1" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
 
@@ -2230,6 +2433,10 @@ texture = ExtResource("82_4tp6t")
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
+
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot Item_root_2" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
@@ -2253,6 +2460,10 @@ modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
 
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
+
 [node name="Quest Slot Item_root_3" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
 
@@ -2274,6 +2485,10 @@ texture = ExtResource("82_4tp6t")
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
+
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask"]
 modulate = Color(0.8627451, 0.7764706, 0, 1)
@@ -2312,13 +2527,17 @@ offset_left = 30.0
 offset_top = 28.0
 offset_right = 115.0
 offset_bottom = 130.0
+mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 61
 bbcode_enabled = true
-text = "2
-"
+text = "2"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Refresh Icon" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Refresh Button"]
+position = Vector2(73, 80.75)
+texture = ExtResource("94_017ef")
 
 [node name="Quest Slot_root_3" type="Control" parent="The Rabbit/Quest Slots Grid"]
 layout_mode = 2
@@ -2390,6 +2609,10 @@ modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
 
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
+
 [node name="Quest Slot Item_root_1" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
 
@@ -2411,6 +2634,10 @@ texture = ExtResource("82_4tp6t")
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
+
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot Item_root_2" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
@@ -2434,6 +2661,10 @@ modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
 
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
+
 [node name="Quest Slot Item_root_3" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
 
@@ -2455,6 +2686,10 @@ texture = ExtResource("82_4tp6t")
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
+
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask"]
 modulate = Color(0.8627451, 0.7764706, 0, 1)
@@ -2493,13 +2728,17 @@ offset_left = 30.0
 offset_top = 28.0
 offset_right = 115.0
 offset_bottom = 130.0
+mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 61
 bbcode_enabled = true
-text = "2
-"
+text = "2"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Refresh Icon" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Refresh Button"]
+position = Vector2(73, 80.75)
+texture = ExtResource("94_017ef")
 
 [node name="Quest Slot_root_4" type="Control" parent="The Rabbit/Quest Slots Grid"]
 layout_mode = 2
@@ -2571,6 +2810,10 @@ modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
 
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
+
 [node name="Quest Slot Item_root_1" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
 
@@ -2592,6 +2835,10 @@ texture = ExtResource("82_4tp6t")
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
+
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot Item_root_2" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
@@ -2615,6 +2862,10 @@ modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
 
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
+
 [node name="Quest Slot Item_root_3" type="Control" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
 
@@ -2636,6 +2887,10 @@ texture = ExtResource("82_4tp6t")
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
+
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask"]
 modulate = Color(0.8627451, 0.7764706, 0, 1)
@@ -2674,13 +2929,17 @@ offset_left = 30.0
 offset_top = 28.0
 offset_right = 115.0
 offset_bottom = 130.0
+mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 61
 bbcode_enabled = true
-text = "2
-"
+text = "2"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Refresh Icon" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Refresh Button"]
+position = Vector2(73, 80.75)
+texture = ExtResource("94_017ef")
 
 [node name="TheRabbitRightHand" type="Sprite2D" parent="The Rabbit"]
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
@@ -2787,6 +3046,10 @@ modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
 
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Main Quest Slot_root/Main Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
+
 [node name="Main Quest Slot Item_root_1" type="Control" parent="The Rabbit/Main Quest Slot_root/Main Quest Slot_mask/Main Quest Slot Items Grid"]
 layout_mode = 2
 
@@ -2809,6 +3072,10 @@ modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 position = Vector2(133.33334, 130.66667)
 texture = ExtResource("25_ue141")
 
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/Main Quest Slot_root/Main Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("87_u8s40")
+
 [node name="Main Quest Slot_lid" type="Sprite2D" parent="The Rabbit/Main Quest Slot_root/Main Quest Slot_mask"]
 modulate = Color(0.8627451, 0.7764706, 0, 1)
 position = Vector2(0, -84)
@@ -2827,3 +3094,9 @@ offset_top = -127.0
 offset_right = 614.0
 offset_bottom = 162.0
 mouse_default_cursor_shape = 2
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(2998, 1689)
+zoom = Vector2(0.32, 0.32)
+editor_draw_limits = true
+editor_draw_drag_margin = true
