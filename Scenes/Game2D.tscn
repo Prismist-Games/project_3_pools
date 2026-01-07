@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
 [ext_resource type="Texture2D" uid="uid://b5uyc48ywtik2" path="res://assets/sprites/wall.png" id="2_xqbja"]
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="3_4wmcb"]
-[ext_resource type="Texture2D" uid="uid://boc71kjvr7ufn" path="res://assets/icons/spinning_top.png" id="3_fiado"]
+[ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="3_fiado"]
 [ext_resource type="Texture2D" uid="uid://b4qoptplb61wr" path="res://assets/sprites/the_machine/the_machine_display_outline.png" id="4_6b2j4"]
 [ext_resource type="Texture2D" uid="uid://c4wpgax5wfhpa" path="res://assets/sprites/the_machine/the_machine_legacy_fill.png" id="5_0dgko"]
 [ext_resource type="Texture2D" uid="uid://usox228a20t7" path="res://assets/sprites/the_machine/the_machine_legacy_outline.png" id="6_2v31b"]
@@ -1371,7 +1371,7 @@ texture = ExtResource("3_4wmcb")
 
 [node name="Lottery Slot_lid" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_mask"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(0, -246.25)
+position = Vector2(0, 6.75)
 texture = ExtResource("47_tiwwg")
 
 [node name="Lottery Slot_lid_icon" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_mask/Lottery Slot_lid"]
@@ -2096,7 +2096,7 @@ texture = ExtResource("74_8y6ih")
 
 [node name="TheRabbitRightFoot" type="Sprite2D" parent="The Rabbit"]
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
-position = Vector2(19.5, -307.5)
+position = Vector2(19.5, -309.5)
 texture = ExtResource("87_fs1h7")
 
 [node name="TheRabbitRightLeg" type="Sprite2D" parent="The Rabbit/TheRabbitRightFoot"]
@@ -2388,6 +2388,8 @@ vertical_alignment = 1
 position = Vector2(73, 80.75)
 texture = ExtResource("94_017ef")
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1"]
+
 [node name="Quest Slot_root_2" type="Control" parent="The Rabbit/Quest Slots Grid"]
 layout_mode = 2
 script = ExtResource("113_quest")
@@ -2602,6 +2604,8 @@ vertical_alignment = 1
 [node name="Refresh Icon" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Refresh Button"]
 position = Vector2(73, 80.75)
 texture = ExtResource("94_017ef")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2"]
 
 [node name="Quest Slot_root_3" type="Control" parent="The Rabbit/Quest Slots Grid"]
 layout_mode = 2
@@ -2818,6 +2822,8 @@ vertical_alignment = 1
 position = Vector2(73, 80.75)
 texture = ExtResource("94_017ef")
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3"]
+
 [node name="Quest Slot_root_4" type="Control" parent="The Rabbit/Quest Slots Grid"]
 layout_mode = 2
 script = ExtResource("113_quest")
@@ -3033,6 +3039,8 @@ vertical_alignment = 1
 position = Vector2(73, 80.75)
 texture = ExtResource("94_017ef")
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4"]
+
 [node name="TheRabbitRightHand" type="Sprite2D" parent="The Rabbit"]
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
 position = Vector2(19.5, -307.5)
@@ -3188,6 +3196,8 @@ offset_top = -127.0
 offset_right = 614.0
 offset_bottom = 162.0
 mouse_default_cursor_shape = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/Main Quest Slot_root"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(2998, 1689)

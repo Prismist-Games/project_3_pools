@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://duxypc61qtfow"]
+
+[ext_resource type="Texture2D" uid="uid://csdkrc8dcbho0" path="res://assets/sprites/icons/artifact_antique.png" id="1_4lf45"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="2_ma66f"]
+
+[resource]
+script = ExtResource("2_ma66f")
+id = &"mainline_01"
+name = "MAINLINE_01"
+item_type = 6
+icon = ExtResource("1_4lf45")

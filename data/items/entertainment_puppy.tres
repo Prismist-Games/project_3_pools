@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://ip4eeajfyol5"]
+
+[ext_resource type="Texture2D" uid="uid://buge7qat5doty" path="res://assets/sprites/icons/items/entertainment_puppy.PNG" id="1_olime"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="2_48r0x"]
+
+[resource]
+script = ExtResource("2_48r0x")
+id = &"entertainment_puppy"
+name = "ENTERTAINMENT_PUPPY"
+item_type = 5
+icon = ExtResource("1_olime")

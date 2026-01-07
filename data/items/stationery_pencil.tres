@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://dnxetmjgsblql"]
-
-[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="1_qclse"]
-
-[resource]
-script = ExtResource("1_qclse")
-id = &"stationery_pencil"
-name = "铅笔"
-item_type = 3

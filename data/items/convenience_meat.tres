@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://chyawckycqxas"]
+
+[ext_resource type="Texture2D" uid="uid://cdcv5btyi38kp" path="res://assets/sprites/icons/items/convenience_meat.PNG" id="1_fwd58"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="2_dxu2h"]
+
+[resource]
+script = ExtResource("2_dxu2h")
+id = &"convenience_meat"
+name = "CONVENIENCE_MEAT"
+item_type = 4
+icon = ExtResource("1_fwd58")

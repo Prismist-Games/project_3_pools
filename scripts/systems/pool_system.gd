@@ -196,7 +196,7 @@ func _generate_normal_pool(excluded_types: Array[Constants.ItemType] = [], exclu
 	
 	if available_types.is_empty():
 		# 如果所有解锁类型都被占用了（理论上不应该，因为 max_pools=3, types=5），则随便选一个非空类型
-		pool.item_type = source_types.pick_random() if not source_types.is_empty() else Constants.ItemType.FRUIT
+		pool.item_type = source_types.pick_random() if not source_types.is_empty() else Constants.ItemType.ANTIQUE
 	else:
 		pool.item_type = available_types.pick_random()
 	

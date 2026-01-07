@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://dmdtuoybwf6tp"]
+
+[ext_resource type="Texture2D" uid="uid://b5imd34hcvxut" path="res://assets/sprites/icons/artifact_medicine.png" id="1_yuy8e"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="2_trn5e"]
+
+[resource]
+script = ExtResource("2_trn5e")
+id = &"mainline_04"
+name = "MAINLINE_04"
+item_type = 6
+icon = ExtResource("1_yuy8e")

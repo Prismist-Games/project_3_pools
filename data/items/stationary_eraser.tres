@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://ct27x2mvbjcgm"]
+
+[ext_resource type="Texture2D" uid="uid://corrcx8qg8gyg" path="res://assets/sprites/icons/items/stationary_eraser.PNG" id="1_ihhs2"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="2_unke2"]
+
+[resource]
+script = ExtResource("2_unke2")
+id = &"stationary_eraser"
+name = "STATIONARY_ERASER"
+item_type = 3
+icon = ExtResource("1_ihhs2")

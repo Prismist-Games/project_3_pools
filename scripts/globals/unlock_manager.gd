@@ -21,8 +21,8 @@ enum Feature {
 	ORDER_REFRESH, ## 订单刷新
 	ITEM_TYPE_MEDICINE, ## 物品类型: 药品
 	ITEM_TYPE_STATIONERY, ## 物品类型: 文具
-	ITEM_TYPE_KITCHENWARE, ## 物品类型: 厨具
-	ITEM_TYPE_ELECTRONICS, ## 物品类型: 电器
+	ITEM_TYPE_CONVENIENCE, ## 物品类型: 便利
+	ITEM_TYPE_ENTERTAINMENT, ## 物品类型: 娱乐
 }
 
 ## 功能 ID 到显示名称的映射
@@ -32,8 +32,8 @@ const FEATURE_DISPLAY_NAMES: Dictionary = {
 	Feature.ORDER_REFRESH: "订单刷新",
 	Feature.ITEM_TYPE_MEDICINE: "药品",
 	Feature.ITEM_TYPE_STATIONERY: "文具",
-	Feature.ITEM_TYPE_KITCHENWARE: "厨具",
-	Feature.ITEM_TYPE_ELECTRONICS: "电器",
+	Feature.ITEM_TYPE_CONVENIENCE: "便利",
+	Feature.ITEM_TYPE_ENTERTAINMENT: "娱乐",
 }
 
 ## 内部状态 (默认全锁)
@@ -102,32 +102,32 @@ func is_item_type_unlocked(item_type: Constants.ItemType) -> bool:
 	## 检查指定物品类型是否已解锁
 	## FRUIT 始终解锁；MAINLINE/NONE 不在此系统管理
 	match item_type:
-		Constants.ItemType.FRUIT:
+		Constants.ItemType.ANTIQUE:
 			return true
 		Constants.ItemType.MEDICINE:
 			return is_unlocked(Feature.ITEM_TYPE_MEDICINE)
 		Constants.ItemType.STATIONERY:
 			return is_unlocked(Feature.ITEM_TYPE_STATIONERY)
-		Constants.ItemType.KITCHENWARE:
-			return is_unlocked(Feature.ITEM_TYPE_KITCHENWARE)
-		Constants.ItemType.ELECTRONICS:
-			return is_unlocked(Feature.ITEM_TYPE_ELECTRONICS)
+		Constants.ItemType.CONVENIENCE:
+			return is_unlocked(Feature.ITEM_TYPE_CONVENIENCE)
+		Constants.ItemType.ENTERTAINMENT:
+			return is_unlocked(Feature.ITEM_TYPE_ENTERTAINMENT)
 		_:
 			return false
 
 
 func get_unlocked_item_types() -> Array[Constants.ItemType]:
 	## 获取当前已解锁的所有物品类型
-	var result: Array[Constants.ItemType] = [Constants.ItemType.FRUIT]
+	var result: Array[Constants.ItemType] = [Constants.ItemType.ANTIQUE]
 	
 	if is_unlocked(Feature.ITEM_TYPE_MEDICINE):
 		result.append(Constants.ItemType.MEDICINE)
 	if is_unlocked(Feature.ITEM_TYPE_STATIONERY):
 		result.append(Constants.ItemType.STATIONERY)
-	if is_unlocked(Feature.ITEM_TYPE_KITCHENWARE):
-		result.append(Constants.ItemType.KITCHENWARE)
-	if is_unlocked(Feature.ITEM_TYPE_ELECTRONICS):
-		result.append(Constants.ItemType.ELECTRONICS)
+	if is_unlocked(Feature.ITEM_TYPE_CONVENIENCE):
+		result.append(Constants.ItemType.CONVENIENCE)
+	if is_unlocked(Feature.ITEM_TYPE_ENTERTAINMENT):
+		result.append(Constants.ItemType.ENTERTAINMENT)
 	
 	return result
 
@@ -174,6 +174,6 @@ func _feature_to_id(feature: Feature) -> StringName:
 		Feature.ORDER_REFRESH: return &"order_refresh"
 		Feature.ITEM_TYPE_MEDICINE: return &"item_type_medicine"
 		Feature.ITEM_TYPE_STATIONERY: return &"item_type_stationery"
-		Feature.ITEM_TYPE_KITCHENWARE: return &"item_type_kitchenware"
-		Feature.ITEM_TYPE_ELECTRONICS: return &"item_type_electronics"
+		Feature.ITEM_TYPE_CONVENIENCE: return &"item_type_convenience"
+		Feature.ITEM_TYPE_ENTERTAINMENT: return &"item_type_entertainment"
 		_: return &"unknown"

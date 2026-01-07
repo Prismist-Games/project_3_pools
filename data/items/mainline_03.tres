@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://d1u72j84tl634"]
+
+[ext_resource type="Texture2D" uid="uid://duycityyp8qb5" path="res://assets/sprites/icons/artifact_entertainment.png" id="1_j1dkm"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="2_s31db"]
+
+[resource]
+script = ExtResource("2_s31db")
+id = &"mainline_03"
+name = "MAINLINE_03"
+item_type = 6
+icon = ExtResource("1_j1dkm")

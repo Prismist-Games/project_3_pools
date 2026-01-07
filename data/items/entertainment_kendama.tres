@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://dwi0do42umhnh"]
+
+[ext_resource type="Texture2D" uid="uid://bb3i8h7c81isi" path="res://assets/sprites/icons/items/entertainment_kendama.PNG" id="1_vd6ar"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="2_low33"]
+
+[resource]
+script = ExtResource("2_low33")
+id = &"entertainment_kendama"
+name = "ENTERTAINMENT_KENDAMA"
+item_type = 5
+icon = ExtResource("1_vd6ar")

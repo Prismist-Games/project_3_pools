@@ -1,9 +1,11 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://c0wibl7eoy37o"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://eubpi2etvsro"]
 
-[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="1_esp2a"]
+[ext_resource type="Texture2D" uid="uid://cv1a7fotuh50e" path="res://assets/sprites/icons/items/stationary_stapler.PNG" id="1_bjnmc"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="2_8l36o"]
 
 [resource]
-script = ExtResource("1_esp2a")
+script = ExtResource("2_8l36o")
 id = &"stationery_stapler"
-name = "订书机"
+name = "STATIONERY_STAPLER"
 item_type = 3
+icon = ExtResource("1_bjnmc")

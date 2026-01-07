@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://dbry06qivnvck"]
-
-[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="1_tb6nh"]
-
-[resource]
-script = ExtResource("1_tb6nh")
-id = &"electronics_phone"
-name = "手机"
-item_type = 5

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://bgvnrtohrtkac"]
+
+[ext_resource type="Texture2D" uid="uid://dfhquxc8s1dgk" path="res://assets/sprites/icons/items/stationary_notebook.PNG" id="1_huhwr"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="2_w7n1i"]
+
+[resource]
+script = ExtResource("2_w7n1i")
+id = &"stationary_notebook"
+name = "STATIONARY_NOTEBOOK"
+item_type = 3
+icon = ExtResource("1_huhwr")
