@@ -11,6 +11,9 @@ signal inventory_changed(inventory: Array[ItemInstance])
 signal pending_queue_changed(queue: Array[ItemInstance])
 signal selection_changed(index: int)
 signal multi_selection_changed(indices: Array[int])
+signal item_moved(source_index: int, target_index: int)
+signal item_swapped(index1: int, index2: int)
+signal item_added(item: ItemInstance, index: int)
 
 # --- 状态 ---
 var inventory: Array[ItemInstance] = []
@@ -89,6 +92,7 @@ func _auto_add_to_inventory(item: ItemInstance) -> bool:
 	for i in range(inventory.size()):
 		if inventory[i] == null:
 			inventory[i] = item
+			item_added.emit(item, i)
 			inventory_changed.emit(inventory)
 			return true
 	return false
@@ -123,6 +127,7 @@ func handle_slot_click(index: int) -> void:
 			# 1. 目标格子为空 -> 放入
 			inventory[index] = pending
 			self.pending_item = null
+			item_added.emit(pending, index)
 		else:
 			# 2. 目标格子有物品 -> 判定合并
 			if can_merge(pending, target_item):
@@ -156,16 +161,19 @@ func handle_slot_click(index: int) -> void:
 				# 目标为空 -> 移动
 				inventory[index] = source_item
 				inventory[selected_idx] = null
+				item_moved.emit(selected_idx, index)
 			else:
 				# 判定合并: 检查是否满足合并规则
 				if can_merge(source_item, target_item):
 					# 合并
 					_perform_merge(source_item, target_item, index)
 					inventory[selected_idx] = null
+					item_moved.emit(selected_idx, index)
 				else:
 					# 交换
 					inventory[index] = source_item
 					inventory[selected_idx] = target_item
+					item_swapped.emit(selected_idx, index)
 					
 			self.selected_slot_index = -1
 	
@@ -228,3 +236,11 @@ func remove_items(items_to_remove: Array[ItemInstance]) -> void:
 			changed = true
 	if changed:
 		inventory_changed.emit(inventory)
+
+## 检查背包中是否包含指定物品
+func has_item_data(item_data: ItemData) -> bool:
+	if item_data == null: return false
+	for it in inventory:
+		if it != null and it.item_data.id == item_data.id:
+			return true
+	return false

@@ -21,11 +21,23 @@
       "resource_name": {
         "visibility": 0.0
       }
+    },
+    "res://data/items/": {
+      "metadata/_custom_type_script": {
+        "visibility": 0
+      },
+      "resource_local_to_scene": {
+        "visibility": 0
+      },
+      "resource_name": {
+        "visibility": 0
+      }
     }
   },
   "recent_paths": [
     "res://data/",
-    "res://data/general/mainline/"
+    "res://data/general/mainline/",
+    "res://data/items/"
   ],
   "table_functions": {
     "filter": [

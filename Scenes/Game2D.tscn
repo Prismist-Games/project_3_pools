@@ -1,4 +1,4 @@
-[gd_scene load_steps=116 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=120 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
 [ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
@@ -112,6 +112,10 @@
 [ext_resource type="Texture2D" uid="uid://ctkkq7iwtmubj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_3.png" id="94_i65o3"]
 [ext_resource type="Texture2D" uid="uid://dfn54hrs485jj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_4.png" id="95_bttk6"]
 [ext_resource type="Texture2D" uid="uid://da0ig7cexq40g" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_5.png" id="96_jf2x3"]
+[ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/game_2d_ui.gd" id="110_ui"]
+[ext_resource type="Script" uid="uid://c08o6jgnqkmke" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
+[ext_resource type="Script" uid="uid://cb4r62psbedq3" path="res://scripts/ui/components/lottery_slot_ui.gd" id="112_lottery"]
+[ext_resource type="Script" uid="uid://dceb57gqrmaik" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
 
 [sub_resource type="Animation" id="Animation_ovo1l"]
 length = 0.001
@@ -137,7 +141,10 @@ _data = {
 &"test_animation": SubResource("Animation_1h1gb")
 }
 
-[node name="Game2D" type="Node"]
+[node name="Game2D" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("110_ui")
 
 [node name="Background" type="Node2D" parent="."]
 position = Vector2(3001, 1689.25)
@@ -505,6 +512,7 @@ columns = 5
 layout_mode = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
+script = ExtResource("111_item")
 
 [node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0"]
 clip_children = 1
@@ -583,6 +591,7 @@ libraries = {
 layout_mode = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
+script = ExtResource("111_item")
 
 [node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1"]
 clip_children = 1
@@ -661,6 +670,7 @@ libraries = {
 layout_mode = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
+script = ExtResource("111_item")
 
 [node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2"]
 clip_children = 1
@@ -739,6 +749,7 @@ libraries = {
 layout_mode = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
+script = ExtResource("111_item")
 
 [node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3"]
 clip_children = 1
@@ -817,6 +828,7 @@ libraries = {
 layout_mode = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
+script = ExtResource("111_item")
 
 [node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4"]
 clip_children = 1
@@ -895,6 +907,7 @@ libraries = {
 layout_mode = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
+script = ExtResource("111_item")
 
 [node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5"]
 clip_children = 1
@@ -973,6 +986,7 @@ libraries = {
 layout_mode = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
+script = ExtResource("111_item")
 
 [node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6"]
 clip_children = 1
@@ -1051,6 +1065,7 @@ libraries = {
 layout_mode = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
+script = ExtResource("111_item")
 
 [node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7"]
 clip_children = 1
@@ -1129,6 +1144,7 @@ libraries = {
 layout_mode = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
+script = ExtResource("111_item")
 
 [node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8"]
 clip_children = 1
@@ -1207,6 +1223,7 @@ libraries = {
 layout_mode = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 2
+script = ExtResource("111_item")
 
 [node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9"]
 clip_children = 1
@@ -1290,6 +1307,7 @@ theme_override_constants/separation = 894
 
 [node name="Lottery Slot_root_0" type="Control" parent="The Machine/Lottery Slots Grid"]
 layout_mode = 2
+script = ExtResource("112_lottery")
 
 [node name="Lottery Slot_mask" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0"]
 clip_children = 2
@@ -1532,6 +1550,7 @@ mouse_default_cursor_shape = 2
 
 [node name="Lottery Slot_root_1" type="Control" parent="The Machine/Lottery Slots Grid"]
 layout_mode = 2
+script = ExtResource("112_lottery")
 
 [node name="Lottery Slot_mask" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1"]
 clip_children = 2
@@ -1774,6 +1793,7 @@ mouse_default_cursor_shape = 2
 
 [node name="Lottery Slot_root_2" type="Control" parent="The Machine/Lottery Slots Grid"]
 layout_mode = 2
+script = ExtResource("112_lottery")
 
 [node name="Lottery Slot_mask" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2"]
 clip_children = 2
@@ -2155,6 +2175,7 @@ theme_override_constants/separation = -301
 
 [node name="Quest Slot_root_1" type="Control" parent="The Rabbit/Quest Slots Grid"]
 layout_mode = 2
+script = ExtResource("113_quest")
 
 [node name="Quest Slot_mask" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1"]
 clip_children = 1
@@ -2369,6 +2390,7 @@ texture = ExtResource("94_017ef")
 
 [node name="Quest Slot_root_2" type="Control" parent="The Rabbit/Quest Slots Grid"]
 layout_mode = 2
+script = ExtResource("113_quest")
 
 [node name="Quest Slot_mask" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2"]
 clip_children = 1
@@ -2583,6 +2605,7 @@ texture = ExtResource("94_017ef")
 
 [node name="Quest Slot_root_3" type="Control" parent="The Rabbit/Quest Slots Grid"]
 layout_mode = 2
+script = ExtResource("113_quest")
 
 [node name="Quest Slot_mask" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3"]
 clip_children = 1
@@ -2797,6 +2820,7 @@ texture = ExtResource("94_017ef")
 
 [node name="Quest Slot_root_4" type="Control" parent="The Rabbit/Quest Slots Grid"]
 layout_mode = 2
+script = ExtResource("113_quest")
 
 [node name="Quest Slot_mask" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4"]
 clip_children = 1
@@ -3060,6 +3084,7 @@ offset_left = -174.0
 offset_top = -1010.0
 offset_right = -174.0
 offset_bottom = -1010.0
+script = ExtResource("113_quest")
 
 [node name="Main Quest Slot_mask" type="Sprite2D" parent="The Rabbit/Main Quest Slot_root"]
 clip_children = 1

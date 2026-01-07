@@ -68,7 +68,7 @@ func refresh_order(index: int) -> void:
 		return
 		
 	# 技能检测上下文
-	var ctx = ContextProxy.new({"consume_refresh": true})
+	var ctx = ContextProxy.new({"consume_refresh": true, "index": index})
 	EventBus.game_event.emit(&"order_refresh_requested", ctx)
 	
 	if ctx.get_value("consume_refresh"):
