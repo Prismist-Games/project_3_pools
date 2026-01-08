@@ -16,9 +16,9 @@ func setup(config: PoolConfig, index: int) -> void:
 	
 	if config.item_type == Constants.ItemType.MAINLINE:
 		title_label.text = "主线奖池"
-		self.modulate = Color.GOLD
+		self.theme_type_variation = "Pool_Mainline"
 	else:
-		self.modulate = Color.WHITE
+		self.theme_type_variation = "Pool_Normal"
 	
 	if config.ticket_cost > 0:
 		cost_label.text = "消耗: %d 奖券" % config.ticket_cost
@@ -35,6 +35,3 @@ func setup(config: PoolConfig, index: int) -> void:
 
 func _on_draw_button_pressed() -> void:
 	draw_requested.emit(_index)
-
-
-

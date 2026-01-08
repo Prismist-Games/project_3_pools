@@ -5,6 +5,7 @@ extends Control
 # --- 节点引用 (根据 game2d-uiux-integration-spec.md) ---
 @onready var money_label: RichTextLabel = find_child("Money_label", true)
 @onready var coupon_label: RichTextLabel = find_child("Coupon_label", true)
+@onready var game_theme: Theme = preload("res://data/game_theme.tres")
 
 @onready var item_slots_grid: GridContainer = find_child("Item Slots Grid", true)
 @onready var lottery_slots_grid: HBoxContainer = find_child("Lottery Slots Grid", true)
@@ -27,6 +28,7 @@ var _is_vfx_processing: bool = false
 var _active_modal_callback: Callable
 
 func _ready() -> void:
+	self.theme = game_theme
 	# 1. 基础信号绑定
 	GameManager.gold_changed.connect(_on_gold_changed)
 	GameManager.tickets_changed.connect(_on_tickets_changed)
@@ -166,7 +168,7 @@ func _on_pending_queue_changed(items: Array[ItemInstance]) -> void:
 
 func _on_skills_changed(skills: Array) -> void:
 	for i in range(3):
-		var slot = find_child("TheMachineSlot " + str(i+1), true)
+		var slot = find_child("TheMachineSlot " + str(i + 1), true)
 		if slot:
 			var label: RichTextLabel = slot.get_node("Skill Label")
 			var icon: Sprite2D = label.get_node("Skill Icon")
@@ -190,7 +192,7 @@ func _on_pools_refreshed(pools: Array) -> void:
 func _on_orders_updated(orders: Array) -> void:
 	for i in range(1, 5):
 		var slot: QuestSlotUI = quest_slots_grid.get_node("Quest Slot_root_" + str(i))
-		var order = orders[i-1] if (i-1) < orders.size() else null
+		var order = orders[i - 1] if (i - 1) < orders.size() else null
 		slot.update_order_display(order)
 		if not is_ui_locked() and slot.is_locked:
 			slot.is_locked = false
@@ -458,7 +460,7 @@ func spawn_fly_item(texture: Texture2D, start_pos: Vector2, end_pos: Vector2, st
 	var proxy = Sprite2D.new()
 	proxy.texture = texture
 	proxy.top_level = true # 关键：让它忽略父节点缩放和偏移，直接使用全局坐标绘制
-	proxy.z_index = 999    # 确保在所有 UI 之上
+	proxy.z_index = 999 # 确保在所有 UI 之上
 	vfx_layer.add_child(proxy)
 	proxy.global_position = start_pos
 	proxy.global_scale = start_scale
