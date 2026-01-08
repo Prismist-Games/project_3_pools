@@ -58,6 +58,21 @@ func update_display(item: ItemInstance) -> void:
 	# 更新状态角标逻辑
 	_update_status_badge(item)
 
+func set_selected(selected: bool) -> void:
+	if selected:
+		if status_icon:
+			status_icon.visible = true
+			status_icon.texture = preload("res://assets/sprites/icons/cross.png")
+	else:
+		if backgrounds:
+			backgrounds.modulate = Color.WHITE
+		if slot_index != -1 and InventorySystem.inventory.size() > slot_index:
+			var item = InventorySystem.inventory[slot_index]
+			if item:
+				_update_status_badge(item)
+			else:
+				if status_icon: status_icon.visible = false
+
 func _update_status_badge(item: ItemInstance) -> void:
 	if not status_icon: return
 	

@@ -104,8 +104,11 @@ func handle_slot_click(index: int) -> void:
 		
 	var target_item = inventory[index]
 	
-	# 如果处于订单提交选择模式
-	if GameManager.order_selection_index != -1:
+	# 如果处于多选模式 (订单提交 或 回收)
+	# 注意：GameManager.order_selection_index != -1 对应 SUBMIT 模式
+	var is_multi_select_mode = GameManager.order_selection_index != -1 or GameManager.current_ui_mode == Constants.UIMode.RECYCLE
+	
+	if is_multi_select_mode:
 		if target_item == null:
 			return # 只能选择有物品的格子
 			

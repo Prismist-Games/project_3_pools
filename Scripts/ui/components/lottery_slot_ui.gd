@@ -29,6 +29,14 @@ func setup(index: int) -> void:
 	if input_area:
 		input_area.mouse_entered.connect(_on_mouse_entered)
 		input_area.mouse_exited.connect(_on_mouse_exited)
+		
+		# 可选优化：在非 NORMAL 模式下禁用鼠标指针样式
+		GameManager.ui_mode_changed.connect(func(_mode):
+			if GameManager.current_ui_mode == Constants.UIMode.NORMAL:
+				input_area.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+			else:
+				input_area.mouse_default_cursor_shape = Control.CURSOR_ARROW
+		)
 	
 	# 奖池初始状态必须是瞬间关上的 (瞬间完成，不播放动画过程)
 	if anim_player.has_animation("lid_close"):
@@ -38,10 +46,16 @@ func setup(index: int) -> void:
 
 func _on_mouse_entered() -> void:
 	if is_locked or not InventorySystem.pending_items.is_empty() or is_drawing: return
+	
+	# 非 NORMAL 模式下禁止 Hover 效果
+	if GameManager.current_ui_mode != Constants.UIMode.NORMAL:
+		return
+		
 	# 盖子微开
 	create_tween().tween_property(lid_sprite, "position:y", -20, 0.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 func _on_mouse_exited() -> void:
+	# 即使处于非 NORMAL 模式，也可能需要恢复位置（防止模式切换时状态残留），所以这里只做基础检查
 	if is_locked or is_drawing: return
 	# 恢复原位 (如果没在播放打开动画)
 	if not anim_player.is_playing() or anim_player.current_animation != "lid_open":
