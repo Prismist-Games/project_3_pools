@@ -13,6 +13,7 @@ signal merge_limit_changed(limit: Constants.Rarity)
 signal inventory_size_changed(size: int)
 signal order_limit_changed(limit: int)
 signal order_item_req_range_changed(min_val: int, max_val: int)
+signal pool_affix_enabled_changed(affix_id: StringName, enabled: bool)
 
 ## 功能 ID 枚举
 enum Feature {
@@ -38,6 +39,7 @@ const FEATURE_DISPLAY_NAMES: Dictionary = {
 
 ## 内部状态 (默认全锁)
 var _unlocked: Dictionary = {}
+var _disabled_pool_affixes: Dictionary = {} # id (StringName) -> bool (true if disabled)
 
 ## 合成品质上限 (直接设为最高：史诗 -> 传说)
 var merge_limit: Constants.Rarity = Constants.Rarity.MYTHIC:
@@ -106,6 +108,15 @@ func is_item_type_unlocked(_item_type: Constants.ItemType) -> bool:
 func get_unlocked_item_types() -> Array[Constants.ItemType]:
 	## 获取所有普通物品类型
 	return Constants.get_normal_item_types()
+
+
+func is_pool_affix_enabled(affix_id: StringName) -> bool:
+	return not _disabled_pool_affixes.get(affix_id, false)
+
+
+func set_pool_affix_enabled(affix_id: StringName, enabled: bool) -> void:
+	_disabled_pool_affixes[affix_id] = not enabled
+	pool_affix_enabled_changed.emit(affix_id, enabled)
 
 
 # --- 修改 API ---

@@ -1,121 +1,121 @@
-[gd_scene load_steps=124 format=3]
+[gd_scene load_steps=124 format=3 uid="uid://cf1cjj8xlhblr"]
 
-[ext_resource type="Script" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ground.PNG" id="2_vave4"]
-[ext_resource type="Texture2D" path="res://assets/sprites/wall.png" id="2_xqbja"]
-[ext_resource type="Texture2D" path="res://assets/sprites/circle.png" id="3_4wmcb"]
-[ext_resource type="Texture2D" path="res://assets/sprites/icons/items/entertainment_top.png" id="3_fiado"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_display_outline.png" id="4_6b2j4"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_legacy_fill.png" id="5_0dgko"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_legacy_outline.png" id="6_2v31b"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_slot_mask.png" id="7_d4ujc"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_slot_outline.png" id="8_xqbja"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_slot_outline_front.png" id="9_fvhsr"]
-[ext_resource type="Texture2D" path="res://assets/sprites/item_slots/基地-5.png" id="11_bobrt"]
-[ext_resource type="Texture2D" path="res://assets/sprites/item_slots/基地-6 2.png" id="11_fkxe6"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_top.png" id="11_h0822"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_top_outline_behind.png" id="12_lql4v"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_slot_outline_behind.png" id="13_7bc83"]
-[ext_resource type="Texture2D" path="res://assets/sprites/lottery_slots/基地-7.png" id="13_lyel0"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine_switch/基地-1.png" id="14_6b2j4"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_top_front.png" id="14_8sogx"]
-[ext_resource type="Texture2D" path="res://assets/sprites/lottery_slots/基地-1.png" id="14_mfdr7"]
-[ext_resource type="Texture2D" path="res://assets/sprites/item_slots/基地-1.png" id="14_o2140"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine_switch/基地-4.png" id="15_0dgko"]
-[ext_resource type="Texture2D" path="res://assets/sprites/item_slots/基地-2.png" id="15_aiivw"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine_switch/基地-7.png" id="15_fvhsr"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_side.png" id="15_phh48"]
-[ext_resource type="Texture2D" path="res://assets/sprites/lottery_slots/基地-2.png" id="15_xpfcn"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine_switch/基地-3.png" id="16_2v31b"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_side_outline.png" id="16_aagg1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/item_slots/基地-3.png" id="16_cu6b6"]
-[ext_resource type="Texture2D" path="res://assets/sprites/lottery_slots/基地-3.png" id="16_iq50s"]
-[ext_resource type="Texture2D" path="res://assets/sprites/lottery_slots/基地-4.png" id="17_0ehwc"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine_switch/基地-6.png" id="17_d4ujc"]
-[ext_resource type="Texture2D" path="res://assets/sprites/item_slots/基地-4.png" id="17_ivepa"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_front.png" id="17_tmso7"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_front_outline.png" id="18_2kwm8"]
-[ext_resource type="Texture2D" path="res://assets/sprites/item_slots/基地-6.png" id="18_ivepa"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine_switch/基地-5.png" id="18_xqbja"]
-[ext_resource type="Texture2D" path="res://icon.svg" id="19_7rf4k"]
-[ext_resource type="Texture2D" path="res://assets/sprites/lottery_slots/基地-6.png" id="19_mfdr7"]
-[ext_resource type="Texture2D" path="res://assets/sprites/item_slots/基地-8.png" id="19_sojbq"]
-[ext_resource type="Script" path="res://scripts/ui/utils/switch_background_follow.gd" id="19_ue141"]
-[ext_resource type="Texture2D" path="res://assets/sprites/lottery_slots/基地-8.png" id="20_xpfcn"]
-[ext_resource type="Texture2D" path="res://assets/sprites/lottery_slots/基地-11.png" id="21_axkhv"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_display_fill.png" id="21_ue141"]
-[ext_resource type="Texture2D" path="res://assets/sprites/lottery_slots/基地-13.png" id="22_7j7pe"]
-[ext_resource type="Texture2D" path="res://assets/sprites/lottery_slots/基地-10.png" id="23_o2lnr"]
-[ext_resource type="Texture2D" path="res://assets/sprites/lottery_slots/基地-12.png" id="24_y6c7h"]
-[ext_resource type="Texture2D" path="res://assets/sprites/icons/coupon.png" id="25_ccvlu"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_star.PNG" id="25_ue141"]
-[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-7.png" id="25_y6c7h"]
-[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-3.png" id="26_5jtl3"]
-[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-6.png" id="26_a718j"]
-[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-5.png" id="27_0phgb"]
-[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-2.png" id="27_lyel0"]
-[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-4.png" id="28_mfdr7"]
-[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-1.png" id="29_xpfcn"]
-[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-10.png" id="30_iq50s"]
-[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-9.png" id="33_0ehwc"]
-[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-8.png" id="34_oeaov"]
-[ext_resource type="Texture2D" path="res://assets/sprites/icons/cross.png" id="37_50t6p"]
-[ext_resource type="Texture2D" path="res://assets/sprites/lottery_slots/lottery_slot_lid_fill.png" id="47_tiwwg"]
-[ext_resource type="Texture2D" path="res://assets/sprites/icons/category_entertainment.png" id="48_ivmbw"]
-[ext_resource type="Texture2D" path="res://assets/sprites/lottery_slots/lottery_slot_lid_outline.png" id="49_2a6p6"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_description_display_fill.png" id="50_otpb1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_description_display_outline.png" id="51_017ef"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_head_left.png" id="62_enqmm"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_head_mid.png" id="63_6sdua"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_head_right.png" id="64_4tp6t"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_wand_stick.PNG" id="64_enqmm"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_wand_head.PNG" id="65_6sdua"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_arm.png" id="65_p2bqf"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_ear.png" id="66_jufyi"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_ear_inner.png" id="67_8ocj1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_eyeball_fill.png" id="68_jdak2"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_eyeball_outline.png" id="69_6kw3k"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_eye_fill.png" id="70_u4yck"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_eye_outline.png" id="71_otpb1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_fingers.png" id="72_017ef"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_foot.png" id="73_u8s40"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_leg.png" id="74_8y6ih"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_palm.png" id="75_ccvlu"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_thumb.png" id="76_50t6p"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_all_stick.png" id="76_jdak2"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_all_handle.png" id="77_6kw3k"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_mustache_left.png" id="77_ivmbw"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_mustache_right.png" id="78_tiwwg"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_nose.png" id="79_2a6p6"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_arm.png" id="80_caxmy"]
-[ext_resource type="Texture2D" path="res://assets/sprites/light_1.png" id="81_6sdua"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear.png" id="81_65xho"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear_inner.png" id="82_00smp"]
-[ext_resource type="Texture2D" path="res://assets/sprites/light_2.png" id="82_4tp6t"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_eyeball_fill.png" id="83_jptrp"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_eyeball_outline.png" id="84_7v8nc"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_fill.png" id="85_q6adl"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_idle.png" id="86_8ocj1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_outline.png" id="86_f3s7l"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_foot.png" id="87_fs1h7"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_pressed.png" id="87_jdak2"]
-[ext_resource type="Texture2D" path="res://assets/sprites/icons/tick_green.png" id="87_u8s40"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_hover.png" id="88_6kw3k"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_hand.png" id="88_yytn1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_leg.png" id="89_g7jj0"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_disabled.png" id="89_u4yck"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_wand_face.png" id="91_v12rw"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_1.png" id="92_ishf8"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_2.png" id="93_yhupc"]
-[ext_resource type="Texture2D" path="res://assets/sprites/icons/refresh.png" id="94_017ef"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_3.png" id="94_i65o3"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_4.png" id="95_bttk6"]
-[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_5.png" id="96_jf2x3"]
-[ext_resource type="Script" path="res://scripts/ui/game_2d_ui.gd" id="110_ui"]
-[ext_resource type="Script" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
-[ext_resource type="Script" path="res://scripts/ui/components/lottery_slot_ui.gd" id="112_lottery"]
-[ext_resource type="Script" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
+[ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
+[ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
+[ext_resource type="Texture2D" uid="uid://b5uyc48ywtik2" path="res://assets/sprites/wall.png" id="2_xqbja"]
+[ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="3_4wmcb"]
+[ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="3_fiado"]
+[ext_resource type="Texture2D" uid="uid://b4qoptplb61wr" path="res://assets/sprites/the_machine/the_machine_display_outline.png" id="4_6b2j4"]
+[ext_resource type="Texture2D" uid="uid://c4wpgax5wfhpa" path="res://assets/sprites/the_machine/the_machine_legacy_fill.png" id="5_0dgko"]
+[ext_resource type="Texture2D" uid="uid://usox228a20t7" path="res://assets/sprites/the_machine/the_machine_legacy_outline.png" id="6_2v31b"]
+[ext_resource type="Texture2D" uid="uid://58c1gxlj405r" path="res://assets/sprites/the_machine/the_machine_slot_mask.png" id="7_d4ujc"]
+[ext_resource type="Texture2D" uid="uid://dp2k5ss5oefjc" path="res://assets/sprites/the_machine/the_machine_slot_outline.png" id="8_xqbja"]
+[ext_resource type="Texture2D" uid="uid://2sp6p7grlidd" path="res://assets/sprites/the_machine/the_machine_slot_outline_front.png" id="9_fvhsr"]
+[ext_resource type="Texture2D" uid="uid://cemheosuktfhj" path="res://assets/sprites/item_slots/基地-5.png" id="11_bobrt"]
+[ext_resource type="Texture2D" uid="uid://7s7gx5sytssb" path="res://assets/sprites/item_slots/基地-6 2.png" id="11_fkxe6"]
+[ext_resource type="Texture2D" uid="uid://b5gnskrlq8d81" path="res://assets/sprites/the_machine/the_machine_top.png" id="11_h0822"]
+[ext_resource type="Texture2D" uid="uid://balbu2vdssbb4" path="res://assets/sprites/the_machine/the_machine_top_outline_behind.png" id="12_lql4v"]
+[ext_resource type="Texture2D" uid="uid://x0x66srb2i00" path="res://assets/sprites/the_machine/the_machine_slot_outline_behind.png" id="13_7bc83"]
+[ext_resource type="Texture2D" uid="uid://cpcef3r3dbaxq" path="res://assets/sprites/lottery_slots/基地-7.png" id="13_lyel0"]
+[ext_resource type="Texture2D" uid="uid://bok47535elxgj" path="res://assets/sprites/the_machine_switch/基地-1.png" id="14_6b2j4"]
+[ext_resource type="Texture2D" uid="uid://ct1fu4kglmejc" path="res://assets/sprites/the_machine/the_machine_top_front.png" id="14_8sogx"]
+[ext_resource type="Texture2D" uid="uid://b3avhgwq0587y" path="res://assets/sprites/lottery_slots/基地-1.png" id="14_mfdr7"]
+[ext_resource type="Texture2D" uid="uid://oxm0lvuajhqy" path="res://assets/sprites/item_slots/基地-1.png" id="14_o2140"]
+[ext_resource type="Texture2D" uid="uid://cmkaptn0k1n1x" path="res://assets/sprites/the_machine_switch/基地-4.png" id="15_0dgko"]
+[ext_resource type="Texture2D" uid="uid://cglvasc20q3mu" path="res://assets/sprites/item_slots/基地-2.png" id="15_aiivw"]
+[ext_resource type="Texture2D" uid="uid://dw0b4i78tkpru" path="res://assets/sprites/the_machine_switch/基地-7.png" id="15_fvhsr"]
+[ext_resource type="Texture2D" uid="uid://dwq0bu4hxfo5j" path="res://assets/sprites/the_machine/the_machine_side.png" id="15_phh48"]
+[ext_resource type="Texture2D" uid="uid://dpnahy8wmkeso" path="res://assets/sprites/lottery_slots/基地-2.png" id="15_xpfcn"]
+[ext_resource type="Texture2D" uid="uid://bfeh4pui1k6k1" path="res://assets/sprites/the_machine_switch/基地-3.png" id="16_2v31b"]
+[ext_resource type="Texture2D" uid="uid://d30sfg17qmuxb" path="res://assets/sprites/the_machine/the_machine_side_outline.png" id="16_aagg1"]
+[ext_resource type="Texture2D" uid="uid://coaai2i4vi1sh" path="res://assets/sprites/item_slots/基地-3.png" id="16_cu6b6"]
+[ext_resource type="Texture2D" uid="uid://fjhknpwtlo4g" path="res://assets/sprites/lottery_slots/基地-3.png" id="16_iq50s"]
+[ext_resource type="Texture2D" uid="uid://cyuji8mwm0rx8" path="res://assets/sprites/lottery_slots/基地-4.png" id="17_0ehwc"]
+[ext_resource type="Texture2D" uid="uid://bugs5jj4i014q" path="res://assets/sprites/the_machine_switch/基地-6.png" id="17_d4ujc"]
+[ext_resource type="Texture2D" uid="uid://caieb4p7g0f64" path="res://assets/sprites/item_slots/基地-4.png" id="17_ivepa"]
+[ext_resource type="Texture2D" uid="uid://dscqm4kp5fmva" path="res://assets/sprites/the_machine/the_machine_front.png" id="17_tmso7"]
+[ext_resource type="Texture2D" uid="uid://w68mqbo8q5e2" path="res://assets/sprites/the_machine/the_machine_front_outline.png" id="18_2kwm8"]
+[ext_resource type="Texture2D" uid="uid://dlywfo3j61bw8" path="res://assets/sprites/item_slots/基地-6.png" id="18_ivepa"]
+[ext_resource type="Texture2D" uid="uid://tyc42trcd2xq" path="res://assets/sprites/the_machine_switch/基地-5.png" id="18_xqbja"]
+[ext_resource type="Texture2D" uid="uid://1h4st4oq2muh" path="res://icon.svg" id="19_7rf4k"]
+[ext_resource type="Texture2D" uid="uid://fnqmsybn8c5r" path="res://assets/sprites/lottery_slots/基地-6.png" id="19_mfdr7"]
+[ext_resource type="Texture2D" uid="uid://bb0jex82xogr2" path="res://assets/sprites/item_slots/基地-8.png" id="19_sojbq"]
+[ext_resource type="Script" uid="uid://cp4b85c6kcgdl" path="res://scripts/ui/utils/switch_background_follow.gd" id="19_ue141"]
+[ext_resource type="Texture2D" uid="uid://dhd8bxltte0u1" path="res://assets/sprites/lottery_slots/基地-8.png" id="20_xpfcn"]
+[ext_resource type="Texture2D" uid="uid://law2mtdijaeb" path="res://assets/sprites/lottery_slots/基地-11.png" id="21_axkhv"]
+[ext_resource type="Texture2D" uid="uid://c1rw0mhgt1s1i" path="res://assets/sprites/the_machine/the_machine_display_fill.png" id="21_ue141"]
+[ext_resource type="Texture2D" uid="uid://c17ii0rmjfv1n" path="res://assets/sprites/lottery_slots/基地-13.png" id="22_7j7pe"]
+[ext_resource type="Texture2D" uid="uid://430ts7sfdtgx" path="res://assets/sprites/lottery_slots/基地-10.png" id="23_o2lnr"]
+[ext_resource type="Texture2D" uid="uid://bh2rrdftruk78" path="res://assets/sprites/lottery_slots/基地-12.png" id="24_y6c7h"]
+[ext_resource type="Texture2D" uid="uid://d3xb6e3385m7k" path="res://assets/sprites/icons/coupon.png" id="25_ccvlu"]
+[ext_resource type="Texture2D" uid="uid://fcpknfhqe6td" path="res://assets/sprites/the_machine/the_machine_star.PNG" id="25_ue141"]
+[ext_resource type="Texture2D" uid="uid://bk6w30hxghp51" path="res://assets/sprites/quest_slots/基地-7.png" id="25_y6c7h"]
+[ext_resource type="Texture2D" uid="uid://b6sygmv0sgt3g" path="res://assets/sprites/quest_slots/基地-3.png" id="26_5jtl3"]
+[ext_resource type="Texture2D" uid="uid://b83tw66bk1v5s" path="res://assets/sprites/quest_slots/基地-6.png" id="26_a718j"]
+[ext_resource type="Texture2D" uid="uid://beldg0xqocq2k" path="res://assets/sprites/quest_slots/基地-5.png" id="27_0phgb"]
+[ext_resource type="Texture2D" uid="uid://cppyh38s818ov" path="res://assets/sprites/quest_slots/基地-2.png" id="27_lyel0"]
+[ext_resource type="Texture2D" uid="uid://fb6h3kogm80w" path="res://assets/sprites/quest_slots/基地-4.png" id="28_mfdr7"]
+[ext_resource type="Texture2D" uid="uid://w7eym4f1436o" path="res://assets/sprites/quest_slots/基地-1.png" id="29_xpfcn"]
+[ext_resource type="Texture2D" uid="uid://bkthx68vhcd00" path="res://assets/sprites/quest_slots/基地-10.png" id="30_iq50s"]
+[ext_resource type="Texture2D" uid="uid://cyixck513ac1o" path="res://assets/sprites/quest_slots/基地-9.png" id="33_0ehwc"]
+[ext_resource type="Texture2D" uid="uid://ddymclsitprmc" path="res://assets/sprites/quest_slots/基地-8.png" id="34_oeaov"]
+[ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="37_50t6p"]
+[ext_resource type="Texture2D" uid="uid://b4cuujipxrcyu" path="res://assets/sprites/lottery_slots/lottery_slot_lid_fill.png" id="47_tiwwg"]
+[ext_resource type="Texture2D" uid="uid://cskvmcwmdj5ew" path="res://assets/sprites/icons/category_entertainment.png" id="48_ivmbw"]
+[ext_resource type="Texture2D" uid="uid://u8vv873f380j" path="res://assets/sprites/lottery_slots/lottery_slot_lid_outline.png" id="49_2a6p6"]
+[ext_resource type="Texture2D" uid="uid://cyo0chqrqd6p7" path="res://assets/sprites/the_machine/the_machine_description_display_fill.png" id="50_otpb1"]
+[ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
+[ext_resource type="Texture2D" uid="uid://grqi0oqjnrae" path="res://assets/sprites/the_machine/the_machine_description_display_outline.png" id="51_017ef"]
+[ext_resource type="Texture2D" uid="uid://dj5be2vipyhi4" path="res://assets/sprites/the_rabbit/the_rabbit_head_left.png" id="62_enqmm"]
+[ext_resource type="Texture2D" uid="uid://b067gbir0lby" path="res://assets/sprites/the_rabbit/the_rabbit_head_mid.png" id="63_6sdua"]
+[ext_resource type="Texture2D" uid="uid://hoc6uaci42sv" path="res://assets/sprites/the_rabbit/the_rabbit_head_right.png" id="64_4tp6t"]
+[ext_resource type="Texture2D" uid="uid://bjlpf6bxe6kb1" path="res://assets/sprites/the_rabbit/the_rabbit_wand_stick.PNG" id="64_enqmm"]
+[ext_resource type="Texture2D" uid="uid://bwjokbfgqmqme" path="res://assets/sprites/the_rabbit/the_rabbit_wand_head.PNG" id="65_6sdua"]
+[ext_resource type="Texture2D" uid="uid://ciklekvdp5hak" path="res://assets/sprites/the_rabbit/the_rabbit_left_arm.png" id="65_p2bqf"]
+[ext_resource type="Texture2D" uid="uid://0fvod413bhf0" path="res://assets/sprites/the_rabbit/the_rabbit_left_ear.png" id="66_jufyi"]
+[ext_resource type="Texture2D" uid="uid://dy6qxp86y1vw3" path="res://assets/sprites/the_rabbit/the_rabbit_left_ear_inner.png" id="67_8ocj1"]
+[ext_resource type="Texture2D" uid="uid://b3bino57bjulh" path="res://assets/sprites/the_rabbit/the_rabbit_left_eyeball_fill.png" id="68_jdak2"]
+[ext_resource type="Texture2D" uid="uid://r1t455tosudp" path="res://assets/sprites/the_rabbit/the_rabbit_left_eyeball_outline.png" id="69_6kw3k"]
+[ext_resource type="Texture2D" uid="uid://defnrkt223vrw" path="res://assets/sprites/the_rabbit/the_rabbit_left_eye_fill.png" id="70_u4yck"]
+[ext_resource type="Texture2D" uid="uid://bi5gwot5g1d0s" path="res://assets/sprites/the_rabbit/the_rabbit_left_eye_outline.png" id="71_otpb1"]
+[ext_resource type="Texture2D" uid="uid://dgwh6jt3m78qv" path="res://assets/sprites/the_rabbit/the_rabbit_left_fingers.png" id="72_017ef"]
+[ext_resource type="Texture2D" uid="uid://cgiluolu8nixl" path="res://assets/sprites/the_rabbit/the_rabbit_left_foot.png" id="73_u8s40"]
+[ext_resource type="Texture2D" uid="uid://pu4fbtq6iil2" path="res://assets/sprites/the_rabbit/the_rabbit_left_leg.png" id="74_8y6ih"]
+[ext_resource type="Texture2D" uid="uid://bsdf5iwmcegpx" path="res://assets/sprites/the_rabbit/the_rabbit_left_palm.png" id="75_ccvlu"]
+[ext_resource type="Texture2D" uid="uid://deairpal3cmlr" path="res://assets/sprites/the_rabbit/the_rabbit_left_thumb.png" id="76_50t6p"]
+[ext_resource type="Texture2D" uid="uid://d2ab00eoch5f4" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_all_stick.png" id="76_jdak2"]
+[ext_resource type="Texture2D" uid="uid://bsrjw1go3ivse" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_all_handle.png" id="77_6kw3k"]
+[ext_resource type="Texture2D" uid="uid://b7q2v5u4k6akt" path="res://assets/sprites/the_rabbit/the_rabbit_mustache_left.png" id="77_ivmbw"]
+[ext_resource type="Texture2D" uid="uid://cgehbcf1mmosn" path="res://assets/sprites/the_rabbit/the_rabbit_mustache_right.png" id="78_tiwwg"]
+[ext_resource type="Texture2D" uid="uid://dpf1mwji6h4d" path="res://assets/sprites/the_rabbit/the_rabbit_nose.png" id="79_2a6p6"]
+[ext_resource type="Texture2D" uid="uid://ce882nggx5db7" path="res://assets/sprites/the_rabbit/the_rabbit_right_arm.png" id="80_caxmy"]
+[ext_resource type="Texture2D" uid="uid://djo0fcuw1ico0" path="res://assets/sprites/light_1.png" id="81_6sdua"]
+[ext_resource type="Texture2D" uid="uid://du7f02gcpaycx" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear.png" id="81_65xho"]
+[ext_resource type="Texture2D" uid="uid://c5i1aenksh4av" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear_inner.png" id="82_00smp"]
+[ext_resource type="Texture2D" uid="uid://cuq30wijqs4vm" path="res://assets/sprites/light_2.png" id="82_4tp6t"]
+[ext_resource type="Texture2D" uid="uid://cjvwo40l2innf" path="res://assets/sprites/the_rabbit/the_rabbit_right_eyeball_fill.png" id="83_jptrp"]
+[ext_resource type="Texture2D" uid="uid://baqwihwrkjc4i" path="res://assets/sprites/the_rabbit/the_rabbit_right_eyeball_outline.png" id="84_7v8nc"]
+[ext_resource type="Texture2D" uid="uid://c1v0nvxbrf6c" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_fill.png" id="85_q6adl"]
+[ext_resource type="Texture2D" uid="uid://btfsaxb523m4l" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_idle.png" id="86_8ocj1"]
+[ext_resource type="Texture2D" uid="uid://djobi2frf8t4s" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_outline.png" id="86_f3s7l"]
+[ext_resource type="Texture2D" uid="uid://ca5ud3ae3x378" path="res://assets/sprites/the_rabbit/the_rabbit_right_foot.png" id="87_fs1h7"]
+[ext_resource type="Texture2D" uid="uid://ccfw8sduhx8rm" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_pressed.png" id="87_jdak2"]
+[ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="87_u8s40"]
+[ext_resource type="Texture2D" uid="uid://dslsns6p86ffx" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_hover.png" id="88_6kw3k"]
+[ext_resource type="Texture2D" uid="uid://dokmgcwoitk6l" path="res://assets/sprites/the_rabbit/the_rabbit_right_hand.png" id="88_yytn1"]
+[ext_resource type="Texture2D" uid="uid://b0qmpkep8t4hu" path="res://assets/sprites/the_rabbit/the_rabbit_right_leg.png" id="89_g7jj0"]
+[ext_resource type="Texture2D" uid="uid://dpf5a45rbg06a" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_disabled.png" id="89_u4yck"]
+[ext_resource type="Texture2D" uid="uid://blfi1cynn45pb" path="res://assets/sprites/the_rabbit/the_rabbit_wand_face.png" id="91_v12rw"]
+[ext_resource type="Texture2D" uid="uid://bta1pq0iskiiy" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_1.png" id="92_ishf8"]
+[ext_resource type="Texture2D" uid="uid://ba8n4bffxpxgp" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_2.png" id="93_yhupc"]
+[ext_resource type="Texture2D" uid="uid://4ds5uce4fmqb" path="res://assets/sprites/icons/refresh.png" id="94_017ef"]
+[ext_resource type="Texture2D" uid="uid://ctkkq7iwtmubj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_3.png" id="94_i65o3"]
+[ext_resource type="Texture2D" uid="uid://dfn54hrs485jj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_4.png" id="95_bttk6"]
+[ext_resource type="Texture2D" uid="uid://da0ig7cexq40g" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_5.png" id="96_jf2x3"]
+[ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/game_2d_ui.gd" id="110_ui"]
+[ext_resource type="Script" uid="uid://c08o6jgnqkmke" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
+[ext_resource type="Script" uid="uid://cb4r62psbedq3" path="res://scripts/ui/components/lottery_slot_ui.gd" id="112_lottery"]
+[ext_resource type="Script" uid="uid://dceb57gqrmaik" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
 
 [sub_resource type="Animation" id="Animation_ovo1l"]
 length = 0.001
@@ -341,8 +341,8 @@ offset_left = -88.0
 offset_top = 3.0
 offset_right = 96.0
 offset_bottom = 43.0
-theme_override_font_sizes/normal_font_size = 26
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 26
 text = "RECYCLE"
 fit_content = true
 scroll_active = false
@@ -359,8 +359,8 @@ offset_left = -95.5
 offset_top = -123.0
 offset_right = 88.5
 offset_bottom = -18.0
-theme_override_font_sizes/normal_font_size = 76
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 76
 text = "123"
 fit_content = true
 scroll_active = false
@@ -423,8 +423,8 @@ offset_left = -88.0
 offset_top = -3.0
 offset_right = 96.0
 offset_bottom = 37.0
-theme_override_font_sizes/normal_font_size = 26
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 26
 text = "SUBMIT"
 fit_content = true
 scroll_active = false
@@ -441,8 +441,8 @@ offset_left = -88.0
 offset_top = -56.0
 offset_right = 96.0
 offset_bottom = -16.0
-theme_override_font_sizes/normal_font_size = 26
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 26
 text = "CONFIRM"
 fit_content = true
 scroll_active = false
@@ -1545,8 +1545,8 @@ offset_left = -84.0
 offset_top = -471.0
 offset_right = 267.0
 offset_bottom = -348.0
-theme_override_font_sizes/normal_font_size = 76
 theme_override_colors/default_color = Color(0.2592937, 0.2592937, 0.2592937, 1)
+theme_override_font_sizes/normal_font_size = 76
 bbcode_enabled = true
 text = "AFFIX"
 scroll_active = false
@@ -1558,8 +1558,8 @@ offset_left = -176.0
 offset_top = -471.0
 offset_right = 175.0
 offset_bottom = -348.0
-theme_override_font_sizes/normal_font_size = 76
 theme_override_colors/default_color = Color(0.6052743, 0.6052743, 0.6052743, 1)
+theme_override_font_sizes/normal_font_size = 76
 bbcode_enabled = true
 text = "9"
 scroll_active = false
@@ -1790,8 +1790,8 @@ offset_left = -84.0
 offset_top = -471.0
 offset_right = 267.0
 offset_bottom = -348.0
-theme_override_font_sizes/normal_font_size = 76
 theme_override_colors/default_color = Color(0.2592937, 0.2592937, 0.2592937, 1)
+theme_override_font_sizes/normal_font_size = 76
 bbcode_enabled = true
 text = "AFFIX"
 scroll_active = false
@@ -1803,8 +1803,8 @@ offset_left = -176.0
 offset_top = -471.0
 offset_right = 175.0
 offset_bottom = -348.0
-theme_override_font_sizes/normal_font_size = 76
 theme_override_colors/default_color = Color(0.6052743, 0.6052743, 0.6052743, 1)
+theme_override_font_sizes/normal_font_size = 76
 bbcode_enabled = true
 text = "9"
 scroll_active = false
@@ -2035,8 +2035,8 @@ offset_left = -84.0
 offset_top = -471.0
 offset_right = 267.0
 offset_bottom = -348.0
-theme_override_font_sizes/normal_font_size = 76
 theme_override_colors/default_color = Color(0.2592937, 0.2592937, 0.2592937, 1)
+theme_override_font_sizes/normal_font_size = 76
 bbcode_enabled = true
 text = "AFFIX"
 scroll_active = false
@@ -2048,8 +2048,8 @@ offset_left = -176.0
 offset_top = -471.0
 offset_right = 175.0
 offset_bottom = -348.0
-theme_override_font_sizes/normal_font_size = 76
 theme_override_colors/default_color = Color(0.6052743, 0.6052743, 0.6052743, 1)
+theme_override_font_sizes/normal_font_size = 76
 bbcode_enabled = true
 text = "9"
 scroll_active = false
@@ -2272,8 +2272,8 @@ offset_top = -97.0
 offset_right = 979.0
 offset_bottom = 96.0
 grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 141
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 141
 bbcode_enabled = true
 text = "33 [s]25[/s]"
 fit_content = true
@@ -2493,8 +2493,8 @@ offset_top = -97.0
 offset_right = 979.0
 offset_bottom = 96.0
 grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 141
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 141
 bbcode_enabled = true
 text = "33 [s]25[/s]"
 fit_content = true
@@ -2714,8 +2714,8 @@ offset_top = -97.0
 offset_right = 979.0
 offset_bottom = 96.0
 grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 141
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 141
 bbcode_enabled = true
 text = "33 [s]25[/s]"
 fit_content = true
@@ -2935,8 +2935,8 @@ offset_top = -97.0
 offset_right = 979.0
 offset_bottom = 96.0
 grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 141
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 141
 bbcode_enabled = true
 text = "33 [s]25[/s]"
 fit_content = true

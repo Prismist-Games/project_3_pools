@@ -18,6 +18,9 @@ extends Control
 @onready var vfx_layer: Node2D = get_node_or_null("VfxLayer")
 
 # --- 状态与锁 ---
+const DEBUG_CONSOLE_SCENE = preload("res://scenes/ui/debug_console.tscn")
+var _debug_console: Control = null
+
 var _ui_locks: Dictionary = {}
 var last_clicked_pool_idx: int = -1
 var pending_source_pool_idx: int = -1
@@ -25,6 +28,7 @@ var pending_source_pool_idx: int = -1
 # VFX 队列管理
 var _vfx_queue: Array[Dictionary] = []
 var _is_vfx_processing: bool = false
+var _vfx_scheduled: bool = false
 var _active_modal_callback: Callable
 
 func _ready() -> void:
@@ -100,6 +104,32 @@ func _refresh_all() -> void:
 		
 	_on_orders_updated(OrderSystem.current_orders)
 	_update_ui_mode_display()
+
+
+# --- 控制台 ---
+func _input(event: InputEvent) -> void:
+	# F12 打开/关闭调试控制台
+	if event is InputEventKey and event.pressed and event.keycode == KEY_F12:
+		_toggle_debug_console()
+		get_viewport().set_input_as_handled()
+
+
+func _toggle_debug_console() -> void:
+	if _debug_console == null:
+		_debug_console = DEBUG_CONSOLE_SCENE.instantiate()
+		
+		# 为防止受场景 Camera2D 缩放/位移影响，将其放入 CanvasLayer
+		var canvas_layer = CanvasLayer.new()
+		canvas_layer.name = "DebugConsoleLayer"
+		add_child(canvas_layer)
+		canvas_layer.add_child(_debug_console)
+	else:
+		# 切换显示状态
+		var layer = _debug_console.get_parent()
+		if layer is CanvasLayer:
+			layer.visible = not layer.visible
+		else:
+			_debug_console.visible = not _debug_console.visible
 
 # --- 核心门控与模式 ---
 func _on_ui_mode_changed(_mode: Constants.UIMode) -> void:
@@ -279,8 +309,10 @@ func _handle_draw(index: int) -> void:
 	if not _is_vfx_processing:
 		if not InventorySystem.pending_items.is_empty():
 			var slot = lottery_slots_grid.get_node("Lottery Slot_root_" + str(index))
+			# 收集所有 pending items
+			var items = InventorySystem.pending_items.duplicate()
 			# 原地播放揭示动画，但不关盖，也不重置 is_drawing
-			await slot.play_reveal_sequence(InventorySystem.pending_items[0])
+			await slot.play_reveal_sequence(items)
 		
 		# 虽然没飞走，但揭示完了，解锁 UI 让玩家处理背包
 		unlock_ui("draw")
@@ -298,30 +330,14 @@ func _on_item_obtained_vfx(pool_idx: int, target_idx: int, is_replace: bool = fa
 	
 	lock_ui("draw_vfx")
 	
-	# 1. 在奖池揭示
+	# 1. 在奖池揭示 (仅当没有 snapshot 且需要揭示时)
+
+	
 	# 锁定目标格，防止它在飞行中变色
 	target_slot.is_vfx_target = true
 	# 如果是替换操作，不隐藏旧图标，让它保留在原地直到新物品飞到覆盖
 	if not is_replace:
 		target_slot.hide_icon()
-	
-	# 如果是从 pending 来的（即手动点击触发的），不需要再播放揭示动画，因为物品已经在那了
-	# 只有在自动入包（pool_idx 取自 last_clicked, 且不是 pending? Wait. 自动入包也是刚刚抽的）
-	# 核心在于：自动入包时，物品已经在 lottery slot 那个位置被 reveal 过了?
-	# 不，自动入包时，逻辑很快，reveal 动画还没播。
-	# 手动处理 pending 时，物品已经在 display 上显示了。
-	# 我们通过传入参数 source_pos 来判断是否需要 skip reveal 吗？
-	# 或者简单通过任务中的标记。
-	# 如果是 REPLACE/MERGE，通常意味着是手动操作（因为 auto-add 只针对空位）。
-	# 如果是 auto-add，is_replace 是 false。
-	# 但是 auto-add 也会触发 _on_item_added。
-	# 关键 distinction: 是 "Fly from Pending Wait" 还是 "Fly from Draw Reveal"。
-	# 如果 last_clicked_pool_idx 存在，说明我们知道来源。
-	# 如果 pending_items 不为空，说明之前停过。
-	# 现有的逻辑：_on_item_obtained_vfx 总是在 _process_vfx_queue 里调用。
-	# _process_vfx_queue 由 added/replaced/merged 触发。
-	# 如果是 auto-add，item_added 触发。
-	# 我们在入队时，可以尝试获取 Lottery Slot 当前的 Item Main 的位置。
 	
 	# 2. 飞入背包
 	var start_pos = pool_slot.get_main_icon_global_position()
@@ -329,32 +345,78 @@ func _on_item_obtained_vfx(pool_idx: int, target_idx: int, is_replace: bool = fa
 	var end_pos = target_slot.get_icon_global_position()
 	var end_scale = target_slot.get_icon_global_scale()
 	
-	if not source_snapshot.is_empty():
+	if not source_snapshot.is_empty() or is_replace:
 		start_pos = source_snapshot.get("global_position", start_pos)
 		start_scale = source_snapshot.get("global_scale", start_scale)
-		# 如果我们有 snapshot，说明物品已经存在（Pending 状态），不需要播 reveal 
-		# (或者 reveal 已经播过了，现在是待机状态)
-		# 只有 auto-add（snapshot 为空）需要播 reveal
+		# 有 snapshot 或是替换操作（UI已展示），不播 reveal
 	else:
-		await pool_slot.play_reveal_sequence(item)
+		# 没有 snapshot，说明是新的抽奖（Auto-add）或连续批次的后续。
+		# 尝试收集此 batch 的所有 items 用于 reveal/update
+		# 包含：1. 当前 VFX 队列里的待飞物品 (已进背包)
+		var batch_items = [item]
+		for task in _vfx_queue:
+			if task.pool_idx == pool_idx:
+				var task_item = InventorySystem.inventory[task.target_idx] if task.target_idx < InventorySystem.inventory.size() else null
+				if task_item:
+					batch_items.append(task_item)
+		
+		# 包含：2. 还在 Pending 队列里的物品 (未进背包)
+		# 注意：pending_items 里的顺序已经是 [next, next_next...]
+		for pending_item in InventorySystem.pending_items:
+			batch_items.append(pending_item)
+			if batch_items.size() >= 3: break
+			
+		if batch_items.size() > 3:
+			batch_items.resize(3)
+			
+		# 检查当前盖子状态
+		# 如果盖子是关的，或者没有显示任何内容 -> 播放完整的 Reveal 动画 (开盖 + 揭示)
+		# 如果盖子是开的 -> 认为是批次中的后续物品 -> 直接更新显示 (瞬间更新 Main/Q1/Q2) 并跳过 Reveal 动画
+		# 哪怕是 reveal 动画，我们也是调用 update_queue_display。
+		# 唯一的区别是：是否播放 "Lid Open" 和 "Shuffle" 动画。
+		
+		# 我们很难直接访问 anim_player 的当前状态（没有暴露 is_playing() 等）。
+		# 但我们可以通过 is_drawing 标志？不，is_drawing 在 reveal 后会被重置吗？
+		# 之前代码里 reveal 完不关盖，不重置 is_drawing?
+		# 让我们在 LotterySlotUI 里加个 check。
+		# 或者简单地：如果之前已经揭示过了（batch_items.size > 1 ? 不一定，也许只剩1个了）
+		
+		# 更好的判定：如果 vfx_queue 里还有任务，说明是连续的。
+		# 但是对于第一个任务，它怎么知道？
+		# 我们可以简单地总是调用 play_reveal_sequence，但在 SlotUI 内部做“如果开着就不播开门动画”的优化。
+		# 同时，如果开着，我们也不想播 shuffle 动画（洗牌）。我们只想更新显示。
+		
+		# 让我们加一个 skip_anim 参数给 play_reveal_sequence?
+		# 还是依靠 SlotUI 自己的状态判断？
+		# 如果是批次中的第二个物品，此时 UI 上 Main=Item2。
+		# 调用 play_reveal([Item2, Item3])。
+		# 这会重置 Main 为 Item2。
+		
+		await pool_slot.play_reveal_sequence(batch_items)
 	
-	pool_slot.hide_main_icon()
-	
-	target_slot.hide_icon() # 再次确保隐藏，防止 inventory_changed 信号竞争
-	
+	target_slot.hide_icon() # 再次确保隐藏
 	# 确保飞行层可见
 	if vfx_layer:
 		vfx_layer.visible = true
+	
+	# 在飞行的同时，播放队列推进动画
+	# 注意：如果是从 pending 来的（有 snapshot），说明 UI 已经通过信号更新到下一项了，
+	# 此时不要 hide_main_icon 也不要 advance 队列，否则会把下一项隐藏掉。
+	if source_snapshot.is_empty():
+		pool_slot.hide_main_icon()
+		pool_slot.play_queue_advance_anim()
 	
 	await spawn_fly_item(item.item_data.icon, start_pos, end_pos, start_scale, end_scale)
 	
 	# 3. 落地：释放锁定并显示背包格图标
 	target_slot.is_vfx_target = false
 	target_slot.show_icon()
-	target_slot.update_display(item) # 落地后手动触发一次外观刷新
+	target_slot.update_display(item)
 	
-	# 4. 奖池关盖 (关盖后不在此处刷新池子，由 _process_vfx_queue 统一处理)
-	await pool_slot.play_close_sequence()
+	# 4. 奖池关盖检查
+	# 只有当这是队列中最后一个属于该池子的任务时，才关盖。
+	if not _has_more_tasks_for_pool(pool_idx):
+		await pool_slot.play_close_sequence()
 	
 	unlock_ui("draw_vfx")
 	unlock_ui("draw")
@@ -441,10 +503,17 @@ func _on_item_added(_item: ItemInstance, index: int) -> void:
 		target_slot.is_vfx_target = true
 		target_slot.hide_icon()
 		
-		var snapshot = _capture_lottery_slot_snapshot(last_clicked_pool_idx)
+		# Auto-add 时 snapshot 为空（由 VFX 逻辑推演）
+		var snapshot = {}
+		if not InventorySystem.pending_items.is_empty():
+			snapshot = _capture_lottery_slot_snapshot(last_clicked_pool_idx)
+			
 		_vfx_queue.append({"pool_idx": last_clicked_pool_idx, "target_idx": index, "is_replace": false, "snapshot": snapshot})
-		if not _is_vfx_processing:
-			_process_vfx_queue()
+		
+		# 只有当既没有在该帧调度过，也没有正在处理时，才调度一次 deferred call
+		if not _is_vfx_processing and not _vfx_scheduled:
+			_vfx_scheduled = true
+			call_deferred("_process_vfx_queue")
 
 func _on_item_replaced(index: int, _new_item: ItemInstance, _old_item: ItemInstance) -> void:
 	# 替换发生时，也需要飞行动画
@@ -454,10 +523,15 @@ func _on_item_replaced(index: int, _new_item: ItemInstance, _old_item: ItemInsta
 		target_slot.is_vfx_target = true
 		# 注意：这里不调研 hide_icon()，让旧物品保持显示
 		
-		var snapshot = _capture_lottery_slot_snapshot(last_clicked_pool_idx)
+		var snapshot = {}
+		if not InventorySystem.pending_items.is_empty():
+			snapshot = _capture_lottery_slot_snapshot(last_clicked_pool_idx)
+			
 		_vfx_queue.append({"pool_idx": last_clicked_pool_idx, "target_idx": index, "is_replace": true, "snapshot": snapshot})
-		if not _is_vfx_processing:
-			_process_vfx_queue()
+		
+		if not _is_vfx_processing and not _vfx_scheduled:
+			_vfx_scheduled = true
+			call_deferred("_process_vfx_queue")
 
 func _on_item_merged(index: int, _new_item: ItemInstance, _target_item: ItemInstance) -> void:
 	# 合并时，逻辑类似替换：旧物品（target_item）在原地，新物品飞入变成 new_item
@@ -465,21 +539,31 @@ func _on_item_merged(index: int, _new_item: ItemInstance, _target_item: ItemInst
 		var target_slot = item_slots_grid.get_node("Item Slot_root_" + str(index))
 		target_slot.is_vfx_target = true
 		
-		var snapshot = _capture_lottery_slot_snapshot(last_clicked_pool_idx)
+		var snapshot = {}
+		if not InventorySystem.pending_items.is_empty():
+			snapshot = _capture_lottery_slot_snapshot(last_clicked_pool_idx)
+			
 		_vfx_queue.append({"pool_idx": last_clicked_pool_idx, "target_idx": index, "is_replace": true, "snapshot": snapshot})
-		if not _is_vfx_processing:
-			_process_vfx_queue()
+		
+		if not _is_vfx_processing and not _vfx_scheduled:
+			_vfx_scheduled = true
+			call_deferred("_process_vfx_queue")
 
 func _process_vfx_queue() -> void:
+	_vfx_scheduled = false # 清除调度标志，开始处理
+	if _is_vfx_processing: return # 双重保险
+	
 	_is_vfx_processing = true
 	while not _vfx_queue.is_empty():
 		var task = _vfx_queue.pop_front()
 		await _on_item_obtained_vfx(task.pool_idx, task.target_idx, task.get("is_replace", false), task.get("snapshot", {}))
 	
 	_is_vfx_processing = false
-	last_clicked_pool_idx = -1
-	# 全部飞完后再刷新池子
-	PoolSystem.refresh_pools()
+	
+	# 只有当全部待办（包括 pending list）都处理完了，才刷新奖池并重置点击状态
+	if InventorySystem.pending_items.is_empty():
+		last_clicked_pool_idx = -1
+		PoolSystem.refresh_pools()
 
 func _capture_lottery_slot_snapshot(pool_idx: int) -> Dictionary:
 	var slot = lottery_slots_grid.get_node_or_null("Lottery Slot_root_" + str(pool_idx))
@@ -605,3 +689,13 @@ func _on_game_event(event_id: StringName, payload: Variant) -> void:
 				lock_ui("order_refresh")
 				await slot.play_refresh_anim()
 				unlock_ui("order_refresh")
+
+func _has_more_tasks_for_pool(pool_idx: int) -> bool:
+	for task in _vfx_queue:
+		if task.pool_idx == pool_idx:
+			return true
+	
+	if not InventorySystem.pending_items.is_empty():
+		return true
+		
+	return false

@@ -221,7 +221,7 @@ func _assign_random_affix(pool: PoolConfig, excluded_affixes: Array[RefCounted] 
 	var available_affixes: Array = []
 	
 	for aff in all_affixes:
-		if aff not in excluded_affixes:
+		if aff not in excluded_affixes and UnlockManager.is_pool_affix_enabled(aff.id):
 			available_affixes.append(aff)
 			
 	if not available_affixes.is_empty():

@@ -22,6 +22,19 @@ extends BaseSlotUI
 var pool_index: int = -1
 var is_drawing: bool = false
 var _pending_pool_data: Variant = null # 挂起的新奖池数据，等待关盖后应用
+var _initial_transforms: Dictionary = {}
+
+# 队列物品显示配置（可在编辑器中调整）
+@export var queue_1_offset: Vector2 = Vector2(-116, 7)
+@export var queue_1_scale: float = 0.75
+@export var queue_2_offset: Vector2 = Vector2(-207, -19)
+@export var queue_2_scale: float = 0.75
+
+func _ready() -> void:
+	# 记录初始 transform 以便动画复位
+	_initial_transforms[item_main] = {"pos": item_main.position, "scale": item_main.scale}
+	_initial_transforms[item_queue_1] = {"pos": item_queue_1.position, "scale": item_queue_1.scale}
+	_initial_transforms[item_queue_2] = {"pos": item_queue_2.position, "scale": item_queue_2.scale}
 
 func setup(index: int) -> void:
 	pool_index = index
@@ -30,6 +43,7 @@ func setup(index: int) -> void:
 		input_area.mouse_entered.connect(_on_mouse_entered)
 		input_area.mouse_exited.connect(_on_mouse_exited)
 	
+
 	# 奖池初始状态必须是瞬间关上的 (瞬间完成，不播放动画过程)
 	if anim_player.has_animation("lid_close"):
 		anim_player.play("lid_close")
@@ -163,8 +177,17 @@ func _update_required_items_from_orders(pool_type: Constants.ItemType) -> void:
 		else:
 			icon_node.visible = false
 
-func play_reveal_sequence(item: ItemInstance) -> void:
+func play_reveal_sequence(items: Array) -> void:
+	if items.is_empty(): return
+	var item = items[0]
+
+	# 如果已经在展示中（is_drawing = true），说明之前已经 reveal 过了，直接更新显示即可
+	if is_drawing:
+		update_queue_display(items)
+		return
+	
 	is_drawing = true
+
 	# 1. 盖子全开
 	if anim_player.has_animation("lid_open"):
 		anim_player.play("lid_open")
@@ -175,11 +198,20 @@ func play_reveal_sequence(item: ItemInstance) -> void:
 	var interval = 0.05
 	
 	# 临时显示图标
-	item_main.texture = item.item_data.icon
-	item_main.visible = true
-	item_main_shadow.visible = true
+	# 临时显示图标 (支持多物品)
 	item_main.scale = Vector2.ZERO
-	create_tween().tween_property(item_main, "scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	item_queue_1.scale = Vector2.ZERO
+	item_queue_2.scale = Vector2.ZERO
+	
+	update_queue_display(items)
+	
+	var tw = create_tween().set_parallel(true)
+	tw.tween_property(item_main, "scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	if items.size() > 1:
+		tw.tween_property(item_queue_1, "scale", Vector2(0.8, 0.8), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	if items.size() > 2:
+		tw.tween_property(item_queue_2, "scale", Vector2(0.6, 0.6), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
 
 	while shuffle_timer < duration:
 		if backgrounds:
@@ -211,51 +243,149 @@ func play_close_sequence() -> void:
 			backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
 		item_main.visible = false
 		item_main_shadow.visible = false
+		item_queue_1.visible = false
+		item_queue_1_shadow.visible = false
+		item_queue_2.visible = false
+		item_queue_2_shadow.visible = false
 
 func play_draw_anim() -> void:
 	# 这个函数现在被 play_reveal_sequence 替代逻辑
 	pass
 
 func update_pending_display(pending_list: Array) -> void:
-	# 只要更新了待处理显示，就说明抽奖揭示阶段已结束
-	is_drawing = false
-	
-	# 重置显示
-	item_main.texture = null
-	item_main.visible = false
-	item_main_shadow.visible = false
-	
-	item_queue_1.texture = null
-	item_queue_1.visible = false
-	item_queue_1_shadow.visible = false
-	
-	item_queue_2.texture = null
-	item_queue_2.visible = false
-	item_queue_2_shadow.visible = false
-	
 	if pending_list.is_empty():
+		is_drawing = false # 只有队列空了才重置
 		if backgrounds:
 			backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
+		# 清空所有显示
+		item_main.texture = null
+		item_main.visible = false
+		item_main_shadow.visible = false
+		item_queue_1.texture = null
+		item_queue_1.visible = false
+		item_queue_1_shadow.visible = false
+		item_queue_2.texture = null
+		item_queue_2.visible = false
+		item_queue_2_shadow.visible = false
 		return
 	
 	# 设置背景颜色 (根据第一个物品的稀有度，与 ItemSlot 保持一致)
 	if backgrounds:
 		backgrounds.color = Constants.get_rarity_border_color(pending_list[0].rarity)
 	
-	# 设置主要物品
-	if pending_list.size() > 0:
-		item_main.texture = pending_list[0].item_data.icon
+	# 设置主要物品（update_queue_display 内部会处理显示/隐藏）
+	update_queue_display(pending_list)
+
+func update_queue_display(items: Array) -> void:
+	# 硬编码位置偏移: Main (0, -26), Queue1 (+25, -30), Queue2 (+45, -34)
+	# 假设 item_main 的默认位置是 (0, -26). 
+	# 我们基于 item_main 的位置来计算
+	var base_pos = item_main.position # 当 _ready 时记录的或者当前的?
+	# 如果正在做动画，item_main.position 可能会变。
+	# 我们应该使用 _initial_transforms[item_main]["pos"]
+	if _initial_transforms.is_empty():
+		# Fallback if _ready hasn't run yet (unlikely)
+		base_pos = Vector2(0, -26)
+	else:
+		base_pos = _initial_transforms[item_main]["pos"]
+	
+	# item_main 永远显示 items[0]
+	if items.size() > 0:
+		item_main.texture = items[0].item_data.icon
 		item_main.visible = true
 		item_main_shadow.visible = true
+		item_main.z_index = 0
+	else:
+		item_main.visible = false
+		item_main_shadow.visible = false
 		
-	# 设置队列物品 1
-	if pending_list.size() > 1:
-		item_queue_1.texture = pending_list[1].item_data.icon
+	# queue_1 显示 items[1]
+	if items.size() > 1:
+		item_queue_1.texture = items[1].item_data.icon
 		item_queue_1.visible = true
 		item_queue_1_shadow.visible = true
-		
-	# 设置队列物品 2
-	if pending_list.size() > 2:
-		item_queue_2.texture = pending_list[2].item_data.icon
+		# 使用可配置的偏移量和缩放
+		item_queue_1.position = base_pos + queue_1_offset
+		item_queue_1.scale = Vector2(queue_1_scale, queue_1_scale)
+		item_queue_1.z_index = 0
+		printerr("[LotterySlot] Queue1 显示: ", items[1].item_data.id, " at ", item_queue_1.position, " scale: ", item_queue_1.scale)
+	else:
+		item_queue_1.visible = false
+		item_queue_1_shadow.visible = false
+	
+	# queue_2 显示 items[2]
+	if items.size() > 2:
+		item_queue_2.texture = items[2].item_data.icon
 		item_queue_2.visible = true
 		item_queue_2_shadow.visible = true
+		# 使用可配置的偏移量和缩放
+		item_queue_2.position = base_pos + queue_2_offset
+		item_queue_2.scale = Vector2(queue_2_scale, queue_2_scale)
+		item_queue_2.z_index = 0
+		printerr("[LotterySlot] Queue2 显示: ", items[2].item_data.id, " at ", item_queue_2.position, " scale: ", item_queue_2.scale)
+	else:
+		item_queue_2.visible = false
+		item_queue_2_shadow.visible = false
+	
+	printerr("[LotterySlot] update_queue_display 完成，items数量: ", items.size())
+
+# 播放队列推进动画：queue1 -> main, queue2 -> queue1
+func play_queue_advance_anim() -> void:
+	# 前进动画：
+	# 1. Main 已经飞走（在 Game2DUI 处理），这里只需要把 queue1 移到 Main，queue2 移到 queue1
+	# 实际上，fly 动画还在播。Game2DUI 会在 fly 之后才 update_display。
+	# 我们希望“飞出的同时”，后面的往前顶。
+	var duration = 0.3
+	var tw = create_tween().set_parallel(true)
+	
+	if item_queue_1.visible:
+		# Queue1 -> Main
+		# 记录原始位置，为了动画结束后恢复（因为这是 slot 的固定位置）
+		var q1_pos = item_queue_1.position
+		var main_pos = item_main.position
+		var q1_scale = item_queue_1.scale
+		var main_scale = item_main.scale
+		
+		# 我们不改变 slot 的布局结构，而是让图标视觉移动。
+		# 但最好的做法可能是：移动之后，交换 texture，瞬间复位。
+		# 比如：tween item_queue_1.position to item_main.position
+		# 结束后：item_main.texture = item_queue_1.texture, item_queue_1 复位且隐藏(或显示下一个)。
+		# 由于我们不知道下一个是什么（logic layer 状态），我们只能做纯视觉的“推”。
+		# 然而，Game2DUI 在 fly 完后会调用 update_pending_display，那时会瞬间重置。
+		# 所以这里的动画只需要负责“看起来移动了”。
+		
+		# 让 queue1 移动到 main 的位置和缩放
+		tw.tween_property(item_queue_1, "position", main_pos, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tw.tween_property(item_queue_1, "scale", main_scale, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		
+		if item_queue_2.visible:
+			tw.tween_property(item_queue_2, "position", q1_pos, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+			tw.tween_property(item_queue_2, "scale", q1_scale, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		
+		await tw.finished
+		
+		# 动画结束后，手动复位位置（内容更新由外部 update_pending_display 负责）
+		item_queue_1.position = q1_pos
+		item_queue_1.scale = q1_scale
+		item_queue_2.position = item_queue_1.position # q1_pos is queue1 slot pos
+		# wait. item_queue_2 pos should reset to queue 2 pos? No, queue 2 moved to queue 1.
+		# The layout positions should be constant.
+		# recover original transforms
+		# 这是一个 tricky part。最简单的方式是：直接复位 transform。内容更新会在之后瞬间发生。
+		_reset_item_transforms()
+		
+		# 关键修复：动画结束后，立即同步当前 pending_items 的显示
+		# 这确保 texture 与逻辑状态一致
+		if not InventorySystem.pending_items.is_empty():
+			update_queue_display(InventorySystem.pending_items)
+
+func _reset_item_transforms() -> void:
+	if _initial_transforms.is_empty(): return
+	
+	# 只恢复 Main 的 transform，Queue 的由 update_queue_display 控制
+	item_main.position = _initial_transforms[item_main]["pos"]
+	item_main.scale = _initial_transforms[item_main]["scale"]
+	
+	# Queue 的 position 由 update_queue_display 设置，这里只恢复 scale（为下次动画准备）
+	# 实际上，在 update_queue_display 中我们已经设置了正确的 scale，
+	# 所以这里不需要特别处理

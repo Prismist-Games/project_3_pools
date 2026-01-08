@@ -5,6 +5,7 @@ extends PanelContainer
 
 @onready var feature_container: VBoxContainer = %FeatureContainer
 @onready var item_type_container: HFlowContainer = %ItemTypeContainer
+@onready var affix_container: HFlowContainer = %AffixContainer
 @onready var merge_limit_option: OptionButton = %MergeLimitOption
 @onready var inventory_size_spinbox: SpinBox = %InventorySizeSpinBox
 @onready var order_limit_spinbox: SpinBox = %OrderLimitSpinBox
@@ -76,6 +77,32 @@ func _setup_ui() -> void:
 		spinbox.step = 0.1
 		spinbox.allow_greater = true
 		spinbox.allow_lesser = true
+	
+	_setup_affix_toggles()
+
+
+func _setup_affix_toggles() -> void:
+	# 动态生成词缀开关
+	for child in affix_container.get_children():
+		child.queue_free()
+	
+	for affix in GameManager.all_pool_affixes:
+		var toggle = CheckButton.new()
+		toggle.text = affix.name
+		toggle.name = "AffixToggle_" + affix.id
+		toggle.button_pressed = UnlockManager.is_pool_affix_enabled(affix.id)
+		toggle.toggled.connect(func(pressed: bool):
+			UnlockManager.set_pool_affix_enabled(affix.id, pressed)
+		)
+		affix_container.add_child(toggle)
+
+
+func _on_pool_affix_enabled_changed(affix_id: StringName, enabled: bool) -> void:
+	var toggle = affix_container.get_node_or_null("AffixToggle_" + affix_id)
+	if toggle and toggle is CheckButton:
+		_is_updating = true
+		toggle.button_pressed = enabled
+		_is_updating = false
 
 
 func _connect_signals() -> void:
@@ -103,6 +130,7 @@ func _connect_signals() -> void:
 	
 	# 监听 UnlockManager 变化以同步 UI
 	UnlockManager.unlock_changed.connect(_on_unlock_changed)
+	UnlockManager.pool_affix_enabled_changed.connect(_on_pool_affix_enabled_changed)
 	UnlockManager.merge_limit_changed.connect(_on_merge_limit_changed)
 	UnlockManager.inventory_size_changed.connect(_on_inventory_size_value_changed)
 	UnlockManager.order_limit_changed.connect(_on_order_limit_value_changed)
