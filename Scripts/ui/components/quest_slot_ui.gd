@@ -11,16 +11,18 @@ var order_index: int = -1
 
 func setup(index: int) -> void:
 	order_index = index
+	# 订单槽位初始状态是开启的
+	if anim_player.has_animation("lid_open"):
+		anim_player.play("lid_open")
 
-func play_refresh_anim() -> Signal:
+func play_refresh_anim() -> void:
 	if anim_player.has_animation("lid_close"):
 		anim_player.play("lid_close")
 		await anim_player.animation_finished
 		# Logic to change content happens here in parent
 		if anim_player.has_animation("lid_open"):
 			anim_player.play("lid_open")
-			return anim_player.animation_finished
-	return get_tree().process_frame
+			await anim_player.animation_finished
 
 func update_order_display(order_data: OrderData) -> void:
 	if not order_data:

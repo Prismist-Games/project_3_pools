@@ -8,9 +8,9 @@ var max_pools: int = 3
 func _ready() -> void:
 	if not GameManager.is_node_ready():
 		await GameManager.ready
-	call_deferred("refresh_pools")
-	# 奖池刷新的时机改为在玩家获取新物品时
-	EventBus.item_obtained.connect(func(_item): call_deferred("refresh_pools"))
+	# call_deferred("refresh_pools")
+	# 奖池刷新的时机改为在 UI 动画序列结束后手动触发，不再自动连接
+	# EventBus.item_obtained.connect(func(_item): call_deferred("refresh_pools"))
 
 
 func refresh_pools() -> void:
@@ -200,9 +200,8 @@ func _generate_normal_pool(excluded_types: Array[Constants.ItemType] = [], exclu
 	else:
 		pool.item_type = available_types.pick_random()
 	
-	# 2. 随机选择词缀，排除已使用的词缀
-	if UnlockManager.is_unlocked(UnlockManager.Feature.POOL_AFFIXES):
-		_assign_random_affix(pool, excluded_affixes)
+	# 2. 随机选择词缀 (开局即拥有)
+	_assign_random_affix(pool, excluded_affixes)
 	
 	# 3. 计算费用
 	var initial_cost = 5

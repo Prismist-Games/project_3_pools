@@ -20,6 +20,10 @@ extends Control
 var _ui_locks: Dictionary = {}
 var last_clicked_pool_idx: int = -1
 var pending_source_pool_idx: int = -1
+
+# VFX 队列管理
+var _vfx_queue: Array[Dictionary] = []
+var _is_vfx_processing: bool = false
 var _active_modal_callback: Callable
 
 func _ready() -> void:
@@ -83,7 +87,13 @@ func _refresh_all() -> void:
 	_on_tickets_changed(GameManager.tickets)
 	_on_inventory_changed(InventorySystem.inventory)
 	_on_skills_changed(SkillSystem.current_skills)
-	_on_pools_refreshed(PoolSystem.current_pools)
+	
+	# 如果还没有初始化池子数据，则刷新一次
+	if PoolSystem.current_pools.is_empty():
+		PoolSystem.refresh_pools()
+	else:
+		_on_pools_refreshed(PoolSystem.current_pools)
+		
 	_on_orders_updated(OrderSystem.current_orders)
 	_update_ui_mode_display()
 
@@ -100,6 +110,11 @@ func _update_ui_mode_display() -> void:
 	# 驱动背包 Lid
 	for i in range(10):
 		var slot = item_slots_grid.get_node("Item Slot_root_" + str(i))
+		slot.is_locked = is_locked
+	
+	# 驱动奖池 Lid (防止在飞行/抽奖时点击其他池子)
+	for i in range(3):
+		var slot = lottery_slots_grid.get_node("Lottery Slot_root_" + str(i))
 		slot.is_locked = is_locked
 	
 	_update_switch_visuals(mode)
@@ -185,6 +200,12 @@ func _on_orders_updated(orders: Array) -> void:
 			main_quest_slot.update_order_display(order)
 			if not is_ui_locked(): main_quest_slot.is_locked = false
 			break
+	
+	# 刷新所有背包格子的角标，因为需求可能变了
+	for i in range(10):
+		var slot = item_slots_grid.get_node("Item Slot_root_" + str(i))
+		var item = InventorySystem.inventory[i] if i < InventorySystem.inventory.size() else null
+		slot.update_display(item)
 
 func _on_multi_selection_changed(_indices: Array[int]) -> void:
 	# 刷新订单显示以更新需求物品的勾选状态 (Item_status)
@@ -222,7 +243,7 @@ func _on_submit_switch_input(event: InputEvent) -> void:
 		if GameManager.current_ui_mode == Constants.UIMode.NORMAL:
 			GameManager.current_ui_mode = Constants.UIMode.SUBMIT
 		elif GameManager.current_ui_mode == Constants.UIMode.SUBMIT:
-			_handle_order_submit()
+			await _handle_order_submit()
 
 func _on_recycle_switch_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -232,34 +253,76 @@ func _on_recycle_switch_input(event: InputEvent) -> void:
 			_handle_recycle_confirm()
 
 # --- 动作实现 ---
+func _handle_draw(index: int) -> void:
+	if is_ui_locked() or not InventorySystem.pending_items.is_empty(): return
+	
+	last_clicked_pool_idx = index
+	pending_source_pool_idx = index
+	
+	lock_ui("draw")
+	
+	var success = PoolSystem.draw_from_pool(index)
+	if not success:
+		# 如果抽奖失败（如金币不足），立即解锁并播放抖动反馈
+		var slot = lottery_slots_grid.get_node("Lottery Slot_root_" + str(index))
+		slot.play_shake()
+		last_clicked_pool_idx = -1
+		unlock_ui("draw")
+		return
+	
+	# 如果没有任何物品进入背包（比如全部进入了待定队列），则 VFX 队列不会启动
+	# 我们需要在这里手动处理揭示并解锁，否则 UI 会卡死
+	if not _is_vfx_processing:
+		if not InventorySystem.pending_items.is_empty():
+			var slot = lottery_slots_grid.get_node("Lottery Slot_root_" + str(index))
+			# 原地播放揭示动画，但不关盖，也不重置 is_drawing
+			await slot.play_reveal_sequence(InventorySystem.pending_items[0])
+		
+		# 虽然没飞走，但揭示完了，解锁 UI 让玩家处理背包
+		unlock_ui("draw")
+		# 注意：此处不调用 PoolSystem.refresh_pools()，也不重置 last_clicked_pool_idx
+		# 必须等待物品真正飞走进入背包
+
 func _on_item_obtained_vfx(pool_idx: int, target_idx: int) -> void:
 	if pool_idx == -1: return
+	
 	var pool_slot = lottery_slots_grid.get_node("Lottery Slot_root_" + str(pool_idx))
 	var target_slot = item_slots_grid.get_node("Item Slot_root_" + str(target_idx))
 	var item = InventorySystem.inventory[target_idx]
 	if not item: return
 	
 	lock_ui("draw_vfx")
+	
+	# 1. 在奖池揭示
+	# 锁定目标格，防止它在飞行中变色
+	target_slot.is_vfx_target = true
+	target_slot.hide_icon()
+	await pool_slot.play_reveal_sequence(item)
+	
+	# 2. 飞入背包
 	var start_pos = pool_slot.get_main_icon_global_position()
 	var end_pos = target_slot.get_icon_global_position()
 	var start_scale = pool_slot.get_main_icon_global_scale()
 	var end_scale = target_slot.get_icon_global_scale()
 	
 	pool_slot.hide_main_icon()
-	target_slot.hide_icon()
+	target_slot.hide_icon() # 再次确保隐藏，防止 inventory_changed 信号竞争
+	
+	# 确保飞行层可见
+	if vfx_layer:
+		vfx_layer.visible = true
+	
 	await spawn_fly_item(item.item_data.icon, start_pos, end_pos, start_scale, end_scale)
+	
+	# 3. 落地：释放锁定并显示背包格图标
+	target_slot.is_vfx_target = false
 	target_slot.show_icon()
-	pool_slot.show_main_icon()
-	_on_inventory_changed(InventorySystem.inventory)
+	target_slot.update_display(item) # 落地后手动触发一次外观刷新
+	
+	# 4. 奖池关盖 (关盖后不在此处刷新池子，由 _process_vfx_queue 统一处理)
+	await pool_slot.play_close_sequence()
+	
 	unlock_ui("draw_vfx")
-
-func _handle_draw(index: int) -> void:
-	last_clicked_pool_idx = index
-	pending_source_pool_idx = index
-	lock_ui("draw")
-	var slot = lottery_slots_grid.get_node("Lottery Slot_root_" + str(index))
-	await slot.play_draw_anim()
-	PoolSystem.draw_from_pool(index)
 	unlock_ui("draw")
 
 func _handle_order_selection(index: int) -> void:
@@ -318,38 +381,73 @@ func _on_item_moved(source_idx: int, target_idx: int) -> void:
 	var target_slot = item_slots_grid.get_node("Item Slot_root_" + str(target_idx))
 	var item = InventorySystem.inventory[target_idx]
 	if not item: return
+	
 	lock_ui("move_anim")
+	target_slot.is_vfx_target = true # 锁定目标，防止闪现
+	
 	var start_pos = source_slot.get_icon_global_position()
 	var end_pos = target_slot.get_icon_global_position()
 	var start_scale = source_slot.get_icon_global_scale()
 	var end_scale = target_slot.get_icon_global_scale()
+	
 	source_slot.hide_icon()
 	target_slot.hide_icon()
+	
 	await spawn_fly_item(item.item_data.icon, start_pos, end_pos, start_scale, end_scale)
+	
+	target_slot.is_vfx_target = false
 	target_slot.show_icon()
 	_on_inventory_changed(InventorySystem.inventory)
 	unlock_ui("move_anim")
 
-func _on_item_added(item: ItemInstance, index: int) -> void:
+func _on_item_added(_item: ItemInstance, index: int) -> void:
 	if last_clicked_pool_idx != -1:
-		_on_item_obtained_vfx(last_clicked_pool_idx, index)
-		last_clicked_pool_idx = -1
+		# 立即锁定目标格，防止在飞入前因为 inventory_changed 信号闪现
+		var target_slot = item_slots_grid.get_node("Item Slot_root_" + str(index))
+		target_slot.is_vfx_target = true
+		target_slot.hide_icon()
+		
+		_vfx_queue.append({"pool_idx": last_clicked_pool_idx, "target_idx": index})
+		if not _is_vfx_processing:
+			_process_vfx_queue()
+
+func _process_vfx_queue() -> void:
+	_is_vfx_processing = true
+	while not _vfx_queue.is_empty():
+		var task = _vfx_queue.pop_front()
+		await _on_item_obtained_vfx(task.pool_idx, task.target_idx)
+	
+	_is_vfx_processing = false
+	last_clicked_pool_idx = -1
+	# 全部飞完后再刷新池子
+	PoolSystem.refresh_pools()
 
 func _on_item_swapped(idx1: int, idx2: int) -> void:
 	var slot1 = item_slots_grid.get_node("Item Slot_root_" + str(idx1))
 	var slot2 = item_slots_grid.get_node("Item Slot_root_" + str(idx2))
 	var item1 = InventorySystem.inventory[idx1]
 	var item2 = InventorySystem.inventory[idx2]
+	
 	lock_ui("swap_anim")
+	slot1.is_vfx_target = true
+	slot2.is_vfx_target = true
+	
 	var pos1 = slot1.get_icon_global_position()
 	var pos2 = slot2.get_icon_global_position()
 	var scale1 = slot1.get_icon_global_scale()
 	var scale2 = slot2.get_icon_global_scale()
+	
 	slot1.hide_icon()
 	slot2.hide_icon()
+	
 	var fly1 = spawn_fly_item(item1.item_data.icon, pos2, pos1, scale2, scale1)
-	var fly2 = spawn_fly_item(item2.item_data.icon, pos1, pos2, scale1, scale2)
+	var _fly2 = spawn_fly_item(item2.item_data.icon, pos1, pos2, scale1, scale2)
+	
 	await fly1
+	await _fly2
+	
+	slot1.is_vfx_target = false
+	slot2.is_vfx_target = false
 	slot1.show_icon()
 	slot2.show_icon()
 	_on_inventory_changed(InventorySystem.inventory)
@@ -359,6 +457,8 @@ func spawn_fly_item(texture: Texture2D, start_pos: Vector2, end_pos: Vector2, st
 	if not vfx_layer: return get_tree().process_frame
 	var proxy = Sprite2D.new()
 	proxy.texture = texture
+	proxy.top_level = true # 关键：让它忽略父节点缩放和偏移，直接使用全局坐标绘制
+	proxy.z_index = 999    # 确保在所有 UI 之上
 	vfx_layer.add_child(proxy)
 	proxy.global_position = start_pos
 	proxy.global_scale = start_scale

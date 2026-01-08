@@ -39,14 +39,14 @@ const FEATURE_DISPLAY_NAMES: Dictionary = {
 ## 内部状态 (默认全锁)
 var _unlocked: Dictionary = {}
 
-## 合成品质上限 (非 bool，特殊处理)
-var merge_limit: Constants.Rarity = Constants.Rarity.UNCOMMON:
+## 合成品质上限 (直接设为最高：史诗 -> 传说)
+var merge_limit: Constants.Rarity = Constants.Rarity.MYTHIC:
 	set(v):
 		merge_limit = v
 		merge_limit_changed.emit(merge_limit)
 
-## 背包槽位上限
-var inventory_size: int = 6:
+## 背包槽位上限 (直接设为 10)
+var inventory_size: int = 10:
 	set(v):
 		inventory_size = v
 		inventory_size_changed.emit(inventory_size)
@@ -54,21 +54,21 @@ var inventory_size: int = 6:
 		if InventorySystem:
 			InventorySystem.resize_inventory(inventory_size)
 
-## 订单总数上限
+## 订单总数上限 (设为 4)
 var order_limit: int = 4:
 	set(v):
 		order_limit = v
 		order_limit_changed.emit(order_limit)
 
 ## 单个订单需求物品数量范围
-var order_item_req_min: int = 1:
+var order_item_req_min: int = 2:
 	set(v):
 		order_item_req_min = v
 		if order_item_req_min > order_item_req_max:
 			order_item_req_max = order_item_req_min
 		order_item_req_range_changed.emit(order_item_req_min, order_item_req_max)
 
-var order_item_req_max: int = 2:
+var order_item_req_max: int = 4:
 	set(v):
 		order_item_req_max = v
 		if order_item_req_max < order_item_req_min:
@@ -90,46 +90,22 @@ func _apply_default_unlocks() -> void:
 
 # --- 查询 API ---
 
-func is_unlocked(feature: Feature) -> bool:
-	return _unlocked.get(feature, false)
+func is_unlocked(_feature: Feature) -> bool:
+	return true # 强制全部解锁
 
 
 func get_feature_display_name(feature: Feature) -> String:
 	return FEATURE_DISPLAY_NAMES.get(feature, "未知")
 
 
-func is_item_type_unlocked(item_type: Constants.ItemType) -> bool:
-	## 检查指定物品类型是否已解锁
-	## FRUIT 始终解锁；MAINLINE/NONE 不在此系统管理
-	match item_type:
-		Constants.ItemType.ANTIQUE:
-			return true
-		Constants.ItemType.MEDICINE:
-			return is_unlocked(Feature.ITEM_TYPE_MEDICINE)
-		Constants.ItemType.STATIONERY:
-			return is_unlocked(Feature.ITEM_TYPE_STATIONERY)
-		Constants.ItemType.CONVENIENCE:
-			return is_unlocked(Feature.ITEM_TYPE_CONVENIENCE)
-		Constants.ItemType.ENTERTAINMENT:
-			return is_unlocked(Feature.ITEM_TYPE_ENTERTAINMENT)
-		_:
-			return false
+func is_item_type_unlocked(_item_type: Constants.ItemType) -> bool:
+	## 强制全部解锁
+	return true
 
 
 func get_unlocked_item_types() -> Array[Constants.ItemType]:
-	## 获取当前已解锁的所有物品类型
-	var result: Array[Constants.ItemType] = [Constants.ItemType.ANTIQUE]
-	
-	if is_unlocked(Feature.ITEM_TYPE_MEDICINE):
-		result.append(Constants.ItemType.MEDICINE)
-	if is_unlocked(Feature.ITEM_TYPE_STATIONERY):
-		result.append(Constants.ItemType.STATIONERY)
-	if is_unlocked(Feature.ITEM_TYPE_CONVENIENCE):
-		result.append(Constants.ItemType.CONVENIENCE)
-	if is_unlocked(Feature.ITEM_TYPE_ENTERTAINMENT):
-		result.append(Constants.ItemType.ENTERTAINMENT)
-	
-	return result
+	## 获取所有普通物品类型
+	return Constants.get_normal_item_types()
 
 
 # --- 修改 API ---

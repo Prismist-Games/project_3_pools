@@ -61,6 +61,28 @@ func type_to_display_name(type: ItemType) -> String:
 		ItemType.MAINLINE: return "核心"
 		_: return "其他"
 
+func type_to_icon(type: ItemType) -> Texture2D:
+	match type:
+		ItemType.ANTIQUE: return preload("res://assets/sprites/icons/category_antique.png")
+		ItemType.MEDICINE: return preload("res://assets/sprites/icons/category_medicine.png")
+		ItemType.STATIONERY: return preload("res://assets/sprites/icons/category_office.png")
+		ItemType.CONVENIENCE: return preload("res://assets/sprites/icons/category_convenience.png")
+		ItemType.ENTERTAINMENT: return preload("res://assets/sprites/icons/category_entertainment.png")
+		ItemType.MAINLINE:
+			# 核心池图标随阶段变化
+			var stage = 1
+			if Engine.has_singleton("GameManager"):
+				stage = GameManager.mainline_stage
+			
+			match stage:
+				1: return preload("res://assets/sprites/icons/artifact_antique.png")
+				2: return preload("res://assets/sprites/icons/artifact_medicine.png")
+				3: return preload("res://assets/sprites/icons/artifact_stationary.png")
+				4: return preload("res://assets/sprites/icons/artifact_convenience.png")
+				5: return preload("res://assets/sprites/icons/artifact_entertainment.png")
+				_: return null
+		_: return null
+
 const MAINLINE_ITEM_STAGE_1: StringName = &"mainline_antique"
 const MAINLINE_ITEM_STAGE_2: StringName = &"mainline_medicine"
 const MAINLINE_ITEM_STAGE_3: StringName = &"mainline_stationery"

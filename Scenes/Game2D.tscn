@@ -1,4 +1,4 @@
-[gd_scene load_steps=120 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=124 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
 [ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
@@ -139,6 +139,55 @@ tracks/0/keys = {
 _data = {
 &"RESET": SubResource("Animation_ovo1l"),
 &"test_animation": SubResource("Animation_1h1gb")
+}
+
+[sub_resource type="Animation" id="Animation_00smp"]
+resource_name = "lid_open"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lottery Slot_mask/Lottery Slot_lid:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0, -0.25, 0, 0, -365.75992, -555.25, -0.39999998, -6.3652954, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="Animation" id="Animation_jptrp"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lottery Slot_mask/Lottery Slot_lid:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_7v8nc"]
+resource_name = "lid_close"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lottery Slot_mask/Lottery Slot_lid:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-555.25, 0, 3, 0, 0, 0, -0.25, 0, 0, -365.75992),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7v8nc"]
+_data = {
+&"RESET": SubResource("Animation_jptrp"),
+&"lid_close": SubResource("Animation_7v8nc"),
+&"lid_open": SubResource("Animation_00smp")
 }
 
 [node name="Game2D" type="Control"]
@@ -1371,7 +1420,6 @@ texture = ExtResource("3_4wmcb")
 
 [node name="Lottery Slot_lid" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_mask"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(0, 6.75)
 texture = ExtResource("47_tiwwg")
 
 [node name="Lottery Slot_lid_icon" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0/Lottery Slot_mask/Lottery Slot_lid"]
@@ -1547,6 +1595,9 @@ offset_bottom = 287.0
 mouse_default_cursor_shape = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_0"]
+libraries = {
+&"": SubResource("AnimationLibrary_7v8nc")
+}
 
 [node name="Lottery Slot_root_1" type="Control" parent="The Machine/Lottery Slots Grid"]
 layout_mode = 2
@@ -1614,7 +1665,6 @@ texture = ExtResource("3_4wmcb")
 
 [node name="Lottery Slot_lid" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_mask"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(0, -246.25)
 texture = ExtResource("47_tiwwg")
 
 [node name="Lottery Slot_lid_icon" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1/Lottery Slot_mask/Lottery Slot_lid"]
@@ -1790,6 +1840,9 @@ offset_bottom = 287.0
 mouse_default_cursor_shape = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_1"]
+libraries = {
+&"": SubResource("AnimationLibrary_7v8nc")
+}
 
 [node name="Lottery Slot_root_2" type="Control" parent="The Machine/Lottery Slots Grid"]
 layout_mode = 2
@@ -1857,7 +1910,6 @@ texture = ExtResource("3_4wmcb")
 
 [node name="Lottery Slot_lid" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_mask"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(0, -246.25)
 texture = ExtResource("47_tiwwg")
 
 [node name="Lottery Slot_lid_icon" type="Sprite2D" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2/Lottery Slot_mask/Lottery Slot_lid"]
@@ -2033,6 +2085,9 @@ offset_bottom = 287.0
 mouse_default_cursor_shape = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Lottery Slots Grid/Lottery Slot_root_2"]
+libraries = {
+&"": SubResource("AnimationLibrary_7v8nc")
+}
 
 [node name="The Rabbit" type="Node2D" parent="."]
 position = Vector2(1434, 1997.25)
@@ -2226,10 +2281,10 @@ scroll_active = false
 vertical_alignment = 1
 
 [node name="Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask"]
-offset_left = -203.0
-offset_top = 31.0
-offset_right = 997.0
-offset_bottom = 71.0
+offset_left = -186.0
+offset_top = 23.75
+offset_right = 1014.0
+offset_bottom = 63.75
 scale = Vector2(0.5, 0.5)
 theme_override_constants/separation = 325
 alignment = 2
@@ -2253,7 +2308,8 @@ texture = ExtResource("82_4tp6t")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("25_ue141")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
@@ -2279,7 +2335,8 @@ texture = ExtResource("82_4tp6t")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("25_ue141")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
@@ -2305,7 +2362,8 @@ texture = ExtResource("82_4tp6t")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("25_ue141")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
@@ -2331,7 +2389,8 @@ texture = ExtResource("82_4tp6t")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("25_ue141")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
@@ -2340,7 +2399,7 @@ texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask"]
 modulate = Color(0.8627451, 0.7764706, 0, 1)
-position = Vector2(0, -166)
+position = Vector2(0, -222.25)
 texture = ExtResource("30_iq50s")
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_1"]
@@ -2443,10 +2502,10 @@ scroll_active = false
 vertical_alignment = 1
 
 [node name="Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask"]
-offset_left = -203.0
-offset_top = 31.0
-offset_right = 997.0
-offset_bottom = 71.0
+offset_left = -186.0
+offset_top = 23.75
+offset_right = 1014.0
+offset_bottom = 63.75
 scale = Vector2(0.5, 0.5)
 theme_override_constants/separation = 325
 alignment = 2
@@ -2470,7 +2529,8 @@ texture = ExtResource("82_4tp6t")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("25_ue141")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
@@ -2496,7 +2556,8 @@ texture = ExtResource("82_4tp6t")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("25_ue141")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
@@ -2522,7 +2583,8 @@ texture = ExtResource("82_4tp6t")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("25_ue141")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
@@ -2548,7 +2610,8 @@ texture = ExtResource("82_4tp6t")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("25_ue141")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
@@ -2557,7 +2620,7 @@ texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask"]
 modulate = Color(0.8627451, 0.7764706, 0, 1)
-position = Vector2(0, -166)
+position = Vector2(0, -222.25)
 texture = ExtResource("30_iq50s")
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_2"]
@@ -2660,10 +2723,10 @@ scroll_active = false
 vertical_alignment = 1
 
 [node name="Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask"]
-offset_left = -203.0
-offset_top = 31.0
-offset_right = 997.0
-offset_bottom = 71.0
+offset_left = -186.0
+offset_top = 23.75
+offset_right = 1014.0
+offset_bottom = 63.75
 scale = Vector2(0.5, 0.5)
 theme_override_constants/separation = 325
 alignment = 2
@@ -2687,7 +2750,8 @@ texture = ExtResource("82_4tp6t")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("25_ue141")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
@@ -2713,7 +2777,8 @@ texture = ExtResource("82_4tp6t")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("25_ue141")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
@@ -2739,7 +2804,8 @@ texture = ExtResource("82_4tp6t")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("25_ue141")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
@@ -2765,7 +2831,8 @@ texture = ExtResource("82_4tp6t")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("25_ue141")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
@@ -2774,7 +2841,7 @@ texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask"]
 modulate = Color(0.8627451, 0.7764706, 0, 1)
-position = Vector2(0, -166)
+position = Vector2(0, -222.25)
 texture = ExtResource("30_iq50s")
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_3"]
@@ -2877,10 +2944,10 @@ scroll_active = false
 vertical_alignment = 1
 
 [node name="Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask"]
-offset_left = -203.0
-offset_top = 31.0
-offset_right = 997.0
-offset_bottom = 71.0
+offset_left = -186.0
+offset_top = 23.75
+offset_right = 1014.0
+offset_bottom = 63.75
 scale = Vector2(0.5, 0.5)
 theme_override_constants/separation = 325
 alignment = 2
@@ -2904,7 +2971,8 @@ texture = ExtResource("82_4tp6t")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("25_ue141")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
@@ -2930,7 +2998,8 @@ texture = ExtResource("82_4tp6t")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("25_ue141")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
@@ -2956,7 +3025,8 @@ texture = ExtResource("82_4tp6t")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("25_ue141")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
@@ -2982,7 +3052,8 @@ texture = ExtResource("82_4tp6t")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("25_ue141")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
@@ -2991,7 +3062,7 @@ texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask"]
 modulate = Color(0.8627451, 0.7764706, 0, 1)
-position = Vector2(0, -166)
+position = Vector2(0, -222.25)
 texture = ExtResource("30_iq50s")
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/Quest Slots Grid/Quest Slot_root_4"]

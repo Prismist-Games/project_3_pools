@@ -4,24 +4,10 @@ extends Control
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 @onready var lid: CanvasItem = find_child("*lid", true)
 
-var is_locked: bool = false:
-	set(value):
-		if is_locked == value: return
-		is_locked = value
-		_update_lid_state()
+var is_locked: bool = false # 仅作为逻辑开关，不再关联盖子动画
 
 func _ready() -> void:
-	_update_lid_state()
-
-func _update_lid_state() -> void:
-	if not anim_player: return
-	
-	if is_locked:
-		if anim_player.has_animation("lid_close"):
-			anim_player.play("lid_close")
-	else:
-		if anim_player.has_animation("lid_open"):
-			anim_player.play("lid_open")
+	pass
 
 func play_shake() -> void:
 	if anim_player and anim_player.has_animation("shake"):

@@ -90,15 +90,11 @@ func _initialize_game_state() -> void:
 	gold = game_config.starting_gold
 	tickets = game_config.starting_tickets
 	
-	# 初始化背包空间 (委托给 InventorySystem)
-	# 注意：GameManager 初始化时 InventorySystem 可能尚未 _ready，但作为 Autoload 节点已存在。
-	InventorySystem.initialize_inventory(game_config.inventory_size)
+	# 初始化背包空间 (直接设为 10)
+	InventorySystem.initialize_inventory(10)
 	
-	# 设置初始主线进度
-	if game_config.debug_stage > 0:
-		mainline_stage = game_config.debug_stage
-	else:
-		mainline_stage = 1
+	# 设置初始主线进度为最大
+	mainline_stage = 5
 	
 	_update_current_stage_data()
 
