@@ -83,6 +83,7 @@ func resize_inventory(new_size: int) -> void:
 func _on_item_obtained(item: ItemInstance) -> void:
 	# 优先自动放入背包
 	if _auto_add_to_inventory(item):
+		# inventory_changed 已在 _auto_add_to_inventory 内部触发
 		return
 		
 	# 背包满了，进入待定队列
@@ -96,6 +97,7 @@ func _auto_add_to_inventory(item: ItemInstance) -> bool:
 			inventory[i] = item
 			item_added.emit(item, i)
 			inventory_changed.emit(inventory)
+			EventBus.orders_updated.emit(OrderSystem.current_orders) # 触发订单UI更新，以刷新拥有状态
 			return true
 	return false
 
@@ -107,8 +109,7 @@ func handle_slot_click(index: int) -> void:
 	var target_item = inventory[index]
 	
 	# 如果处于多选模式 (订单提交 或 回收)
-	# 注意：GameManager.order_selection_index != -1 对应 SUBMIT 模式
-	var is_multi_select_mode = GameManager.order_selection_index != -1 or GameManager.current_ui_mode == Constants.UIMode.RECYCLE
+	var is_multi_select_mode = GameManager.current_ui_mode == Constants.UIMode.SUBMIT or GameManager.current_ui_mode == Constants.UIMode.RECYCLE
 	
 	if is_multi_select_mode:
 		if target_item == null:
@@ -184,6 +185,7 @@ func handle_slot_click(index: int) -> void:
 			self.selected_slot_index = -1
 	
 	inventory_changed.emit(inventory)
+	EventBus.orders_updated.emit(OrderSystem.current_orders) # 触发订单UI更新，以刷新拥有状态
 
 ## 判定是否可以合并
 func can_merge(item_a: ItemInstance, item_b: ItemInstance) -> bool:
@@ -235,6 +237,7 @@ func recycle_item(index: int) -> void:
 		recycle_item_instance(item)
 		inventory[index] = null
 		inventory_changed.emit(inventory)
+		EventBus.orders_updated.emit(OrderSystem.current_orders) # 触发订单UI更新
 
 ## 批量删除物品
 func remove_items(items_to_remove: Array[ItemInstance]) -> void:
@@ -245,6 +248,7 @@ func remove_items(items_to_remove: Array[ItemInstance]) -> void:
 			changed = true
 	if changed:
 		inventory_changed.emit(inventory)
+		EventBus.orders_updated.emit(OrderSystem.current_orders) # 触发订单UI更新
 
 ## 检查背包中是否包含指定物品
 func has_item_data(item_data: ItemData) -> bool:
@@ -253,3 +257,12 @@ func has_item_data(item_data: ItemData) -> bool:
 		if it != null and it.item_data.id == item_data.id:
 			return true
 	return false
+
+## 获取背包中某类物品的最高稀有度，如果不存在则返回 -1
+func get_max_rarity_for_item(item_id: StringName) -> int:
+	var max_r = -1
+	for item in inventory:
+		if item != null and item.item_data.id == item_id:
+			if item.rarity > max_r:
+				max_r = item.rarity
+	return max_r
