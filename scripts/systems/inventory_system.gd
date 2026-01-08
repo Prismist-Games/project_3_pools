@@ -14,6 +14,8 @@ signal multi_selection_changed(indices: Array[int])
 signal item_moved(source_index: int, target_index: int)
 signal item_swapped(index1: int, index2: int)
 signal item_added(item: ItemInstance, index: int)
+signal item_replaced(index: int, new_item: ItemInstance, old_item: ItemInstance)
+signal item_merged(index: int, new_item: ItemInstance, target_item: ItemInstance)
 
 # --- 状态 ---
 var inventory: Array[ItemInstance] = []
@@ -138,6 +140,7 @@ func handle_slot_click(index: int) -> void:
 				# 替换/回收: 旧物品被挤掉
 				recycle_item_instance(target_item)
 				inventory[index] = pending
+				item_replaced.emit(index, pending, target_item)
 				self.pending_item = null
 	else:
 		# 场景 B: 玩家处于整理模式 (pending_item == null)
@@ -196,10 +199,13 @@ func can_merge(item_a: ItemInstance, item_b: ItemInstance) -> bool:
 	return true
 
 ## 执行合并
-func _perform_merge(item_a: ItemInstance, _item_b: ItemInstance, target_index: int) -> void:
+func _perform_merge(item_a: ItemInstance, item_b: ItemInstance, target_index: int) -> void:
 	var next_rarity = item_a.rarity + 1
 	var new_item = ItemInstance.new(item_a.item_data, next_rarity)
 	inventory[target_index] = new_item
+	
+	# Emit merge signal with the item that was in the slot (item_b) as the target context
+	item_merged.emit(target_index, new_item, item_b)
 
 ## 回收物品实例
 func recycle_item_instance(item: ItemInstance) -> void:

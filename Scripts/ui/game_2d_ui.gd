@@ -40,6 +40,8 @@ func _ready() -> void:
 	InventorySystem.item_moved.connect(_on_item_moved)
 	InventorySystem.item_swapped.connect(_on_item_swapped)
 	InventorySystem.item_added.connect(_on_item_added)
+	InventorySystem.item_replaced.connect(_on_item_replaced)
+	InventorySystem.item_merged.connect(_on_item_merged)
 	
 	SkillSystem.skills_changed.connect(_on_skills_changed)
 	
@@ -284,8 +286,9 @@ func _handle_draw(index: int) -> void:
 		unlock_ui("draw")
 		# 注意：此处不调用 PoolSystem.refresh_pools()，也不重置 last_clicked_pool_idx
 		# 必须等待物品真正飞走进入背包
-
-func _on_item_obtained_vfx(pool_idx: int, target_idx: int) -> void:
+# 必须等待物品真正飞走进入背包
+		
+func _on_item_obtained_vfx(pool_idx: int, target_idx: int, is_replace: bool = false, source_snapshot: Dictionary = {}) -> void:
 	if pool_idx == -1: return
 	
 	var pool_slot = lottery_slots_grid.get_node("Lottery Slot_root_" + str(pool_idx))
@@ -298,16 +301,45 @@ func _on_item_obtained_vfx(pool_idx: int, target_idx: int) -> void:
 	# 1. 在奖池揭示
 	# 锁定目标格，防止它在飞行中变色
 	target_slot.is_vfx_target = true
-	target_slot.hide_icon()
-	await pool_slot.play_reveal_sequence(item)
+	# 如果是替换操作，不隐藏旧图标，让它保留在原地直到新物品飞到覆盖
+	if not is_replace:
+		target_slot.hide_icon()
+	
+	# 如果是从 pending 来的（即手动点击触发的），不需要再播放揭示动画，因为物品已经在那了
+	# 只有在自动入包（pool_idx 取自 last_clicked, 且不是 pending? Wait. 自动入包也是刚刚抽的）
+	# 核心在于：自动入包时，物品已经在 lottery slot 那个位置被 reveal 过了?
+	# 不，自动入包时，逻辑很快，reveal 动画还没播。
+	# 手动处理 pending 时，物品已经在 display 上显示了。
+	# 我们通过传入参数 source_pos 来判断是否需要 skip reveal 吗？
+	# 或者简单通过任务中的标记。
+	# 如果是 REPLACE/MERGE，通常意味着是手动操作（因为 auto-add 只针对空位）。
+	# 如果是 auto-add，is_replace 是 false。
+	# 但是 auto-add 也会触发 _on_item_added。
+	# 关键 distinction: 是 "Fly from Pending Wait" 还是 "Fly from Draw Reveal"。
+	# 如果 last_clicked_pool_idx 存在，说明我们知道来源。
+	# 如果 pending_items 不为空，说明之前停过。
+	# 现有的逻辑：_on_item_obtained_vfx 总是在 _process_vfx_queue 里调用。
+	# _process_vfx_queue 由 added/replaced/merged 触发。
+	# 如果是 auto-add，item_added 触发。
+	# 我们在入队时，可以尝试获取 Lottery Slot 当前的 Item Main 的位置。
 	
 	# 2. 飞入背包
 	var start_pos = pool_slot.get_main_icon_global_position()
-	var end_pos = target_slot.get_icon_global_position()
 	var start_scale = pool_slot.get_main_icon_global_scale()
+	var end_pos = target_slot.get_icon_global_position()
 	var end_scale = target_slot.get_icon_global_scale()
 	
+	if not source_snapshot.is_empty():
+		start_pos = source_snapshot.get("global_position", start_pos)
+		start_scale = source_snapshot.get("global_scale", start_scale)
+		# 如果我们有 snapshot，说明物品已经存在（Pending 状态），不需要播 reveal 
+		# (或者 reveal 已经播过了，现在是待机状态)
+		# 只有 auto-add（snapshot 为空）需要播 reveal
+	else:
+		await pool_slot.play_reveal_sequence(item)
+	
 	pool_slot.hide_main_icon()
+	
 	target_slot.hide_icon() # 再次确保隐藏，防止 inventory_changed 信号竞争
 	
 	# 确保飞行层可见
@@ -409,7 +441,32 @@ func _on_item_added(_item: ItemInstance, index: int) -> void:
 		target_slot.is_vfx_target = true
 		target_slot.hide_icon()
 		
-		_vfx_queue.append({"pool_idx": last_clicked_pool_idx, "target_idx": index})
+		var snapshot = _capture_lottery_slot_snapshot(last_clicked_pool_idx)
+		_vfx_queue.append({"pool_idx": last_clicked_pool_idx, "target_idx": index, "is_replace": false, "snapshot": snapshot})
+		if not _is_vfx_processing:
+			_process_vfx_queue()
+
+func _on_item_replaced(index: int, _new_item: ItemInstance, _old_item: ItemInstance) -> void:
+	# 替换发生时，也需要飞行动画
+	# 区别在于起始时不要隐藏旧图标
+	if last_clicked_pool_idx != -1:
+		var target_slot = item_slots_grid.get_node("Item Slot_root_" + str(index))
+		target_slot.is_vfx_target = true
+		# 注意：这里不调研 hide_icon()，让旧物品保持显示
+		
+		var snapshot = _capture_lottery_slot_snapshot(last_clicked_pool_idx)
+		_vfx_queue.append({"pool_idx": last_clicked_pool_idx, "target_idx": index, "is_replace": true, "snapshot": snapshot})
+		if not _is_vfx_processing:
+			_process_vfx_queue()
+
+func _on_item_merged(index: int, _new_item: ItemInstance, _target_item: ItemInstance) -> void:
+	# 合并时，逻辑类似替换：旧物品（target_item）在原地，新物品飞入变成 new_item
+	if last_clicked_pool_idx != -1:
+		var target_slot = item_slots_grid.get_node("Item Slot_root_" + str(index))
+		target_slot.is_vfx_target = true
+		
+		var snapshot = _capture_lottery_slot_snapshot(last_clicked_pool_idx)
+		_vfx_queue.append({"pool_idx": last_clicked_pool_idx, "target_idx": index, "is_replace": true, "snapshot": snapshot})
 		if not _is_vfx_processing:
 			_process_vfx_queue()
 
@@ -417,12 +474,30 @@ func _process_vfx_queue() -> void:
 	_is_vfx_processing = true
 	while not _vfx_queue.is_empty():
 		var task = _vfx_queue.pop_front()
-		await _on_item_obtained_vfx(task.pool_idx, task.target_idx)
+		await _on_item_obtained_vfx(task.pool_idx, task.target_idx, task.get("is_replace", false), task.get("snapshot", {}))
 	
 	_is_vfx_processing = false
 	last_clicked_pool_idx = -1
 	# 全部飞完后再刷新池子
 	PoolSystem.refresh_pools()
+
+func _capture_lottery_slot_snapshot(pool_idx: int) -> Dictionary:
+	var slot = lottery_slots_grid.get_node_or_null("Lottery Slot_root_" + str(pool_idx))
+	if not slot: return {}
+	
+	# 我们假设主要物品在 item_main
+	# 如果是从 queue 里飞出去的呢？目前简化处理，Pending 物品总是先显示在 item_main (通过 update_pending_display)
+	# 如果是一次性产出多个，我们可能需要更精确的定位。
+	# 但 InventorySystem 的 items 是一一个个加进来的。
+	# 当 pending_items[0] 移走时，PENDING 队列变了，LOTTERY UI 会刷新。
+	# 所以每次 item_added 时，item_main 显示的应该就是我们要飞的那个。
+	
+	if not slot.item_main.visible: return {}
+	
+	return {
+		"global_position": slot.get_main_icon_global_position(),
+		"global_scale": slot.get_main_icon_global_scale()
+	}
 
 func _on_item_swapped(idx1: int, idx2: int) -> void:
 	var slot1 = item_slots_grid.get_node("Item Slot_root_" + str(idx1))
