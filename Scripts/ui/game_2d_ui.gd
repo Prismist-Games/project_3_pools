@@ -89,6 +89,11 @@ func _init_slots() -> void:
 func _init_switches() -> void:
 	submit_switch.get_node("Input Area").gui_input.connect(_on_submit_switch_input)
 	recycle_switch.get_node("Input Area").gui_input.connect(_on_recycle_switch_input)
+	
+	# 初始化开关标签文本
+	if recycle_switch:
+		var label = recycle_switch.find_child("Switch_on_label", true)
+		if label: label.text = "0"
 
 func _refresh_all() -> void:
 	_on_gold_changed(GameManager.gold)
@@ -153,8 +158,8 @@ func _update_ui_mode_display() -> void:
 	
 	_update_switch_visuals(mode)
 
-const SWITCH_ON_Y = 50.0
-const SWITCH_OFF_Y = -112.5
+const SWITCH_ON_Y = -213.5
+const SWITCH_OFF_Y = 52.5
 
 func _update_switch_visuals(mode: Constants.UIMode) -> void:
 	var submit_target = SWITCH_ON_Y if mode == Constants.UIMode.SUBMIT else SWITCH_OFF_Y
@@ -167,8 +172,19 @@ func _tween_switch(switch_node: Node2D, target_y: float) -> void:
 	if not switch_node: return
 	var handle = switch_node.get_node_or_null("Switch_handle")
 	if not handle: return
-	if handle.position.y == target_y: return
-	create_tween().tween_property(handle, "position:y", target_y, 0.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
+	if abs(handle.position.y - target_y) < 0.1: return
+	
+	var start_y = handle.position.y
+	var tween = create_tween()
+	
+	# 使用 tween_method 手动每帧更新位置，并强制触发背景跟随逻辑
+	# 这解决了使用 tween_property 时 NOTIFICATION_TRANSFORM_CHANGED 触发不及时导致背景移动滞后的问题
+	tween.tween_method(func(val: float):
+		handle.position.y = val
+		if handle.has_method("_update_background_positions"):
+			handle.call("_update_background_positions")
+	, start_y, target_y, 0.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 # --- 信号处理 ---
 func _on_gold_changed(val: int) -> void:
@@ -244,6 +260,28 @@ func _on_orders_updated(orders: Array) -> void:
 func _on_multi_selection_changed(_indices: Array[int]) -> void:
 	# 刷新订单显示以更新需求物品的勾选状态 (Item_status)
 	_on_orders_updated(OrderSystem.current_orders)
+	
+	# 更新格子选中状态
+	for i in range(10):
+		var slot = item_slots_grid.get_node("Item Slot_root_" + str(i))
+		if i in InventorySystem.multi_selected_indices:
+			slot.set_selected(true)
+		else:
+			slot.set_selected(false)
+			
+	_update_recycle_switch_label()
+
+func _update_recycle_switch_label() -> void:
+	var total_value = 0
+	for idx in InventorySystem.multi_selected_indices:
+		var item = InventorySystem.inventory[idx]
+		if item:
+			total_value += Constants.rarity_recycle_value(item.rarity)
+	
+	if recycle_switch:
+		var label = recycle_switch.find_child("Switch_on_label", true)
+		if label:
+			label.text = str(total_value)
 
 # --- 输入处理 ---
 func _on_item_slot_input(event: InputEvent, index: int) -> void:
@@ -256,6 +294,10 @@ func _on_item_slot_input(event: InputEvent, index: int) -> void:
 func _on_lottery_slot_input(event: InputEvent, index: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
+			# 在 RECYCLE 或 SUBMIT 模式下禁止抽奖
+			if GameManager.current_ui_mode != Constants.UIMode.NORMAL:
+				return
+				
 			if _active_modal_callback.is_valid():
 				_active_modal_callback.call(index)
 				return
