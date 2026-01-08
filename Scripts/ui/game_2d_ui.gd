@@ -86,6 +86,7 @@ func _init_slots() -> void:
 	
 	if main_quest_slot and main_quest_slot.has_method("setup"):
 		main_quest_slot.setup(0)
+		main_quest_slot.get_node("Input Area").gui_input.connect(_on_order_slot_input.bind(-1)) # 绑定主线订单点击，使用-1作为特殊标记
 
 func _init_switches() -> void:
 	submit_switch.get_node("Input Area").gui_input.connect(_on_submit_switch_input)
@@ -246,11 +247,16 @@ func _on_orders_updated(orders: Array) -> void:
 		if not is_ui_locked() and slot.is_locked:
 			slot.is_locked = false
 	
+	# 更新主线订单
+	var mainline_order = null
 	for order in orders:
 		if order.is_mainline:
-			main_quest_slot.update_order_display(order)
-			if not is_ui_locked(): main_quest_slot.is_locked = false
+			mainline_order = order
 			break
+	
+	main_quest_slot.update_order_display(mainline_order)
+	if not is_ui_locked() and main_quest_slot.is_locked:
+		main_quest_slot.is_locked = false
 	
 	# 刷新所有背包格子的角标，因为需求可能变了
 	for i in range(10):
@@ -323,7 +329,7 @@ func _on_order_slot_input(event: InputEvent, index: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if GameManager.current_ui_mode == Constants.UIMode.SUBMIT:
-				_handle_order_selection(index - 1)
+				_handle_smart_select_for_order(index - 1)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			_handle_cancel()
 
@@ -331,6 +337,7 @@ func _on_submit_switch_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if GameManager.current_ui_mode == Constants.UIMode.NORMAL:
 			GameManager.current_ui_mode = Constants.UIMode.SUBMIT
+			InventorySystem.multi_selected_indices.clear()
 		elif GameManager.current_ui_mode == Constants.UIMode.SUBMIT:
 			await _handle_order_submit()
 
@@ -338,6 +345,8 @@ func _on_recycle_switch_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if GameManager.current_ui_mode == Constants.UIMode.NORMAL:
 			GameManager.current_ui_mode = Constants.UIMode.RECYCLE
+			InventorySystem.multi_selected_indices.clear()
+			_update_recycle_switch_label() # 进入模式时立即刷新标签
 		elif GameManager.current_ui_mode == Constants.UIMode.RECYCLE:
 			_handle_recycle_confirm()
 
@@ -476,25 +485,114 @@ func _on_item_obtained_vfx(pool_idx: int, target_idx: int, is_replace: bool = fa
 	unlock_ui("draw_vfx")
 	unlock_ui("draw")
 
-func _handle_order_selection(index: int) -> void:
-	GameManager.order_selection_index = index
-	var order = OrderSystem.current_orders[index]
-	InventorySystem.selected_indices_for_order = order.find_smart_selection(InventorySystem.inventory)
-	_refresh_all()
+func _handle_smart_select_for_order(order_index: int) -> void:
+	var order: OrderData = null
+	
+	if order_index == -1:
+		# 主线订单：在 current_orders 中查找
+		for o in OrderSystem.current_orders:
+			if o.is_mainline:
+				order = o
+				break
+	else:
+		# 普通订单：直接索引访问
+		if order_index >= 0 and order_index < OrderSystem.current_orders.size():
+			order = OrderSystem.current_orders[order_index]
+	
+	if not order: return
+	
+	# 智能选择：找出所有符合该订单要求的物品索引
+	var target_indices: Array[int] = order.find_smart_selection(InventorySystem.inventory)
+	
+	# 合并到当前选择中（如果已全选则反选？或者只是添加？通常是添加方便操作）
+	# 这里实现为：如果有新的被选中，则添加；如果点击的订单对应的物品全都被选中了，则尝试取消？
+	# 简单点：直接覆盖选中，或者添加。用户说"快捷多选中"，倾向于添加。
+	# 但为了方便单一订单提交，也许"设置选中"更好？
+	# "点击quest_slot就会快捷多选中背包里有且订单需要的物品" -> 听起来是 Select Matching
+	
+	var changed = false
+	for idx in target_indices:
+		if idx not in InventorySystem.multi_selected_indices:
+			InventorySystem.multi_selected_indices.append(idx)
+			changed = true
+	
+	if changed:
+		InventorySystem.multi_selection_changed.emit(InventorySystem.multi_selected_indices)
 
 func _handle_order_submit() -> void:
-	if GameManager.order_selection_index == -1: return
-	var slot = quest_slots_grid.get_node("Quest Slot_root_" + str(GameManager.order_selection_index + 1))
 	lock_ui("submit")
-	if slot.anim_player.has_animation("lid_close"):
-		slot.anim_player.play("lid_close")
-		await slot.anim_player.animation_finished
-	var success = OrderSystem.submit_order(GameManager.order_selection_index, InventorySystem.multi_selected_indices)
+	
+	# 1. 预检查哪些订单会被满足
+	var selected_items: Array[ItemInstance] = []
+	for idx in InventorySystem.multi_selected_indices:
+		if idx >= 0 and idx < InventorySystem.inventory.size() and InventorySystem.inventory[idx] != null:
+			selected_items.append(InventorySystem.inventory[idx])
+	
+	if selected_items.is_empty():
+		unlock_ui("submit")
+		return
+	
+	# 找出所有会被满足的订单及其对应的UI槽位
+	var satisfying_slots: Array[Control] = []
+	for i in range(OrderSystem.current_orders.size()):
+		var order = OrderSystem.current_orders[i]
+		if order.validate_selection(selected_items).valid:
+			var slot: Control = null
+			
+			if order.is_mainline:
+				slot = main_quest_slot
+			else:
+				# 普通订单：假设前4个非主线订单对应UI的1-4槽位
+				# 这里简化处理：遍历UI槽位，根据当前显示的订单匹配
+				for ui_idx in range(1, 5):
+					var ui_slot = quest_slots_grid.get_node_or_null("Quest Slot_root_" + str(ui_idx))
+					if ui_slot:
+						# 检查这个UI槽位当前显示的是否是这个order
+						var displayed_order_idx = ui_idx - 1
+						if displayed_order_idx < OrderSystem.current_orders.size():
+							if OrderSystem.current_orders[displayed_order_idx] == order:
+								slot = ui_slot
+								break
+			
+			if slot:
+				satisfying_slots.append(slot)
+	
+	if satisfying_slots.is_empty():
+		# 提交失败，没有任何订单被满足
+		unlock_ui("submit")
+		return
+	
+	# 2. 播放所有满足订单的 lid_close 动画
+	var close_tasks: Array = []
+	for slot in satisfying_slots:
+		if slot.has_node("AnimationPlayer"):
+			var anim_player = slot.get_node("AnimationPlayer")
+			if anim_player.has_animation("lid_close"):
+				anim_player.play("lid_close")
+				close_tasks.append(anim_player.animation_finished)
+	
+	# 等待所有关闭动画完成
+	for task in close_tasks:
+		await task
+	
+	# 3. 执行提交
+	var success = OrderSystem.submit_order(-1, InventorySystem.multi_selected_indices)
+	
 	if success:
+		# 提交成功后退出模式
 		GameManager.current_ui_mode = Constants.UIMode.NORMAL
-	else:
-		if slot.anim_player.has_animation("lid_open"):
-			slot.anim_player.play("lid_open")
+		InventorySystem.multi_selected_indices.clear()
+		
+		# 等待订单更新和数据同步
+		await get_tree().process_frame
+		
+		# 播放 lid_open 动画
+		for slot in satisfying_slots:
+			if slot.has_node("AnimationPlayer"):
+				var anim_player = slot.get_node("AnimationPlayer")
+				if anim_player.has_animation("lid_open"):
+					anim_player.play("lid_open")
+	
 	unlock_ui("submit")
 
 func _handle_recycle_confirm() -> void:
@@ -512,7 +610,7 @@ func _handle_cancel() -> void:
 	if GameManager.current_ui_mode != Constants.UIMode.NORMAL:
 		GameManager.current_ui_mode = Constants.UIMode.NORMAL
 		InventorySystem.multi_selected_indices.clear()
-		GameManager.order_selection_index = -1
+		# GameManager.order_selection_index = -1 # Removed
 		_refresh_all()
 
 # --- 锁管理 ---
@@ -742,9 +840,31 @@ func _on_game_event(event_id: StringName, payload: Variant) -> void:
 		var index = payload.get_value("index", -1) if payload is ContextProxy else -1
 		if index != -1:
 			var slot = quest_slots_grid.get_node_or_null("Quest Slot_root_" + str(index + 1))
-			if slot:
+			# 检查是否已有锁，防止重复进入（防抖）
+			if slot and not is_ui_locked():
 				lock_ui("order_refresh")
-				await slot.play_refresh_anim()
+				
+				# 获取订单数据以检查刷新次数
+				var order = OrderSystem.current_orders[index]
+				if order.refresh_count <= 0:
+					unlock_ui("order_refresh")
+					return
+				
+				# 阶段一：关闭
+				if slot.anim_player.has_animation("lid_close"):
+					slot.anim_player.play("lid_close")
+					await slot.anim_player.animation_finished
+				
+				# 阶段二：更新逻辑 (触发 OrderSystem 刷新)
+				var new_order = OrderSystem.refresh_order(index)
+				# 强制刷新 UI (虽然 OrderSystem 可能会发出 signals，但为了对齐动画时机，可以再次显式调用)
+				slot.update_order_display(new_order)
+				
+				# 阶段三：打开
+				if slot.anim_player.has_animation("lid_open"):
+					slot.anim_player.play("lid_open")
+					await slot.anim_player.animation_finished
+					
 				unlock_ui("order_refresh")
 
 func _has_more_tasks_for_pool(pool_idx: int) -> bool:
