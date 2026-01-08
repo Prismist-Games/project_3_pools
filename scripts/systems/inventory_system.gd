@@ -51,12 +51,22 @@ var selected_indices_for_order: Array[int]:
 
 func _ready() -> void:
 	EventBus.item_obtained.connect(_on_item_obtained)
+	GameManager.ui_mode_changed.connect(_on_ui_mode_changed)
 	
 	# 如果 GameConfig 已经加载，初始化背包大小
 	# 注意：GameManager 初始化顺序可能在 InventorySystem 之后（Autoload 顺序）
 	# 所以这里不强求立即初始化，可以等待 GameManager 调用 initialize_inventory
 	if GameManager.game_config:
 		initialize_inventory(GameManager.game_config.inventory_size)
+
+func _on_ui_mode_changed(_new_mode: Constants.UIMode) -> void:
+	# 状态切换时重置所有选中状态
+	self.selected_slot_index = -1
+	self.multi_selected_indices.clear()
+	multi_selection_changed.emit(multi_selected_indices)
+	
+	# 这里额外重置一下订单选择索引，因为它也属于一种“选中状态”
+	GameManager.order_selection_index = -1
 
 
 # --- 初始化与大小管理 ---
@@ -144,6 +154,9 @@ func handle_slot_click(index: int) -> void:
 				recycle_item_instance(target_item)
 				inventory[index] = pending
 				item_replaced.emit(index, pending, target_item)
+				# 关键：如果有选中，清除它
+				if selected_slot_index == index:
+					self.selected_slot_index = -1
 				self.pending_item = null
 	else:
 		# 场景 B: 玩家处于整理模式 (pending_item == null)
@@ -234,6 +247,8 @@ func recycle_item(index: int) -> void:
 	if item != null:
 		recycle_item_instance(item)
 		inventory[index] = null
+		if selected_slot_index == index:
+			self.selected_slot_index = -1
 		inventory_changed.emit(inventory)
 
 ## 批量删除物品

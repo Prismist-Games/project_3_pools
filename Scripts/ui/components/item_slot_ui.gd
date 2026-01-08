@@ -10,12 +10,28 @@ extends BaseSlotUI
 
 var slot_index: int = -1
 var is_vfx_target: bool = false # 标记是否为飞行目标，防止动画中背景色提前刷新
+var _selection_tween: Tween = null
+var _is_selected: bool = false
+var _icon_original_position: Vector2 = Vector2.ZERO
+var _icon_original_scale: Vector2 = Vector2.ONE
+
+func _ready() -> void:
+	super._ready()
+	# 关键修复：在一开始就记录图标的初始状态，不再动态捕获，防止缩放累加
+	if icon_display:
+		_icon_original_position = icon_display.position
+		_icon_original_scale = icon_display.scale
 
 func setup(index: int) -> void:
 	slot_index = index
 	# 背包格初始状态是开启的
 	if anim_player.has_animation("lid_open"):
 		anim_player.play("lid_open")
+	
+	# 如果 ready 没跑或者是动态生成的，这里保个底
+	if icon_display and _icon_original_scale == Vector2.ONE:
+		_icon_original_position = icon_display.position
+		_icon_original_scale = icon_display.scale
 
 func get_icon_global_position() -> Vector2:
 	return icon_display.global_position
@@ -40,25 +56,51 @@ func update_display(item: ItemInstance) -> void:
 		affix_display.visible = false
 		status_icon.visible = false
 		led_display.modulate = Color(0.5, 0.5, 0.5, 0.5) # Grayed out
+		
+		# 背景颜色渐变到空槽颜色
 		if backgrounds:
-			backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
+			_animate_background_color(Constants.COLOR_BG_SLOT_EMPTY)
+			
+		# 强制清理选中视觉，因为物品没了
+		if _is_selected:
+			set_selected(false)
 		return
 	
 	icon_display.texture = item.item_data.icon
-	if item_shadow: item_shadow.visible = true
+	if item_shadow:
+		item_shadow.visible = not _is_selected # 选中时不显示阴影
 	
 	# Affix display logic based on item properties
 	affix_display.visible = item.sterile
-	# Update LED color based on rarity
-	# led_display.modulate = Constants.get_rarity_border_color(item.rarity)
 	
+	# 背景颜色渐变到稀有度颜色
 	if backgrounds:
-		backgrounds.color = Constants.get_rarity_border_color(item.rarity)
+		_animate_background_color(Constants.get_rarity_border_color(item.rarity))
 	
 	# 更新状态角标逻辑
 	_update_status_badge(item)
 
+func _animate_background_color(target_color: Color) -> void:
+	if not backgrounds: return
+	
+	# 如果颜色已经是目标颜色，不需要动画
+	if backgrounds.color.is_equal_approx(target_color):
+		return
+	
+	# 创建颜色渐变动画
+	var t = create_tween()
+	t.tween_property(backgrounds, "color", target_color, 0.3) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
 func set_selected(selected: bool) -> void:
+	# 关键修复：如果状态没变，直接返回。防止全员刷新的信号导致所有格子抖动
+	if _is_selected == selected:
+		return
+		
+	_is_selected = selected
+	
+	_animate_selection(selected)
+	
 	if selected:
 		if status_icon:
 			status_icon.visible = true
@@ -72,6 +114,65 @@ func set_selected(selected: bool) -> void:
 				_update_status_badge(item)
 			else:
 				if status_icon: status_icon.visible = false
+
+func _animate_selection(active: bool) -> void:
+	if not icon_display: return
+	
+	if active:
+		if _selection_tween and _selection_tween.is_valid():
+			return # 已经在播放
+		
+		# 使用已记录的稳定原始比例进行放大，倍数固定
+		# 哪怕之前动画没播完，1.2 * 稳定原始值 也是一个固定的终点
+		
+		# 保存当前全局位置
+		var saved_global_pos = icon_display.global_position
+		
+		# 设置 top_level = true 让图标脱离父节点裁剪，独立渲染
+		icon_display.top_level = true
+		icon_display.z_index = 100
+		
+		# 恢复全局位置
+		icon_display.global_position = saved_global_pos
+		
+		# 隐藏阴影
+		if item_shadow:
+			item_shadow.visible = false
+		
+		# 1. 凸出效果
+		var t_scale = create_tween()
+		t_scale.tween_property(icon_display, "scale", _icon_original_scale * 1.2, 0.2) \
+			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		
+		# 2. 上下浮动 (循环) - 使用全局坐标
+		var base_y = saved_global_pos.y
+		var float_up = base_y - 15.0
+		var float_down = base_y + 15.0
+		
+		_selection_tween = create_tween().set_loops()
+		_selection_tween.tween_property(icon_display, "global_position:y", float_up, 0.5) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		_selection_tween.tween_property(icon_display, "global_position:y", float_down, 0.5) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+			
+	else:
+		if _selection_tween:
+			_selection_tween.kill()
+			_selection_tween = null
+		
+		# 复位图标
+		if icon_display and icon_display.top_level:
+			# 立即设置位置和缩放（无动画），避免 top_level 切换时抽搐
+			icon_display.scale = _icon_original_scale
+			
+			# 关闭 top_level 并恢复局部位置
+			icon_display.top_level = false
+			icon_display.z_index = 0
+			icon_display.position = _icon_original_position
+		
+		# 恢复阴影
+		if item_shadow:
+			item_shadow.visible = true
 
 func _update_status_badge(item: ItemInstance) -> void:
 	if not status_icon: return

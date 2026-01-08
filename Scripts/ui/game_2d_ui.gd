@@ -41,6 +41,7 @@ func _ready() -> void:
 	InventorySystem.inventory_changed.connect(_on_inventory_changed)
 	InventorySystem.pending_queue_changed.connect(_on_pending_queue_changed)
 	InventorySystem.multi_selection_changed.connect(_on_multi_selection_changed)
+	InventorySystem.selection_changed.connect(_on_selection_changed) # 单选信号
 	InventorySystem.item_moved.connect(_on_item_moved)
 	InventorySystem.item_swapped.connect(_on_item_swapped)
 	InventorySystem.item_added.connect(_on_item_added)
@@ -270,6 +271,18 @@ func _on_multi_selection_changed(_indices: Array[int]) -> void:
 			slot.set_selected(false)
 			
 	_update_recycle_switch_label()
+
+func _on_selection_changed(index: int) -> void:
+	# 普通模式下的单选高亮动画
+	# 优化：只更新状态发生变化的格子，不要对所有格子都调用 set_selected
+	for i in range(10):
+		var slot = item_slots_grid.get_node("Item Slot_root_" + str(i))
+		var should_be_selected = (i == index)
+		
+		# 只在实际需要改变状态的格子上调用
+		# 守卫已经在 ItemSlotUI.set_selected 内部了，但为了进一步减少开销，这里也做判断
+		if slot._is_selected != should_be_selected:
+			slot.set_selected(should_be_selected)
 
 func _update_recycle_switch_label() -> void:
 	var total_value = 0
@@ -637,14 +650,16 @@ func _on_item_swapped(idx1: int, idx2: int) -> void:
 	
 	var pos1 = slot1.get_icon_global_position()
 	var pos2 = slot2.get_icon_global_position()
-	var scale1 = slot1.get_icon_global_scale()
-	var scale2 = slot2.get_icon_global_scale()
+	
+	# 关键修复：交换时使用统一的基础缩放 (0.65 左右)，而不是当前可能处于选中状态的 1.2x 缩放
+	# 这能防止被交换的物品因为获取了“选中态”缩放而产生的视觉抖动/放大
+	var base_scale = Vector2(0.65, 0.65) # 对应 Item Slot_item_root 的设计缩放
 	
 	slot1.hide_icon()
 	slot2.hide_icon()
 	
-	var fly1 = spawn_fly_item(item1.item_data.icon, pos2, pos1, scale2, scale1)
-	var _fly2 = spawn_fly_item(item2.item_data.icon, pos1, pos2, scale1, scale2)
+	var fly1 = spawn_fly_item(item1.item_data.icon, pos2, pos1, base_scale, base_scale)
+	var _fly2 = spawn_fly_item(item2.item_data.icon, pos1, pos2, base_scale, base_scale)
 	
 	await fly1
 	await _fly2
