@@ -1,6 +1,8 @@
 extends Control
 
 ## 成品 UI 控制器：管理 Game2D 场景的逻辑接入与动画序列。
+##
+## 重构中: 状态管理正在迁移到 UIStateMachine，VFX 队列正在迁移到 VfxQueueManager。
 
 # --- 节点引用 (根据 game2d-uiux-integration-spec.md) ---
 @onready var money_label: RichTextLabel = find_child("Money_label", true)
@@ -17,7 +19,13 @@ extends Control
 
 @onready var vfx_layer: Node2D = get_node_or_null("VfxLayer")
 
-# --- 状态与锁 ---
+# --- 新架构: 状态机与 VFX 管理器 ---
+## 状态机实例（UIStateMachine 类型，使用 Node 避免循环依赖）
+var state_machine: Node = null
+## VFX 队列管理器实例（VfxQueueManager 类型，使用 Node 避免循环依赖）
+var vfx_manager: Node = null
+
+# --- 旧架构: 状态与锁 (迁移中) ---
 const DEBUG_CONSOLE_SCENE = preload("res://scenes/ui/debug_console.tscn")
 var _debug_console: Control = null
 
@@ -25,7 +33,7 @@ var _ui_locks: Dictionary = {}
 var last_clicked_pool_idx: int = -1
 var pending_source_pool_idx: int = -1
 
-# VFX 队列管理
+# VFX 队列管理 (迁移中)
 var _vfx_queue: Array[Dictionary] = []
 var _is_vfx_processing: bool = false
 var _vfx_scheduled: bool = false
@@ -34,6 +42,12 @@ var _precise_opened_slots: Array[int] = [] # 记录精准选择打开的槽位�
 
 func _ready() -> void:
 	self.theme = game_theme
+	add_to_group("game_2d_ui") # 用于测试脚本访问
+	
+	# 0. 初始化新架构组件
+	_init_state_machine()
+	_init_vfx_manager()
+	
 	# 1. 基础信号绑定
 	GameManager.gold_changed.connect(_on_gold_changed)
 	GameManager.tickets_changed.connect(_on_tickets_changed)
@@ -62,6 +76,50 @@ func _ready() -> void:
 	
 	# 3. 初始刷新
 	_refresh_all()
+
+## 初始化状态机
+func _init_state_machine() -> void:
+	const UIStateInitializerScript = preload("res://scripts/ui/state/ui_state_initializer.gd")
+	var initializer = UIStateInitializerScript.new()
+	initializer.name = "UIStateInitializer"
+	add_child(initializer)
+	
+	# 等待下一帧确保状态机已创建
+	await get_tree().process_frame
+	
+	# 获取状态机引用
+	state_machine = get_node_or_null("UIStateMachine")
+	if state_machine:
+		state_machine.state_changed.connect(_on_state_changed)
+		print("[Game2DUI] 状态机已初始化: %s" % state_machine.get_current_state_name())
+	else:
+		push_error("[Game2DUI] 状态机初始化失败")
+
+## 初始化 VFX 管理器
+func _init_vfx_manager() -> void:
+	const VfxQueueManagerScript = preload("res://scripts/ui/vfx/vfx_queue_manager.gd")
+	vfx_manager = VfxQueueManagerScript.new()
+	vfx_manager.name = "VfxQueueManager"
+	vfx_manager.vfx_layer = vfx_layer
+	add_child(vfx_manager)
+	
+	# 连接 VFX 队列信号
+	vfx_manager.queue_started.connect(_on_vfx_queue_started)
+	vfx_manager.queue_finished.connect(_on_vfx_queue_finished)
+	print("[Game2DUI] VFX 管理器已初始化")
+
+## 状态机状态变更回调
+func _on_state_changed(from_state: StringName, to_state: StringName) -> void:
+	print("[Game2DUI] 状态转换: %s -> %s" % [from_state, to_state])
+	# TODO: 根据状态更新 UI 锁定状态
+
+## VFX 队列开始回调
+func _on_vfx_queue_started() -> void:
+	_is_vfx_processing = true
+
+## VFX 队列完成回调
+func _on_vfx_queue_finished() -> void:
+	_is_vfx_processing = false
 
 func _init_slots() -> void:
 	# 背包格子
@@ -149,9 +207,39 @@ func _toggle_debug_console() -> void:
 			_debug_console.visible = not _debug_console.visible
 
 # --- 核心门控与模式 ---
-func _on_ui_mode_changed(_mode: Constants.UIMode) -> void:
+func _on_ui_mode_changed(mode: Constants.UIMode) -> void:
+	# 将 GameManager UI 模式同步到状态机
+	_sync_ui_mode_to_state(mode)
+	
 	_update_ui_mode_display()
 	_refresh_all()
+
+## 将 GameManager UI 模式同步到状态机状态
+func _sync_ui_mode_to_state(mode: Constants.UIMode) -> void:
+	if not state_machine:
+		return
+	
+	# 映射 UIMode -> 状态名
+	var target_state: StringName = &""
+	match mode:
+		Constants.UIMode.NORMAL:
+			target_state = &"Idle"
+		Constants.UIMode.SUBMIT:
+			target_state = &"Submitting"
+		Constants.UIMode.RECYCLE:
+			target_state = &"Recycling"
+		Constants.UIMode.REPLACE:
+			target_state = &"TradeIn"
+		_:
+			push_warning("[Game2DUI] 未知 UI 模式: %d" % mode)
+			return
+	
+	# 避免重复转换
+	if state_machine.is_in_state(target_state):
+		return
+	
+	# 执行状态转换
+	state_machine.transition_to(target_state)
 
 func _update_ui_mode_display() -> void:
 	var mode = GameManager.current_ui_mode
@@ -745,13 +833,13 @@ func _handle_single_item_recycle(selected_idx: int) -> void:
 	unlock_ui("recycle")
 
 func _play_recycle_fly_anim(tasks: Array) -> void:
-	if tasks.is_empty(): 
+	if tasks.is_empty():
 		_tween_switch(recycle_switch, SWITCH_OFF_Y)
 		return
 		
 	# 找到 Switch_item_root 作为终点
 	var switch_item_root = recycle_switch.find_child("Switch_item_root", true)
-	if not switch_item_root: 
+	if not switch_item_root:
 		_tween_switch(recycle_switch, SWITCH_OFF_Y)
 		return
 		
