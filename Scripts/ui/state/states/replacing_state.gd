@@ -40,18 +40,29 @@ func handle_input(event: InputEvent) -> bool:
 			return true
 	return false
 
-## 关闭奖池盖并刷新
+## 关闭奖池盖并刷新（所有 3 格同时播放推挤动画）
 func _close_pool_and_refresh() -> void:
 	if controller and source_pool_index >= 0 and source_pool_index < 3:
-		var pool_slot = controller.lottery_slots_grid.get_node_or_null("Lottery Slot_root_" + str(source_pool_index))
-		if pool_slot and pool_slot.has_method("play_close_sequence"):
-			await pool_slot.play_close_sequence()
-		elif pool_slot:
-			pool_slot.close_lid()
-		
 		# 重置追踪变量
 		controller.last_clicked_pool_idx = -1
 		controller.pending_source_pool_idx = -1
 		
-		# 刷新奖池
-		PoolSystem.refresh_pools()
+		# 让所有三个 slot 同时播放推挤刷新动画
+		if controller.pool_controller and controller.pool_controller.has_method("play_all_refresh_animations"):
+			# 先标记动画中（防止 pools_refreshed 信号触发重复刷新）
+			controller.pool_controller._is_animating_refresh = true
+			# 刷新奖池数据
+			PoolSystem.refresh_pools()
+			# 播放动画（这是异步的，但 exit 不 await）
+			controller.pool_controller.play_all_refresh_animations(
+				PoolSystem.current_pools,
+				source_pool_index
+			)
+		else:
+			# 兜底：旧逻辑
+			var pool_slot = controller.lottery_slots_grid.get_node_or_null("Lottery Slot_root_" + str(source_pool_index))
+			if pool_slot and pool_slot.has_method("play_close_sequence"):
+				await pool_slot.play_close_sequence()
+			elif pool_slot:
+				pool_slot.close_lid()
+			PoolSystem.refresh_pools()

@@ -1,6 +1,9 @@
 class_name LotterySlotUI
 extends BaseSlotUI
 
+## =====================================================================
+## True Nodes (当前显示内容)
+## =====================================================================
 @onready var pool_name_label: RichTextLabel = find_child("Lottery Pool Name_label", true)
 @onready var lid_icon: Sprite2D = find_child("Lottery Slot_lid_icon", true)
 @onready var lid_sprite: Sprite2D = find_child("Lottery Slot_lid", true)
@@ -10,6 +13,20 @@ extends BaseSlotUI
 @onready var description_label: RichTextLabel = find_child("Description Label", true)
 @onready var items_grid: VBoxContainer = find_child("Lottery Required Items Icon Grid", true)
 
+## =====================================================================
+## Pseudo Nodes (下一轮预告，用于推挤动画)
+## =====================================================================
+@onready var lid_pseudo: Sprite2D = $"Lottery Slot_mask/Lottery Slot_lid/Lottery Slot_lid_psudo"
+@onready var lid_icon_pseudo: Sprite2D = lid_pseudo.get_node("Lottery Slot_lid_icon") if lid_pseudo else null
+@onready var pool_name_label_pseudo: RichTextLabel = lid_pseudo.get_node("Lottery Pool Name_label") if lid_pseudo else null
+@onready var affix_label_pseudo: RichTextLabel = $"Lottery Slot_top_screen/Lottery Slot_top_screen_fill/Affix Label/Affix Label_psudo"
+@onready var price_label_pseudo: RichTextLabel = $"Lottery Slot_top_screen/Lottery Slot_top_screen_fill/Price Label/Price Label_psudo"
+@onready var items_grid_pseudo: VBoxContainer = $"Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"
+@onready var description_label_pseudo: RichTextLabel = $"Lottery Slot_description_screen/Lottery Slot_description_screen_fill/Description Label/Description Label_psudo"
+
+## =====================================================================
+## Item Display Nodes
+## =====================================================================
 @onready var item_main: Sprite2D = find_child("Item_main", true)
 @onready var item_main_shadow: Sprite2D = item_main.get_node("Item_shadow")
 @onready var item_queue_1: Sprite2D = find_child("Item_queue_1", true)
@@ -19,11 +36,30 @@ extends BaseSlotUI
 
 @onready var backgrounds: Node2D = find_child("Lottery Slot_backgrounds", true)
 
+## =====================================================================
+## 状态变量
+## =====================================================================
 var pool_index: int = -1
 var is_drawing: bool = false
 var is_vfx_source: bool = false # 标记是否为飞行起点，防止动画开始前被 update_pending_display 刷新掉
 var _pending_pool_data: Variant = null # 挂起的新奖池数据，等待关盖后应用
+var _pending_hints: Dictionary = {} # 暂存的新 hints 数据
 var _initial_transforms: Dictionary = {}
+
+## =====================================================================
+## Push-Away 动画配置
+## =====================================================================
+const PUSH_VERTICAL_OFFSET: float = 550.0 # 盖子垂直推挤距离
+const PUSH_LABEL_OFFSET: float = 125.0 # 标签垂直推挤距离
+const PUSH_HORIZONTAL_OFFSET: float = 155.0 # 水平推挤距离 (图标格)
+const PUSH_DESC_OFFSET: float = 783.0 # 描述标签水平推挤距离
+const PUSH_DURATION: float = 0.4 # 推挤动画时长
+
+## 记录所有 Push-Away 节点的初始位置
+var _push_initial_positions: Dictionary = {}
+
+## 记录当前显示的提示物品 ID 列表（用于判断是否需要推挤动画）
+var _current_hint_ids: Array[StringName] = []
 
 # 队列物品显示配置（可在编辑器中调整）
 @export var queue_1_offset: Vector2 = Vector2(-116, 7)
@@ -36,6 +72,35 @@ func _ready() -> void:
 	_initial_transforms[item_main] = {"pos": item_main.position, "scale": item_main.scale}
 	_initial_transforms[item_queue_1] = {"pos": item_queue_1.position, "scale": item_queue_1.scale}
 	_initial_transforms[item_queue_2] = {"pos": item_queue_2.position, "scale": item_queue_2.scale}
+	
+	# 记录 Push-Away 节点的初始位置
+	_store_push_initial_positions()
+
+func _store_push_initial_positions() -> void:
+	## 存储所有参与推挤动画的节点的初始位置
+	# 垂直推挤组 (盖子、词缀、价格)
+	if lid_sprite:
+		_push_initial_positions["lid_true"] = lid_sprite.position
+	if lid_pseudo:
+		_push_initial_positions["lid_pseudo"] = lid_pseudo.position
+	if affix_label:
+		_push_initial_positions["affix_true"] = affix_label.position
+	if affix_label_pseudo:
+		_push_initial_positions["affix_pseudo"] = affix_label_pseudo.position
+	if price_label:
+		_push_initial_positions["price_true"] = price_label.position
+	if price_label_pseudo:
+		_push_initial_positions["price_pseudo"] = price_label_pseudo.position
+	
+	# 水平推挤组 (需求图标、描述)
+	if items_grid:
+		_push_initial_positions["grid_true"] = items_grid.position
+	if items_grid_pseudo:
+		_push_initial_positions["grid_pseudo"] = items_grid_pseudo.position
+	if description_label:
+		_push_initial_positions["desc_true"] = description_label.position
+	if description_label_pseudo:
+		_push_initial_positions["desc_pseudo"] = description_label_pseudo.position
 
 func setup(index: int) -> void:
 	pool_index = index
@@ -81,7 +146,7 @@ func update_pool_info(pool: Variant) -> void:
 	
 	visible = true
 	
-	# 如果正在抽奖动画中，不要立即更新视觉，先存起来
+	# 如果正在抽奖动画中，不要立即更新视觉，先存起来等关盖后触发推挤刷新
 	if is_drawing:
 		_pending_pool_data = pool
 		return
@@ -89,49 +154,8 @@ func update_pool_info(pool: Variant) -> void:
 	_apply_pool_display(pool)
 
 func _apply_pool_display(pool: Variant) -> void:
-	# 更新 Lid 图标和颜色
-	if lid_icon:
-		lid_icon.texture = Constants.type_to_icon(pool.item_type)
-	
-	if lid_sprite:
-		var theme_color = Color("#199C80") # 普通门颜色
-		if pool.item_type == Constants.ItemType.MAINLINE:
-			theme_color = Color("#FF6E54") # 核心门颜色
-		
-		lid_sprite.self_modulate = theme_color
-		if lid_icon:
-			lid_icon.self_modulate = theme_color
-	
-	# 从类型获取显示名称
-	pool_name_label.text = Constants.type_to_display_name(pool.item_type) + "池"
-	pool_name_label.visible = true # 确保可见
-	
-	var cost_gold = pool.gold_cost
-	var cost_tickets = pool.ticket_cost
-	
-	if cost_tickets > 0:
-		price_label.text = str(cost_tickets)
-		price_icon.texture = preload("res://assets/sprites/icons/coupon.png")
-	else:
-		price_label.text = str(cost_gold)
-		price_icon.texture = preload("res://assets/sprites/icons/money.png")
-	
-	# 确保价格标签可见
-	price_label.visible = true
-	price_icon.visible = true
-	
-	if pool.affix_data:
-		affix_label.text = pool.affix_data.name
-		description_label.text = pool.affix_data.description
-		affix_label.visible = true
-		description_label.visible = true
-	else:
-		affix_label.text = ""
-		description_label.text = ""
-		affix_label.visible = false
-		description_label.visible = false
-	
-	# Note: controller calls update_order_hints next
+	# 使用统一的视觉更新函数，直接更新 True 节点
+	_update_visuals(pool, false)
 	
 	# 重置背景颜色和物品显示 (For refresh)
 	if backgrounds:
@@ -143,10 +167,29 @@ func _apply_pool_display(pool: Variant) -> void:
 	item_queue_2.visible = false
 	item_queue_2_shadow.visible = false
 
-func update_order_hints(display_items: Array[ItemData], satisfied_map: Dictionary) -> void:
+func update_order_hints(display_items: Array[ItemData], satisfied_map: Dictionary, is_pseudo_only: bool = false) -> void:
+	if is_pseudo_only:
+		# 暂存数据，仅更新 Pseudo 节点，保持 True 节点现状直到推挤完成
+		_pending_hints = {"items": display_items, "map": satisfied_map}
+		_update_grid_icons(items_grid_pseudo, display_items, satisfied_map)
+	else:
+		# 同时更新 True 和 Pseudo 节点的图标格（用于非动画刷新/初始化）
+		_update_grid_icons(items_grid, display_items, satisfied_map)
+		_update_grid_icons(items_grid_pseudo, display_items, satisfied_map)
+
+func _update_grid_icons(grid: VBoxContainer, display_items: Array[ItemData], satisfied_map: Dictionary) -> void:
+	if not grid:
+		return
+	
+	# 如果更新的是真节点，记录当前物品 ID 列表
+	if grid == items_grid:
+		_current_hint_ids.clear()
+		for item in display_items:
+			_current_hint_ids.append(item.id)
+	
 	# 填充图标格
 	for i in range(5):
-		var icon_node = items_grid.get_node_or_null("Item Icon_" + str(i))
+		var icon_node = grid.get_node_or_null("Item Icon_" + str(i))
 		if not icon_node: continue
 		
 		if i < display_items.size():
@@ -212,14 +255,14 @@ func play_reveal_sequence(items: Array) -> void:
 	
 	await get_tree().create_timer(0.3).timeout # 最终揭示后的停留
 
-## 播放关盖序列（带逻辑重置）
+## 播放关盖序列（仅关盖和重置显示，刷新动画由 PoolController 统一处理）
 func play_close_sequence() -> void:
 	await close_lid()
 	
 	is_drawing = false
+	_pending_pool_data = null # 清除挂起数据，由 controller 统一刷新
 	
 	# 关盖后，确保背景色和物品显示重置
-	# 注意：Controller 现在应确保 pending items 已经清空，或者我们这里只视觉重置
 	if backgrounds:
 		backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
 	item_main.visible = false
@@ -352,3 +395,212 @@ func _reset_item_transforms() -> void:
 	# 只恢复 Main 的 transform，Queue 的由 update_queue_display 控制
 	item_main.position = _initial_transforms[item_main]["pos"]
 	item_main.scale = _initial_transforms[item_main]["scale"]
+
+## =====================================================================
+## Push-Away 刷新系统
+## =====================================================================
+
+## 刷新奖池显示数据（核心入口）
+## [param new_pool_data]: 新的奖池配置
+## [param is_instant]: true = 游戏初始化时瞬间设置，false = 运行时带动画刷新
+func refresh_slot_data(new_pool_data: Variant, is_instant: bool = false) -> void:
+	if is_instant:
+		# 游戏初始化时直接设置 True Nodes
+		_update_visuals(new_pool_data, false) # false = targeting true nodes
+	else:
+		# 运行时刷新：设置 Pseudo Nodes 并播放动画
+		_update_visuals(new_pool_data, true) # true = targeting pseudo nodes
+		await _play_push_away_animation()
+		
+		# 动画结束后，将数据同步到 True Nodes 并复位
+		_update_visuals(new_pool_data, false)
+		
+		# 同步暂存的 hints 到 True 节点
+		if not _pending_hints.is_empty():
+			_update_grid_icons(items_grid, _pending_hints.items, _pending_hints.map)
+			_pending_hints.clear()
+			
+		_reset_push_positions()
+
+## 更新视觉元素
+## [param pool]: 奖池配置数据
+## [param target_pseudo]: true = 更新 Pseudo 节点，false = 更新 True 节点
+func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
+	if not pool:
+		return
+	
+	# 选择目标节点
+	var target_lid_sprite: Sprite2D = lid_pseudo if target_pseudo else lid_sprite
+	var target_lid_icon: Sprite2D = lid_icon_pseudo if target_pseudo else lid_icon
+	var target_pool_name: RichTextLabel = pool_name_label_pseudo if target_pseudo else pool_name_label
+	var target_affix: RichTextLabel = affix_label_pseudo if target_pseudo else affix_label
+	var target_price: RichTextLabel = price_label_pseudo if target_pseudo else price_label
+	var target_desc: RichTextLabel = description_label_pseudo if target_pseudo else description_label
+	var target_grid: VBoxContainer = items_grid_pseudo if target_pseudo else items_grid
+	
+	# 更新盖子图标和颜色
+	var theme_color := Color("#199C80") # 普通门颜色
+	if pool.item_type == Constants.ItemType.MAINLINE:
+		theme_color = Color("#FF6E54") # 核心门颜色
+	
+	if target_lid_sprite:
+		target_lid_sprite.self_modulate = theme_color
+	if target_lid_icon:
+		target_lid_icon.texture = Constants.type_to_icon(pool.item_type)
+		target_lid_icon.self_modulate = theme_color
+	
+	# 更新奖池名称
+	if target_pool_name:
+		target_pool_name.text = Constants.type_to_display_name(pool.item_type) + "池"
+		target_pool_name.visible = true
+	
+	# 更新价格
+	if target_price:
+		var cost_gold: int = pool.gold_cost
+		var cost_tickets: int = pool.ticket_cost
+		if cost_tickets > 0:
+			target_price.text = str(cost_tickets)
+		else:
+			target_price.text = str(cost_gold)
+		target_price.visible = true
+	
+	# Price Icon 只在 True 节点上更新（静态，不参与推挤）
+	if not target_pseudo and price_icon:
+		if pool.ticket_cost > 0:
+			price_icon.texture = preload("res://assets/sprites/icons/coupon.png")
+		else:
+			price_icon.texture = preload("res://assets/sprites/icons/money.png")
+		price_icon.visible = true
+	
+	# 更新词缀（用空字符串代替 invisible，避免动画时突然出现）
+	if target_affix:
+		if pool.affix_data:
+			target_affix.text = pool.affix_data.name
+		else:
+			target_affix.text = ""
+	
+	# 更新描述（同上）
+	if target_desc:
+		if pool.affix_data:
+			target_desc.text = pool.affix_data.description
+		else:
+			target_desc.text = ""
+	
+	# 更新需求图标 (仅在 True 节点时计算 hints，Pseudo 暂时复制相同显示)
+	if target_grid and not target_pseudo:
+		# True 节点的 hints 需要由外部 controller 调用 update_order_hints
+		pass
+
+## 仅刷新订单需求图标（局部动画）
+func refresh_hints_animated(display_items: Array[ItemData], satisfied_map: Dictionary) -> void:
+	if not items_grid or not items_grid_pseudo: return
+	
+	# 1. 更新 Pseudo 节点
+	_update_grid_icons(items_grid_pseudo, display_items, satisfied_map)
+	
+	# 2. 播放局部水平推挤动画
+	var tw := create_tween().set_parallel(true)
+	tw.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	
+	if _push_initial_positions.has("grid_true"):
+		var grid_true_start: Vector2 = _push_initial_positions["grid_true"]
+		# True 向右移出
+		tw.tween_property(items_grid, "position:x", grid_true_start.x + PUSH_HORIZONTAL_OFFSET, PUSH_DURATION)
+		# Pseudo 从左侧移入到 True 的起始位置
+		tw.tween_property(items_grid_pseudo, "position:x", grid_true_start.x, PUSH_DURATION)
+		
+		await tw.finished
+		
+		# 3. 动画结束后同步到 True 节点并复位位置
+		_update_grid_icons(items_grid, display_items, satisfied_map)
+		items_grid.position = _push_initial_positions["grid_true"]
+		items_grid_pseudo.position = _push_initial_positions["grid_pseudo"]
+	else:
+		# 兜底：直接更新
+		_update_grid_icons(items_grid, display_items, satisfied_map)
+
+## 检查传入的物品列表 ID 是否与当前显示的一致
+func is_hint_content_equal(new_items: Array[ItemData]) -> bool:
+	if _current_hint_ids.size() != new_items.size():
+		return false
+	
+	for i in range(new_items.size()):
+		if _current_hint_ids[i] != new_items[i].id:
+			return false
+	return true
+
+## 播放推挤动画
+## 注意：场景中有两种节点关系：
+## - 父子关系 (lid, affix, price, description)：Pseudo 是 True 的子节点，只需移动父节点
+## - 兄弟关系 (items_grid)：两者是同级节点，需要分别动画
+func _play_push_away_animation() -> void:
+	var tw := create_tween().set_parallel(true)
+	tw.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	
+	var has_tweeners := false
+	
+	# ============ 垂直推挤组 (向下移出，从上移入) ============
+	# 这些都是父子关系：只移动 TRUE 节点，PSEUDO 作为子节点会自动跟随进入视野
+	
+	# 盖子 (父子关系)
+	if lid_sprite and _push_initial_positions.has("lid_true"):
+		var lid_true_start: Vector2 = _push_initial_positions["lid_true"]
+		tw.tween_property(lid_sprite, "position:y", lid_true_start.y + PUSH_VERTICAL_OFFSET, PUSH_DURATION)
+		has_tweeners = true
+	
+	# 词缀标签 (父子关系)
+	if affix_label and _push_initial_positions.has("affix_true"):
+		var affix_true_start: Vector2 = _push_initial_positions["affix_true"]
+		tw.tween_property(affix_label, "position:y", affix_true_start.y + PUSH_LABEL_OFFSET, PUSH_DURATION)
+		has_tweeners = true
+	
+	# 价格标签 (父子关系)
+	if price_label and _push_initial_positions.has("price_true"):
+		var price_true_start: Vector2 = _push_initial_positions["price_true"]
+		tw.tween_property(price_label, "position:y", price_true_start.y + PUSH_LABEL_OFFSET, PUSH_DURATION)
+		has_tweeners = true
+	
+	# ============ 水平推挤组 (向右移出，从左移入) ============
+	
+	# 需求图标格 (兄弟关系：两者都是 Lottery Slot_right_screen_fill 的子节点)
+	if items_grid and items_grid_pseudo and _push_initial_positions.has("grid_true"):
+		var grid_true_start: Vector2 = _push_initial_positions["grid_true"]
+		# True 向右移出
+		tw.tween_property(items_grid, "position:x", grid_true_start.x + PUSH_HORIZONTAL_OFFSET, PUSH_DURATION)
+		# Pseudo 从左侧移入到 True 的起始位置
+		tw.tween_property(items_grid_pseudo, "position:x", grid_true_start.x, PUSH_DURATION)
+		has_tweeners = true
+	
+	# 描述标签 (父子关系)
+	if description_label and _push_initial_positions.has("desc_true"):
+		var desc_true_start: Vector2 = _push_initial_positions["desc_true"]
+		tw.tween_property(description_label, "position:x", desc_true_start.x + PUSH_DESC_OFFSET, PUSH_DURATION)
+		has_tweeners = true
+	
+	# 确保有 tweeners 才 await，否则 Tween 会报错
+	if has_tweeners:
+		await tw.finished
+	else:
+		tw.kill()
+		push_warning("[LotterySlotUI] _play_push_away_animation: No tweeners added, skipping animation")
+
+## 重置所有 Push-Away 节点到初始位置
+## 注意：父子关系的节点只需重置父节点，子节点会自动回到相对位置
+func _reset_push_positions() -> void:
+	# 垂直组 (父子关系，只重置 True 节点)
+	if lid_sprite and _push_initial_positions.has("lid_true"):
+		lid_sprite.position = _push_initial_positions["lid_true"]
+	if affix_label and _push_initial_positions.has("affix_true"):
+		affix_label.position = _push_initial_positions["affix_true"]
+	if price_label and _push_initial_positions.has("price_true"):
+		price_label.position = _push_initial_positions["price_true"]
+	
+	# 水平组 - 兄弟关系 (需要重置两者)
+	if items_grid and _push_initial_positions.has("grid_true"):
+		items_grid.position = _push_initial_positions["grid_true"]
+	if items_grid_pseudo and _push_initial_positions.has("grid_pseudo"):
+		items_grid_pseudo.position = _push_initial_positions["grid_pseudo"]
+	
+	# 水平组 - 父子关系 (只重置 True 节点)
+	if description_label and _push_initial_positions.has("desc_true"):
+		description_label.position = _push_initial_positions["desc_true"]

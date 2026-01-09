@@ -21,18 +21,30 @@ func enter(payload: Dictionary = {}) -> void:
 
 func exit() -> void:
 	# 关键修复：统一在退出时根据情况处理奖池关盖
-	# 如果 pending_items 为空，说明这是一次完整的“抽奖并直接放入口袋”或者抽奖失败的流程
+	# 如果 pending_items 为空，说明这是一次完整的"抽奖并直接放入口袋"或者抽奖失败的流程
 	# 如果不为空，说明正在跳转到 Replacing 状态，不应在此处关盖
 	if controller and pool_index != -1 and InventorySystem.pending_items.is_empty():
-		var slot = controller.lottery_slots_grid.get_node_or_null("Lottery Slot_root_" + str(pool_index))
-		if slot:
-			if slot.has_method("play_close_sequence"):
-				# 注意：虽然 exit 不会被 await，但 play_close_sequence 内部会处理完动画逻辑
-				slot.play_close_sequence()
-			else:
-				slot.close_lid()
+		# 让所有三个 slot 同时播放推挤刷新动画
+		if controller.pool_controller and controller.pool_controller.has_method("play_all_refresh_animations"):
+			# 先标记动画中（防止 pools_refreshed 信号触发重复刷新）
+			controller.pool_controller._is_animating_refresh = true
+			# 刷新奖池数据（这会触发 pools_refreshed 信号，但被标记阻止）
+			PoolSystem.refresh_pools()
+			# 异步执行动画，不阻塞 exit
+			controller.pool_controller.play_all_refresh_animations(
+				PoolSystem.current_pools, 
+				pool_index
+			)
+		else:
+			# 兜底：仅关闭被点击的 slot
+			PoolSystem.refresh_pools()
+			var slot = controller.lottery_slots_grid.get_node_or_null("Lottery Slot_root_" + str(pool_index))
+			if slot:
+				if slot.has_method("play_close_sequence"):
+					slot.play_close_sequence()
+				else:
+					slot.close_lid()
 		
-		PoolSystem.refresh_pools()
 		controller.last_clicked_pool_idx = -1
 		controller.pending_source_pool_idx = -1
 		

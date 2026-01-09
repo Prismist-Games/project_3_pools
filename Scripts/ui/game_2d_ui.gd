@@ -243,6 +243,9 @@ func _on_pools_refreshed(pools: Array) -> void:
 
 func _on_orders_updated(orders: Array) -> void:
 	order_controller.update_orders_display(orders)
+	# 同步更新奖池显示中的需求图标，并带有推挤动画
+	if pool_controller:
+		pool_controller.refresh_all_order_hints(true)
 
 func _on_multi_selection_changed(_indices: Array[int]) -> void:
 	# 刷新订单状态
