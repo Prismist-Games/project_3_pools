@@ -1,4 +1,4 @@
-[gd_scene load_steps=117 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=120 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
 [ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
@@ -30,12 +30,15 @@
 [ext_resource type="Texture2D" uid="uid://caieb4p7g0f64" path="res://assets/sprites/item_slots/基地-4.png" id="17_ivepa"]
 [ext_resource type="Texture2D" uid="uid://dscqm4kp5fmva" path="res://assets/sprites/the_machine/the_machine_front.png" id="17_tmso7"]
 [ext_resource type="Texture2D" uid="uid://w68mqbo8q5e2" path="res://assets/sprites/the_machine/the_machine_front_outline.png" id="18_2kwm8"]
+[ext_resource type="Texture2D" uid="uid://dpqibsn4l8hxe" path="res://assets/sprites/the_machine_switch/Recycle_background_shade.png" id="18_8y6ih"]
 [ext_resource type="Texture2D" uid="uid://dlywfo3j61bw8" path="res://assets/sprites/item_slots/基地-6.png" id="18_ivepa"]
+[ext_resource type="Texture2D" uid="uid://lw48pfhb1slm" path="res://assets/sprites/the_machine_switch/Recycle_background_outline.png" id="18_u8s40"]
 [ext_resource type="Texture2D" uid="uid://tyc42trcd2xq" path="res://assets/sprites/the_machine_switch/基地-5.png" id="18_xqbja"]
 [ext_resource type="Texture2D" uid="uid://1h4st4oq2muh" path="res://icon.svg" id="19_7rf4k"]
 [ext_resource type="Texture2D" uid="uid://bb0jex82xogr2" path="res://assets/sprites/item_slots/基地-8.png" id="19_sojbq"]
 [ext_resource type="Script" uid="uid://cp4b85c6kcgdl" path="res://scripts/ui/utils/switch_background_follow.gd" id="19_ue141"]
 [ext_resource type="Texture2D" uid="uid://c1rw0mhgt1s1i" path="res://assets/sprites/the_machine/the_machine_display_fill.png" id="21_ue141"]
+[ext_resource type="Texture2D" uid="uid://bclpcjghycqdb" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="22_017ef"]
 [ext_resource type="Texture2D" uid="uid://d3xb6e3385m7k" path="res://assets/sprites/icons/coupon.png" id="25_ccvlu"]
 [ext_resource type="Texture2D" uid="uid://fcpknfhqe6td" path="res://assets/sprites/the_machine/the_machine_star.PNG" id="25_ue141"]
 [ext_resource type="Texture2D" uid="uid://bk6w30hxghp51" path="res://assets/sprites/quest_slots/基地-7.png" id="25_y6c7h"]
@@ -49,7 +52,7 @@
 [ext_resource type="Texture2D" uid="uid://cyixck513ac1o" path="res://assets/sprites/quest_slots/基地-9.png" id="33_0ehwc"]
 [ext_resource type="Texture2D" uid="uid://ddymclsitprmc" path="res://assets/sprites/quest_slots/基地-8.png" id="34_oeaov"]
 [ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="37_50t6p"]
-[ext_resource type="PackedScene" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
+[ext_resource type="PackedScene" uid="uid://basts7bbr2vav" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
 [ext_resource type="Texture2D" uid="uid://dj5be2vipyhi4" path="res://assets/sprites/the_rabbit/the_rabbit_head_left.png" id="62_enqmm"]
 [ext_resource type="Texture2D" uid="uid://b067gbir0lby" path="res://assets/sprites/the_rabbit/the_rabbit_head_mid.png" id="63_6sdua"]
@@ -207,6 +210,31 @@ _data = {
 &"lid_open": SubResource("Animation_jufyi")
 }
 
+[sub_resource type="Animation" id="Animation_017ef"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Popup_mini:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(2),
+"points": PackedFloat32Array(-614, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Popup:position:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-6033, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
 [sub_resource type="Animation" id="Animation_otpb1"]
 resource_name = "popup_in"
 tracks/0/type = "bezier"
@@ -230,31 +258,6 @@ tracks/1/keys = {
 "handle_modes": PackedInt32Array(1, 0, 2),
 "points": PackedFloat32Array(-6033, 0, 0, 0, 0, -6033, 0, 0, 0.06666667, 376.00003, -764, -0.3, -465.2213, 0, 0),
 "times": PackedFloat32Array(0, 0.40000004, 0.90000004)
-}
-
-[sub_resource type="Animation" id="Animation_017ef"]
-length = 0.001
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Popup_mini:position:x")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(2),
-"points": PackedFloat32Array(-614, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Popup:position:x")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-3777, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_u8s40"]
@@ -404,24 +407,38 @@ position = Vector2(1578.75, 1437.5)
 clip_children = 1
 texture = ExtResource("14_6b2j4")
 
+[node name="Switch_background" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask"]
+self_modulate = Color(0.031844243, 0.1489251, 0.15913767, 1)
+position = Vector2(-18.75, -8.5)
+texture = ExtResource("15_fvhsr")
+
+[node name="Switch_background_shade" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask"]
+self_modulate = Color(0.42488223, 0.92395633, 0.9471881, 1)
+position = Vector2(22.25, -7.5)
+scale = Vector2(0.525, 0.525)
+texture = ExtResource("18_8y6ih")
+
+[node name="Switch_background_outline" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask"]
+position = Vector2(22.25, -8.5)
+texture = ExtResource("18_u8s40")
+
 [node name="Switch_on_label" type="RichTextLabel" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask"]
-offset_left = -114.5
+offset_left = -147.75
 offset_top = -88.5
-offset_right = 69.5
+offset_right = 36.25
 offset_bottom = 16.5
-theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_colors/default_color = Color(0.70380783, 0.70380783, 0.70380783, 1)
 theme_override_font_sizes/normal_font_size = 76
 text = "123"
 fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
 
 [node name="Switch_on_icon" type="TextureRect" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask"]
-offset_left = -52.5
+offset_left = -93.75
 offset_top = 45.5
-offset_right = 33.5
+offset_right = -7.75
 offset_bottom = 111.5
 texture = ExtResource("51_8y6ih")
 
@@ -447,11 +464,12 @@ position = Vector2(139, -127)
 texture = ExtResource("37_50t6p")
 
 [node name="Switch_background_up" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask"]
-self_modulate = Color(0.99607843, 0.90588236, 0.28627452, 1)
-position = Vector2(-19, -207.5)
+self_modulate = Color(0.2509804, 0.6392157, 0.67058825, 1)
+position = Vector2(-19, -303.5)
 texture = ExtResource("15_fvhsr")
 
 [node name="Switch_off_label" type="RichTextLabel" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_background_up"]
+visible = false
 offset_left = -88.0
 offset_top = 3.0
 offset_right = 96.0
@@ -465,20 +483,24 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="Switch_off_icon" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_background_up"]
+position = Vector2(0, 27)
+texture = ExtResource("22_017ef")
+
 [node name="Switch_background_down" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask"]
 visible = false
-position = Vector2(-19, 152.5)
+position = Vector2(-19, 56.5)
 texture = ExtResource("15_fvhsr")
 
 [node name="Switch_outline" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle"]
 texture = ExtResource("15_0dgko")
 
 [node name="Switch_outline_fill" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_outline"]
-self_modulate = Color(0.80368084, 0.7189732, 0.019726291, 1)
+self_modulate = Color(0.1882353, 0.5137255, 0.5372549, 1)
 texture = ExtResource("16_2v31b")
 
 [node name="Switch_handle" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle" node_paths=PackedStringArray("background_up", "background_down")]
-position = Vector2(0, -112.5)
+position = Vector2(0, -208.5)
 texture = ExtResource("17_d4ujc")
 script = ExtResource("19_ue141")
 background_up = NodePath("../Switch_mask/Switch_background_up")
@@ -487,7 +509,7 @@ background_down = NodePath("../Switch_mask/Switch_background_down")
 background_down_offset = -265.0
 
 [node name="Switch_fill" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_handle"]
-self_modulate = Color(0.99607843, 0.90588236, 0.28627452, 1)
+self_modulate = Color(0.2509804, 0.6392157, 0.67058825, 1)
 texture = ExtResource("18_xqbja")
 
 [node name="Input Area" type="Control" parent="The Machine/TheMachineSwitch_Recycle"]
@@ -509,7 +531,7 @@ clip_children = 1
 texture = ExtResource("14_6b2j4")
 
 [node name="Switch_background_up" type="Sprite2D" parent="The Machine/TheMachineSwitch_Submit/Switch_mask"]
-self_modulate = Color(0.2509804, 0.6392157, 0.67058825, 1)
+self_modulate = Color(0.99607843, 0.9098039, 0.27058825, 1)
 position = Vector2(-19, -45)
 texture = ExtResource("15_fvhsr")
 
@@ -549,7 +571,7 @@ metadata/_edit_use_anchors_ = true
 texture = ExtResource("15_0dgko")
 
 [node name="Switch_outline_fill" type="Sprite2D" parent="The Machine/TheMachineSwitch_Submit/Switch_outline"]
-self_modulate = Color(0.18713042, 0.5123919, 0.53851324, 1)
+self_modulate = Color(0.7539539, 0.67865425, 0.01652733, 1)
 texture = ExtResource("16_2v31b")
 
 [node name="Switch_handle" type="Sprite2D" parent="The Machine/TheMachineSwitch_Submit" node_paths=PackedStringArray("background_up", "background_down")]
@@ -562,7 +584,7 @@ background_down = NodePath("../Switch_mask/Switch_background_down")
 background_down_offset = -265.0
 
 [node name="Switch_fill" type="Sprite2D" parent="The Machine/TheMachineSwitch_Submit/Switch_handle"]
-self_modulate = Color(0.2509804, 0.6392157, 0.67058825, 1)
+self_modulate = Color(0.99607843, 0.9098039, 0.27058825, 1)
 texture = ExtResource("18_xqbja")
 
 [node name="Input Area" type="Control" parent="The Machine/TheMachineSwitch_Submit"]
@@ -1568,7 +1590,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="The Rabbit" type="Node2D" parent="."]
-position = Vector2(1434, 1997.25)
+position = Vector2(1434, 1998)
 
 [node name="TheRabbitLeftArm" type="Sprite2D" parent="The Rabbit"]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
@@ -2783,9 +2805,9 @@ text = "asdofiasdflahjksd;lfj la;sdkfjlasdkjflkg lkfdgjdfklgd gdfjg klg dflgj df
 scroll_active = false
 
 [node name="Popup" type="NinePatchRect" parent="The Rabbit"]
-offset_left = -3777.0
+offset_left = -6033.0
 offset_top = -795.25
-offset_right = 759.0
+offset_right = -1497.0
 offset_bottom = 114.75
 texture = ExtResource("103_otpb1")
 patch_margin_left = 100
