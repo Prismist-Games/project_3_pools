@@ -16,6 +16,13 @@ extends PanelContainer
 @onready var lock_all_button: Button = $MarginContainer/ScrollContainer/VBoxContainer/QuickActions/LockAllButton
 @onready var apply_button: Button = %ApplyButton
 
+# 物品生成相关
+@onready var item_type_option: OptionButton = %ItemTypeOption
+@onready var item_selector_option: OptionButton = %ItemSelectorOption
+@onready var item_rarity_option: OptionButton = %ItemRarityOption
+@onready var item_sterile_toggle: CheckButton = %ItemSterileToggle
+@onready var generate_button: Button = %GenerateButton
+
 # 订单品质概率配置
 @onready var order_rarity_common_spinbox: SpinBox = %OrderRarityCommonSpinBox
 @onready var order_rarity_uncommon_spinbox: SpinBox = %OrderRarityUncommonSpinBox
@@ -79,6 +86,29 @@ func _setup_ui() -> void:
 		spinbox.allow_lesser = true
 	
 	_setup_affix_toggles()
+	_setup_generation_ui()
+
+
+func _setup_generation_ui() -> void:
+	# 初始化物品类型下拉框
+	item_type_option.clear()
+	
+	# 添加主线类型
+	item_type_option.add_item("主线 (Mainline)")
+	item_type_option.set_item_metadata(0, Constants.ItemType.MAINLINE)
+	
+	var normal_types = Constants.get_normal_item_types()
+	for type in normal_types:
+		item_type_option.add_item(Constants.type_to_display_name(type))
+		item_type_option.set_item_metadata(item_type_option.get_item_count() - 1, type)
+	
+	# 初始化稀有度下拉框
+	item_rarity_option.clear()
+	for i in range(Constants.Rarity.MYTHIC + 1):
+		item_rarity_option.add_item(Constants.rarity_display_name(i), i)
+	
+	# 初始刷新物品选择列表
+	_refresh_item_selector_list()
 
 
 func _setup_affix_toggles() -> void:
@@ -143,12 +173,11 @@ func _connect_signals() -> void:
 	order_rarity_epic_spinbox.value_changed.connect(_on_order_rarity_weight_changed.bind(3))
 	order_rarity_legendary_spinbox.value_changed.connect(_on_order_rarity_weight_changed.bind(4))
 	
-	# 连接抽取品质概率输入框
-	pool_rarity_common_spinbox.value_changed.connect(_on_pool_rarity_weight_changed.bind(0))
-	pool_rarity_uncommon_spinbox.value_changed.connect(_on_pool_rarity_weight_changed.bind(1))
-	pool_rarity_rare_spinbox.value_changed.connect(_on_pool_rarity_weight_changed.bind(2))
-	pool_rarity_epic_spinbox.value_changed.connect(_on_pool_rarity_weight_changed.bind(3))
 	pool_rarity_legendary_spinbox.value_changed.connect(_on_pool_rarity_weight_changed.bind(4))
+	
+	# 连接物品生成信号
+	item_type_option.item_selected.connect(func(_idx): _refresh_item_selector_list())
+	generate_button.pressed.connect(_on_generate_pressed)
 
 
 func _sync_from_unlock_manager() -> void:
@@ -384,3 +413,37 @@ func _apply_pool_rarity_weight(rarity_index: int) -> void:
 		2: stage_data.pool_weight_rare = pool_rarity_rare_spinbox.value
 		3: stage_data.pool_weight_epic = pool_rarity_epic_spinbox.value
 		4: stage_data.pool_weight_legendary = pool_rarity_legendary_spinbox.value
+
+
+## 物品生成逻辑
+
+func _refresh_item_selector_list() -> void:
+	"""根据选中的类型刷新物品选择列表"""
+	var selected_type = item_type_option.get_selected_metadata() as Constants.ItemType
+	item_selector_option.clear()
+	
+	var items = GameManager.get_items_for_type(selected_type)
+	for item in items:
+		item_selector_option.add_item(item.name)
+		item_selector_option.set_item_metadata(item_selector_option.get_item_count() - 1, item)
+
+
+func _on_generate_pressed() -> void:
+	"""点击生成按钮"""
+	if item_selector_option.get_item_count() == 0:
+		return
+		
+	var selected_item_data = item_selector_option.get_selected_metadata() as ItemData
+	var selected_rarity = item_rarity_option.get_selected_id()
+	var is_sterile = item_sterile_toggle.button_pressed
+	
+	if selected_item_data == null:
+		return
+		
+	# 创建实例
+	var instance = ItemInstance.new(selected_item_data, selected_rarity, is_sterile)
+	
+	# 通过 EventBus 注入，这样它会遵循正常的逻辑流程 (自动放入背包或进入待定)
+	EventBus.item_obtained.emit(instance)
+	
+	print("[DebugConsole] 已生成物品: %s (品阶: %d, 绝育: %s)" % [selected_item_data.name, selected_rarity, "是" if is_sterile else "否"])

@@ -399,6 +399,70 @@ text = "立即应用更改"
 [node name="HSeparator7" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
+[node name="GenerationLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "物品生成"
+theme_override_font_sizes/font_size = 14
+
+[node name="GenTypeRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/GenTypeRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "物品类型"
+
+[node name="ItemTypeOption" type="OptionButton" parent="MarginContainer/ScrollContainer/VBoxContainer/GenTypeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GenItemRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/GenItemRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "具体物品"
+
+[node name="ItemSelectorOption" type="OptionButton" parent="MarginContainer/ScrollContainer/VBoxContainer/GenItemRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GenRarityRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/GenRarityRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "稀有度"
+
+[node name="ItemRarityOption" type="OptionButton" parent="MarginContainer/ScrollContainer/VBoxContainer/GenRarityRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GenSterileRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/GenSterileRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "绝育 (不可合成)"
+
+[node name="ItemSterileToggle" type="CheckButton" parent="MarginContainer/ScrollContainer/VBoxContainer/GenSterileRow"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="GenerateButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "生成到背包"
+
+[node name="HSeparator8" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
 [node name="QuickActions" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 alignment = 1
