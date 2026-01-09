@@ -144,16 +144,27 @@ func _on_vfx_queue_started() -> void:
 func _on_vfx_queue_finished() -> void:
 	_is_vfx_processing = false
 	
-	if state_machine and state_machine.is_in_state(&"Drawing"):
-		var ds = state_machine.get_state(&"Drawing")
-		if ds and ds.pool_index != -1:
-			var slot = lottery_slots_grid.get_node_or_null("Lottery Slot_root_" + str(ds.pool_index))
-			if slot and slot.has_method("play_close_sequence"):
-				# 注意：这里的逻辑通过 PoolController 路由会更好，但暂时保留
-				await slot.play_close_sequence()
-			PoolSystem.refresh_pools()
-		
-		state_machine.transition_to(&"Idle")
+	if state_machine:
+		var current_state = state_machine.get_current_state_name()
+		if current_state == &"Drawing" or current_state == &"Replacing":
+			# 如果 pending_items 已全部处理完，则关盖归位
+			if InventorySystem.pending_items.is_empty():
+				var pool_idx = -1
+				if current_state == &"Drawing":
+					pool_idx = state_machine.get_state(&"Drawing").pool_index
+				else:
+					pool_idx = state_machine.get_state(&"Replacing").source_pool_index
+				
+				if pool_idx != -1:
+					var slot = lottery_slots_grid.get_node_or_null("Lottery Slot_root_" + str(pool_idx))
+					if slot and slot.has_method("play_close_sequence"):
+						await slot.play_close_sequence()
+					
+					PoolSystem.refresh_pools()
+					last_clicked_pool_idx = -1
+					pending_source_pool_idx = -1
+				
+				state_machine.transition_to(&"Idle")
 
 func _refresh_all() -> void:
 	_on_gold_changed(GameManager.gold)
@@ -197,10 +208,15 @@ func _update_ui_mode_display() -> void:
 	
 	var mode = state_machine.get_ui_mode()
 	var has_pending = not InventorySystem.pending_items.is_empty()
-	var is_locked = is_ui_locked() or has_pending
 	
-	inventory_controller.set_slots_locked(is_locked)
-	pool_controller.set_slots_locked(is_locked)
+	# 背包格锁定逻辑：UI 锁、有待定项、或者非正常模式均锁
+	var inventory_locked = is_ui_locked() or has_pending
+	inventory_controller.set_slots_locked(inventory_locked)
+	
+	# 奖池锁定逻辑：UI 锁、有待定项、或者非正常模式均锁
+	var pool_locked = is_ui_locked() or has_pending or mode != Constants.UIMode.NORMAL
+	pool_controller.set_slots_locked(pool_locked)
+	
 	switch_controller.update_switch_visuals(mode)
 
 # --- 信号处理代理 ---
@@ -316,6 +332,11 @@ func _handle_single_item_recycle(selected_idx: int) -> void:
 				"source_lottery_slot": pool_slot,
 				"on_complete": func(): _on_inventory_changed(InventorySystem.inventory)
 			})
+			
+			# 关键修复：提前锁定视觉，防止数据变化导致图标提前消失
+			if pool_slot.get("is_vfx_source") != null:
+				pool_slot.is_vfx_source = true
+			
 			InventorySystem.recycle_item_instance(item)
 			InventorySystem.pending_item = null
 	elif selected_idx != -1:
@@ -334,6 +355,11 @@ func _handle_single_item_recycle(selected_idx: int) -> void:
 				"source_slot_node": slot_node,
 				"on_complete": func(): _on_inventory_changed(InventorySystem.inventory)
 			})
+			
+			# 关键修复：提前锁定视觉
+			if slot_node.get("is_vfx_target") != null:
+				slot_node.is_vfx_target = true
+			
 			InventorySystem.recycle_item(selected_idx)
 	
 	if vfx_manager:
@@ -373,10 +399,14 @@ func _on_item_moved(source_idx: int, target_idx: int) -> void:
 	var item = InventorySystem.inventory[target_idx]
 	if not item: return
 	
+	var source_node = inventory_controller.get_slot_node(source_idx)
+	var target_node = inventory_controller.get_slot_node(target_idx)
+	
+	# 关键修复：立即使槽位进入 VFX 锁定状态，防止随后的 inventory_changed 刷新清空图标
+	if source_node: source_node.is_vfx_target = true
+	if target_node: target_node.is_vfx_target = true
+	
 	if vfx_manager:
-		var source_node = inventory_controller.get_slot_node(source_idx)
-		var target_node = inventory_controller.get_slot_node(target_idx)
-		
 		vfx_manager.enqueue({
 			"type": "generic_fly",
 			"item": item,
@@ -391,6 +421,10 @@ func _on_item_added(_item: ItemInstance, index: int) -> void:
 	if last_clicked_pool_idx != -1:
 		var pool_slot = lottery_slots_grid.get_node("Lottery Slot_root_" + str(last_clicked_pool_idx))
 		var target_slot_node = inventory_controller.get_slot_node(index)
+		
+		# 关键修复：立即使槽位进入 VFX 锁定状态
+		if target_slot_node: target_slot_node.is_vfx_target = true
+		if pool_slot: pool_slot.is_vfx_source = true
 		
 		# 临时隐藏目标，防止 VFX 前闪现
 		if target_slot_node and target_slot_node.has_method("set_temp_hidden"):
@@ -433,6 +467,10 @@ func _on_item_replaced(index: int, _new_item: ItemInstance, old_item: ItemInstan
 		var recycle_pos = switch_controller.get_recycle_bin_pos()
 		var target_slot_node = inventory_controller.get_slot_node(index)
 		
+		# 关键修复：锁定
+		if target_slot_node: target_slot_node.is_vfx_target = true
+		if pool_slot: pool_slot.is_vfx_source = true
+		
 		if old_item and vfx_manager:
 			vfx_manager.enqueue({
 				"type": "fly_to_recycle",
@@ -474,12 +512,20 @@ func _on_item_merged(index: int, _new_item: ItemInstance, _target_item: ItemInst
 	_on_item_replaced(index, _new_item, null)
 
 func _on_item_swapped(idx1: int, idx2: int) -> void:
-	var item1 = InventorySystem.inventory[idx1]
-	var item2 = InventorySystem.inventory[idx2]
+	# 由于信号是在 InventorySystem 数据交换后发出的：
+	# inventory[idx1] 现在是原本在 idx2 的物品
+	# inventory[idx2] 现在是原本在 idx1 的物品
+	var item1 = InventorySystem.inventory[idx2] # 它是从 idx1 出发的物品
+	var item2 = InventorySystem.inventory[idx1] # 它是从 idx2 出发的物品
+	
+	var node1 = inventory_controller.get_slot_node(idx1)
+	var node2 = inventory_controller.get_slot_node(idx2)
+	
+	# 关键修复：立即使槽位进入 VFX 锁定状态
+	if node1: node1.is_vfx_target = true
+	if node2: node2.is_vfx_target = true
+	
 	if vfx_manager:
-		var node1 = inventory_controller.get_slot_node(idx1)
-		var node2 = inventory_controller.get_slot_node(idx2)
-		
 		vfx_manager.enqueue({
 			"type": "swap",
 			"item1": item1,

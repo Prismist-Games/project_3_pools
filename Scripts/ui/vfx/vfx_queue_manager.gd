@@ -183,8 +183,11 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 	
 	# 来源槽位处理 (Lottery Slot or Inventory Slot)
 	var source_lottery_slot = task.get("source_lottery_slot")
-	if source_lottery_slot and source_lottery_slot.has_method("hide_main_icon"):
-		source_lottery_slot.hide_main_icon()
+	if source_lottery_slot:
+		if source_lottery_slot.get("is_vfx_source") != null:
+			source_lottery_slot.is_vfx_source = true
+		if source_lottery_slot.has_method("hide_main_icon"):
+			source_lottery_slot.hide_main_icon()
 		if source_lottery_slot.has_method("play_queue_advance_anim"):
 			source_lottery_slot.play_queue_advance_anim()
 			
@@ -207,6 +210,12 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 	if source_slot_node:
 		source_slot_node.is_vfx_target = false
 		source_slot_node.show_icon()
+	
+	if source_lottery_slot:
+		if source_lottery_slot.get("is_vfx_source") != null:
+			source_lottery_slot.is_vfx_source = false
+		if source_lottery_slot.has_method("show_main_icon"):
+			source_lottery_slot.show_main_icon()
 
 ## 执行合成动画
 func _execute_merge(_task: Dictionary) -> void:

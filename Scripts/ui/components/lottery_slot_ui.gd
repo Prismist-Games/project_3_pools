@@ -21,6 +21,7 @@ extends BaseSlotUI
 
 var pool_index: int = -1
 var is_drawing: bool = false
+var is_vfx_source: bool = false # 标记是否为飞行起点，防止动画开始前被 update_pending_display 刷新掉
 var _pending_pool_data: Variant = null # 挂起的新奖池数据，等待关盖后应用
 var _initial_transforms: Dictionary = {}
 
@@ -233,6 +234,7 @@ func play_draw_anim() -> void:
 	pass
 
 func update_pending_display(pending_list: Array) -> void:
+	if is_vfx_source: return # 正在从这里飞出物品，由 VFXManager 控制显示，防止逻辑更新导致提前消失
 	if pending_list.is_empty():
 		is_drawing = false # 只有队列空了才重置
 		if backgrounds:
