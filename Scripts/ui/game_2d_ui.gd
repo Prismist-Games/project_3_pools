@@ -30,6 +30,7 @@ var _vfx_queue: Array[Dictionary] = []
 var _is_vfx_processing: bool = false
 var _vfx_scheduled: bool = false
 var _active_modal_callback: Callable
+var _precise_opened_slots: Array[int] = [] # 记录精准选择打开的槽位索引
 
 func _ready() -> void:
 	self.theme = game_theme
@@ -349,6 +350,9 @@ func _on_lottery_slot_input(event: InputEvent, index: int) -> void:
 			if not is_ui_locked() and InventorySystem.pending_items.is_empty():
 				_handle_draw(index)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			# precise_selection 模式下不允许右键取消（强制二选一）
+			if _ui_locks.has("precise_selection"):
+				return
 			_handle_cancel()
 
 func _on_order_slot_input(event: InputEvent, index: int) -> void:
@@ -897,6 +901,21 @@ func _process_vfx_queue() -> void:
 	
 	_is_vfx_processing = false
 	
+	# 如果是精准选择模式，VFX完成后关闭所有打开的槽位
+	if not _precise_opened_slots.is_empty():
+		var close_tasks: Array = []
+		for slot_idx in _precise_opened_slots:
+			var slot = lottery_slots_grid.get_node("Lottery Slot_root_" + str(slot_idx))
+			if slot.anim_player.has_animation("lid_close"):
+				slot.anim_player.play("lid_close")
+				close_tasks.append(slot.anim_player.animation_finished)
+		
+		for task in close_tasks:
+			await task
+		
+		_precise_opened_slots.clear()
+		unlock_ui("precise_selection")
+	
 	# 只有当全部待办（包括 pending list）都处理完了，才刷新奖池并重置点击状态
 	if InventorySystem.pending_items.is_empty():
 		last_clicked_pool_idx = -1
@@ -997,26 +1016,81 @@ func _handle_precise_selection_projection(payload: Variant) -> void:
 	var callback = payload.get("callback")
 	if items.is_empty(): return
 	lock_ui("precise_selection")
+	
+	# 记录打开的槽位
+	_precise_opened_slots.clear()
+	
+	# 显示2个物品槽位，第3个保持关闭
 	for i in range(3):
 		var slot = lottery_slots_grid.get_node("Lottery Slot_root_" + str(i))
 		if i < items.size():
 			var item = items[i]
-			slot.pool_name_label.text = item.get_display_name()
+			# 隐藏原有的奖池名字和价格标签
+			slot.pool_name_label.visible = false
+			slot.price_label.visible = false
+			slot.price_icon.visible = false
+			slot.affix_label.visible = false
+			slot.description_label.visible = false
+			
+			# 设置物品图标
 			slot.item_main.texture = item.item_data.icon
-			slot.price_label.text = "SELECT"
+			slot.item_main.visible = true
+			slot.item_main_shadow.visible = true
+			
+			# 设置背景颜色
+			if slot.backgrounds:
+				slot.backgrounds.color = Constants.get_rarity_border_color(item.rarity)
+			
 			slot.visible = true
+			
+			# 播放打开盖子动画并标记为 drawing 状态
+			if slot.anim_player.has_animation("lid_open"):
+				slot.anim_player.play("lid_open")
+			# 设置 is_drawing 防止 VFX 流程重复播放开盖动画
+			slot.is_drawing = true
+			
+			# 记录打开的槽位索引
+			_precise_opened_slots.append(i)
 		else:
-			slot.pool_name_label.text = "CANCEL"
-			slot.item_main.texture = null
-			slot.price_label.text = ""
+			# 第3个slot保持可见但关闭状态
+			slot.visible = true
+	
+	# 设置回调 - 精准的奖池不允许取消，只能选择其中一个
+	# 记录选中的槽位索引，供飞行动画使用
 	_active_modal_callback = func(idx):
-		if idx < items.size() and callback.is_valid(): callback.call(items[idx])
-		_exit_modal_projection()
+		if idx < items.size() and callback.is_valid():
+			# 立即禁用回调，防止重复选择
+			_active_modal_callback = Callable()
+			# 设置 pending_source_pool_idx 为被选中的槽位，让飞行动画从正确位置开始
+			pending_source_pool_idx = idx
+			last_clicked_pool_idx = idx
+			callback.call(items[idx])
+			# 注意：不在这里调用 _exit_modal_projection，而是在 VFX 完成后
 
-func _exit_modal_projection() -> void:
+func _exit_modal_projection(skip_close_anim: bool = false) -> void:
 	_active_modal_callback = Callable()
+	
+	var was_precise = _ui_locks.has("precise_selection")
+	
 	unlock_ui("skill_select")
 	unlock_ui("precise_selection")
+	
+	# 如果是 precise_selection 且有物品要飞入背包，跳过关盖和刷新
+	# 让 VFX 队列处理完后自动关盖刷新
+	if skip_close_anim or was_precise:
+		return
+	
+	# skill_select 等其他 modal 走原有逻辑
+	var close_tasks: Array = []
+	for i in range(3):
+		var slot = lottery_slots_grid.get_node("Lottery Slot_root_" + str(i))
+		if slot.visible and slot.anim_player.has_animation("lid_close"):
+			slot.anim_player.play("lid_close")
+			close_tasks.append(slot.anim_player.animation_finished)
+	
+	for task in close_tasks:
+		await task
+	
 	PoolSystem.refresh_pools()
 
 func _on_game_event(event_id: StringName, payload: Variant) -> void:

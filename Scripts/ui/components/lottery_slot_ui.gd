@@ -117,6 +117,7 @@ func _apply_pool_display(pool: Variant) -> void:
 	
 	# 从类型获取显示名称
 	pool_name_label.text = Constants.type_to_display_name(pool.item_type) + "池"
+	pool_name_label.visible = true # 确保可见
 	
 	var cost_gold = pool.gold_cost
 	var cost_tickets = pool.ticket_cost
@@ -127,6 +128,10 @@ func _apply_pool_display(pool: Variant) -> void:
 	else:
 		price_label.text = str(cost_gold)
 		price_icon.texture = preload("res://assets/sprites/icons/money.png")
+	
+	# 确保价格标签可见
+	price_label.visible = true
+	price_icon.visible = true
 	
 	if pool.affix_data:
 		affix_label.text = pool.affix_data.name
