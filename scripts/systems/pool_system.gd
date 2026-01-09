@@ -43,6 +43,7 @@ func draw_from_pool(index: int) -> bool:
 	ctx.affix_id = pool.get_affix_id()
 	ctx.gold_cost = pool.gold_cost
 	ctx.ticket_cost = pool.ticket_cost
+	ctx.meta["pool_index"] = index # 传递奖池索引给词缀效果
 	
 	# 填充默认权重
 	var stage_data = GameManager.current_stage_data

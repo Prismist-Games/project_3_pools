@@ -20,6 +20,14 @@ func enter(payload: Dictionary = {}) -> void:
 	is_draw_complete = false
 
 func exit() -> void:
+	# 关键修复：如果正在跳转到 TradeIn，不要刷新奖池，因为 TradeIn 流程还在进行中
+	if machine and machine.pending_state_name == &"TradeIn":
+		if controller:
+			controller.unlock_ui("draw")
+		pool_index = -1
+		is_draw_complete = false
+		return
+
 	# 关键修复：统一在退出时根据情况处理奖池关盖
 	# 如果 pending_items 为空，说明这是一次完整的"抽奖并直接放入口袋"或者抽奖失败的流程
 	# 如果不为空，说明正在跳转到 Replacing 状态，不应在此处关盖
@@ -54,8 +62,8 @@ func exit() -> void:
 	is_draw_complete = false
 
 func can_transition_to(next_state: StringName) -> bool:
-	# 显式允许：转换到 Modal
-	if next_state == &"Modal":
+	# 显式允许：转换到 Modal 或 TradeIn（词缀触发）
+	if next_state in [&"Modal", &"TradeIn"]:
 		return true
 		
 	# 如果锁定已被释放，或者标记已完成，则允许转换
@@ -112,6 +120,15 @@ func draw() -> void:
 		controller.unlock_ui("draw")
 		mark_complete()
 		machine.transition_to(&"Idle")
+		return
+	
+	# 关键检查：如果词缀触发了状态转换（如 TradeIn），则不继续执行揭示序列
+	# 此时状态机已经不在 Drawing 状态了
+	if machine.get_current_state_name() != &"Drawing":
+		# 词缀已处理流程（如 TradeIn），解锁 UI 并退出
+		controller.unlock_ui("draw")
+		if controller.vfx_manager:
+			controller.vfx_manager.is_paused = false
 		return
 	
 	# 如果没有任何物品进入背包（比如全部进入了待定队列，或者被词缀拦截进入了 modal）

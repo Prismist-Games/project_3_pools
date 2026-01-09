@@ -46,6 +46,9 @@ var _pending_pool_data: Variant = null # 挂起的新奖池数据，等待关盖
 var _pending_hints: Dictionary = {} # 暂存的新 hints 数据
 var _initial_transforms: Dictionary = {}
 
+## 标记：是否处于以旧换新等待物品投入状态
+var is_waiting_for_trade_in: bool = false
+
 ## =====================================================================
 ## Push-Away 动画配置
 ## =====================================================================
@@ -146,8 +149,8 @@ func update_pool_info(pool: Variant) -> void:
 	
 	visible = true
 	
-	# 如果正在抽奖动画中，不要立即更新视觉，先存起来等关盖后触发推挤刷新
-	if is_drawing:
+	# 如果正在以旧换新等待中，或者是抽奖动画中，不要立即更新视觉
+	if is_waiting_for_trade_in or is_drawing:
 		_pending_pool_data = pool
 		return
 	
@@ -210,6 +213,9 @@ func _update_grid_icons(grid: VBoxContainer, display_items: Array[ItemData], sat
 			icon_node.visible = false
 
 func play_reveal_sequence(items: Array) -> void:
+	# 进入揭示流程，清除等待标记
+	is_waiting_for_trade_in = false
+	
 	# 如果已经在展示中（is_drawing = true），说明之前已经 reveal 过了，直接更新显示即可
 	if is_drawing:
 		update_queue_display(items)
@@ -383,11 +389,45 @@ func open_lid() -> void:
 	if anim_player.has_animation("lid_open"):
 		anim_player.play("lid_open")
 
+## 为以旧换新打开盖子（空槽状态，等待物品飞入）
+func open_lid_for_trade_in() -> void:
+	is_waiting_for_trade_in = true
+	
+	# 确保内部显示为空
+	item_main.visible = false
+	item_main_shadow.visible = false
+	item_queue_1.visible = false
+	item_queue_1_shadow.visible = false
+	item_queue_2.visible = false
+	item_queue_2_shadow.visible = false
+	
+	# 背景保持空槽颜色
+	if backgrounds:
+		backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
+	
+	# 打开盖子
+	if anim_player.has_animation("lid_open"):
+		anim_player.play("lid_open")
+
 func close_lid() -> void:
+	is_waiting_for_trade_in = false
 	if anim_player.has_animation("lid_close"):
 		anim_player.play("lid_close")
 		if anim_player.is_playing():
 			await anim_player.animation_finished
+
+## 播放抖动动画（用于以旧换新投入后的反馈）
+func play_shake() -> void:
+	var original_pos = position
+	var shake_amount = 8.0
+	var shake_duration = 0.08
+	var shake_count = 3
+	
+	var tween = create_tween()
+	for i in range(shake_count):
+		var direction = 1 if i % 2 == 0 else -1
+		tween.tween_property(self, "position:x", original_pos.x + shake_amount * direction, shake_duration)
+	tween.tween_property(self, "position:x", original_pos.x, shake_duration)
 
 func _reset_item_transforms() -> void:
 	if _initial_transforms.is_empty(): return

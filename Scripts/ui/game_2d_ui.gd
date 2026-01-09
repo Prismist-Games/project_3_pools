@@ -567,7 +567,12 @@ func _on_game_event(event_id: StringName, payload: Variant) -> void:
 			if payload is ContextProxy: dict_payload = payload.get_all()
 			elif payload is Dictionary: dict_payload = payload
 			if dict_payload.get("type") == "trade_in":
-				state_machine.transition_to(&"TradeIn", dict_payload)
+				# 传递 pool_index 和 callback 给 TradeInState
+				var trade_in_payload = {
+					"pool_index": dict_payload.get("pool_index", last_clicked_pool_idx),
+					"callback": dict_payload.get("callback", Callable())
+				}
+				state_machine.transition_to(&"TradeIn", trade_in_payload)
 				
 	elif event_id == &"order_refresh_requested":
 		var index = payload.get_value("index", -1) if payload is ContextProxy else -1
