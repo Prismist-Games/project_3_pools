@@ -427,17 +427,29 @@ func _on_item_added(_item: ItemInstance, index: int) -> void:
 		if target_slot_node and target_slot_node.has_method("set_temp_hidden"):
 			target_slot_node.hide_icon()
 			target_slot_node.set_temp_hidden(true)
-			
-		var pending_count = InventorySystem.pending_items.size()
+		
+		# 核心逻辑修复：正确计算飞行起始位置
+		# 思路：追踪已经飞走了多少个物品，来决定当前物品应从哪个视觉位置飞出
+		# - 第 0 个飞走的 -> 从 item_main 飞出
+		# - 第 1 个飞走的 -> 从 item_queue_1 飞出
+		# - 第 2 个飞走的 -> 从 item_queue_2 飞出
+		# 使用 VFX 队列中已有的 fly_to_inventory 任务数来推断已飞走多少
+		var fly_tasks_in_queue = 0
+		if vfx_manager:
+			for task in vfx_manager._queue:
+				if task.get("type") == "fly_to_inventory" and task.get("source_lottery_slot") == pool_slot:
+					fly_tasks_in_queue += 1
+		
 		var start_pos = pool_slot.get_main_icon_global_position()
 		var start_scale = pool_slot.get_main_icon_global_scale()
 		
-		if pending_count == 1:
-			if pool_slot.item_queue_1 and pool_slot.item_queue_1.visible:
+		# 根据队列中已有的任务数决定起始节点
+		if fly_tasks_in_queue == 1:
+			if pool_slot.item_queue_1:
 				start_pos = pool_slot.item_queue_1.global_position
 				start_scale = pool_slot.item_queue_1.global_scale
-		elif pending_count == 0:
-			if pool_slot.item_queue_2 and pool_slot.item_queue_2.visible:
+		elif fly_tasks_in_queue >= 2:
+			if pool_slot.item_queue_2:
 				start_pos = pool_slot.item_queue_2.global_position
 				start_scale = pool_slot.item_queue_2.global_scale
 		
@@ -478,15 +490,25 @@ func _on_item_replaced(index: int, _new_item: ItemInstance, old_item: ItemInstan
 				"source_slot_node": target_slot_node,
 				"on_complete": func(): pass # No specific callback needed
 			})
-			
-		var pending_count = InventorySystem.pending_items.size()
+		
+		# 核心逻辑修复：正确计算飞行起始位置（同 _on_item_added）
+		var fly_tasks_in_queue = 0
+		if vfx_manager:
+			for task in vfx_manager._queue:
+				var task_type = task.get("type", "")
+				if (task_type == "fly_to_inventory" or task_type == "fly_to_recycle") and task.get("source_lottery_slot") == pool_slot:
+					fly_tasks_in_queue += 1
+		
 		var start_pos = pool_slot.get_main_icon_global_position()
 		var start_scale = pool_slot.get_main_icon_global_scale()
 		
-		if pending_count == 1 and pool_slot.item_queue_1.visible:
+		# 根据队列中已有的任务数决定起始节点
+		# 注意：替换模式下，队列中可能已有一个 fly_to_recycle 任务
+		# 所以 fly_tasks_in_queue == 1 时，是第二个物品，应从 queue_1 出发
+		if fly_tasks_in_queue == 1 and pool_slot.item_queue_1:
 			start_pos = pool_slot.item_queue_1.global_position
 			start_scale = pool_slot.item_queue_1.global_scale
-		elif pending_count == 0 and pool_slot.item_queue_2.visible:
+		elif fly_tasks_in_queue >= 2 and pool_slot.item_queue_2:
 			start_pos = pool_slot.item_queue_2.global_position
 			start_scale = pool_slot.item_queue_2.global_scale
 			

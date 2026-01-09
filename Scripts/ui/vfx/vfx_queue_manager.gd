@@ -264,7 +264,8 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 	if source_lottery_slot:
 		if source_lottery_slot.get("is_vfx_source") != null:
 			source_lottery_slot.is_vfx_source = false
-		if source_lottery_slot.has_method("show_main_icon"):
+		# 只有当 item_main 还有 texture 时才显示，防止回收最后一个物品后闪现空图标
+		if source_lottery_slot.has_method("show_main_icon") and source_lottery_slot.item_main.texture != null:
 			source_lottery_slot.show_main_icon()
 
 ## 执行合成动画
