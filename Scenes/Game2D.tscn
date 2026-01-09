@@ -1,4 +1,4 @@
-[gd_scene load_steps=109 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=110 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
 [ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
@@ -99,15 +99,11 @@
 [ext_resource type="Texture2D" uid="uid://da0ig7cexq40g" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_5.png" id="96_jf2x3"]
 [ext_resource type="Texture2D" uid="uid://csk65f0qvtg84" path="res://assets/sprites/frames/5_choose_1.png" id="101_8ocj1"]
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/game_2d_ui.gd" id="110_ui"]
-[ext_resource type="Script" uid="uid://c08o6jgnqkmke" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
+[ext_resource type="Script" uid="uid://blxunu142eonv" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
 [ext_resource type="Script" uid="uid://dceb57gqrmaik" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
 
 [sub_resource type="Animation" id="Animation_ovo1l"]
 length = 0.001
-
-[sub_resource type="Animation" id="Animation_1h1gb"]
-resource_name = "test_animation"
-length = 2.0000033
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -115,30 +111,45 @@ tracks/0/path = NodePath("The Machine/Item Slots Grid/Item Slot_root_0/Item Slot
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0, 0),
-"points": PackedFloat32Array(50, -0.25, 0, 0.16666667, -0.44581604, 40, -0.06666666, -0.15211868, 0.10000001, -0.04801178, 40, -0.10000522, -0.24551217, 0.25982118, 0.63785934, -50, -0.23333335, 0.7887497, 0, 0),
-"times": PackedFloat32Array(0, 0.2, 1.0333333, 1.8333334)
+"handle_modes": PackedInt32Array(2),
+"points": PackedFloat32Array(-337.5, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_u4yck"]
+resource_name = "item_lid_close"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_lid:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(3, 0),
+"points": PackedFloat32Array(-341.5, -0.4, -0.088775635, 0.4, 0.088775635, -39.5, -0.43333334, 21.216349, 0.35, -17.843029),
+"times": PackedFloat32Array(0, 0.5)
+}
+
+[sub_resource type="Animation" id="Animation_6kw3k"]
+resource_name = "item_lid_open"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_lid:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(2, 2),
+"points": PackedFloat32Array(-39.5, -0.24998589, 12.744301, 0.35, -17.843029, -341.5, -0.38333333, 7.19046, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vy3lb"]
 _data = {
 &"RESET": SubResource("Animation_ovo1l"),
-&"test_animation": SubResource("Animation_1h1gb")
-}
-
-[sub_resource type="Animation" id="Animation_jufyi"]
-resource_name = "lid_open"
-length = 0.7
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Quest Slot_mask/Quest Slot_lid:position:y")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.3, -11.704876, -221.2287, -0.5333333, 23.280426, 0, 0),
-"times": PackedFloat32Array(0, 0.7)
+&"item_lid_close": SubResource("Animation_u4yck"),
+&"item_lid_open": SubResource("Animation_6kw3k")
 }
 
 [sub_resource type="Animation" id="Animation_8ocj1"]
@@ -170,6 +181,21 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.7)
 }
 
+[sub_resource type="Animation" id="Animation_jufyi"]
+resource_name = "lid_open"
+length = 0.7
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Quest Slot_mask/Quest Slot_lid:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.3, -11.704876, -221.2287, -0.5333333, 23.280426, 0, 0),
+"times": PackedFloat32Array(0, 0.7)
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jdak2"]
 _data = {
 &"RESET": SubResource("Animation_8ocj1"),
@@ -193,7 +219,7 @@ texture = ExtResource("2_xqbja")
 
 [node name="The Machine" type="Node2D" parent="."]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(3723.75, 1488)
+position = Vector2(3750, 1488)
 
 [node name="TheMachineTopBehind" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
@@ -318,6 +344,48 @@ position = Vector2(1578.75, 1437.5)
 clip_children = 1
 texture = ExtResource("14_6b2j4")
 
+[node name="Switch_on_label" type="RichTextLabel" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask"]
+offset_left = -114.5
+offset_top = -88.5
+offset_right = 69.5
+offset_bottom = 16.5
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 76
+text = "123"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Switch_on_icon" type="TextureRect" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask"]
+offset_left = -52.5
+offset_top = 45.5
+offset_right = 33.5
+offset_bottom = 111.5
+texture = ExtResource("51_8y6ih")
+
+[node name="Switch_item_root" type="Node2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask"]
+visible = false
+position = Vector2(-24.75, 31.5)
+scale = Vector2(0.65, 0.65)
+
+[node name="Item_example" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_item_root"]
+texture = ExtResource("3_fiado")
+
+[node name="Item_shadow" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_item_root/Item_example"]
+visible = false
+self_modulate = Color(0, 0, 0, 0.39215687)
+show_behind_parent = true
+position = Vector2(6.000001, 156)
+scale = Vector2(0.6, 0.1)
+texture = ExtResource("3_4wmcb")
+
+[node name="Item_affix" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_item_root/Item_example"]
+visible = false
+position = Vector2(139, -127)
+texture = ExtResource("37_50t6p")
+
 [node name="Switch_background_up" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask"]
 self_modulate = Color(0.99607843, 0.90588236, 0.28627452, 1)
 position = Vector2(-19, -207.5)
@@ -338,29 +406,9 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Switch_background_down" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask"]
+visible = false
 position = Vector2(-19, 152.5)
 texture = ExtResource("15_fvhsr")
-
-[node name="Switch_on_label" type="RichTextLabel" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_background_down"]
-offset_left = -95.5
-offset_top = -123.0
-offset_right = 88.5
-offset_bottom = -18.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 76
-text = "123"
-fit_content = true
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="Switch_on_icon" type="TextureRect" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_background_down"]
-offset_left = -33.5
-offset_top = 11.0
-offset_right = 52.5
-offset_bottom = 77.0
-texture = ExtResource("51_8y6ih")
 
 [node name="Switch_outline" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle"]
 texture = ExtResource("15_0dgko")
@@ -598,7 +646,7 @@ texture = ExtResource("87_u8s40")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask"]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -346.25)
+position = Vector2(0, -337.5)
 texture = ExtResource("18_ivepa")
 
 [node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_lid"]

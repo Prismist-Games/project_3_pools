@@ -69,6 +69,10 @@ func _init_slots() -> void:
 		if slot and slot.has_method("setup"):
 			slot.setup(i)
 			slot.get_node("Input Area").gui_input.connect(_on_item_slot_input.bind(i))
+			# 绑定 Mouse Entered/Exited 用于 Pending 替换时的 Recycle 预览
+			var input_area = slot.get_node("Input Area")
+			input_area.mouse_entered.connect(_on_item_slot_mouse_entered.bind(i))
+			input_area.mouse_exited.connect(_on_item_slot_mouse_exited.bind(i))
 	
 	# 奖池格子
 	for i in range(3):
@@ -96,6 +100,11 @@ func _init_switches() -> void:
 	if recycle_switch:
 		var label = recycle_switch.find_child("Switch_on_label", true)
 		if label: label.text = "0"
+		
+		# 绑定鼠标进入/离开事件以支持 Hover 回收预览
+		var input_area = recycle_switch.get_node("Input Area")
+		input_area.mouse_entered.connect(_on_recycle_switch_mouse_entered)
+		input_area.mouse_exited.connect(_on_recycle_switch_mouse_exited)
 
 func _refresh_all() -> void:
 	_on_gold_changed(GameManager.gold)
@@ -278,6 +287,23 @@ func _on_multi_selection_changed(_indices: Array[int]) -> void:
 			
 	_update_recycle_switch_label()
 
+func _on_item_slot_mouse_entered(index: int) -> void:
+	# Pending 状态下 hover 到物品栏：如果不能合并（会替换），预览回收价格
+	if InventorySystem.pending_item != null:
+		var target_item = InventorySystem.inventory[index]
+		if target_item != null:
+			# 如果不能合并，则意味着替换（回收旧物品）
+			if not InventorySystem.can_merge(InventorySystem.pending_item, target_item):
+				var value = Constants.rarity_recycle_value(target_item.rarity)
+				var label = recycle_switch.find_child("Switch_on_label", true)
+				if label: label.text = str(value)
+				_tween_switch(recycle_switch, SWITCH_ON_Y)
+
+func _on_item_slot_mouse_exited(_index: int) -> void:
+	# 鼠标离开格子时，如果处于 Pending 状态且 Recycle Switch 已抬起，恢复
+	if InventorySystem.pending_item != null:
+		_tween_switch(recycle_switch, SWITCH_OFF_Y)
+
 func _on_selection_changed(index: int) -> void:
 	# 普通模式下的单选高亮动画
 	# 优化：只更新状态发生变化的格子，不要对所有格子都调用 set_selected
@@ -344,11 +370,50 @@ func _on_submit_switch_input(event: InputEvent) -> void:
 func _on_recycle_switch_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if GameManager.current_ui_mode == Constants.UIMode.NORMAL:
-			GameManager.current_ui_mode = Constants.UIMode.RECYCLE
-			InventorySystem.multi_selected_indices.clear()
-			_update_recycle_switch_label() # 进入模式时立即刷新标签
+			# 检查是否有选中的格子（单选）或 Pending 物品
+			var selected_idx = InventorySystem.selected_slot_index
+			var has_pending = not InventorySystem.pending_items.is_empty()
+			
+			if selected_idx != -1 or has_pending:
+				_handle_single_item_recycle(selected_idx)
+			else:
+				# 否则进入多选模式
+				GameManager.current_ui_mode = Constants.UIMode.RECYCLE
+				InventorySystem.multi_selected_indices.clear()
+				_update_recycle_switch_label() # 进入模式时立即刷新标签
 		elif GameManager.current_ui_mode == Constants.UIMode.RECYCLE:
 			_handle_recycle_confirm()
+
+func _on_recycle_switch_mouse_entered() -> void:
+	if GameManager.current_ui_mode != Constants.UIMode.NORMAL: return
+	
+	var selected_idx = InventorySystem.selected_slot_index
+	var has_pending = not InventorySystem.pending_items.is_empty()
+	
+	if selected_idx != -1 or has_pending:
+		# 打开盖子并显示回收金额
+		var value = 0
+		if has_pending:
+			var item = InventorySystem.pending_items[0] # 预览第一个 pending item
+			if item: value = Constants.rarity_recycle_value(item.rarity)
+		elif selected_idx != -1:
+			var item = InventorySystem.inventory[selected_idx]
+			if item: value = Constants.rarity_recycle_value(item.rarity)
+		
+		# 更新 label
+		var label = recycle_switch.find_child("Switch_on_label", true)
+		if label: label.text = str(value)
+		
+		# 播放打开动画 (移动到 ON 位置)
+		_tween_switch(recycle_switch, SWITCH_ON_Y)
+
+func _on_recycle_switch_mouse_exited() -> void:
+	if GameManager.current_ui_mode != Constants.UIMode.NORMAL: return
+	# 如果 UI 正在执行回收动画，不要干扰
+	if is_ui_locked(): return
+	
+	# 鼠标离开时，如果不是在 Recycle 模式，则关闭盖子
+	_tween_switch(recycle_switch, SWITCH_OFF_Y)
 
 # --- 动作实现 ---
 func _handle_draw(index: int) -> void:
@@ -597,6 +662,20 @@ func _handle_order_submit() -> void:
 
 func _handle_recycle_confirm() -> void:
 	lock_ui("recycle")
+	
+	# 收集要回收的物品信息用于动画
+	var recycle_tasks = []
+	for idx in InventorySystem.multi_selected_indices:
+		var item = InventorySystem.inventory[idx]
+		if item:
+			var slot = item_slots_grid.get_node("Item Slot_root_" + str(idx))
+			recycle_tasks.append({
+				"item": item,
+				"start_pos": slot.get_icon_global_position(),
+				"start_scale": slot.get_icon_global_scale()
+			})
+	
+	# 执行回收数据逻辑
 	var indices = InventorySystem.multi_selected_indices.duplicate()
 	indices.sort()
 	indices.reverse()
@@ -604,7 +683,103 @@ func _handle_recycle_confirm() -> void:
 		InventorySystem.recycle_item(idx)
 	InventorySystem.multi_selected_indices.clear()
 	GameManager.current_ui_mode = Constants.UIMode.NORMAL
+	
+	# 播放飞入回收箱动画
+	await _play_recycle_fly_anim(recycle_tasks)
+	
 	unlock_ui("recycle")
+
+func _handle_single_item_recycle(selected_idx: int) -> void:
+	lock_ui("recycle")
+	
+	var recycle_tasks = []
+	var item: ItemInstance = null
+	
+	if selected_idx != -1:
+		# 场景1: 背包中的选中物品
+		item = InventorySystem.inventory[selected_idx]
+		if item:
+			var slot = item_slots_grid.get_node("Item Slot_root_" + str(selected_idx))
+			recycle_tasks.append({
+				"item": item,
+				"start_pos": slot.get_icon_global_position(),
+				"start_scale": slot.get_icon_global_scale()
+			})
+			InventorySystem.recycle_item(selected_idx)
+			InventorySystem.selected_slot_index = -1
+	else:
+		# 场景2: Pending 物品
+		if not InventorySystem.pending_items.is_empty():
+			item = InventorySystem.pending_item
+			# 找到源头奖池以确定起始位置
+			var pool_idx = pending_source_pool_idx
+			if pool_idx != -1:
+				var slot = lottery_slots_grid.get_node("Lottery Slot_root_" + str(pool_idx))
+				recycle_tasks.append({
+					"item": item,
+					"start_pos": slot.get_main_icon_global_position(),
+					"start_scale": slot.get_main_icon_global_scale()
+				})
+			
+			# 回收 Pending 物品 (需要 InventorySystem 支持或手动处理)
+			InventorySystem.recycle_item_instance(item)
+			InventorySystem.pending_item = null # 这会触发 pending_queue_changed
+	
+	# 播放飞入回收箱动画
+	await _play_recycle_fly_anim(recycle_tasks)
+	
+	# 如果回收的是 Pending 物品，且队列清空，需要关闭奖池盖子并刷新
+	if InventorySystem.pending_items.is_empty() and last_clicked_pool_idx != -1:
+		var pool_slot = lottery_slots_grid.get_node("Lottery Slot_root_" + str(last_clicked_pool_idx))
+		# 关闭奖池盖子
+		if pool_slot:
+			await pool_slot.play_close_sequence()
+		
+		last_clicked_pool_idx = -1
+		PoolSystem.refresh_pools()
+	
+	unlock_ui("recycle")
+
+func _play_recycle_fly_anim(tasks: Array) -> void:
+	if tasks.is_empty(): 
+		_tween_switch(recycle_switch, SWITCH_OFF_Y)
+		return
+		
+	# 找到 Switch_item_root 作为终点
+	var switch_item_root = recycle_switch.find_child("Switch_item_root", true)
+	if not switch_item_root: 
+		_tween_switch(recycle_switch, SWITCH_OFF_Y)
+		return
+		
+	var end_pos = switch_item_root.global_position
+	
+	# 收集所有飞行信号以确保全部完成
+	var fly_signals: Array[Signal] = []
+	for task in tasks:
+		var sig = spawn_fly_item(task.item.item_data.icon, task.start_pos, end_pos, task.start_scale, Vector2(0.5, 0.5))
+		fly_signals.append(sig)
+	
+	# 等待所有物品飞行到达
+	for sig in fly_signals:
+		await sig
+	
+	# 显示 switch item (可选，作为吞噬反馈)
+	switch_item_root.visible = true
+	var item_example = switch_item_root.get_node_or_null("Item_example")
+	if item_example and not tasks.is_empty():
+		item_example.texture = tasks[0].item.item_data.icon
+	
+	# 等待一小段时间后手柄下落
+	await get_tree().create_timer(0.1).timeout
+	
+	# 手柄下落
+	_tween_switch(recycle_switch, SWITCH_OFF_Y)
+	
+	# 等待手柄落下
+	await get_tree().create_timer(0.2).timeout
+	
+	# 隐藏 switch item
+	switch_item_root.visible = false
 
 func _handle_cancel() -> void:
 	if GameManager.current_ui_mode != Constants.UIMode.NORMAL:
@@ -668,17 +843,26 @@ func _on_item_added(_item: ItemInstance, index: int) -> void:
 			_vfx_scheduled = true
 			call_deferred("_process_vfx_queue")
 
-func _on_item_replaced(index: int, _new_item: ItemInstance, _old_item: ItemInstance) -> void:
+func _on_item_replaced(index: int, _new_item: ItemInstance, old_item: ItemInstance) -> void:
 	# 替换发生时，也需要飞行动画
 	# 区别在于起始时不要隐藏旧图标
 	if last_clicked_pool_idx != -1:
 		var target_slot = item_slots_grid.get_node("Item Slot_root_" + str(index))
 		target_slot.is_vfx_target = true
-		# 注意：这里不调研 hide_icon()，让旧物品保持显示
+		# 注意：这里不调用 hide_icon()，让旧物品保持显示
 		
 		var snapshot = {}
 		if not InventorySystem.pending_items.is_empty():
 			snapshot = _capture_lottery_slot_snapshot(last_clicked_pool_idx)
+		
+		# 被替换物品飞入回收箱 (fire-and-forget，不阻塞主流程)
+		if old_item:
+			var switch_item_root = recycle_switch.find_child("Switch_item_root", true)
+			if switch_item_root:
+				var end_pos = switch_item_root.global_position
+				var start_pos = target_slot.get_icon_global_position()
+				var start_scale = target_slot.get_icon_global_scale()
+				spawn_fly_item(old_item.item_data.icon, start_pos, end_pos, start_scale, Vector2(0.5, 0.5))
 			
 		_vfx_queue.append({"pool_idx": last_clicked_pool_idx, "target_idx": index, "is_replace": true, "snapshot": snapshot})
 		
