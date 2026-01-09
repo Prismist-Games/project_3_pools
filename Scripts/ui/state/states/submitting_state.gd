@@ -9,13 +9,13 @@ extends "res://scripts/ui/state/ui_state.gd"
 var controller: Node = null
 
 func enter(_payload: Dictionary = {}) -> void:
-	GameManager.current_ui_mode = Constants.UIMode.SUBMIT
+	# UI State Machine is now the source of truth
+	InventorySystem.interaction_mode = InventorySystem.InteractionMode.MULTI_SELECT
 	InventorySystem.multi_selected_indices.clear()
 
 func exit() -> void:
+	InventorySystem.interaction_mode = InventorySystem.InteractionMode.NORMAL
 	InventorySystem.multi_selected_indices.clear()
-	if GameManager.current_ui_mode == Constants.UIMode.SUBMIT:
-		GameManager.current_ui_mode = Constants.UIMode.NORMAL
 
 func can_transition_to(next_state: StringName) -> bool:
 	# 可以取消回 Idle，或者提交成功后回 Idle
@@ -57,14 +57,25 @@ func submit_order() -> void:
 				slot = controller.main_quest_slot
 			else:
 				# 普通订单：假设前4个非主线订单对应UI的1-4槽位
-				for ui_idx in range(1, 5):
-					var ui_slot = controller.quest_slots_grid.get_node_or_null("Quest Slot_root_" + str(ui_idx))
-					if ui_slot:
-						var displayed_order_idx = ui_idx - 1
-						if displayed_order_idx < OrderSystem.current_orders.size():
-							if OrderSystem.current_orders[displayed_order_idx] == order:
-								slot = ui_slot
-								break
+				# Use OrderController mapping if possible, but keep fallback
+				if controller.order_controller:
+					var ui_idx = i + 1 # Simple index map assumption (needs robust mapping)
+					# Better: Find which slot displays this order
+					# controller.order_controller.quest_slots_grid children
+					for child in controller.order_controller.quest_slots_grid.get_children():
+						if child.has_method("get_order") and child.get_order() == order:
+							slot = child
+							break
+				else:
+					for ui_idx in range(1, 5):
+						var ui_slot = controller.quest_slots_grid.get_node_or_null("Quest Slot_root_" + str(ui_idx))
+						if ui_slot:
+							# Assuming order matches index
+							var displayed_order_idx = ui_idx - 1
+							if displayed_order_idx < OrderSystem.current_orders.size():
+								if OrderSystem.current_orders[displayed_order_idx] == order:
+									slot = ui_slot
+									break
 			
 			if slot:
 				satisfying_slots.append(slot)
@@ -83,9 +94,10 @@ func submit_order() -> void:
 				anim_player.play("lid_close")
 				close_tasks.append(anim_player.animation_finished)
 	
-	# 等待所有关闭动画完成
-	for task in close_tasks:
-		await task
+	# 等待所有关闭动画完成 (Parallel wait simulation)
+	if not close_tasks.is_empty():
+		for task in close_tasks:
+			await task
 	
 	# 3. 执行提交
 	var success = OrderSystem.submit_order(-1, InventorySystem.multi_selected_indices)

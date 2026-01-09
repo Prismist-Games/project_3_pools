@@ -8,6 +8,7 @@ extends BaseSlotUI
 @onready var refresh_label: RichTextLabel = find_child("Refresh Count Label", true)
 
 var order_index: int = -1
+var is_submit_mode: bool = false
 
 func setup(index: int) -> void:
 	order_index = index
@@ -32,7 +33,10 @@ func play_refresh_anim() -> void:
 			anim_player.play("lid_open")
 			await anim_player.animation_finished
 
-func update_order_display(order_data: OrderData) -> void:
+func set_submit_mode(active: bool) -> void:
+	is_submit_mode = active
+
+func update_order_display(order_data: OrderData, req_states: Array = []) -> void:
 	if not order_data:
 		visible = false
 		return
@@ -85,12 +89,9 @@ func update_order_display(order_data: OrderData) -> void:
 	if refresh_btn:
 		refresh_btn.disabled = order_data.refresh_count <= 0
 	
-	_update_requirements(order_data.requirements)
+	_update_requirements(order_data.requirements, req_states)
 
-func _update_requirements(reqs: Array[Dictionary]) -> void:
-	var is_submit_mode = GameManager.current_ui_mode == Constants.UIMode.SUBMIT
-	var selected_indices = InventorySystem.multi_selected_indices
-	
+func _update_requirements(reqs: Array[Dictionary], req_states: Array) -> void:
 	# 适配不同名字的 Grid (Quest Slot Items Grid 或 Main Quest Slot Items Grid)
 	var grid = items_grid
 	var item_root_prefix = "Quest Slot Item_root_"
@@ -121,9 +122,11 @@ func _update_requirements(reqs: Array[Dictionary]) -> void:
 				req_sprite.modulate = Constants.get_rarity_border_color(req.get("min_rarity", 0))
 			
 			# B. 当前拥有品质 (Item_rarity)
+			var state = req_states[i] if i < req_states.size() else {}
+			var owned_max_rarity = state.get("owned_max_rarity", -1)
+			
 			var rarity_sprite = req_node.find_child("Item_rarity", true)
 			if rarity_sprite:
-				var owned_max_rarity = InventorySystem.get_max_rarity_for_item(item_id)
 				if owned_max_rarity != -1:
 					rarity_sprite.visible = true
 					rarity_sprite.modulate = Constants.get_rarity_border_color(owned_max_rarity)
@@ -133,24 +136,17 @@ func _update_requirements(reqs: Array[Dictionary]) -> void:
 			# 更新状态图标（多选时的高亮/勾选）
 			var status_sprite = req_node.find_child("Item_status", true)
 			if status_sprite:
-				var is_satisfied = false
-				if is_submit_mode:
-					for idx in selected_indices:
-						var item = InventorySystem.inventory[idx]
-						if item and item.item_data.id == item_id:
-							is_satisfied = true
-							break
+				var is_satisfied = state.get("is_selected", false)
 				
 				status_sprite.visible = is_submit_mode
 				status_sprite.texture = preload("res://assets/sprites/icons/tick_green.png") if is_satisfied else preload("res://assets/sprites/icons/tick_empty.png")
 
-			# var beam = req_node.find_child("Item_rarity_beam", true)
-			# if beam:
-			# 	beam.self_modulate = Constants.get_rarity_border_color(req.get("min_rarity", 0))
 		else:
 			req_node.visible = false
 
 func update_submission_status(status_array: Array) -> void:
+	# This method might be redundant if update_order_display handles states fully
+	# But sometimes we update just status without full refresh
 	for i in range(4):
 		var req_node = items_grid.get_node_or_null("Quest Slot Item_root_" + str(i))
 		if not req_node: continue

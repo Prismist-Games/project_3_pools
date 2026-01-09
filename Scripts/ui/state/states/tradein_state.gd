@@ -22,15 +22,12 @@ func enter(payload: Dictionary = {}) -> void:
 	if controller:
 		controller.lock_ui("trade_in")
 	
-	# 进入 REPLACE 视觉模式 (高亮背包)
-	GameManager.current_ui_mode = Constants.UIMode.REPLACE
+	# 进入 REPLACE 视觉模式 (高亮背包) - state machine now reflects 'TradeIn' state
+	pass
 
 func exit() -> void:
 	if controller:
 		controller.unlock_ui("trade_in")
-		
-	if GameManager.current_ui_mode == Constants.UIMode.REPLACE:
-		GameManager.current_ui_mode = Constants.UIMode.NORMAL
 		
 	pool_id = &""
 	on_trade_callback = Callable()

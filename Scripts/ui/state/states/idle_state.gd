@@ -6,10 +6,7 @@ extends "res://scripts/ui/state/ui_state.gd"
 ## 效果: 背包、奖池、模式开关均可交互
 
 func enter(_payload: Dictionary = {}) -> void:
-	# 确保 UI 模式同步
-	if GameManager.current_ui_mode != Constants.UIMode.NORMAL:
-		GameManager.current_ui_mode = Constants.UIMode.NORMAL
-	
+	# UI State Machine is now the source of truth for UI Mode
 	# 清理可能残留的选择状态
 	InventorySystem.multi_selected_indices.clear()
 

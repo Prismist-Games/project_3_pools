@@ -48,26 +48,17 @@ var selected_indices_for_order: Array[int]:
 		multi_selected_indices = v
 		multi_selection_changed.emit(multi_selected_indices)
 
+enum InteractionMode {NORMAL, MULTI_SELECT}
+var interaction_mode: InteractionMode = InteractionMode.NORMAL
 
 func _ready() -> void:
 	EventBus.item_obtained.connect(_on_item_obtained)
-	GameManager.ui_mode_changed.connect(_on_ui_mode_changed)
 	
 	# 如果 GameConfig 已经加载，初始化背包大小
 	# 注意：GameManager 初始化顺序可能在 InventorySystem 之后（Autoload 顺序）
 	# 所以这里不强求立即初始化，可以等待 GameManager 调用 initialize_inventory
 	if GameManager.game_config:
 		initialize_inventory(GameManager.game_config.inventory_size)
-
-func _on_ui_mode_changed(_new_mode: Constants.UIMode) -> void:
-	# 状态切换时重置所有选中状态
-	self.selected_slot_index = -1
-	self.multi_selected_indices.clear()
-	multi_selection_changed.emit(multi_selected_indices)
-	
-	# 这里额外重置一下订单选择索引，因为它也属于一种“选中状态”
-	GameManager.order_selection_index = -1
-
 
 # --- 初始化与大小管理 ---
 
@@ -118,10 +109,7 @@ func handle_slot_click(index: int) -> void:
 		
 	var target_item = inventory[index]
 	
-	# 如果处于多选模式 (订单提交 或 回收)
-	var is_multi_select_mode = GameManager.current_ui_mode == Constants.UIMode.SUBMIT or GameManager.current_ui_mode == Constants.UIMode.RECYCLE
-	
-	if is_multi_select_mode:
+	if interaction_mode == InteractionMode.MULTI_SELECT:
 		if target_item == null:
 			return # 只能选择有物品的格子
 			
@@ -131,8 +119,6 @@ func handle_slot_click(index: int) -> void:
 			multi_selected_indices.append(index)
 		
 		multi_selection_changed.emit(multi_selected_indices)
-		# 为了兼容旧 UI 监听，可能还需要通知 inventory_changed？
-		# 暂时不需要，选中状态通常是独立的。但如果 UI 是根据 inventory 重绘选中框，可能需要。
 		return
 
 	var pending = self.pending_item

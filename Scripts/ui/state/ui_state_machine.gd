@@ -110,3 +110,22 @@ func handle_input(event: InputEvent) -> bool:
 	if current_state and current_state.has_method("handle_input"):
 		return current_state.handle_input(event)
 	return false
+
+## 根据当前状态获取对应的 UIMode
+func get_ui_mode() -> Constants.UIMode:
+	if not current_state:
+		return Constants.UIMode.NORMAL
+	return get_mode_from_state(current_state.state_name)
+
+## 静态映射：状态名 -> UIMode
+func get_mode_from_state(state_name: StringName) -> Constants.UIMode:
+	match state_name:
+		&"Submitting":
+			return Constants.UIMode.SUBMIT
+		&"Recycling":
+			return Constants.UIMode.RECYCLE
+		&"TradeIn":
+			return Constants.UIMode.REPLACE
+		_:
+			# 默认为 NORMAL (Idle, Drawing, PreciseSelection, Modal, etc.)
+			return Constants.UIMode.NORMAL
