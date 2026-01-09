@@ -120,6 +120,10 @@ func _on_vfx_queue_started() -> void:
 ## VFX 队列完成回调
 func _on_vfx_queue_finished() -> void:
 	_is_vfx_processing = false
+	
+	# 如果当前处于 Drawing 状态且动画已结束，转换回 Idle
+	if state_machine and state_machine.is_in_state(&"Drawing"):
+		state_machine.transition_to(&"Idle")
 
 func _init_slots() -> void:
 	# 背包格子
@@ -436,7 +440,17 @@ func _on_lottery_slot_input(event: InputEvent, index: int) -> void:
 				_active_modal_callback.call(index)
 				return
 			if not is_ui_locked() and InventorySystem.pending_items.is_empty():
-				_handle_draw(index)
+				# 转换到 Drawing 状态并执行抽奖
+				if state_machine and state_machine.transition_to(&"Drawing", {"pool_index": index}):
+					var drawing_state = state_machine.get_state(&"Drawing")
+					if drawing_state and drawing_state.has_method("draw"):
+						await drawing_state.draw()
+					else:
+						# 降级到旧逻辑
+						_handle_draw(index)
+				else:
+					# 降级到旧逻辑
+					_handle_draw(index)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			# precise_selection 模式下不允许右键取消（强制二选一）
 			if _ui_locks.has("precise_selection"):
@@ -457,7 +471,13 @@ func _on_submit_switch_input(event: InputEvent) -> void:
 			GameManager.current_ui_mode = Constants.UIMode.SUBMIT
 			InventorySystem.multi_selected_indices.clear()
 		elif GameManager.current_ui_mode == Constants.UIMode.SUBMIT:
-			await _handle_order_submit()
+			# 调用状态类的提交方法
+			var submitting_state = state_machine.get_state(&"Submitting") if state_machine else null
+			if submitting_state and submitting_state.has_method("submit_order"):
+				await submitting_state.submit_order()
+			else:
+				# 降级到旧逻辑
+				await _handle_order_submit()
 
 func _on_recycle_switch_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -474,7 +494,13 @@ func _on_recycle_switch_input(event: InputEvent) -> void:
 				InventorySystem.multi_selected_indices.clear()
 				_update_recycle_switch_label() # 进入模式时立即刷新标签
 		elif GameManager.current_ui_mode == Constants.UIMode.RECYCLE:
-			_handle_recycle_confirm()
+			# 调用状态类的回收方法
+			var recycling_state = state_machine.get_state(&"Recycling") if state_machine else null
+			if recycling_state and recycling_state.has_method("recycle_confirm"):
+				await recycling_state.recycle_confirm()
+			else:
+				# 降级到旧逻辑
+				_handle_recycle_confirm()
 
 func _on_recycle_switch_mouse_entered() -> void:
 	if GameManager.current_ui_mode != Constants.UIMode.NORMAL: return

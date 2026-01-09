@@ -32,13 +32,34 @@ func _ready() -> void:
 	state_machine.force_set_state(&"Idle")
 
 func _register_states() -> void:
-	state_machine.register_state(&"Idle", IdleState.new())
-	state_machine.register_state(&"Drawing", DrawingState.new())
-	state_machine.register_state(&"Replacing", ReplacingState.new())
-	state_machine.register_state(&"PreciseSelection", PreciseSelectionState.new())
-	state_machine.register_state(&"Submitting", SubmittingState.new())
-	state_machine.register_state(&"Recycling", RecyclingState.new())
-	state_machine.register_state(&"TradeIn", TradeInState.new())
-	state_machine.register_state(&"Modal", ModalState.new())
+	var controller = get_parent()
+	
+	var idle_state = IdleState.new()
+	state_machine.register_state(&"Idle", idle_state)
+	
+	var drawing_state = DrawingState.new()
+	drawing_state.controller = controller
+	state_machine.register_state(&"Drawing", drawing_state)
+	
+	var replacing_state = ReplacingState.new()
+	replacing_state.controller = controller
+	state_machine.register_state(&"Replacing", replacing_state)
+	
+	var precise_state = PreciseSelectionState.new()
+	state_machine.register_state(&"PreciseSelection", precise_state)
+	
+	var submitting_state = SubmittingState.new()
+	submitting_state.controller = controller
+	state_machine.register_state(&"Submitting", submitting_state)
+	
+	var recycling_state = RecyclingState.new()
+	recycling_state.controller = controller
+	state_machine.register_state(&"Recycling", recycling_state)
+	
+	var tradein_state = TradeInState.new()
+	state_machine.register_state(&"TradeIn", tradein_state)
+	
+	var modal_state = ModalState.new()
+	state_machine.register_state(&"Modal", modal_state)
 	
 	print("[UIStateInitializer] 已注册 %d 个状态" % state_machine._states.size())
