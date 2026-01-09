@@ -1,4 +1,4 @@
-[gd_scene load_steps=110 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=117 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
 [ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
@@ -97,7 +97,11 @@
 [ext_resource type="Texture2D" uid="uid://ctkkq7iwtmubj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_3.png" id="94_i65o3"]
 [ext_resource type="Texture2D" uid="uid://dfn54hrs485jj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_4.png" id="95_bttk6"]
 [ext_resource type="Texture2D" uid="uid://da0ig7cexq40g" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_5.png" id="96_jf2x3"]
+[ext_resource type="Texture2D" uid="uid://wu4k3jwrgfaj" path="res://assets/sprites/frames/dialog.png" id="101_6kw3k"]
 [ext_resource type="Texture2D" uid="uid://csk65f0qvtg84" path="res://assets/sprites/frames/5_choose_1.png" id="101_8ocj1"]
+[ext_resource type="Texture2D" uid="uid://51nvb4xvrn1c" path="res://assets/sprites/icons/items/antique_cup.PNG" id="102_jdak2"]
+[ext_resource type="Texture2D" uid="uid://ue7e5frhr0kh" path="res://assets/sprites/frames/mini.png" id="102_u4yck"]
+[ext_resource type="Texture2D" uid="uid://djaip0chmnewr" path="res://assets/sprites/frames/popup.png" id="103_otpb1"]
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/game_2d_ui.gd" id="110_ui"]
 [ext_resource type="Script" uid="uid://blxunu142eonv" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
 [ext_resource type="Script" uid="uid://dceb57gqrmaik" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
@@ -201,6 +205,62 @@ _data = {
 &"RESET": SubResource("Animation_8ocj1"),
 &"lid_close": SubResource("Animation_jdak2"),
 &"lid_open": SubResource("Animation_jufyi")
+}
+
+[sub_resource type="Animation" id="Animation_otpb1"]
+resource_name = "popup_in"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Popup_mini:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(2, 0),
+"points": PackedFloat32Array(-614, -0.25242105, -8.511814, 0.1, 3.3720703, -1547, -0.13333334, 64.79761, 0, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Popup:position:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(1, 0, 2),
+"points": PackedFloat32Array(-6033, 0, 0, 0, 0, -6033, 0, 0, 0.06666667, 376.00003, -764, -0.3, -465.2213, 0, 0),
+"times": PackedFloat32Array(0, 0.40000004, 0.90000004)
+}
+
+[sub_resource type="Animation" id="Animation_017ef"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Popup_mini:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(2),
+"points": PackedFloat32Array(-614, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Popup:position:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-3777, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_u8s40"]
+_data = {
+&"RESET": SubResource("Animation_017ef"),
+&"popup_in": SubResource("Animation_otpb1")
 }
 
 [node name="Game2D" type="Control"]
@@ -579,9 +639,118 @@ texture = ExtResource("5_0dgko")
 [node name="TheMachineLegacyOutline" type="Sprite2D" parent="The Machine/TheMachineLegacyFill"]
 texture = ExtResource("6_2v31b")
 
-[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill"]
-position = Vector2(-924, -31)
+[node name="Legacy Grid" type="HBoxContainer" parent="The Machine/TheMachineLegacyFill"]
+offset_left = -1007.25
+offset_top = -55.0
+offset_right = -967.25
+offset_bottom = -15.0
+theme_override_constants/separation = 489
+
+[node name="Star Legacy Root_0" type="Control" parent="The Machine/TheMachineLegacyFill/Legacy Grid"]
+layout_mode = 2
+
+[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_0"]
+self_modulate = Color(0.61960787, 0.9137255, 0.40392157, 1)
+position = Vector2(40, 23)
+scale = Vector2(0.9, 0.9)
 texture = ExtResource("25_ue141")
+
+[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_0"]
+layout_mode = 0
+offset_left = 99.0
+offset_top = -19.0
+offset_right = 363.0
+offset_bottom = 63.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 66
+text = "+ 10%"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="Star Legacy Root_1" type="Control" parent="The Machine/TheMachineLegacyFill/Legacy Grid"]
+layout_mode = 2
+
+[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_1"]
+self_modulate = Color(0, 0.6509804, 1, 1)
+position = Vector2(40, 23)
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("25_ue141")
+
+[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_1"]
+layout_mode = 0
+offset_left = 99.0
+offset_top = -19.0
+offset_right = 363.0
+offset_bottom = 63.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 66
+text = "+ 20%"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="Star Legacy Root_2" type="Control" parent="The Machine/TheMachineLegacyFill/Legacy Grid"]
+layout_mode = 2
+
+[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_2"]
+self_modulate = Color(0.43638366, 0.23866898, 1, 1)
+position = Vector2(40, 23)
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("25_ue141")
+
+[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_2"]
+layout_mode = 0
+offset_left = 99.0
+offset_top = -19.0
+offset_right = 363.0
+offset_bottom = 63.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 66
+text = "+ 40%"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="Star Legacy Root_3" type="Control" parent="The Machine/TheMachineLegacyFill/Legacy Grid"]
+layout_mode = 2
+
+[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_3"]
+self_modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+position = Vector2(40, 23)
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("25_ue141")
+
+[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_3"]
+layout_mode = 0
+offset_left = 99.0
+offset_top = -19.0
+offset_right = 363.0
+offset_bottom = 63.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 66
+text = "+ 100
+%"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="Star Legacy Root_4" type="Control" parent="The Machine/TheMachineLegacyFill/Legacy Grid"]
+layout_mode = 2
+
+[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_4"]
+self_modulate = Color(0.8980392, 0.3647059, 0.3372549, 1)
+position = Vector2(40, 23)
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("25_ue141")
+
+[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_4"]
+layout_mode = 0
+offset_left = 99.0
+offset_top = -19.0
+offset_right = 363.0
+offset_bottom = 63.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 66
+text = "+ 150%"
+scroll_active = false
+vertical_alignment = 1
 
 [node name="Item Slots Grid" type="GridContainer" parent="The Machine"]
 offset_left = -468.25
@@ -1530,6 +1699,10 @@ offset_top = 379.25
 offset_right = 778.5
 offset_bottom = 616.25
 
+[node name="Popup_mini" type="Sprite2D" parent="The Rabbit"]
+position = Vector2(-614, 0)
+texture = ExtResource("102_u4yck")
+
 [node name="Quest Slots Grid" type="VBoxContainer" parent="The Rabbit"]
 offset_left = -185.0
 offset_top = 584.0
@@ -2442,10 +2615,6 @@ texture = ExtResource("88_yytn1")
 position = Vector2(168, -718)
 texture = ExtResource("70_u4yck")
 
-[node name="TheRabbitLeftEyeOutline" type="Sprite2D" parent="The Rabbit/TheRabbitLeftEyeFill"]
-self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
-texture = ExtResource("71_otpb1")
-
 [node name="TheRabbitLeftEyeballFill" type="Sprite2D" parent="The Rabbit/TheRabbitLeftEyeFill"]
 self_modulate = Color(0.20392157, 0.20392157, 0.20392157, 1)
 position = Vector2(40, -6)
@@ -2454,6 +2623,10 @@ texture = ExtResource("68_jdak2")
 [node name="TheRabbitLeftEyeballOutline" type="Sprite2D" parent="The Rabbit/TheRabbitLeftEyeFill/TheRabbitLeftEyeballFill"]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 texture = ExtResource("69_6kw3k")
+
+[node name="TheRabbitLeftEyeOutline" type="Sprite2D" parent="The Rabbit/TheRabbitLeftEyeFill"]
+self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+texture = ExtResource("71_otpb1")
 
 [node name="TheRabbitRightEyeFill" type="Sprite2D" parent="The Rabbit"]
 position = Vector2(-347, -719)
@@ -2593,6 +2766,57 @@ libraries = {
 &"": SubResource("AnimationLibrary_jdak2")
 }
 
+[node name="Dialog Box" type="Sprite2D" parent="The Rabbit"]
+position = Vector2(-1093, 577.75)
+texture = ExtResource("101_6kw3k")
+offset = Vector2(1035, 366)
+
+[node name="Dialog Label" type="RichTextLabel" parent="The Rabbit/Dialog Box"]
+offset_left = -194.0
+offset_top = 206.0
+offset_right = 2257.0
+offset_bottom = 731.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 125
+bbcode_enabled = true
+text = "asdofiasdflahjksd;lfj la;sdkfjlasdkjflkg lkfdgjdfklgd gdfjg klg dflgj dfg lkdfgj ldfkgj lkdf dflk jsdl jsdfl sdj fjweorjw woe rjeoir jweor  ioj weor oiwj e"
+scroll_active = false
+
+[node name="Popup" type="NinePatchRect" parent="The Rabbit"]
+offset_left = -3777.0
+offset_top = -795.25
+offset_right = 759.0
+offset_bottom = 114.75
+texture = ExtResource("103_otpb1")
+patch_margin_left = 100
+patch_margin_top = 100
+patch_margin_right = 100
+patch_margin_bottom = 100
+
+[node name="Popup Label" type="RichTextLabel" parent="The Rabbit/Popup"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2050.0
+offset_top = -360.5
+offset_right = 2050.0
+offset_bottom = 360.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 125
+bbcode_enabled = true
+text = "asdofiasdflahjksd;lfj la;sdkfjlasdkjflkg lkfdgjdfklgd gdfjg klg dflgj dfg lkdfgj ldfkgj lkdf dflk jsdl jsdfl sdj fjweorjw woe rjeoir jweor  ioj weor oiwj e"
+scroll_active = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit"]
+libraries = {
+&"": SubResource("AnimationLibrary_u8s40")
+}
+
 [node name="5 Choose 1" type="Sprite2D" parent="."]
 visible = false
 position = Vector2(1334, 2384)
@@ -2603,6 +2827,77 @@ offset_left = -1111.0
 offset_top = -1291.0
 offset_right = -794.0
 offset_bottom = -987.0
+theme_override_constants/separation = 485
+
+[node name="Item Choice Root_0" type="Control" parent="5 Choose 1/Item Choice Grid"]
+layout_mode = 2
+
+[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_0"]
+position = Vector2(157, 134)
+texture = ExtResource("102_jdak2")
+
+[node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_0"]
+anchors_preset = 0
+offset_left = -6.0
+offset_top = -2.0
+offset_right = 319.0
+offset_bottom = 306.0
+
+[node name="Item Choice Root_1" type="Control" parent="5 Choose 1/Item Choice Grid"]
+layout_mode = 2
+
+[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_1"]
+position = Vector2(157, 134)
+texture = ExtResource("102_jdak2")
+
+[node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_1"]
+anchors_preset = 0
+offset_left = -6.0
+offset_top = -2.0
+offset_right = 319.0
+offset_bottom = 306.0
+
+[node name="Item Choice Root_2" type="Control" parent="5 Choose 1/Item Choice Grid"]
+layout_mode = 2
+
+[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_2"]
+position = Vector2(157, 134)
+texture = ExtResource("102_jdak2")
+
+[node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_2"]
+anchors_preset = 0
+offset_left = -6.0
+offset_top = -2.0
+offset_right = 319.0
+offset_bottom = 306.0
+
+[node name="Item Choice Root_3" type="Control" parent="5 Choose 1/Item Choice Grid"]
+layout_mode = 2
+
+[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_3"]
+position = Vector2(157, 134)
+texture = ExtResource("102_jdak2")
+
+[node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_3"]
+anchors_preset = 0
+offset_left = -6.0
+offset_top = -2.0
+offset_right = 319.0
+offset_bottom = 306.0
+
+[node name="Item Choice Root_4" type="Control" parent="5 Choose 1/Item Choice Grid"]
+layout_mode = 2
+
+[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_4"]
+position = Vector2(157, 134)
+texture = ExtResource("102_jdak2")
+
+[node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_4"]
+anchors_preset = 0
+offset_left = -6.0
+offset_top = -2.0
+offset_right = 319.0
+offset_bottom = 306.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(2998, 1689)
