@@ -122,9 +122,9 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 	
 	if target_slot_node:
 		target_slot_node.is_vfx_target = true
-		# 只有在非替换模式下才隐藏原图标
-		if not task.get("is_replace", false):
-			target_slot_node.hide_icon()
+		# 统一隐藏原图标，腾出位置给飞行 sprite。
+		# 此前替换模式（is_replace）不隐藏会导致新旧物品在飞行过程中重叠。
+		target_slot_node.hide_icon()
 	
 	# 创建飞行精灵
 	var fly_sprite = _create_fly_sprite(item, start_pos, start_scale)

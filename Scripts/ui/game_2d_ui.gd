@@ -147,23 +147,9 @@ func _on_vfx_queue_finished() -> void:
 	if state_machine:
 		var current_state = state_machine.get_current_state_name()
 		if current_state == &"Drawing" or current_state == &"Replacing":
-			# 如果 pending_items 已全部处理完，则关盖归位
+			# 如果动画播放完毕且没有待处理物品，则尝试返回 Idle 状态
+			# 注意：具体的关盖和刷新逻辑已移至 DrawingState/ReplacingState 的 exit() 中
 			if InventorySystem.pending_items.is_empty():
-				var pool_idx = -1
-				if current_state == &"Drawing":
-					pool_idx = state_machine.get_state(&"Drawing").pool_index
-				else:
-					pool_idx = state_machine.get_state(&"Replacing").source_pool_index
-				
-				if pool_idx != -1:
-					var slot = lottery_slots_grid.get_node_or_null("Lottery Slot_root_" + str(pool_idx))
-					if slot and slot.has_method("play_close_sequence"):
-						await slot.play_close_sequence()
-					
-					PoolSystem.refresh_pools()
-					last_clicked_pool_idx = -1
-					pending_source_pool_idx = -1
-				
 				state_machine.transition_to(&"Idle")
 
 func _refresh_all() -> void:
@@ -478,6 +464,7 @@ func _on_item_replaced(index: int, _new_item: ItemInstance, old_item: ItemInstan
 				"start_pos": target_pos,
 				"start_scale": target_scale,
 				"target_pos": recycle_pos,
+				"source_slot_node": target_slot_node,
 				"on_complete": func(): pass # No specific callback needed
 			})
 			
