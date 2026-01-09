@@ -41,6 +41,7 @@ var pending_source_pool_idx: int = -1
 
 # VFX 队列管理
 var _is_vfx_processing: bool = false
+var _last_merge_target_idx: int = -1 # 跟踪最近一次合并的目标索引，用于在 item_moved 信号中识别合并状态
 
 func _ready() -> void:
 	self.theme = game_theme
@@ -403,6 +404,9 @@ func _on_item_moved(source_idx: int, target_idx: int) -> void:
 	if source_node: source_node.is_vfx_target = true
 	if target_node: target_node.is_vfx_target = true
 	
+	var is_merge = (_last_merge_target_idx == target_idx)
+	_last_merge_target_idx = -1
+	
 	if vfx_manager:
 		vfx_manager.enqueue({
 			"type": "generic_fly",
@@ -411,6 +415,7 @@ func _on_item_moved(source_idx: int, target_idx: int) -> void:
 			"end_pos": inventory_controller.get_slot_global_position(target_idx),
 			"source_slot_node": source_node,
 			"target_slot_node": target_node,
+			"is_merge": is_merge,
 			"on_complete": func(): _on_inventory_changed(InventorySystem.inventory)
 		})
 
@@ -427,17 +432,29 @@ func _on_item_added(_item: ItemInstance, index: int) -> void:
 		if target_slot_node and target_slot_node.has_method("set_temp_hidden"):
 			target_slot_node.hide_icon()
 			target_slot_node.set_temp_hidden(true)
-			
-		var pending_count = InventorySystem.pending_items.size()
+		
+		# 核心逻辑修复：正确计算飞行起始位置
+		# 思路：追踪已经飞走了多少个物品，来决定当前物品应从哪个视觉位置飞出
+		# - 第 0 个飞走的 -> 从 item_main 飞出
+		# - 第 1 个飞走的 -> 从 item_queue_1 飞出
+		# - 第 2 个飞走的 -> 从 item_queue_2 飞出
+		# 使用 VFX 队列中已有的 fly_to_inventory 任务数来推断已飞走多少
+		var fly_tasks_in_queue = 0
+		if vfx_manager:
+			for task in vfx_manager._queue:
+				if task.get("type") == "fly_to_inventory" and task.get("source_lottery_slot") == pool_slot:
+					fly_tasks_in_queue += 1
+		
 		var start_pos = pool_slot.get_main_icon_global_position()
 		var start_scale = pool_slot.get_main_icon_global_scale()
 		
-		if pending_count == 1:
-			if pool_slot.item_queue_1 and pool_slot.item_queue_1.visible:
+		# 根据队列中已有的任务数决定起始节点
+		if fly_tasks_in_queue == 1:
+			if pool_slot.item_queue_1:
 				start_pos = pool_slot.item_queue_1.global_position
 				start_scale = pool_slot.item_queue_1.global_scale
-		elif pending_count == 0:
-			if pool_slot.item_queue_2 and pool_slot.item_queue_2.visible:
+		elif fly_tasks_in_queue >= 2:
+			if pool_slot.item_queue_2:
 				start_pos = pool_slot.item_queue_2.global_position
 				start_scale = pool_slot.item_queue_2.global_scale
 		
@@ -478,15 +495,25 @@ func _on_item_replaced(index: int, _new_item: ItemInstance, old_item: ItemInstan
 				"source_slot_node": target_slot_node,
 				"on_complete": func(): pass # No specific callback needed
 			})
-			
-		var pending_count = InventorySystem.pending_items.size()
+		
+		# 核心逻辑修复：正确计算飞行起始位置（同 _on_item_added）
+		var fly_tasks_in_queue = 0
+		if vfx_manager:
+			for task in vfx_manager._queue:
+				var task_type = task.get("type", "")
+				if (task_type == "fly_to_inventory" or task_type == "fly_to_recycle") and task.get("source_lottery_slot") == pool_slot:
+					fly_tasks_in_queue += 1
+		
 		var start_pos = pool_slot.get_main_icon_global_position()
 		var start_scale = pool_slot.get_main_icon_global_scale()
 		
-		if pending_count == 1 and pool_slot.item_queue_1.visible:
+		# 根据队列中已有的任务数决定起始节点
+		# 注意：替换模式下，队列中可能已有一个 fly_to_recycle 任务
+		# 所以 fly_tasks_in_queue == 1 时，是第二个物品，应从 queue_1 出发
+		if fly_tasks_in_queue == 1 and pool_slot.item_queue_1:
 			start_pos = pool_slot.item_queue_1.global_position
 			start_scale = pool_slot.item_queue_1.global_scale
-		elif pending_count == 0 and pool_slot.item_queue_2.visible:
+		elif fly_tasks_in_queue >= 2 and pool_slot.item_queue_2:
 			start_pos = pool_slot.item_queue_2.global_position
 			start_scale = pool_slot.item_queue_2.global_scale
 			
@@ -499,6 +526,7 @@ func _on_item_replaced(index: int, _new_item: ItemInstance, old_item: ItemInstan
 			"target_scale": target_scale,
 			"target_slot_node": target_slot_node,
 			"is_replace": true,
+			"is_merge": old_item == null, # 如果 old_item 是 null，说明是从 _on_item_merged 调过来的，也就是合并
 			"source_lottery_slot": pool_slot,
 			"on_complete": func(): _on_inventory_changed(InventorySystem.inventory)
 		}
@@ -508,7 +536,15 @@ func _on_item_replaced(index: int, _new_item: ItemInstance, old_item: ItemInstan
 			_update_ui_mode_display()
 		
 func _on_item_merged(index: int, _new_item: ItemInstance, _target_item: ItemInstance) -> void:
-	_on_item_replaced(index, _new_item, null)
+	# 记录合并目标，供随后的信号（如 item_moved）使用
+	_last_merge_target_idx = index
+	
+	# 如果有待定项，说明是从奖池发起的合并，需要触发 pool -> inventory 的飞行
+	if not InventorySystem.pending_items.is_empty():
+		_on_item_replaced(index, _new_item, null)
+		# 奖池发起的合并不会触发 item_moved，所以直接重置标记，防止污染后续可能的移动操作
+		_last_merge_target_idx = -1
+	# 如果是背包内部合并，不需要在这里触发动画，因为随后会收到 item_moved 信号并由其触发 generic_fly
 
 func _on_item_swapped(idx1: int, idx2: int) -> void:
 	# 由于信号是在 InventorySystem 数据交换后发出的：

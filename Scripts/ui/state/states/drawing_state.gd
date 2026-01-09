@@ -40,7 +40,7 @@ func exit() -> void:
 			PoolSystem.refresh_pools()
 			# 异步执行动画，不阻塞 exit
 			controller.pool_controller.play_all_refresh_animations(
-				PoolSystem.current_pools, 
+				PoolSystem.current_pools,
 				pool_index
 			)
 		else:
@@ -134,9 +134,12 @@ func draw() -> void:
 	# 如果没有任何物品进入背包（比如全部进入了待定队列，或者被词缀拦截进入了 modal）
 	# 我们需要在这里手动处理解锁，否则 UI 会卡死
 	# 无论如何，一定要播放揭示动画（打开盖子）
-	var display_items = InventorySystem.pending_items.duplicate()
+	# 关键修复：总是优先显示 captured_items (本次抽奖产生的所有物品)，
+	# 而不是 pending_items。因为已进入背包的物品也需要先在 Slot 里显示出来，
+	# 然后通过 VFX 队列模拟飞入背包的过程。
+	var display_items = captured_items
 	if display_items.is_empty():
-		display_items = captured_items
+		display_items = InventorySystem.pending_items.duplicate()
 	
 	# 如果 pending 为空，说明物品可能已经进背包了（VFX 正在播，但由于我们暂停了，它们还没动）
 	# 我们仍然开启盖子以显示内部或仅仅作为状态转换的视觉停留

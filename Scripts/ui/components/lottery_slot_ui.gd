@@ -353,7 +353,13 @@ func play_queue_advance_anim() -> void:
 	var duration = 0.3
 	var tw = create_tween().set_parallel(true)
 	
-	if item_queue_1.visible:
+	# 捕获动画前的 texture 和状态（防止动画期间数据变化导致的竞态条件）
+	var q1_texture = item_queue_1.texture if item_queue_1.visible else null
+	var q2_texture = item_queue_2.texture if item_queue_2.visible else null
+	var had_q1 = item_queue_1.visible
+	var had_q2 = item_queue_2.visible
+	
+	if had_q1:
 		var q1_pos = item_queue_1.position
 		var main_pos = item_main.position
 		var q1_scale = item_queue_1.scale
@@ -363,27 +369,46 @@ func play_queue_advance_anim() -> void:
 		tw.tween_property(item_queue_1, "position", main_pos, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		tw.tween_property(item_queue_1, "scale", main_scale, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		
-		if item_queue_2.visible:
+		if had_q2:
 			tw.tween_property(item_queue_2, "position", q1_pos, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 			tw.tween_property(item_queue_2, "scale", q1_scale, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		
 		await tw.finished
 		
-		# 复位位置
-		item_queue_1.position = q1_pos
-		item_queue_1.scale = q1_scale
-		item_queue_2.position = item_queue_1.position
-		_reset_item_transforms()
+		# 动画结束后：手动执行"前进"操作
+		# 1. main <- queue_1 的 texture
+		# 2. queue_1 <- queue_2 的 texture (如果有)
+		# 3. queue_2 隐藏
 		
-		# 关键修复：动画结束后，立即同步当前 pending_items 的显示
-		# 这确保 texture 与逻辑状态一致
-		# BUT we need to know what to update from...
-		# Rely on Controller to call update_pending_display??
-		# Or rely on global InventorySystem.pending_items? 
-		# If we want to be pure, we should emit signal "anim_finished" and let controller update.
-		# For now, practical approach:
-		if not InventorySystem.pending_items.is_empty():
-			update_queue_display(InventorySystem.pending_items)
+		# 恢复各节点到初始位置/缩放
+		_reset_item_transforms()
+		item_queue_1.position = _initial_transforms[item_queue_1]["pos"]
+		item_queue_1.scale = _initial_transforms[item_queue_1]["scale"]
+		item_queue_2.position = _initial_transforms[item_queue_2]["pos"]
+		item_queue_2.scale = _initial_transforms[item_queue_2]["scale"]
+		
+		# 更新 texture（基于动画开始时捕获的状态）
+		item_main.texture = q1_texture
+		item_main.visible = q1_texture != null
+		item_main_shadow.visible = q1_texture != null
+		
+		if had_q2:
+			item_queue_1.texture = q2_texture
+			item_queue_1.visible = q2_texture != null
+			item_queue_1_shadow.visible = q2_texture != null
+		else:
+			item_queue_1.texture = null
+			item_queue_1.visible = false
+			item_queue_1_shadow.visible = false
+		
+		# queue_2 总是被前移或清空
+		item_queue_2.texture = null
+		item_queue_2.visible = false
+		item_queue_2_shadow.visible = false
+		
+		# 更新背景颜色 (如果 main 仍有物品，保持当前颜色；否则重置)
+		if not item_main.visible and backgrounds:
+			backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
 
 func open_lid() -> void:
 	if anim_player.has_animation("lid_open"):

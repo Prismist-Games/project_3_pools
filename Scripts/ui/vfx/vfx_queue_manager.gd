@@ -173,9 +173,10 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 	
 	if target_slot_node:
 		target_slot_node.is_vfx_target = true
-		# 统一隐藏原图标，腾出位置给飞行 sprite。
-		# 此前替换模式（is_replace）不隐藏会导致新旧物品在飞行过程中重叠。
-		target_slot_node.hide_icon()
+		# 如果是合并，则不隐藏原本的图标，直到飞行物到达。
+		# 如果是普通移入或替换，则隐藏原图标。
+		if not task.get("is_merge", false):
+			target_slot_node.hide_icon()
 	
 	# 创建飞行精灵
 	var fly_sprite = _create_fly_sprite(item, start_pos, start_scale)
@@ -264,7 +265,8 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 	if source_lottery_slot:
 		if source_lottery_slot.get("is_vfx_source") != null:
 			source_lottery_slot.is_vfx_source = false
-		if source_lottery_slot.has_method("show_main_icon"):
+		# 只有当 item_main 还有 texture 时才显示，防止回收最后一个物品后闪现空图标
+		if source_lottery_slot.has_method("show_main_icon") and source_lottery_slot.item_main.texture != null:
 			source_lottery_slot.show_main_icon()
 
 ## 执行合成动画
@@ -290,7 +292,9 @@ func _execute_generic_fly(task: Dictionary) -> void:
 		source_node.hide_icon()
 	if target_node:
 		target_node.is_vfx_target = true
-		target_node.hide_icon()
+		# 如果是合并（由 _on_item_moved 传入），则不隐藏目标格图标
+		if not task.get("is_merge", false):
+			target_node.hide_icon()
 		
 	var sprite = _create_fly_sprite(item, start_pos, start_scale)
 	var tween = create_tween().set_parallel(true)
