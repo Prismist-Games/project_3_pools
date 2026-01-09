@@ -20,6 +20,22 @@ func enter(payload: Dictionary = {}) -> void:
 	is_draw_complete = false
 
 func exit() -> void:
+	# 关键修复：统一在退出时根据情况处理奖池关盖
+	# 如果 pending_items 为空，说明这是一次完整的“抽奖并直接放入口袋”或者抽奖失败的流程
+	# 如果不为空，说明正在跳转到 Replacing 状态，不应在此处关盖
+	if controller and pool_index != -1 and InventorySystem.pending_items.is_empty():
+		var slot = controller.lottery_slots_grid.get_node_or_null("Lottery Slot_root_" + str(pool_index))
+		if slot:
+			if slot.has_method("play_close_sequence"):
+				# 注意：虽然 exit 不会被 await，但 play_close_sequence 内部会处理完动画逻辑
+				slot.play_close_sequence()
+			else:
+				slot.close_lid()
+		
+		PoolSystem.refresh_pools()
+		controller.last_clicked_pool_idx = -1
+		controller.pending_source_pool_idx = -1
+		
 	if controller:
 		controller.unlock_ui("draw")
 	pool_index = -1
@@ -107,18 +123,10 @@ func draw() -> void:
 		mark_complete()
 		machine.transition_to(&"Replacing", {"source_pool_index": pool_index})
 	else:
+		# 标记完成即可，具体解锁和归位由 exit() 或 _on_vfx_queue_finished 触发的 transition 处理
+		mark_complete()
+		
 		# 检查是否还有正在播放的 VFX
-		if controller._is_vfx_processing or controller.vfx_manager.is_busy():
-			# 标记完成即可，具体解锁和归位由游戏主控制器的 _on_vfx_queue_finished 处理
-			mark_complete()
-		else:
+		if not (controller._is_vfx_processing or controller.vfx_manager.is_busy()):
 			# 没有任何异步任务在运行，直接归位
-			mark_complete()
-			
-			if slot.has_method("play_close_sequence"):
-				await slot.play_close_sequence()
-			
-			# 盖子关上后再刷新逻辑数据
-			PoolSystem.refresh_pools()
-			
 			machine.transition_to(&"Idle")

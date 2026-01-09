@@ -42,10 +42,14 @@ func get_icon_global_scale() -> Vector2:
 func hide_icon() -> void:
 	icon_display.visible = false
 	if item_shadow: item_shadow.visible = false
+	if status_icon: status_icon.visible = false
 
 func show_icon() -> void:
 	icon_display.visible = true
 	if item_shadow: item_shadow.visible = true
+	# 注意：status_icon 的具体显示由 update_status_badge 的逻辑状态决定
+	# 这里只是确保它不会在 hide_icon 后保持幽灵显示
+	# 在落地刷新时，update_display 会触发 controller 重新设置 badge 状态
 
 ## 临时隐藏标记（用于防止 update_display 在 VFX 前刷新出来）
 var _temp_hide_until_vfx: bool = false
@@ -189,6 +193,7 @@ func _animate_selection(active: bool) -> void:
 			item_shadow.visible = true
 
 func update_status_badge(badge_state: int) -> void:
+	if is_vfx_target: return # 飞行中锁定状态图标，防止提前出现
 	if not status_icon: return
 	
 	match badge_state:

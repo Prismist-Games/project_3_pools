@@ -83,15 +83,45 @@ func _process_queue() -> void:
 	queue_started.emit()
 	
 	while not _queue.is_empty():
-		var task = _queue.pop_front()
+		var task = _queue.front()
+		
+		# 检查是否为回收任务，如果是则尝试并行处理
+		if task.get("type", "") == "fly_to_recycle":
+			var parallel_tasks = []
+			# 连续收集所有回收任务
+			while not _queue.is_empty() and _queue.front().get("type", "") == "fly_to_recycle":
+				parallel_tasks.append(_queue.pop_front())
+			
+			# 并行执行所有回收动画
+			# 使用 Dictionary 包装计数器，以便 lambda 能够修改它
+			var counter = {"count": parallel_tasks.size()}
+			for p_task in parallel_tasks:
+				task_started.emit(p_task)
+				# 启动并行支流协程
+				var run_task = func(t, c):
+					await _execute_fly_to_recycle(t)
+					c["count"] -= 1
+				run_task.call(p_task, counter)
+			
+			# 等待所有动画协程完成
+			while counter["count"] > 0:
+				await get_tree().process_frame
+			
+			# 统一执行完成回调
+			for p_task in parallel_tasks:
+				task_finished.emit(p_task)
+				var on_complete_fn = p_task.get("on_complete")
+				if on_complete_fn is Callable and on_complete_fn.is_valid():
+					on_complete_fn.call()
+			continue
+		
+		_queue.pop_front() # 非并行任务出队
 		task_started.emit(task)
 		
 		# 根据任务类型执行对应动画
 		match task.get("type", ""):
 			"fly_to_inventory":
 				await _execute_fly_to_inventory(task)
-			"fly_to_recycle":
-				await _execute_fly_to_recycle(task)
 			"merge":
 				await _execute_merge(task)
 			"generic_fly":
@@ -122,9 +152,9 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 	
 	if target_slot_node:
 		target_slot_node.is_vfx_target = true
-		# 只有在非替换模式下才隐藏原图标
-		if not task.get("is_replace", false):
-			target_slot_node.hide_icon()
+		# 统一隐藏原图标，腾出位置给飞行 sprite。
+		# 此前替换模式（is_replace）不隐藏会导致新旧物品在飞行过程中重叠。
+		target_slot_node.hide_icon()
 	
 	# 创建飞行精灵
 	var fly_sprite = _create_fly_sprite(item, start_pos, start_scale)
