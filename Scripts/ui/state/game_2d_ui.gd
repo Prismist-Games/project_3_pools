@@ -42,6 +42,7 @@ var pending_source_pool_idx: int = -1
 # VFX 队列管理
 var _is_vfx_processing: bool = false
 var _last_merge_target_idx: int = -1 # 跟踪最近一次合并的目标索引，用于在 item_moved 信号中识别合并状态
+var _is_mouse_on_recycle_switch: bool = false # 跟踪鼠标是否在回收开关上
 
 func _ready() -> void:
 	self.theme = game_theme
@@ -155,6 +156,13 @@ func _on_vfx_queue_finished() -> void:
 			# 注意：具体的关盖和刷新逻辑已移至各状态的 exit() 或同步函数中
 			if InventorySystem.pending_items.is_empty():
 				state_machine.transition_to(&"Idle")
+			else:
+				# 如果还有待处理物品且鼠标仍在回收开关上，重新打开盖子
+				if _is_mouse_on_recycle_switch:
+					var item = InventorySystem.pending_items[0]
+					if item:
+						var value = Constants.rarity_recycle_value(item.rarity)
+						switch_controller.show_recycle_preview(value)
 
 func _refresh_all() -> void:
 	_on_gold_changed(GameManager.gold)
@@ -290,6 +298,8 @@ func _on_item_slot_mouse_exited(_index: int) -> void:
 		switch_controller.hide_recycle_preview()
 
 func _on_recycle_switch_mouse_entered() -> void:
+	_is_mouse_on_recycle_switch = true
+	
 	if not state_machine or state_machine.get_ui_mode() != Constants.UIMode.NORMAL: return
 	
 	var selected_idx = InventorySystem.selected_slot_index
@@ -306,6 +316,7 @@ func _on_recycle_switch_mouse_entered() -> void:
 		switch_controller.show_recycle_preview(value)
 
 func _on_recycle_switch_mouse_exited() -> void:
+	_is_mouse_on_recycle_switch = false
 	_update_ui_mode_display()
 
 func _on_selection_changed(index: int) -> void:
@@ -433,30 +444,8 @@ func _on_item_added(_item: ItemInstance, index: int) -> void:
 			target_slot_node.hide_icon()
 			target_slot_node.set_temp_hidden(true)
 		
-		# 核心逻辑修复：正确计算飞行起始位置
-		# 思路：追踪已经飞走了多少个物品，来决定当前物品应从哪个视觉位置飞出
-		# - 第 0 个飞走的 -> 从 item_main 飞出
-		# - 第 1 个飞走的 -> 从 item_queue_1 飞出
-		# - 第 2 个飞走的 -> 从 item_queue_2 飞出
-		# 使用 VFX 队列中已有的 fly_to_inventory 任务数来推断已飞走多少
-		var fly_tasks_in_queue = 0
-		if vfx_manager:
-			for task in vfx_manager._queue:
-				if task.get("type") == "fly_to_inventory" and task.get("source_lottery_slot") == pool_slot:
-					fly_tasks_in_queue += 1
-		
 		var start_pos = pool_slot.get_main_icon_global_position()
 		var start_scale = pool_slot.get_main_icon_global_scale()
-		
-		# 根据队列中已有的任务数决定起始节点
-		if fly_tasks_in_queue == 1:
-			if pool_slot.item_queue_1:
-				start_pos = pool_slot.item_queue_1.global_position
-				start_scale = pool_slot.item_queue_1.global_scale
-		elif fly_tasks_in_queue >= 2:
-			if pool_slot.item_queue_2:
-				start_pos = pool_slot.item_queue_2.global_position
-				start_scale = pool_slot.item_queue_2.global_scale
 		
 		var task = {
 			"type": "fly_to_inventory",
@@ -496,26 +485,8 @@ func _on_item_replaced(index: int, _new_item: ItemInstance, old_item: ItemInstan
 				"on_complete": func(): pass # No specific callback needed
 			})
 		
-		# 核心逻辑修复：正确计算飞行起始位置（同 _on_item_added）
-		var fly_tasks_in_queue = 0
-		if vfx_manager:
-			for task in vfx_manager._queue:
-				var task_type = task.get("type", "")
-				if (task_type == "fly_to_inventory" or task_type == "fly_to_recycle") and task.get("source_lottery_slot") == pool_slot:
-					fly_tasks_in_queue += 1
-		
 		var start_pos = pool_slot.get_main_icon_global_position()
 		var start_scale = pool_slot.get_main_icon_global_scale()
-		
-		# 根据队列中已有的任务数决定起始节点
-		# 注意：替换模式下，队列中可能已有一个 fly_to_recycle 任务
-		# 所以 fly_tasks_in_queue == 1 时，是第二个物品，应从 queue_1 出发
-		if fly_tasks_in_queue == 1 and pool_slot.item_queue_1:
-			start_pos = pool_slot.item_queue_1.global_position
-			start_scale = pool_slot.item_queue_1.global_scale
-		elif fly_tasks_in_queue >= 2 and pool_slot.item_queue_2:
-			start_pos = pool_slot.item_queue_2.global_position
-			start_scale = pool_slot.item_queue_2.global_scale
 			
 		var task = {
 			"type": "fly_to_inventory",
@@ -615,7 +586,7 @@ func _on_game_event(event_id: StringName, payload: Variant) -> void:
 				return
 			
 			await order_controller.play_refresh_sequence(index)
-			var new_order = OrderSystem.refresh_order(index)
+			var _new_order = OrderSystem.refresh_order(index)
 			order_controller.update_orders_display(OrderSystem.current_orders)
 			await order_controller.play_open_sequence(index)
 			
