@@ -11,6 +11,9 @@ signal state_changed(from_state: StringName, to_state: StringName)
 ## 当前激活的状态（UIState 实例）
 var current_state: RefCounted = null
 
+## 正在切换中的目标状态名
+var pending_state_name: StringName = &""
+
 ## 已注册的状态字典: StringName -> UIState
 var _states: Dictionary = {}
 
@@ -64,6 +67,7 @@ func transition_to(state_name: StringName, payload: Dictionary = {}) -> bool:
 			push_warning("[UIStateMachine] 转换被拒绝: %s -> %s" % [current_state.state_name, state_name])
 			return false
 	
+	pending_state_name = state_name
 	var from_state_name: StringName = &""
 	
 	# 退出当前状态
@@ -85,6 +89,9 @@ func transition_to(state_name: StringName, payload: Dictionary = {}) -> bool:
 	
 	# 发出信号
 	state_changed.emit(from_state_name, state_name)
+	
+	# 转换完成，清除挂起状态
+	pending_state_name = &""
 	
 	# 调试日志
 	var from_str = str(from_state_name) if from_state_name != &"" else "(none)"

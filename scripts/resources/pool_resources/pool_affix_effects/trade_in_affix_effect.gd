@@ -2,11 +2,12 @@ extends PoolAffixEffect
 class_name TradeInAffixEffect
 
 ## 【以旧换新的】
-## 1. 玩家点击奖池 -> 进入 "选择消耗品" 模式。
-## 2. 玩家点击背包中任意一个 非主线 物品。
-## 3. 执行置换: 移除该物品，从奖池中随机抽取一个 同品质 的新物品放入背包。
+## 1. 玩家点击奖池 -> 进入 "选择消耗品" 模式（门开，槽空）。
+## 2. 玩家点击背包中任意一个 非主线 物品 -> 物品飞入奖池 -> 门关 -> shake。
+## 3. 执行置换: 移除该物品，从奖池中随机抽取一个 同品质 的新物品。
 ## 4. 小概率 (5%) 升级品质。
 ## 5. 消耗: 1 金币
+## 6. 进入正常揭示流程（开门 → 出东西）。
 
 @export var cost: int = 1
 
@@ -22,11 +23,15 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	ctx.skip_draw = true
 	ctx.gold_cost = 0
 	
+	# 从 meta 中获取 pool_index（由 PoolSystem 设置）
+	var pool_index: int = ctx.meta.get("pool_index", -1)
+	
 	# 进入选择模式
-	# 我们发送一个 game_event，UI (Inventory) 会监听它
 	var selection_data = ContextProxy.new({
 		"type": "trade_in",
+		"pool_index": pool_index,
 		"item_type": ctx.item_type,
+		"force_sterile": ctx.force_sterile, # 传递绝育标记
 		"callback": func(item_to_trade: ItemInstance):
 			if item_to_trade == null:
 				return
@@ -58,15 +63,15 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 				return
 			
 			var new_item_data = filtered_items.pick_random()
-			var new_item_instance = ItemInstance.new(new_item_data, rarity)
+			# 保持绝育状态: 如果投入的物品是绝育的，或者当前奖池强制绝育
+			var should_be_sterile = ctx.force_sterile or item_to_trade.sterile
+			var new_item_instance = ItemInstance.new(new_item_data, rarity, should_be_sterile)
 			
-			# 4. 执行置换
+			# 4. 执行置换：移除旧物品
 			InventorySystem.remove_items([item_to_trade])
 			
+			# 5. 发出 item_obtained 信号
 			EventBus.item_obtained.emit(new_item_instance)
-			
-			# 5. 刷新奖池
-			EventBus.game_event.emit(&"pool_draw_completed", ContextProxy.new({"pool_id": ctx.pool_id}))
 	})
 	
 	EventBus.game_event.emit(&"enter_selection_mode", selection_data)
