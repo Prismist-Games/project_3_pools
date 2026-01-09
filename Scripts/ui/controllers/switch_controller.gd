@@ -110,6 +110,9 @@ func _on_submit_switch_input(event: InputEvent) -> void:
 		if game_ui.state_machine.get_ui_mode() == Constants.UIMode.NORMAL:
 			game_ui.state_machine.transition_to(&"Submitting")
 			InventorySystem.multi_selected_indices.clear()
+			# 清除单项选中状态，因为提交与整理是不同操作
+			if InventorySystem.selected_slot_index != -1:
+				InventorySystem.selected_slot_index = -1
 		elif game_ui.state_machine.get_ui_mode() == Constants.UIMode.SUBMIT:
 			var submitting_state = game_ui.state_machine.get_state(&"Submitting")
 			if submitting_state:
@@ -133,6 +136,9 @@ func _on_recycle_switch_input(event: InputEvent) -> void:
 				# Enter multi-recycle mode
 				game_ui.state_machine.transition_to(&"Recycling")
 				InventorySystem.multi_selected_indices.clear()
+				# 清除单项选中状态，因为批量回收与整理是不同操作
+				if InventorySystem.selected_slot_index != -1:
+					InventorySystem.selected_slot_index = -1
 				# Label update happens via signals in GameUI
 				
 		elif current_mode == Constants.UIMode.RECYCLE:

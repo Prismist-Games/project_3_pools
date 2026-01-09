@@ -548,6 +548,10 @@ func _on_item_swapped(idx1: int, idx2: int) -> void:
 func _on_modal_requested(modal_id: StringName, payload: Variant) -> void:
 	if not state_machine: return
 	
+	# 清除选中状态，因为进入模态窗口是与整理操作无关的新上下文
+	if InventorySystem.selected_slot_index != -1:
+		InventorySystem.selected_slot_index = -1
+	
 	match modal_id:
 		&"skill_select":
 			var skills = SkillSystem.get_selectable_skills(3)

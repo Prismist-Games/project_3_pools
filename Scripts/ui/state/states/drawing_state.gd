@@ -96,6 +96,10 @@ func draw() -> void:
 	
 	controller.lock_ui("draw")
 	
+	# 清除选中状态，因为抽奖操作与整理操作是不同的上下文
+	if InventorySystem.selected_slot_index != -1:
+		InventorySystem.selected_slot_index = -1
+	
 	# 关键修复：在此处暂停 VFX 队列，防止物品在盖子还没开时就飞走
 	if controller.vfx_manager:
 		controller.vfx_manager.is_paused = true
