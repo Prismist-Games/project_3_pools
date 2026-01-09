@@ -39,6 +39,10 @@ func get_state(state_name: StringName) -> RefCounted:
 func is_in_state(state_name: StringName) -> bool:
 	return current_state != null and current_state.state_name == state_name
 
+## 获取当前状态实例
+func get_current_state() -> RefCounted:
+	return current_state
+
 ## 获取当前状态名
 func get_current_state_name() -> StringName:
 	if current_state:
@@ -83,7 +87,7 @@ func transition_to(state_name: StringName, payload: Dictionary = {}) -> bool:
 	state_changed.emit(from_state_name, state_name)
 	
 	# 调试日志
-	var from_str = from_state_name if from_state_name != &"" else "(none)"
+	var from_str = str(from_state_name) if from_state_name != &"" else "(none)"
 	print("[UIStateMachine] %s -> %s" % [from_str, state_name])
 	
 	return true

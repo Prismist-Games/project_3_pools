@@ -46,6 +46,7 @@ func _register_states() -> void:
 	state_machine.register_state(&"Replacing", replacing_state)
 	
 	var precise_state = PreciseSelectionState.new()
+	precise_state.controller = controller
 	state_machine.register_state(&"PreciseSelection", precise_state)
 	
 	var submitting_state = SubmittingState.new()
@@ -57,9 +58,11 @@ func _register_states() -> void:
 	state_machine.register_state(&"Recycling", recycling_state)
 	
 	var tradein_state = TradeInState.new()
+	tradein_state.controller = controller
 	state_machine.register_state(&"TradeIn", tradein_state)
 	
 	var modal_state = ModalState.new()
+	modal_state.controller = controller
 	state_machine.register_state(&"Modal", modal_state)
 	
 	print("[UIStateInitializer] 已注册 %d 个状态" % state_machine._states.size())

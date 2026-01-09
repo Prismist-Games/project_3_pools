@@ -20,6 +20,8 @@ func enter(payload: Dictionary = {}) -> void:
 	is_draw_complete = false
 
 func exit() -> void:
+	if controller:
+		controller.unlock_ui("draw")
 	pool_index = -1
 	is_draw_complete = false
 
@@ -51,37 +53,72 @@ func draw() -> void:
 	if controller.is_ui_locked() or not InventorySystem.pending_items.is_empty():
 		return
 	
+	var slot = controller.lottery_slots_grid.get_node("Lottery Slot_root_" + str(pool_index))
+	
 	controller.last_clicked_pool_idx = pool_index
 	controller.pending_source_pool_idx = pool_index
 	
 	controller.lock_ui("draw")
 	
+	# 关键修复：在此处暂停 VFX 队列，防止物品在盖子还没开时就飞走
+	if controller.vfx_manager:
+		controller.vfx_manager.is_paused = true
+	
+	# 临时捕获所有获得的物品（包括直接进背包的）
+	var captured_items: Array[ItemInstance] = []
+	var capture_fn = func(item: ItemInstance):
+		captured_items.append(item)
+	
+	EventBus.item_obtained.connect(capture_fn)
 	var success = PoolSystem.draw_from_pool(pool_index)
+	EventBus.item_obtained.disconnect(capture_fn)
+	
 	if not success:
-		# 如果抽奖失败（如金币不足），立即解锁并播放抖动反馈
-		var slot = controller.lottery_slots_grid.get_node("Lottery Slot_root_" + str(pool_index))
+		# 如果抽奖失败，恢复队列（虽然此时队列应该是空的）
+		if controller.vfx_manager:
+			controller.vfx_manager.is_paused = false
+		
+		# 抖动反馈
 		slot.play_shake()
 		controller.last_clicked_pool_idx = -1
 		controller.unlock_ui("draw")
 		mark_complete()
-		# 返回 Idle 状态
 		machine.transition_to(&"Idle")
 		return
 	
-	# 如果没有任何物品进入背包（比如全部进入了待定队列），则 VFX 队列不会启动
-	# 我们需要在这里手动处理揭示并解锁，否则 UI 会卡死
-	if not controller._is_vfx_processing:
-		if not InventorySystem.pending_items.is_empty():
-			var slot = controller.lottery_slots_grid.get_node("Lottery Slot_root_" + str(pool_index))
-			# 收集所有 pending items
-			var items = InventorySystem.pending_items.duplicate()
-			# 原地播放揭示动画，但不关盖，也不重置 is_drawing
-			await slot.play_reveal_sequence(items)
-			
-			# 虽然没飞走，但揭示完了，解锁 UI 让玩家处理背包
-			controller.unlock_ui("draw")
+	# 如果没有任何物品进入背包（比如全部进入了待定队列，或者被词缀拦截进入了 modal）
+	# 我们需要在这里手动处理解锁，否则 UI 会卡死
+	# 无论如何，一定要播放揭示动画（打开盖子）
+	var display_items = InventorySystem.pending_items.duplicate()
+	if display_items.is_empty():
+		display_items = captured_items
+	
+	# 如果 pending 为空，说明物品可能已经进背包了（VFX 正在播，但由于我们暂停了，它们还没动）
+	# 我们仍然开启盖子以显示内部或仅仅作为状态转换的视觉停留
+	await slot.play_reveal_sequence(display_items)
+	
+	# 盖子已经全开了，现在恢复 VFX 队列让物品飞出来
+	if controller.vfx_manager:
+		controller.vfx_manager.resume_process()
+	
+	# 检查是否需要进入 Replacing 状态
+	if not InventorySystem.pending_items.is_empty():
+		# 背包满了，有物品在等待处理
+		mark_complete()
+		machine.transition_to(&"Replacing", {"source_pool_index": pool_index})
+	else:
+		# 检查是否还有正在播放的 VFX
+		if controller._is_vfx_processing or controller.vfx_manager.is_busy():
+			# 标记完成即可，具体解锁和归位由游戏主控制器的 _on_vfx_queue_finished 处理
 			mark_complete()
-			# 转换到 Replacing 状态
-			machine.transition_to(&"Replacing", {"source_pool_index": pool_index})
-			# 注意：此处不调用 PoolSystem.refresh_pools()，也不重置 last_clicked_pool_idx
-			# 必须等待物品真正飞走进入背包
+		else:
+			# 没有任何异步任务在运行，直接归位
+			mark_complete()
+			
+			if slot.has_method("play_close_sequence"):
+				await slot.play_close_sequence()
+			
+			# 盖子关上后再刷新逻辑数据
+			PoolSystem.refresh_pools()
+			
+			machine.transition_to(&"Idle")

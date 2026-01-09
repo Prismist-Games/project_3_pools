@@ -18,10 +18,11 @@ func enter(payload: Dictionary = {}) -> void:
 	# 因为这是一个特殊状态，UI 显示仍然是 NORMAL
 
 func exit() -> void:
-	source_pool_index = -1
 	# 清理完成，关闭奖池盖并刷新
 	if controller and source_pool_index != -1:
 		_close_pool_and_refresh()
+	
+	source_pool_index = -1
 
 func can_transition_to(next_state: StringName) -> bool:
 	# 必须等待 pending_items 清空才能转换
@@ -43,7 +44,9 @@ func handle_input(event: InputEvent) -> bool:
 func _close_pool_and_refresh() -> void:
 	if controller and source_pool_index >= 0 and source_pool_index < 3:
 		var pool_slot = controller.lottery_slots_grid.get_node_or_null("Lottery Slot_root_" + str(source_pool_index))
-		if pool_slot:
+		if pool_slot and pool_slot.has_method("play_close_sequence"):
+			await pool_slot.play_close_sequence()
+		elif pool_slot:
 			pool_slot.close_lid()
 		
 		# 重置追踪变量

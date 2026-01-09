@@ -197,9 +197,6 @@ func _update_required_items_from_orders(pool_type: Constants.ItemType) -> void:
 			icon_node.visible = false
 
 func play_reveal_sequence(items: Array) -> void:
-	if items.is_empty(): return
-	var item = items[0]
-
 	# 如果已经在展示中（is_drawing = true），说明之前已经 reveal 过了，直接更新显示即可
 	if is_drawing:
 		update_queue_display(items)
@@ -211,26 +208,25 @@ func play_reveal_sequence(items: Array) -> void:
 	if anim_player.has_animation("lid_open"):
 		anim_player.play("lid_open")
 	
-	# 2. 背景颜色洗牌感
+	# 2. 背景颜色洗牌感 (即便 items 为空也播放视觉洗牌)
 	var shuffle_timer = 0.0
 	var duration = 0.5
 	var interval = 0.05
 	
-	# 临时显示图标
-	# 临时显示图标 (支持多物品)
+	# 临时隐藏/重置图标
 	item_main.scale = Vector2.ZERO
 	item_queue_1.scale = Vector2.ZERO
 	item_queue_2.scale = Vector2.ZERO
 	
 	update_queue_display(items)
 	
-	var tw = create_tween().set_parallel(true)
-	tw.tween_property(item_main, "scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	if items.size() > 1:
-		tw.tween_property(item_queue_1, "scale", Vector2(0.8, 0.8), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	if items.size() > 2:
-		tw.tween_property(item_queue_2, "scale", Vector2(0.6, 0.6), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-
+	if not items.is_empty():
+		var tw = create_tween().set_parallel(true)
+		tw.tween_property(item_main, "scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		if items.size() > 1:
+			tw.tween_property(item_queue_1, "scale", Vector2(queue_1_scale, queue_1_scale), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		if items.size() > 2:
+			tw.tween_property(item_queue_2, "scale", Vector2(queue_2_scale, queue_2_scale), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 	while shuffle_timer < duration:
 		if backgrounds:
@@ -239,24 +235,20 @@ func play_reveal_sequence(items: Array) -> void:
 		shuffle_timer += interval
 	
 	# 3. 定格最终品质
-	if backgrounds:
-		backgrounds.color = Constants.get_rarity_border_color(item.rarity)
+	if not items.is_empty() and backgrounds:
+		backgrounds.color = Constants.get_rarity_border_color(items[0].rarity)
+	elif backgrounds:
+		backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
 	
 	await get_tree().create_timer(0.3).timeout # 最终揭示后的停留
 
+## 播放关盖序列（带逻辑重置）
 func play_close_sequence() -> void:
-	if anim_player.has_animation("lid_close"):
-		anim_player.play("lid_close")
-		await anim_player.animation_finished
+	await close_lid()
 	
 	is_drawing = false
 	
-	# 如果有挂起的数据，现在应用它 (门已经关上了，玩家看不见内容替换)
-	if _pending_pool_data:
-		_apply_pool_display(_pending_pool_data)
-		_pending_pool_data = null
-	
-	# 关盖后，确保背景色重置 (如果已经没有 pending 了)
+	# 关盖后，确保背景色和物品显示重置 (如果已经没有 pending 了)
 	if InventorySystem.pending_items.is_empty():
 		if backgrounds:
 			backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
@@ -398,13 +390,21 @@ func play_queue_advance_anim() -> void:
 		if not InventorySystem.pending_items.is_empty():
 			update_queue_display(InventorySystem.pending_items)
 
+## 打开盖子 (基础包装)
+func open_lid() -> void:
+	if anim_player.has_animation("lid_open"):
+		anim_player.play("lid_open")
+
+## 关闭盖子 (基础包装)
+func close_lid() -> void:
+	if anim_player.has_animation("lid_close"):
+		anim_player.play("lid_close")
+		if anim_player.is_playing():
+			await anim_player.animation_finished
+
 func _reset_item_transforms() -> void:
 	if _initial_transforms.is_empty(): return
 	
 	# 只恢复 Main 的 transform，Queue 的由 update_queue_display 控制
 	item_main.position = _initial_transforms[item_main]["pos"]
 	item_main.scale = _initial_transforms[item_main]["scale"]
-	
-	# Queue 的 position 由 update_queue_display 设置，这里只恢复 scale（为下次动画准备）
-	# 实际上，在 update_queue_display 中我们已经设置了正确的 scale，
-	# 所以这里不需要特别处理

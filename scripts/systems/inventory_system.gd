@@ -191,8 +191,13 @@ func handle_slot_click(index: int) -> void:
 					item_moved.emit(selected_idx, index)
 				else:
 					# 交换
-					inventory[index] = source_item
-					inventory[selected_idx] = target_item
+					var original_source = source_item
+					var original_target = target_item
+					
+					inventory[index] = original_source
+					inventory[selected_idx] = original_target
+					
+					# 关键修复：信号必须传递交换瞬间的原始对应关系，否则 VFX 会因数据已变而错位
 					item_swapped.emit(selected_idx, index)
 					
 			self.selected_slot_index = -1

@@ -20,8 +20,14 @@ var _is_processing: bool = false
 ## 是否已调度处理（防止重复调度）
 var _is_scheduled: bool = false
 
+## 暂停队列处理（用于等待特定 UI 动画，如开盖）
+var is_paused: bool = false
+
 ## VFX 层节点引用（用于创建飞行动画）
 var vfx_layer: Node2D = null
+
+## 引用到主控制器（用于访问 UI 节点和槽位状态管理）
+var controller: Node = null
 
 ## 检查队列是否繁忙
 func is_busy() -> bool:
@@ -54,12 +60,17 @@ func clear() -> void:
 
 ## 调度队列处理
 func _schedule_process() -> void:
-	if _is_scheduled or _is_processing:
+	if _is_scheduled or _is_processing or is_paused:
 		return
 	
 	_is_scheduled = true
 	# 延迟一帧开始处理，确保调用方逻辑完成
 	call_deferred("_process_queue")
+
+## 恢复队列处理
+func resume_process() -> void:
+	is_paused = false
+	_schedule_process()
 
 ## 处理队列
 func _process_queue() -> void:
@@ -86,6 +97,10 @@ func _process_queue() -> void:
 				await _execute_fly_to_recycle(task)
 			"merge":
 				await _execute_merge(task)
+			"generic_fly":
+				await _execute_generic_fly(task)
+			"swap":
+				await _execute_swap(task)
 			_:
 				push_warning("[VfxQueueManager] 未知任务类型: %s" % task.get("type"))
 		
@@ -106,15 +121,33 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 	var start_scale: Vector2 = task.get("start_scale", Vector2.ONE)
 	var target_slot: int = task.get("target_slot", -1)
 	
-	if not item or target_slot < 0:
-		return
+	# 获取目标槽位节点
+	var target_slot_node: Control = null
+	if controller and controller.item_slots_grid:
+		target_slot_node = controller.item_slots_grid.get_node_or_null("Item Slot_root_" + str(target_slot))
+	
+	if target_slot_node:
+		target_slot_node.is_vfx_target = true
+		# 只有在非替换模式下才隐藏原图标（这里简化处理，如果需要更细致可由 task 传参）
+		if not task.get("is_replace", false):
+			target_slot_node.hide_icon()
 	
 	# 创建飞行精灵
 	var fly_sprite = _create_fly_sprite(item, start_pos, start_scale)
 	if not fly_sprite:
+		if target_slot_node:
+			target_slot_node.is_vfx_target = false
+			target_slot_node.show_icon()
 		return
 	
-	# 获取目标位置（需要外部提供获取方法）
+	# 关键修复: 如果有来源奖池槽位，隐藏其主图标并播放推进动画，防止残留
+	var source_slot = task.get("source_lottery_slot")
+	if source_slot and source_slot.has_method("hide_main_icon"):
+		source_slot.hide_main_icon()
+		if source_slot.has_method("play_queue_advance_anim"):
+			source_slot.play_queue_advance_anim()
+	
+	# 获取目标位置
 	var target_pos: Vector2 = task.get("target_pos", start_pos)
 	var target_scale: Vector2 = task.get("target_scale", start_scale)
 	
@@ -127,6 +160,18 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	
 	await tween.finished
+	
+	# 还原插槽状态
+	if target_slot_node:
+		target_slot_node.is_vfx_target = false
+		# 解除临时隐藏状态 (如果存在)
+		if target_slot_node.has_method("set_temp_hidden"):
+			target_slot_node.set_temp_hidden(false)
+		
+		target_slot_node.show_icon()
+		# 触发控制器刷新以确保显示同步
+		if controller and controller.has_method("_on_inventory_changed"):
+			controller._on_inventory_changed(InventorySystem.inventory)
 	
 	# 清理
 	fly_sprite.queue_free()
@@ -145,6 +190,13 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 	if not fly_sprite:
 		return
 	
+	# 关键修复: 如果有来源奖池槽位，隐藏其主图标并播放推进动画
+	var source_slot = task.get("source_lottery_slot")
+	if source_slot and source_slot.has_method("hide_main_icon"):
+		source_slot.hide_main_icon()
+		if source_slot.has_method("play_queue_advance_anim"):
+			source_slot.play_queue_advance_anim()
+	
 	# 飞向回收箱并缩小
 	var tween = create_tween()
 	tween.set_parallel(true)
@@ -158,8 +210,99 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 
 ## 执行合成动画
 func _execute_merge(_task: Dictionary) -> void:
-	# TODO: 实现合成动画
+	# TODO: 实现更精美的合成动画（如两个物品向中间靠拢）
 	await get_tree().create_timer(0.2).timeout
+
+## 执行通用飞行动画（例如物品移动）
+func _execute_generic_fly(task: Dictionary) -> void:
+	var item = task.get("item")
+	var start_pos: Vector2 = task.get("start_pos")
+	var end_pos: Vector2 = task.get("end_pos")
+	var start_scale: Vector2 = task.get("start_scale", Vector2(0.65, 0.65))
+	var end_scale: Vector2 = task.get("end_scale", Vector2(0.65, 0.65))
+	var source_slot_idx: int = task.get("source_slot", -1)
+	var target_slot_idx: int = task.get("target_slot", -1)
+	var duration: float = task.get("duration", 0.4)
+	
+	var source_node = controller.item_slots_grid.get_node_or_null("Item Slot_root_" + str(source_slot_idx)) if source_slot_idx != -1 else null
+	var target_node = controller.item_slots_grid.get_node_or_null("Item Slot_root_" + str(target_slot_idx)) if target_slot_idx != -1 else null
+	
+	if source_node:
+		source_node.is_vfx_target = true
+		source_node.hide_icon()
+	if target_node:
+		target_node.is_vfx_target = true
+		target_node.hide_icon()
+		
+	var sprite = _create_fly_sprite(item, start_pos, start_scale)
+	var tween = create_tween().set_parallel(true)
+	tween.tween_property(sprite, "global_position", end_pos, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(sprite, "scale", end_scale, duration)
+	
+	await tween.finished
+	sprite.queue_free()
+	
+	if source_node:
+		source_node.is_vfx_target = false
+		source_node.show_icon()
+	if target_node:
+		target_node.is_vfx_target = false
+		target_node.show_icon()
+		
+	if controller and controller.has_method("_on_inventory_changed"):
+		controller._on_inventory_changed(InventorySystem.inventory)
+
+## 执行交换动画
+func _execute_swap(task: Dictionary) -> void:
+	var item1 = task.get("item1")
+	var item2 = task.get("item2")
+	var pos1: Vector2 = task.get("pos1")
+	var pos2: Vector2 = task.get("pos2")
+	var idx1: int = task.get("idx1")
+	var idx2: int = task.get("idx2")
+	var duration: float = task.get("duration", 0.4)
+	var scale: Vector2 = task.get("scale", Vector2(0.65, 0.65))
+	
+	var slot1 = controller.item_slots_grid.get_node("Item Slot_root_" + str(idx1))
+	var slot2 = controller.item_slots_grid.get_node("Item Slot_root_" + str(idx2))
+	
+	slot1.is_vfx_target = true
+	slot2.is_vfx_target = true
+	slot1.hide_icon()
+	slot2.hide_icon()
+	
+	# 关键修复：交换时，逻辑位置已经变了。
+	# idx1 对应的现在是 item2 (新进入该位置的物品)，idx2 对应的是 item1。
+	# 所以动画应该是：
+	# item1 (原在 idx2 现已在系统数据中到 idx1 的逻辑对应) 从 pos2 飞向 pos1？
+	# 不，通常信号发出时，数据已经交换。
+	# 如果信号里的 item1 是原 idx1 的东西，那么它现在的逻辑位置就在 idx2。
+	# 所以 sprite1 (item1) 应该从 pos1 飞向 pos2。
+	# 但用户反馈“方向反了”，说明 item1/item2 的传参或 pos 的传参在逻辑交换后发生了偏差。
+	
+	# 修正逻辑：
+	var sprite1 = _create_fly_sprite(item1, pos1, scale)
+	var sprite2 = _create_fly_sprite(item2, pos2, scale)
+	
+	var tween = create_tween().set_parallel(true)
+	
+	# 使用单段连续 Tween 配合 EASE_IN_OUT 彻底消除中间点的停顿感
+	tween.tween_property(sprite1, "global_position", pos2, duration) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(sprite2, "global_position", pos1, duration) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	
+	await tween.finished
+	sprite1.queue_free()
+	sprite2.queue_free()
+	
+	slot1.is_vfx_target = false
+	slot2.is_vfx_target = false
+	slot1.show_icon()
+	slot2.show_icon()
+	
+	if controller and controller.has_method("_on_inventory_changed"):
+		controller._on_inventory_changed(InventorySystem.inventory)
 
 ## 创建飞行精灵
 func _create_fly_sprite(item, start_pos: Vector2, start_scale: Vector2) -> Sprite2D:

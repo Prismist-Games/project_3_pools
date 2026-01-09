@@ -6,25 +6,54 @@ extends "res://scripts/ui/state/ui_state.gd"
 ## 效果: 奖池、订单、模式切换均锁定，仅背包可交互
 ## 交互: 点击背包物品 -> 回收该物品，获得同品质随机新物品
 
-## 将要获得的新物品（由词缀逻辑预生成）
-var pending_new_item: Variant = null
+## 引用到主控制器
+var controller: Node = null
 
-## 来源奖池索引
-var source_pool_index: int = -1
+## 来源奖池 ID
+var pool_id: StringName = &""
+
+## 置换逻辑回调 (来自 AffixEffect)
+var on_trade_callback: Callable
 
 func enter(payload: Dictionary = {}) -> void:
-	pending_new_item = payload.get("new_item")
-	source_pool_index = payload.get("source_pool_index", -1)
+	pool_id = payload.get("pool_id", &"")
+	on_trade_callback = payload.get("callback", Callable())
+	
+	if controller:
+		controller.lock_ui("trade_in")
+	
+	# 进入 REPLACE 视觉模式 (高亮背包)
 	GameManager.current_ui_mode = Constants.UIMode.REPLACE
 
 func exit() -> void:
-	pending_new_item = null
-	source_pool_index = -1
+	if controller:
+		controller.unlock_ui("trade_in")
+		
 	if GameManager.current_ui_mode == Constants.UIMode.REPLACE:
 		GameManager.current_ui_mode = Constants.UIMode.NORMAL
+		
+	pool_id = &""
+	on_trade_callback = Callable()
 
-func can_transition_to(next_state: StringName) -> bool:
-	return next_state == &"Idle"
+func can_transition_to(_next_state: StringName) -> bool:
+	return true
+
+## 被 game_2d_ui.gd 重定向的点击事件
+func select_slot(index: int) -> void:
+	var item = InventorySystem.inventory[index]
+	if item == null:
+		return
+		
+	# 主线物品不可置换
+	if item.item_data.is_mainline:
+		return
+		
+	# 执行置换回调
+	if on_trade_callback.is_valid():
+		on_trade_callback.call(item)
+		
+	# 置换后返回 Idle
+	machine.transition_to(&"Idle")
 
 func handle_input(event: InputEvent) -> bool:
 	# 右键取消（放弃本次 Trade-in）

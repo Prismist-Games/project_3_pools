@@ -47,8 +47,24 @@ func show_icon() -> void:
 	icon_display.visible = true
 	if item_shadow: item_shadow.visible = true
 
+## 临时隐藏标记（用于防止 update_display 在 VFX 前刷新出来）
+var _temp_hide_until_vfx: bool = false
+
+func set_temp_hidden(is_hidden: bool) -> void:
+	_temp_hide_until_vfx = is_hidden
+	if is_hidden:
+		hide_icon()
+
 func update_display(item: ItemInstance) -> void:
 	if is_vfx_target: return # 飞行中锁定视觉，落地后再更新
+	
+	# 如果处于临时隐藏状态，且确实有物品（为了防止误隐藏空槽），则不更新显示
+	if _temp_hide_until_vfx:
+		if item:
+			return
+		else:
+			# 如果物品没了，理应解除隐藏状态
+			_temp_hide_until_vfx = false
 	
 	if not item:
 		icon_display.texture = null
