@@ -47,8 +47,24 @@ func show_icon() -> void:
 	icon_display.visible = true
 	if item_shadow: item_shadow.visible = true
 
+## 临时隐藏标记（用于防止 update_display 在 VFX 前刷新出来）
+var _temp_hide_until_vfx: bool = false
+
+func set_temp_hidden(is_hidden: bool) -> void:
+	_temp_hide_until_vfx = is_hidden
+	if is_hidden:
+		hide_icon()
+
 func update_display(item: ItemInstance) -> void:
 	if is_vfx_target: return # 飞行中锁定视觉，落地后再更新
+	
+	# 如果处于临时隐藏状态，且确实有物品（为了防止误隐藏空槽），则不更新显示
+	if _temp_hide_until_vfx:
+		if item:
+			return
+		else:
+			# 如果物品没了，理应解除隐藏状态
+			_temp_hide_until_vfx = false
 	
 	if not item:
 		icon_display.texture = null
@@ -77,8 +93,8 @@ func update_display(item: ItemInstance) -> void:
 	if backgrounds:
 		_animate_background_color(Constants.get_rarity_border_color(item.rarity))
 	
-	# 更新状态角标逻辑
-	_update_status_badge(item)
+	# Status badge update must be called externally now (e.g. by controller) or default to hidden
+	# if controller calls update_display, it should also call update_status_badge
 
 func _animate_background_color(target_color: Color) -> void:
 	if not backgrounds: return
@@ -108,12 +124,10 @@ func set_selected(selected: bool) -> void:
 	else:
 		if backgrounds:
 			backgrounds.modulate = Color.WHITE
-		if slot_index != -1 and InventorySystem.inventory.size() > slot_index:
-			var item = InventorySystem.inventory[slot_index]
-			if item:
-				_update_status_badge(item)
-			else:
-				if status_icon: status_icon.visible = false
+		# Status badge should be re-applied by controller if selection clears
+		if status_icon: status_icon.visible = false
+		# Wait, if we deselect, we might want to show the green tick again if it matches an order.
+		# This requires the controller to refresh the badge state after deselection.
 
 func _animate_selection(active: bool) -> void:
 	if not icon_display: return
@@ -174,21 +188,8 @@ func _animate_selection(active: bool) -> void:
 		if item_shadow:
 			item_shadow.visible = true
 
-func _update_status_badge(item: ItemInstance) -> void:
+func update_status_badge(badge_state: int) -> void:
 	if not status_icon: return
-	
-	var badge_state = 0 # 0: 隐藏, 1: 白色勾 (需求但品质不够), 2: 绿色勾 (满足需求)
-	
-	for order in OrderSystem.current_orders:
-		for req in order.requirements:
-			if req.get("item_id", &"") == item.item_data.id:
-				if item.rarity >= req.get("min_rarity", 0):
-					badge_state = 2 # 只要有一个订单能满足，就是最高优先级绿色
-					break
-				else:
-					if badge_state < 1:
-						badge_state = 1
-		if badge_state == 2: break
 	
 	match badge_state:
 		0:
