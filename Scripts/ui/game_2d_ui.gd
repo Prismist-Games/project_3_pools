@@ -41,6 +41,7 @@ var pending_source_pool_idx: int = -1
 
 # VFX 队列管理
 var _is_vfx_processing: bool = false
+var _last_merge_target_idx: int = -1 # 跟踪最近一次合并的目标索引，用于在 item_moved 信号中识别合并状态
 
 func _ready() -> void:
 	self.theme = game_theme
@@ -403,6 +404,9 @@ func _on_item_moved(source_idx: int, target_idx: int) -> void:
 	if source_node: source_node.is_vfx_target = true
 	if target_node: target_node.is_vfx_target = true
 	
+	var is_merge = (_last_merge_target_idx == target_idx)
+	_last_merge_target_idx = -1
+	
 	if vfx_manager:
 		vfx_manager.enqueue({
 			"type": "generic_fly",
@@ -411,6 +415,7 @@ func _on_item_moved(source_idx: int, target_idx: int) -> void:
 			"end_pos": inventory_controller.get_slot_global_position(target_idx),
 			"source_slot_node": source_node,
 			"target_slot_node": target_node,
+			"is_merge": is_merge,
 			"on_complete": func(): _on_inventory_changed(InventorySystem.inventory)
 		})
 
@@ -521,6 +526,7 @@ func _on_item_replaced(index: int, _new_item: ItemInstance, old_item: ItemInstan
 			"target_scale": target_scale,
 			"target_slot_node": target_slot_node,
 			"is_replace": true,
+			"is_merge": old_item == null, # 如果 old_item 是 null，说明是从 _on_item_merged 调过来的，也就是合并
 			"source_lottery_slot": pool_slot,
 			"on_complete": func(): _on_inventory_changed(InventorySystem.inventory)
 		}
@@ -530,7 +536,15 @@ func _on_item_replaced(index: int, _new_item: ItemInstance, old_item: ItemInstan
 			_update_ui_mode_display()
 		
 func _on_item_merged(index: int, _new_item: ItemInstance, _target_item: ItemInstance) -> void:
-	_on_item_replaced(index, _new_item, null)
+	# 记录合并目标，供随后的信号（如 item_moved）使用
+	_last_merge_target_idx = index
+	
+	# 如果有待定项，说明是从奖池发起的合并，需要触发 pool -> inventory 的飞行
+	if not InventorySystem.pending_items.is_empty():
+		_on_item_replaced(index, _new_item, null)
+		# 奖池发起的合并不会触发 item_moved，所以直接重置标记，防止污染后续可能的移动操作
+		_last_merge_target_idx = -1
+	# 如果是背包内部合并，不需要在这里触发动画，因为随后会收到 item_moved 信号并由其触发 generic_fly
 
 func _on_item_swapped(idx1: int, idx2: int) -> void:
 	# 由于信号是在 InventorySystem 数据交换后发出的：
