@@ -475,7 +475,13 @@ func refresh_slot_data(new_pool_data: Variant, is_instant: bool = false) -> void
 	else:
 		# 运行时刷新：设置 Pseudo Nodes 并播放动画
 		_update_visuals(new_pool_data, true) # true = targeting pseudo nodes
-		await _play_push_away_animation()
+		
+		# 检查是否跳过盖子位移动画 (PreciseSelection 需求)
+		var skip_lid := false
+		if new_pool_data is Dictionary and new_pool_data.get("skip_lid_animation", false):
+			skip_lid = true
+			
+		await _play_push_away_animation(skip_lid)
 		
 		# 动画结束后，将数据同步到 True Nodes 并复位
 		_update_visuals(new_pool_data, false)
@@ -503,58 +509,78 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 	var target_desc: RichTextLabel = description_label_pseudo if target_pseudo else description_label
 	var target_grid: VBoxContainer = items_grid_pseudo if target_pseudo else items_grid
 	
-	# 更新盖子图标和颜色
-	var theme_color := Color("#199C80") # 普通门颜色
-	if pool.item_type == Constants.ItemType.MAINLINE:
-		theme_color = Color("#FF6E54") # 核心门颜色
-	
-	if target_lid_sprite:
-		target_lid_sprite.self_modulate = theme_color
-	if target_lid_icon:
-		target_lid_icon.texture = Constants.type_to_icon(pool.item_type)
-		target_lid_icon.self_modulate = theme_color
+	# 更新盖子图标和颜色 (仅当 pool 提供明确的 item_type 时才更新)
+	var has_item_type = ("item_type" in pool) or (pool is Dictionary and pool.has("item_type"))
+	if has_item_type:
+		var item_type = pool.item_type if "item_type" in pool else pool.get("item_type")
+		var theme_color := Color("#199C80") # 普通门颜色
+		if item_type == Constants.ItemType.MAINLINE:
+			theme_color = Color("#FF6E54") # 核心门颜色
+		
+		if target_lid_sprite:
+			target_lid_sprite.self_modulate = theme_color
+		if target_lid_icon:
+			target_lid_icon.texture = Constants.type_to_icon(item_type)
+			target_lid_icon.self_modulate = theme_color
 	
 	# 更新奖池名称
-	if target_pool_name:
-		target_pool_name.text = Constants.type_to_display_name(pool.item_type) + "池"
+	if target_pool_name and has_item_type:
+		var item_type = pool.item_type if "item_type" in pool else pool.get("item_type")
+		target_pool_name.text = Constants.type_to_display_name(item_type) + "池"
 		target_pool_name.visible = true
 	
-	# 更新价格
+	# 更新价格 (始终保持可见)
 	if target_price:
-		var cost_gold: int = pool.gold_cost
-		var cost_tickets: int = pool.ticket_cost
-		if cost_tickets > 0:
-			target_price.text = str(cost_tickets)
+		var cost_text = ""
+		if pool is Dictionary and pool.has("price_text"):
+			cost_text = pool.price_text
 		else:
-			target_price.text = str(cost_gold)
-		target_price.visible = true
+			var cost_gold: int = pool.get("gold_cost") if "gold_cost" in pool else 0
+			var cost_tickets: int = pool.get("ticket_cost") if "ticket_cost" in pool else 0
+			cost_text = str(cost_tickets) if cost_tickets > 0 else str(cost_gold)
+		
+		target_price.text = cost_text
+		target_price.visible = true # 强制保持可见，即使文本为空
 	
-	# Price Icon 只在 True 节点上更新（静态，不参与推挤）
+	# Price Icon 逻辑 (始终保持可见)
 	if not target_pseudo and price_icon:
-		if pool.ticket_cost > 0:
+		var has_tickets = pool.get("ticket_cost") > 0 if "ticket_cost" in pool else false
+		if has_tickets:
 			price_icon.texture = preload("res://assets/sprites/icons/coupon.png")
 		else:
 			price_icon.texture = preload("res://assets/sprites/icons/money.png")
-		price_icon.visible = true
+		price_icon.visible = true # 强制保持可见
 	
-	# 更新词缀（用空字符串代替 invisible，避免动画时突然出现）
+	# 更新词缀
 	if target_affix:
-		if pool.affix_data:
+		if pool is Dictionary and pool.has("affix_name"):
+			target_affix.text = pool.affix_name
+		elif "affix_data" in pool and pool.affix_data:
 			target_affix.text = pool.affix_data.name
 		else:
 			target_affix.text = ""
 	
-	# 更新描述（同上）
+	# 更新描述
 	if target_desc:
-		if pool.affix_data:
+		if pool is Dictionary and pool.has("description_text"):
+			target_desc.text = pool.description_text
+		elif "affix_data" in pool and pool.affix_data:
 			target_desc.text = pool.affix_data.description
 		else:
 			target_desc.text = ""
 	
-	# 更新需求图标 (仅在 True 节点时计算 hints，Pseudo 暂时复制相同显示)
-	if target_grid and not target_pseudo:
-		# True 节点的 hints 需要由外部 controller 调用 update_order_hints
-		pass
+	# 更新需求图标 (如果是清空模式)
+	if target_grid and pool is Dictionary and pool.get("clear_hints", false):
+		# 关键：清空模式下必须同时清除暂存数据，防止动画结束后被还原
+		_pending_hints.clear()
+		_current_hint_ids.clear()
+		
+		for i in range(5):
+			var icon_node = target_grid.get_node_or_null("Item Icon_" + str(i))
+			if icon_node:
+				icon_node.visible = false
+				var status_icon = icon_node.get_node_or_null("Item Icon_status")
+				if status_icon: status_icon.visible = false
 
 ## 仅刷新订单需求图标（局部动画）
 func refresh_hints_animated(display_items: Array[ItemData], satisfied_map: Dictionary) -> void:
@@ -595,10 +621,8 @@ func is_hint_content_equal(new_items: Array[ItemData]) -> bool:
 	return true
 
 ## 播放推挤动画
-## 注意：场景中有两种节点关系：
-## - 父子关系 (lid, affix, price, description)：Pseudo 是 True 的子节点，只需移动父节点
-## - 兄弟关系 (items_grid)：两者是同级节点，需要分别动画
-func _play_push_away_animation() -> void:
+## [param skip_lid]: 是否跳过盖子的位移动画
+func _play_push_away_animation(skip_lid: bool = false) -> void:
 	var tw := create_tween().set_parallel(true)
 	tw.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	
@@ -608,7 +632,7 @@ func _play_push_away_animation() -> void:
 	# 这些都是父子关系：只移动 TRUE 节点，PSEUDO 作为子节点会自动跟随进入视野
 	
 	# 盖子 (父子关系)
-	if lid_sprite and _push_initial_positions.has("lid_true"):
+	if not skip_lid and lid_sprite and _push_initial_positions.has("lid_true"):
 		var lid_true_start: Vector2 = _push_initial_positions["lid_true"]
 		tw.tween_property(lid_sprite, "position:y", lid_true_start.y + PUSH_VERTICAL_OFFSET, PUSH_DURATION)
 		has_tweeners = true

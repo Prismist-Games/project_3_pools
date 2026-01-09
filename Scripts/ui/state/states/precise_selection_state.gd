@@ -1,36 +1,83 @@
 extends "res://scripts/ui/state/ui_state.gd"
 
 ## PreciseSelectionState - 精准选择（二选一）
+##
+## 流程:
+## 1. 进入时 slot_0/slot_1 播放 reveal 动画展示两个选项，slot_2 保持关闭
+## 2. 玩家点击 slot_0 或 slot_1 选择
+## 3. 物品飞入背包 → 关门 → 三门刷新
 
 ## 引用到主控制器
 var controller: Node = null
 
-## 可选物品列表
-var options: Array = []
+## 可选物品列表 (最多 2 个)
+var options: Array[ItemInstance] = []
 
-## 来源奖池索引
+## 来源奖池索引 (用于 VFX 飞行起点)
 var source_pool_index: int = -1
 
+## 玩家选择的 slot 索引
+var selected_slot_index: int = -1
+
+## 是否已经做出了选择（防止重复点击）
+var _has_made_selection: bool = false
+
 func enter(payload: Dictionary = {}) -> void:
-	options = payload.get("items", []) # 注意：payload 里是 "items"
+	options.assign(payload.get("items", []))
 	source_pool_index = payload.get("source_pool_index", -1)
+	selected_slot_index = -1
+	_has_made_selection = false
 	
 	if not controller:
 		push_error("[PreciseSelectionState] controller 未设置")
 		return
-
-	# 锁定 UI 进行精准选择
+	
 	controller.lock_ui("precise_selection")
 	
-	# 设置视觉展示
+	# 开始展示流程 (异步)
 	_setup_precise_display()
 
 func exit() -> void:
-	# 关闭所有精准选择打开的槽位并还原 UI
-	_cleanup_precise_display()
+	# 如果是转向 Replacing 状态，不执行刷新（刷新由 Replacing.exit() 负责）
+	if machine and machine.pending_state_name == &"Replacing":
+		# 只做基本清理
+		_has_made_selection = false
+		options.clear()
+		source_pool_index = -1
+		# 注意：不清除 selected_slot_index，Replacing 需要知道来源
+		
+		if controller:
+			controller.unlock_ui("precise_selection")
+		return
 	
+	# 正常退出流程：关闭所有打开的槽位并刷新
+	if controller and selected_slot_index != -1:
+		# 1. 手动关闭所有可能打开的槽位 (0 和 1)
+		for i in range(2):
+			var slot = _get_slot(i)
+			if slot and slot.is_drawing:
+				slot.play_close_sequence() # 异步关盖，不一定非要 await，因为下一步有统一刷新
+		
+		# 2. 调用统一的刷新动画
+		if controller.pool_controller and controller.pool_controller.has_method("play_all_refresh_animations"):
+			controller.pool_controller._is_animating_refresh = true
+			PoolSystem.refresh_pools()
+			# 使用 source_pool_index 作为主要刷新参考点
+			controller.pool_controller.play_all_refresh_animations(
+				PoolSystem.current_pools,
+				source_pool_index
+			)
+		else:
+			# 兜底：刷新奖池
+			PoolSystem.refresh_pools()
+		
+		controller.last_clicked_pool_idx = -1
+		controller.pending_source_pool_idx = -1
+	
+	_has_made_selection = false
 	options.clear()
 	source_pool_index = -1
+	selected_slot_index = -1
 	
 	if controller:
 		controller.unlock_ui("precise_selection")
@@ -38,70 +85,96 @@ func exit() -> void:
 func can_transition_to(_next_state: StringName) -> bool:
 	return true
 
-## 选取其中一个选项
+## 玩家选择其中一个选项
 func select_option(index: int) -> void:
-	if index < 0 or index >= options.size():
+	if _has_made_selection:
 		return
 		
+	# 仅允许点击 slot_0 或 slot_1
+	if index < 0 or index >= options.size():
+		return
+	
+	_has_made_selection = true
+	selected_slot_index = index
 	var item_instance = options[index]
 	
-	# 执行逻辑添加物品
+	# 关键：设置 last_clicked_pool_idx 使 VFX 能从正确的 slot 飞出
+	controller.last_clicked_pool_idx = index
+	controller.pending_source_pool_idx = index
+	
+	# 尝试添加到背包
 	var added = InventorySystem.add_item_instance(item_instance)
 	
 	if not added:
-		# 如果添加失败（背包满），转换到 Replacing 状态
-		machine.transition_to(&"Replacing", {"source_pool_index": source_pool_index})
+		# 背包满，需要进入 Replacing 状态
+		# 1. 先关闭另一扇二选一 slot 的盖子
+		var other_index = 1 - index # 0 -> 1, 1 -> 0
+		var other_slot = _get_slot(other_index)
+		if other_slot:
+			other_slot.close_lid()
+		
+		# 2. 将选中的物品加入 pending 队列（它会显示在当前选中的 slot 里）
+		InventorySystem.pending_item = item_instance
+		
+		# 3. 转换到 Replacing 状态
+		machine.transition_to(&"Replacing", {"source_pool_index": index})
 	else:
-		# 添加成功，先关盖，等关完后再刷新，最后回 Idle
-		await _cleanup_precise_display()
-		PoolSystem.refresh_pools()
-		machine.transition_to(&"Idle")
+		# 添加成功，VFX 会自动触发飞行 (通过 item_added 信号)
+		# 等待飞行完成后再关盖刷新 - 由 _on_vfx_queue_finished 处理
+		pass
 
 func handle_input(event: InputEvent) -> bool:
-	# 拦截右键，阻止取消
+	# 拦截右键，阻止取消 (精准选择强制必须选一个)
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-		return true # 消费事件，阻止传递
+		return true
 	return false
 
+## 展示二选一界面
 func _setup_precise_display() -> void:
-	if not controller: return
+	if not controller:
+		return
 	
-	# 显示 2 个候选物品槽位
+	# 关键修复：设置全局刷新标记，拦截由于金币变动触发的自动 Hint 刷新信号
+	if controller.pool_controller:
+		controller.pool_controller._is_animating_refresh = true
+	
+	# 构建二选一专用的 UI 配置
+	var selection_ui_config = {
+		"price_text": "",
+		"affix_name": "二选一",
+		"description_text": "",
+		"clear_hints": true,
+		"skip_lid_animation": true # 关键：进入二选一时跳过盖子的推挤位移
+	}
+	
+	# 1. 所有槽位并行播放 UI 刷新动画 (Push-Away) 和开门动画
 	for i in range(3):
-		var slot = controller.lottery_slots_grid.get_node("Lottery Slot_root_" + str(i))
-		if i < options.size():
+		var slot = _get_slot(i)
+		if not slot: continue
+		
+		# 所有槽位同步推走旧标签 (价格、词缀等)
+		if slot.has_method("refresh_slot_data"):
+			slot.refresh_slot_data(selection_ui_config, false)
+		
+		# slot_0 和 slot_1 同时开始播放揭示动画 (开盖)
+		if i < mini(options.size(), 2):
 			var item = options[i]
-			# 隐藏原有奖池标签
-			_set_slot_labels_visible(slot, false)
-			
-			# 更新图标并展示
-			slot.item_main.texture = item.item_data.icon
-			slot.item_main.visible = true
-			
-			# 打开盖子
-			slot.open_lid()
+			slot.play_reveal_sequence([item])
 		else:
-			# 第三个槽位如果本就是开着的，则关上，且不显示内容
-			slot.close_lid()
-
-func _cleanup_precise_display() -> void:
-	if not controller: return
+			# slot_2 确保它是关着的 (如果是微开状态，直接复位而不播动画)
+			if slot.lid_sprite:
+				slot.lid_sprite.position.y = 0
 	
-	for i in range(3):
-		var slot = controller.lottery_slots_grid.get_node("Lottery Slot_root_" + str(i))
-		if slot:
-			# 使用异步关盖以便等待
-			if slot.has_method("play_close_sequence"):
-				await slot.play_close_sequence()
-			else:
-				slot.close_lid()
-			
-			# 还原标签显示
-			_set_slot_labels_visible(slot, true)
+	# 允许后续的正常刷新信号
+	if controller.pool_controller:
+		# 等待推挤动画的大致时长后解锁，或者直接解锁（因为 _is_animating_refresh 主要防止竞态）
+		await controller.get_tree().create_timer(PUSH_DURATION).timeout
+		controller.pool_controller._is_animating_refresh = false
 
-func _set_slot_labels_visible(slot: Node, visible: bool) -> void:
-	if not slot: return
-	for child_name in ["PoolName_label", "Price_label", "Price_icon", "Affix_label", "Description_label"]:
-		var label = slot.find_child(child_name, true)
-		if label:
-			label.visible = visible
+const PUSH_DURATION: float = 0.4
+
+## 辅助：获取 LotterySlot 节点
+func _get_slot(index: int) -> Control:
+	if not controller or not controller.lottery_slots_grid:
+		return null
+	return controller.lottery_slots_grid.get_node_or_null("Lottery Slot_root_" + str(index))

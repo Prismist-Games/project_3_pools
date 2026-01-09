@@ -150,7 +150,7 @@ func _on_vfx_queue_finished() -> void:
 	
 	if state_machine:
 		var current_state = state_machine.get_current_state_name()
-		if current_state == &"Drawing" or current_state == &"Replacing" or current_state == &"Recycling":
+		if current_state in [&"Drawing", &"Replacing", &"Recycling", &"PreciseSelection"]:
 			# 如果动画播放完毕且没有待处理物品，则尝试返回 Idle 状态
 			# 注意：具体的关盖和刷新逻辑已移至各状态的 exit() 或同步函数中
 			if InventorySystem.pending_items.is_empty():

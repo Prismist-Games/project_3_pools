@@ -83,16 +83,14 @@ func resize_inventory(new_size: int) -> void:
 
 func _on_item_obtained(item: ItemInstance) -> void:
 	# 优先自动放入背包
-	if _auto_add_to_inventory(item):
-		# inventory_changed 已在 _auto_add_to_inventory 内部触发
+	if add_item_instance(item):
+		# inventory_changed 已在 add_item_instance 内部触发
 		return
 		
 	# 背包满了，进入待定队列
 	self.pending_item = item
-	
-	# 这里不需要 emit，因为 auto_add 已经 emit 了，或者 pending_item setter emit 了 pending_queue_changed
 
-func _auto_add_to_inventory(item: ItemInstance) -> bool:
+func add_item_instance(item: ItemInstance) -> bool:
 	for i in range(inventory.size()):
 		if inventory[i] == null:
 			inventory[i] = item
