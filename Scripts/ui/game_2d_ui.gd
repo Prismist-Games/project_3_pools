@@ -116,6 +116,7 @@ func _init_state_machine() -> void:
 	state_machine = get_node_or_null("UIStateMachine")
 	if state_machine:
 		state_machine.state_changed.connect(_on_state_changed)
+		_update_ui_mode_display() # 初始同步
 		print("[Game2DUI] 状态机已初始化: %s" % state_machine.get_current_state_name())
 
 ## 初始化 VFX 管理器
@@ -128,6 +129,8 @@ func _init_vfx_manager() -> void:
 	
 	vfx_manager.queue_started.connect(_on_vfx_queue_started)
 	vfx_manager.queue_finished.connect(_on_vfx_queue_finished)
+	vfx_manager.task_started.connect(func(_t): _update_ui_mode_display())
+	vfx_manager.task_finished.connect(func(_t): _update_ui_mode_display())
 
 ## 状态机状态变更回调
 func _on_state_changed(from_state: StringName, to_state: StringName) -> void:
@@ -146,9 +149,9 @@ func _on_vfx_queue_finished() -> void:
 	
 	if state_machine:
 		var current_state = state_machine.get_current_state_name()
-		if current_state == &"Drawing" or current_state == &"Replacing":
+		if current_state == &"Drawing" or current_state == &"Replacing" or current_state == &"Recycling":
 			# 如果动画播放完毕且没有待处理物品，则尝试返回 Idle 状态
-			# 注意：具体的关盖和刷新逻辑已移至 DrawingState/ReplacingState 的 exit() 中
+			# 注意：具体的关盖和刷新逻辑已移至各状态的 exit() 或同步函数中
 			if InventorySystem.pending_items.is_empty():
 				state_machine.transition_to(&"Idle")
 
@@ -203,7 +206,20 @@ func _update_ui_mode_display() -> void:
 	var pool_locked = is_ui_locked() or has_pending or mode != Constants.UIMode.NORMAL
 	pool_controller.set_slots_locked(pool_locked)
 	
-	switch_controller.update_switch_visuals(mode)
+	# 回收盖子展示逻辑：处于回收模式，或者有回收动画正在飞行中
+	var recycle_active = (mode == Constants.UIMode.RECYCLE)
+	if vfx_manager and vfx_manager.has_active_recycle_tasks():
+		recycle_active = true
+	
+	if recycle_active:
+		# 注意：这里需要一个能手动设置开关状态但不改变模式的方法
+		# 但 SwitchController 的 update_switch_visuals 是基于 mode 输入的
+		# 我们需要绕过或模拟这个 mode
+		switch_controller.update_recycle_visuals(true)
+		# Submit 开关仍然根据 mode 走
+		switch_controller.update_submit_visuals(mode == Constants.UIMode.SUBMIT)
+	else:
+		switch_controller.update_switch_visuals(mode)
 
 # --- 信号处理代理 ---
 func _on_gold_changed(val: int) -> void:
@@ -289,9 +305,7 @@ func _on_recycle_switch_mouse_entered() -> void:
 		switch_controller.show_recycle_preview(value)
 
 func _on_recycle_switch_mouse_exited() -> void:
-	if not state_machine or state_machine.get_ui_mode() != Constants.UIMode.NORMAL: return
-	if is_ui_locked(): return
-	switch_controller.hide_recycle_preview()
+	_update_ui_mode_display()
 
 func _on_selection_changed(index: int) -> void:
 	inventory_controller.update_selection(index)
@@ -491,7 +505,8 @@ func _on_item_replaced(index: int, _new_item: ItemInstance, old_item: ItemInstan
 		
 		if vfx_manager:
 			vfx_manager.enqueue(task)
-
+			_update_ui_mode_display()
+		
 func _on_item_merged(index: int, _new_item: ItemInstance, _target_item: ItemInstance) -> void:
 	_on_item_replaced(index, _new_item, null)
 

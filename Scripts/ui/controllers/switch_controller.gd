@@ -13,6 +13,7 @@ func setup(submit_node: Node2D, recycle_node: Node2D) -> void:
 	submit_switch = submit_node
 	recycle_switch = recycle_node
 	_init_switches()
+	update_switch_visuals(Constants.UIMode.NORMAL) # 确保初始位置正确
 
 func _init_switches() -> void:
 	if submit_switch:
@@ -41,11 +42,22 @@ func _init_switches() -> void:
 		if label: label.text = "0"
 
 func update_switch_visuals(mode: Constants.UIMode) -> void:
-	var submit_target = SWITCH_ON_Y if mode == Constants.UIMode.SUBMIT else SWITCH_OFF_Y
-	var recycle_target = SWITCH_ON_Y if mode == Constants.UIMode.RECYCLE else SWITCH_OFF_Y
+	update_submit_visuals(mode == Constants.UIMode.SUBMIT)
+	update_recycle_visuals(mode == Constants.UIMode.RECYCLE)
+
+func update_submit_visuals(is_on: bool) -> void:
+	var target_y = SWITCH_ON_Y if is_on else SWITCH_OFF_Y
+	_tween_switch(submit_switch, target_y)
+
+func update_recycle_visuals(is_on: bool) -> void:
+	var target_y = SWITCH_ON_Y if is_on else SWITCH_OFF_Y
+	var tween = _tween_switch(recycle_switch, target_y)
 	
-	_tween_switch(submit_switch, submit_target)
-	_tween_switch(recycle_switch, recycle_target)
+	if not is_on:
+		if tween:
+			tween.finished.connect(func(): update_recycle_label(0))
+		else:
+			update_recycle_label(0)
 
 func update_recycle_label(value: int) -> void:
 	if recycle_switch:
@@ -58,7 +70,11 @@ func show_recycle_preview(value: int) -> void:
 	_tween_switch(recycle_switch, SWITCH_ON_Y)
 
 func hide_recycle_preview() -> void:
-	_tween_switch(recycle_switch, SWITCH_OFF_Y)
+	var tween = _tween_switch(recycle_switch, SWITCH_OFF_Y)
+	if tween:
+		tween.finished.connect(func(): update_recycle_label(0))
+	else:
+		update_recycle_label(0)
 	
 func get_recycle_bin_pos() -> Vector2:
 	if recycle_switch:
@@ -66,12 +82,12 @@ func get_recycle_bin_pos() -> Vector2:
 		if root: return root.global_position
 	return Vector2.ZERO
 
-func _tween_switch(switch_node: Node2D, target_y: float) -> void:
-	if not switch_node: return
+func _tween_switch(switch_node: Node2D, target_y: float) -> Tween:
+	if not switch_node: return null
 	var handle = switch_node.get_node_or_null("Switch_handle")
-	if not handle: return
+	if not handle: return null
 	
-	if abs(handle.position.y - target_y) < 0.1: return
+	if abs(handle.position.y - target_y) < 0.1: return null
 	
 	var start_y = handle.position.y
 	var tween = create_tween()
@@ -81,6 +97,8 @@ func _tween_switch(switch_node: Node2D, target_y: float) -> void:
 		if handle.has_method("_update_background_positions"):
 			handle.call("_update_background_positions")
 	, start_y, target_y, 0.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
+	return tween
 
 # --- Input ---
 

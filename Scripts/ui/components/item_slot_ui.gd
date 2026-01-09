@@ -81,6 +81,9 @@ func update_display(item: ItemInstance) -> void:
 		if backgrounds:
 			_animate_background_color(Constants.COLOR_BG_SLOT_EMPTY)
 			
+		# 确保图标彻底隐藏
+		hide_icon()
+		
 		# 强制清理选中视觉，因为物品没了
 		if _is_selected:
 			set_selected(false)
@@ -97,8 +100,8 @@ func update_display(item: ItemInstance) -> void:
 	if backgrounds:
 		_animate_background_color(Constants.get_rarity_border_color(item.rarity))
 	
-	# Status badge update must be called externally now (e.g. by controller) or default to hidden
-	# if controller calls update_display, it should also call update_status_badge
+	# 确保图标显示（如果不在 VFX 隐藏中）
+	show_icon()
 
 func _animate_background_color(target_color: Color) -> void:
 	if not backgrounds: return

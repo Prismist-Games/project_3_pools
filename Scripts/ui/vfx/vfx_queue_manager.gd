@@ -23,6 +23,9 @@ var _queue: Array[Dictionary] = []
 ## 是否正在处理队列
 var _is_processing: bool = false
 
+## 是否正在处理回收类任务
+var _is_processing_recycle: bool = false
+
 ## 是否已调度处理（防止重复调度）
 var _is_scheduled: bool = false
 
@@ -38,6 +41,16 @@ var vfx_layer: Node2D = null
 ## 检查队列是否繁忙
 func is_busy() -> bool:
 	return _is_processing or not _queue.is_empty()
+
+
+## 检查是否有处于激活状态的回收任务 (队列中或进行中)
+func has_active_recycle_tasks() -> bool:
+	if _is_processing_recycle:
+		return true
+	for task in _queue:
+		if task.get("type") == "fly_to_recycle":
+			return true
+	return false
 
 ## 入队一个 VFX 任务
 func enqueue(task: Dictionary) -> void:
@@ -93,6 +106,7 @@ func _process_queue() -> void:
 				parallel_tasks.append(_queue.pop_front())
 			
 			# 并行执行所有回收动画
+			_is_processing_recycle = true
 			# 使用 Dictionary 包装计数器，以便 lambda 能够修改它
 			var counter = {"count": parallel_tasks.size()}
 			for p_task in parallel_tasks:
@@ -107,6 +121,7 @@ func _process_queue() -> void:
 			while counter["count"] > 0:
 				await get_tree().process_frame
 			
+			_is_processing_recycle = false
 			# 统一执行完成回调
 			for p_task in parallel_tasks:
 				task_finished.emit(p_task)
@@ -119,9 +134,14 @@ func _process_queue() -> void:
 		task_started.emit(task)
 		
 		# 根据任务类型执行对应动画
-		match task.get("type", ""):
+		var task_type = task.get("type", "")
+		_is_processing_recycle = (task_type == "fly_to_recycle")
+		
+		match task_type:
 			"fly_to_inventory":
 				await _execute_fly_to_inventory(task)
+			"fly_to_recycle":
+				await _execute_fly_to_recycle(task)
 			"merge":
 				await _execute_merge(task)
 			"generic_fly":
@@ -129,8 +149,9 @@ func _process_queue() -> void:
 			"swap":
 				await _execute_swap(task)
 			_:
-				push_warning("[VfxQueueManager] 未知任务类型: %s" % task.get("type"))
+				push_warning("[VfxQueueManager] 未知任务类型: %s" % task_type)
 		
+		_is_processing_recycle = false
 		task_finished.emit(task)
 		
 		# 调用完成回调 (通常是 controller._on_inventory_changed)
@@ -161,7 +182,6 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 	if not fly_sprite:
 		if target_slot_node:
 			target_slot_node.is_vfx_target = false
-			target_slot_node.show_icon()
 		return
 	
 	# 如果有来源奖池槽位，处理推进动画
@@ -192,7 +212,7 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 		if target_slot_node.has_method("set_temp_hidden"):
 			target_slot_node.set_temp_hidden(false)
 		
-		target_slot_node.show_icon()
+		# 不再手动调用 show_icon()，交给后续的 update_display 处理
 	
 	# 清理
 	fly_sprite.queue_free()
@@ -239,7 +259,7 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 	
 	if source_slot_node:
 		source_slot_node.is_vfx_target = false
-		source_slot_node.show_icon()
+		# 不再手动调用 show_icon()
 	
 	if source_lottery_slot:
 		if source_lottery_slot.get("is_vfx_source") != null:
@@ -282,10 +302,9 @@ func _execute_generic_fly(task: Dictionary) -> void:
 	
 	if source_node:
 		source_node.is_vfx_target = false
-		source_node.show_icon()
 	if target_node:
 		target_node.is_vfx_target = false
-		target_node.show_icon()
+		# 不再手动调用 show_icon()
 
 ## 执行交换动画
 func _execute_swap(task: Dictionary) -> void:
@@ -322,10 +341,8 @@ func _execute_swap(task: Dictionary) -> void:
 	
 	if slot1:
 		slot1.is_vfx_target = false
-		slot1.show_icon()
 	if slot2:
 		slot2.is_vfx_target = false
-		slot2.show_icon()
 
 ## 创建飞行精灵
 func _create_fly_sprite(item, start_pos: Vector2, start_scale: Vector2) -> Sprite2D:

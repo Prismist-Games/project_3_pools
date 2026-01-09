@@ -15,11 +15,13 @@ var controller: Node = null
 func enter(_payload: Dictionary = {}) -> void:
 	# UI State Machine is now the source of truth for UI Mode
 	InventorySystem.interaction_mode = InventorySystem.InteractionMode.MULTI_SELECT
-	InventorySystem.multi_selected_indices.clear()
+	InventorySystem.selected_indices_for_order = []
 
 func exit() -> void:
 	InventorySystem.interaction_mode = InventorySystem.InteractionMode.NORMAL
-	InventorySystem.multi_selected_indices.clear()
+	InventorySystem.selected_indices_for_order = []
+	if controller:
+		controller.unlock_ui("recycle")
 
 func can_transition_to(next_state: StringName) -> bool:
 	return next_state == &"Idle"
@@ -79,17 +81,6 @@ func recycle_confirm() -> void:
 				"target_pos": end_pos
 			})
 	
-	# 设置最后一个任务的处理回调：复位开关
-	if not recycle_tasks.is_empty():
-		recycle_tasks.back()["on_complete"] = func():
-			# 等待一小段时间后手柄下落
-			await controller.get_tree().create_timer(0.2).timeout
-			if controller.switch_controller:
-				controller.switch_controller.hide_recycle_preview()
-			else:
-				controller._tween_switch(controller.recycle_switch, controller.SwitchController.SWITCH_OFF_Y) # 可能会报错如果常量访问不到
-			controller.unlock_ui("recycle")
-
 	# 执行回收数据逻辑 (从大到小移除)
 	indices.sort()
 	indices.reverse()
@@ -100,5 +91,5 @@ func recycle_confirm() -> void:
 	if controller.vfx_manager:
 		controller.vfx_manager.enqueue_batch(recycle_tasks)
 	
-	# 切换回 Idle 状态
-	machine.transition_to(&"Idle")
+	# 注意：不再立即跳转到 Idle。
+	# 等待 Game2DUI 监听到 _on_vfx_queue_finished 后再行跳转。
