@@ -352,12 +352,6 @@ func _handle_single_item_recycle(selected_idx: int) -> void:
 		for task in recycle_tasks:
 			vfx_manager.enqueue(task)
 	
-	if InventorySystem.pending_items.is_empty() and last_clicked_pool_idx != -1:
-		var pool_slot = lottery_slots_grid.get_node("Lottery Slot_root_" + str(last_clicked_pool_idx))
-		if pool_slot: pool_slot.close_lid()
-		last_clicked_pool_idx = -1
-		PoolSystem.refresh_pools()
-	
 	unlock_ui("recycle")
 
 func _handle_cancel() -> void:
