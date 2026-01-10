@@ -247,25 +247,36 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 		source_slot_node.is_vfx_target = true
 		source_slot_node.hide_icon()
 	
-	# 飞向回收箱并缩小
+	# 获取回收箱图标节点（可选）
+	var recycle_icon_node: Sprite2D = task.get("recycle_icon_node")
+	
+	# 飞向回收箱并适当缩小（不再缩小到 0，除非没有目标节点）
+	var target_scale = Vector2(0.6, 0.6) if recycle_icon_node else Vector2.ZERO
+	
 	var tween = create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(fly_sprite, "global_position", target_pos, 0.3) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-	tween.tween_property(fly_sprite, "scale", Vector2.ZERO, 0.3) \
+	tween.tween_property(fly_sprite, "scale", target_scale, 0.3) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	
 	await tween.finished
+	
+	# 如果有目标图标节点，更新它并让飞行物消失（通过透明度过渡更平滑）
+	if recycle_icon_node:
+		recycle_icon_node.texture = fly_sprite.texture
+		recycle_icon_node.modulate.a = 1.0
+		# 让飞行的 Sprite 瞬间消失
+		fly_sprite.visible = false
+	
 	fly_sprite.queue_free()
 	
 	if source_slot_node:
 		source_slot_node.is_vfx_target = false
-		# 不再手动调用 show_icon()
 	
 	if source_lottery_slot:
 		if source_lottery_slot.get("is_vfx_source") != null:
 			source_lottery_slot.is_vfx_source = false
-		# 不再手动在此处调用 show_main_icon()，由后续状态刷新统一控制
 
 ## 执行合成动画
 func _execute_merge(_task: Dictionary) -> void:

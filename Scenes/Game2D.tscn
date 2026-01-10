@@ -1,5 +1,6 @@
 [gd_scene load_steps=120 format=3 uid="uid://cf1cjj8xlhblr"]
 
+[ext_resource type="Script" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
 [ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
 [ext_resource type="Texture2D" uid="uid://b5uyc48ywtik2" path="res://assets/sprites/wall.png" id="2_xqbja"]
@@ -52,7 +53,7 @@
 [ext_resource type="Texture2D" uid="uid://cyixck513ac1o" path="res://assets/sprites/quest_slots/基地-9.png" id="33_0ehwc"]
 [ext_resource type="Texture2D" uid="uid://ddymclsitprmc" path="res://assets/sprites/quest_slots/基地-8.png" id="34_oeaov"]
 [ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="37_50t6p"]
-[ext_resource type="PackedScene" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
+[ext_resource type="PackedScene" uid="uid://basts7bbr2vav" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
 [ext_resource type="Texture2D" uid="uid://dj5be2vipyhi4" path="res://assets/sprites/the_rabbit/the_rabbit_head_left.png" id="62_enqmm"]
 [ext_resource type="Texture2D" uid="uid://b067gbir0lby" path="res://assets/sprites/the_rabbit/the_rabbit_head_mid.png" id="63_6sdua"]
@@ -105,7 +106,6 @@
 [ext_resource type="Texture2D" uid="uid://51nvb4xvrn1c" path="res://assets/sprites/icons/items/antique_cup.PNG" id="102_jdak2"]
 [ext_resource type="Texture2D" uid="uid://ue7e5frhr0kh" path="res://assets/sprites/frames/mini.png" id="102_u4yck"]
 [ext_resource type="Texture2D" uid="uid://djaip0chmnewr" path="res://assets/sprites/frames/popup.png" id="103_otpb1"]
-[ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="110_ui"]
 [ext_resource type="Script" uid="uid://blxunu142eonv" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
 [ext_resource type="Script" uid="uid://dceb57gqrmaik" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
 
@@ -269,7 +269,7 @@ _data = {
 [node name="Game2D" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("110_ui")
+script = ExtResource("1_x7wb1")
 
 [node name="Background" type="Node2D" parent="."]
 position = Vector2(3001, 1689.25)
@@ -447,10 +447,10 @@ visible = false
 position = Vector2(-24.75, 31.5)
 scale = Vector2(0.65, 0.65)
 
-[node name="Item_example" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_item_root"]
+[node name="Item_icon" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_item_root"]
 texture = ExtResource("3_fiado")
 
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_item_root/Item_example"]
+[node name="Item_shadow" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_item_root/Item_icon"]
 visible = false
 self_modulate = Color(0, 0, 0, 0.39215687)
 show_behind_parent = true
@@ -458,7 +458,7 @@ position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_item_root/Item_example"]
+[node name="Item_affix" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_item_root/Item_icon"]
 visible = false
 position = Vector2(139, -127)
 texture = ExtResource("37_50t6p")
@@ -2840,7 +2840,6 @@ libraries = {
 }
 
 [node name="5 Choose 1" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(1334, 2384)
 texture = ExtResource("101_8ocj1")
 

@@ -215,8 +215,8 @@ func _update_ui_mode_display() -> void:
 	var pool_locked = is_ui_locked() or has_pending or mode != Constants.UIMode.NORMAL
 	pool_controller.set_slots_locked(pool_locked)
 	
-	# 回收盖子展示逻辑：处于回收模式，或者有回收动画正在飞行中
-	var recycle_active = (mode == Constants.UIMode.RECYCLE)
+	# 回收盖子展示逻辑：处于回收模式，或者有回收动画正在飞行中，或者正在执行回收锁
+	var recycle_active = (mode == Constants.UIMode.RECYCLE) or _ui_locks.has("recycle")
 	if vfx_manager and vfx_manager.has_active_recycle_tasks():
 		recycle_active = true
 	
@@ -330,6 +330,7 @@ func _handle_single_item_recycle(selected_idx: int) -> void:
 	var recycle_tasks = []
 	var has_pending = not InventorySystem.pending_items.is_empty()
 	var target_pos = switch_controller.get_recycle_bin_pos()
+	var recycle_icon_node = switch_controller.get_recycle_icon_node()
 	
 	if has_pending:
 		var item = InventorySystem.pending_items[0]
@@ -345,6 +346,7 @@ func _handle_single_item_recycle(selected_idx: int) -> void:
 				"start_scale": snapshot.get("global_scale", Vector2.ONE),
 				"target_pos": target_pos,
 				"source_lottery_slot": pool_slot,
+				"recycle_icon_node": recycle_icon_node,
 				"on_complete": func(): _on_inventory_changed(InventorySystem.inventory)
 			})
 			
@@ -368,6 +370,7 @@ func _handle_single_item_recycle(selected_idx: int) -> void:
 				"start_scale": slot_scale,
 				"target_pos": target_pos,
 				"source_slot_node": slot_node,
+				"recycle_icon_node": recycle_icon_node,
 				"on_complete": func(): _on_inventory_changed(InventorySystem.inventory)
 			})
 			
@@ -468,6 +471,7 @@ func _on_item_replaced(index: int, _new_item: ItemInstance, old_item: ItemInstan
 		var target_pos = inventory_controller.get_slot_global_position(index)
 		var target_scale = inventory_controller.get_slot_global_scale(index)
 		var recycle_pos = switch_controller.get_recycle_bin_pos()
+		var recycle_icon_node = switch_controller.get_recycle_icon_node()
 		var target_slot_node = inventory_controller.get_slot_node(index)
 		
 		# 关键修复：锁定
@@ -482,6 +486,7 @@ func _on_item_replaced(index: int, _new_item: ItemInstance, old_item: ItemInstan
 				"start_scale": target_scale,
 				"target_pos": recycle_pos,
 				"source_slot_node": target_slot_node,
+				"recycle_icon_node": recycle_icon_node,
 				"on_complete": func(): pass # No specific callback needed
 			})
 		
