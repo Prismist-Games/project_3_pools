@@ -1,7 +1,7 @@
 [gd_scene load_steps=120 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
-[ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
+[ext_resource type="Script" uid="uid://rg8ahiwfwlxb" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
 [ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
 [ext_resource type="Texture2D" uid="uid://b5uyc48ywtik2" path="res://assets/sprites/wall.png" id="2_xqbja"]
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="3_4wmcb"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://usox228a20t7" path="res://assets/sprites/the_machine/the_machine_legacy_outline.png" id="6_2v31b"]
 [ext_resource type="Texture2D" uid="uid://58c1gxlj405r" path="res://assets/sprites/the_machine/the_machine_slot_mask.png" id="7_d4ujc"]
 [ext_resource type="Texture2D" uid="uid://dp2k5ss5oefjc" path="res://assets/sprites/the_machine/the_machine_slot_outline.png" id="8_xqbja"]
+[ext_resource type="Texture2D" uid="uid://b6xu5iewxjacd" path="res://assets/sprites/icons/skills/偷工減料.png" id="9_8hb1a"]
 [ext_resource type="Texture2D" uid="uid://2sp6p7grlidd" path="res://assets/sprites/the_machine/the_machine_slot_outline_front.png" id="9_fvhsr"]
 [ext_resource type="Texture2D" uid="uid://cemheosuktfhj" path="res://assets/sprites/item_slots/基地-5.png" id="11_bobrt"]
 [ext_resource type="Texture2D" uid="uid://7s7gx5sytssb" path="res://assets/sprites/item_slots/基地-6 2.png" id="11_fkxe6"]
@@ -35,9 +36,8 @@
 [ext_resource type="Texture2D" uid="uid://dlywfo3j61bw8" path="res://assets/sprites/item_slots/基地-6.png" id="18_ivepa"]
 [ext_resource type="Texture2D" uid="uid://lw48pfhb1slm" path="res://assets/sprites/the_machine_switch/Recycle_background_outline.png" id="18_u8s40"]
 [ext_resource type="Texture2D" uid="uid://tyc42trcd2xq" path="res://assets/sprites/the_machine_switch/基地-5.png" id="18_xqbja"]
-[ext_resource type="Texture2D" uid="uid://1h4st4oq2muh" path="res://icon.svg" id="19_7rf4k"]
 [ext_resource type="Texture2D" uid="uid://bb0jex82xogr2" path="res://assets/sprites/item_slots/基地-8.png" id="19_sojbq"]
-[ext_resource type="Script" uid="uid://cp4b85c6kcgdl" path="res://scripts/ui/utils/switch_background_follow.gd" id="19_ue141"]
+[ext_resource type="Script" uid="uid://ip5lr6ojc1cq" path="res://scripts/ui/utils/switch_background_follow.gd" id="19_ue141"]
 [ext_resource type="Texture2D" uid="uid://c1rw0mhgt1s1i" path="res://assets/sprites/the_machine/the_machine_display_fill.png" id="21_ue141"]
 [ext_resource type="Texture2D" uid="uid://bclpcjghycqdb" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="22_017ef"]
 [ext_resource type="Texture2D" uid="uid://d3xb6e3385m7k" path="res://assets/sprites/icons/coupon.png" id="25_ccvlu"]
@@ -106,8 +106,8 @@
 [ext_resource type="Texture2D" uid="uid://51nvb4xvrn1c" path="res://assets/sprites/icons/items/antique_cup.PNG" id="102_jdak2"]
 [ext_resource type="Texture2D" uid="uid://ue7e5frhr0kh" path="res://assets/sprites/frames/mini.png" id="102_u4yck"]
 [ext_resource type="Texture2D" uid="uid://djaip0chmnewr" path="res://assets/sprites/frames/popup.png" id="103_otpb1"]
-[ext_resource type="Script" uid="uid://blxunu142eonv" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
-[ext_resource type="Script" uid="uid://dceb57gqrmaik" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
+[ext_resource type="Script" uid="uid://exqnykh1n5lj" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
+[ext_resource type="Script" uid="uid://con7nyakgbhan" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
 
 [sub_resource type="Animation" id="Animation_ovo1l"]
 length = 0.001
@@ -295,86 +295,68 @@ texture = ExtResource("12_lql4v")
 [node name="TheMachineSlotOutlineBehind" type="Sprite2D" parent="The Machine/TheMachineTopBehind"]
 texture = ExtResource("13_7bc83")
 
-[node name="TheMachineSlot 1" type="Sprite2D" parent="The Machine"]
-self_modulate = Color(0.9098039, 0.83137256, 0.24705882, 1)
+[node name="TheMachineSlot_0" type="Sprite2D" parent="The Machine"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 position = Vector2(-425.75, -1194.75)
-texture = ExtResource("7_d4ujc")
-
-[node name="TheMachineSlotOutline" type="Sprite2D" parent="The Machine/TheMachineSlot 1"]
-self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 texture = ExtResource("8_xqbja")
 
-[node name="Skill Label" type="RichTextLabel" parent="The Machine/TheMachineSlot 1"]
-clip_contents = false
-offset_left = -119.0
-offset_top = -57.0
-offset_right = 236.0
-offset_bottom = 156.0
-tooltip_text = "Skill Effect"
-theme_override_font_sizes/normal_font_size = 91
-bbcode_enabled = true
-text = "SKILL"
-scroll_active = false
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Skill Icon" type="Sprite2D" parent="The Machine/TheMachineSlot 1/Skill Label"]
-position = Vector2(48, 108)
-texture = ExtResource("19_7rf4k")
-
-[node name="TheMachineSlot 2" type="Sprite2D" parent="The Machine"]
+[node name="TheMachineSlot_fill" type="Sprite2D" parent="The Machine/TheMachineSlot_0"]
 self_modulate = Color(0.9098039, 0.83137256, 0.24705882, 1)
-position = Vector2(392.25, -1041.75)
+show_behind_parent = true
+clip_children = 2
 texture = ExtResource("7_d4ujc")
 
-[node name="TheMachineSlotOutline" type="Sprite2D" parent="The Machine/TheMachineSlot 2"]
+[node name="Skill_icon" type="TextureRect" parent="The Machine/TheMachineSlot_0/TheMachineSlot_fill"]
+offset_left = -208.25
+offset_top = -122.25
+offset_right = 358.75
+offset_bottom = 251.75
+scale = Vector2(0.945, 0.945)
+tooltip_text = "Skill Description"
+mouse_default_cursor_shape = 16
+texture = ExtResource("9_8hb1a")
+
+[node name="TheMachineSlot_1" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+position = Vector2(392, -1194.75)
 texture = ExtResource("8_xqbja")
 
-[node name="Skill Label" type="RichTextLabel" parent="The Machine/TheMachineSlot 2"]
-clip_contents = false
-offset_left = -119.0
-offset_top = -57.0
-offset_right = 236.0
-offset_bottom = 156.0
-tooltip_text = "Skill Effect"
-theme_override_font_sizes/normal_font_size = 91
-bbcode_enabled = true
-text = "SKILL"
-scroll_active = false
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Skill Icon" type="Sprite2D" parent="The Machine/TheMachineSlot 2/Skill Label"]
-position = Vector2(48, 108)
-texture = ExtResource("19_7rf4k")
-
-[node name="TheMachineSlot 3" type="Sprite2D" parent="The Machine"]
+[node name="TheMachineSlot_fill" type="Sprite2D" parent="The Machine/TheMachineSlot_1"]
 self_modulate = Color(0.9098039, 0.83137256, 0.24705882, 1)
-position = Vector2(1205.25, -954.75)
+show_behind_parent = true
+clip_children = 2
 texture = ExtResource("7_d4ujc")
 
-[node name="TheMachineSlotOutline" type="Sprite2D" parent="The Machine/TheMachineSlot 3"]
+[node name="Skill_icon" type="TextureRect" parent="The Machine/TheMachineSlot_1/TheMachineSlot_fill"]
+offset_left = -208.25
+offset_top = -122.25
+offset_right = 358.75
+offset_bottom = 251.75
+scale = Vector2(0.945, 0.945)
+tooltip_text = "Skill Description"
+mouse_default_cursor_shape = 16
+texture = ExtResource("9_8hb1a")
+
+[node name="TheMachineSlot_2" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+position = Vector2(1204, -1194.75)
 texture = ExtResource("8_xqbja")
 
-[node name="Skill Label" type="RichTextLabel" parent="The Machine/TheMachineSlot 3"]
-clip_contents = false
-offset_left = -119.0
-offset_top = -57.0
-offset_right = 236.0
-offset_bottom = 156.0
-tooltip_text = "Skill Effect"
-theme_override_font_sizes/normal_font_size = 91
-bbcode_enabled = true
-text = "SKILL"
-scroll_active = false
-horizontal_alignment = 2
-vertical_alignment = 1
+[node name="TheMachineSlot_fill" type="Sprite2D" parent="The Machine/TheMachineSlot_2"]
+self_modulate = Color(0.9098039, 0.83137256, 0.24705882, 1)
+show_behind_parent = true
+clip_children = 2
+texture = ExtResource("7_d4ujc")
 
-[node name="Skill Icon" type="Sprite2D" parent="The Machine/TheMachineSlot 3/Skill Label"]
-position = Vector2(48, 108)
-texture = ExtResource("19_7rf4k")
+[node name="Skill_icon" type="TextureRect" parent="The Machine/TheMachineSlot_2/TheMachineSlot_fill"]
+offset_left = -208.25
+offset_top = -122.25
+offset_right = 358.75
+offset_bottom = 251.75
+scale = Vector2(0.945, 0.945)
+tooltip_text = "Skill Description"
+mouse_default_cursor_shape = 16
+texture = ExtResource("9_8hb1a")
 
 [node name="TheMachineTopFront" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
