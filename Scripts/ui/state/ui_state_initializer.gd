@@ -15,6 +15,7 @@ const SubmittingState = preload("res://scripts/ui/state/states/submitting_state.
 const RecyclingState = preload("res://scripts/ui/state/states/recycling_state.gd")
 const TradeInState = preload("res://scripts/ui/state/states/tradein_state.gd")
 const ModalState = preload("res://scripts/ui/state/states/modal_state.gd")
+const TargetedSelectionState = preload("res://scripts/ui/state/states/targeted_selection_state.gd")
 
 var state_machine: Node = null
 
@@ -64,5 +65,9 @@ func _register_states() -> void:
 	var modal_state = ModalState.new()
 	modal_state.controller = controller
 	state_machine.register_state(&"Modal", modal_state)
+	
+	var targeted_state = TargetedSelectionState.new()
+	targeted_state.controller = controller
+	state_machine.register_state(&"TargetedSelection", targeted_state)
 	
 	print("[UIStateInitializer] 已注册 %d 个状态" % state_machine._states.size())

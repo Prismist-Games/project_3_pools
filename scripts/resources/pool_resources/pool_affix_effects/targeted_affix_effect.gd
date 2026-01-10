@@ -19,19 +19,20 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	# 标记跳过标准抽奖逻辑
 	ctx.skip_draw = true
 	
-	# 获取该奖池所有可能的物品
-	var possible_items: Array[ItemData] = GameManager.get_items_for_type(ctx.item_type)
-	if possible_items.is_empty():
-		possible_items = GameManager.all_items
-		
-	# 发出信号显示选择弹窗
+	# 捕获当前上下文数据（供闭包使用）
+	var rarity_weights = ctx.rarity_weights.duplicate()
+	var pool_index: int = ctx.meta.get("pool_index", -1)
+	var item_type = ctx.item_type
+	
+	# 发出信号显示选择弹窗（使用 "5 Choose 1" 面板）
 	EventBus.modal_requested.emit(&"targeted_selection", {
-		"items": possible_items,
+		"source_pool_index": pool_index,
+		"pool_item_type": item_type,
 		"callback": func(selected_data: ItemData):
 			if selected_data != null:
-				var rarity = Constants.pick_weighted_index(ctx.rarity_weights, GameManager.rng)
-				var item_instance = ItemInstance.new(selected_data, rarity)
-				EventBus.item_obtained.emit(item_instance)
+				var rarity = Constants.pick_weighted_index(rarity_weights, GameManager.rng)
+				return ItemInstance.new(selected_data, rarity)
+			return null
 	})
 
 

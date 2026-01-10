@@ -19,6 +19,9 @@ extends Control
 
 @onready var vfx_layer: Node2D = get_node_or_null("VfxLayer")
 
+# "有的放矢"选择面板
+@onready var targeted_panel: Sprite2D = find_child("5 Choose 1", true)
+
 # --- 子控制器 ---
 var inventory_controller: InventoryController
 var pool_controller: PoolController
@@ -151,7 +154,7 @@ func _on_vfx_queue_finished() -> void:
 	
 	if state_machine:
 		var current_state = state_machine.get_current_state_name()
-		if current_state in [&"Drawing", &"Replacing", &"Recycling", &"PreciseSelection"]:
+		if current_state in [&"Drawing", &"Replacing", &"Recycling", &"PreciseSelection", &"TargetedSelection"]:
 			# 如果动画播放完毕且没有待处理物品，则尝试返回 Idle 状态
 			# 注意：具体的关盖和刷新逻辑已移至各状态的 exit() 或同步函数中
 			if InventorySystem.pending_items.is_empty():
@@ -177,6 +180,13 @@ func _refresh_all() -> void:
 		
 	order_controller.update_orders_display(OrderSystem.current_orders)
 	_update_ui_mode_display()
+	
+	# 确保"有的放矢"面板初始隐藏
+	if targeted_panel:
+		var is_in_targeted = state_machine and state_machine.get_current_state_name() == &"TargetedSelection"
+		if not is_in_targeted:
+			targeted_panel.position.y = 4880.0
+			targeted_panel.visible = false
 
 
 # --- 控制台 ---
@@ -570,10 +580,11 @@ func _on_modal_requested(modal_id: StringName, payload: Variant) -> void:
 		&"precise_selection":
 			state_machine.transition_to(&"PreciseSelection", payload)
 		&"targeted_selection":
-			state_machine.transition_to(&"Modal", {
-				"modal_type": &"targeted_selection",
-				"options": payload.get("items", []),
-				"on_select": payload.get("callback", Callable())
+			# 有的放矢：转到专用状态，使用 "5 Choose 1" 面板
+			state_machine.transition_to(&"TargetedSelection", {
+				"source_pool_index": payload.get("source_pool_index", last_clicked_pool_idx),
+				"pool_item_type": payload.get("pool_item_type", -1),
+				"callback": payload.get("callback", Callable())
 			})
 
 func _on_game_event(event_id: StringName, payload: Variant) -> void:

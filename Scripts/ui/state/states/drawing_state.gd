@@ -20,8 +20,8 @@ func enter(payload: Dictionary = {}) -> void:
 	is_draw_complete = false
 
 func exit() -> void:
-	# 关键修复：如果正在跳转到 TradeIn 或 PreciseSelection，不要刷新奖池，因为这些流程还在进行中
-	if machine and machine.pending_state_name in [&"TradeIn", &"PreciseSelection"]:
+	# 关键修复：如果正在跳转到 TradeIn、PreciseSelection 或 TargetedSelection，不要刷新奖池，因为这些流程还在进行中
+	if machine and machine.pending_state_name in [&"TradeIn", &"PreciseSelection", &"TargetedSelection"]:
 		if controller:
 			controller.unlock_ui("draw")
 		pool_index = -1
@@ -62,8 +62,8 @@ func exit() -> void:
 	is_draw_complete = false
 
 func can_transition_to(next_state: StringName) -> bool:
-	# 显式允许：转换到 Modal、TradeIn 或 PreciseSelection（词缀触发）
-	if next_state in [&"Modal", &"TradeIn", &"PreciseSelection"]:
+	# 显式允许：转换到 Modal、TradeIn、PreciseSelection 或 TargetedSelection（词缀触发）
+	if next_state in [&"Modal", &"TradeIn", &"PreciseSelection", &"TargetedSelection"]:
 		return true
 		
 	# 如果锁定已被释放，或者标记已完成，则允许转换
