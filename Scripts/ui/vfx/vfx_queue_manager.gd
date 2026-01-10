@@ -209,11 +209,11 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 	# 还原插槽状态
 	if target_slot_node:
 		target_slot_node.is_vfx_target = false
-		# 解除临时隐藏状态 (如果存在)
 		if target_slot_node.has_method("set_temp_hidden"):
 			target_slot_node.set_temp_hidden(false)
-		
-		# 不再手动调用 show_icon()，交给后续的 update_display 处理
+	
+	if source_slot and source_slot.get("is_vfx_source") != null:
+		source_slot.is_vfx_source = false
 	
 	# 清理
 	fly_sprite.queue_free()
@@ -265,9 +265,7 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 	if source_lottery_slot:
 		if source_lottery_slot.get("is_vfx_source") != null:
 			source_lottery_slot.is_vfx_source = false
-		# 只有当 item_main 还有 texture 时才显示，防止回收最后一个物品后闪现空图标
-		if source_lottery_slot.has_method("show_main_icon") and source_lottery_slot.item_main.texture != null:
-			source_lottery_slot.show_main_icon()
+		# 不再手动在此处调用 show_main_icon()，由后续状态刷新统一控制
 
 ## 执行合成动画
 func _execute_merge(_task: Dictionary) -> void:

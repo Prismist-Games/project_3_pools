@@ -350,65 +350,70 @@ func update_queue_display(items: Array) -> void:
 		item_queue_2_shadow.visible = false
 	
 func play_queue_advance_anim() -> void:
+	# 如果队列1不可见，说明队列为空，无需动画
+	if not item_queue_1.visible:
+		return
+	
 	var duration = 0.3
-	var tw = create_tween().set_parallel(true)
 	
 	# 捕获动画前的 texture 和状态（防止动画期间数据变化导致的竞态条件）
-	var q1_texture = item_queue_1.texture if item_queue_1.visible else null
+	var q1_texture = item_queue_1.texture
 	var q2_texture = item_queue_2.texture if item_queue_2.visible else null
-	var had_q1 = item_queue_1.visible
 	var had_q2 = item_queue_2.visible
 	
-	if had_q1:
-		var q1_pos = item_queue_1.position
-		var main_pos = item_main.position
-		var q1_scale = item_queue_1.scale
-		var main_scale = item_main.scale
-		
-		# 让 queue1 移动到 main 的位置和缩放
-		tw.tween_property(item_queue_1, "position", main_pos, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		tw.tween_property(item_queue_1, "scale", main_scale, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		
-		if had_q2:
-			tw.tween_property(item_queue_2, "position", q1_pos, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-			tw.tween_property(item_queue_2, "scale", q1_scale, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		
-		await tw.finished
-		
-		# 动画结束后：手动执行"前进"操作
-		# 1. main <- queue_1 的 texture
-		# 2. queue_1 <- queue_2 的 texture (如果有)
-		# 3. queue_2 隐藏
-		
-		# 恢复各节点到初始位置/缩放
-		_reset_item_transforms()
-		item_queue_1.position = _initial_transforms[item_queue_1]["pos"]
-		item_queue_1.scale = _initial_transforms[item_queue_1]["scale"]
-		item_queue_2.position = _initial_transforms[item_queue_2]["pos"]
-		item_queue_2.scale = _initial_transforms[item_queue_2]["scale"]
-		
-		# 更新 texture（基于动画开始时捕获的状态）
-		item_main.texture = q1_texture
-		item_main.visible = q1_texture != null
-		item_main_shadow.visible = q1_texture != null
-		
-		if had_q2:
-			item_queue_1.texture = q2_texture
-			item_queue_1.visible = q2_texture != null
-			item_queue_1_shadow.visible = q2_texture != null
-		else:
-			item_queue_1.texture = null
-			item_queue_1.visible = false
-			item_queue_1_shadow.visible = false
-		
-		# queue_2 总是被前移或清空
-		item_queue_2.texture = null
-		item_queue_2.visible = false
-		item_queue_2_shadow.visible = false
-		
-		# 更新背景颜色 (如果 main 仍有物品，保持当前颜色；否则重置)
-		if not item_main.visible and backgrounds:
-			backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
+	# 创建 Tween（此时已确保至少有 queue1 的动画）
+	var tw = create_tween().set_parallel(true)
+	
+	var q1_pos = item_queue_1.position
+	var main_pos = item_main.position
+	var q1_scale = item_queue_1.scale
+	var main_scale = item_main.scale
+	
+	# 让 queue1 移动到 main 的位置和缩放
+	tw.tween_property(item_queue_1, "position", main_pos, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tw.tween_property(item_queue_1, "scale", main_scale, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
+	if had_q2:
+		tw.tween_property(item_queue_2, "position", q1_pos, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tw.tween_property(item_queue_2, "scale", q1_scale, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
+	await tw.finished
+	
+	# 动画结束后：手动执行"前进"操作
+	# 1. main <- queue_1 的 texture
+	# 2. queue_1 <- queue_2 的 texture (如果有)
+	# 3. queue_2 隐藏
+	
+	# 恢复各节点到初始位置/缩放
+	_reset_item_transforms()
+	item_queue_1.position = _initial_transforms[item_queue_1]["pos"]
+	item_queue_1.scale = _initial_transforms[item_queue_1]["scale"]
+	item_queue_2.position = _initial_transforms[item_queue_2]["pos"]
+	item_queue_2.scale = _initial_transforms[item_queue_2]["scale"]
+	
+	# 更新 texture（基于动画开始时捕获的状态）
+	item_main.texture = q1_texture
+	item_main.visible = q1_texture != null
+	item_main_shadow.visible = q1_texture != null
+	
+	if had_q2:
+		item_queue_1.texture = q2_texture
+		item_queue_1.visible = q2_texture != null
+		item_queue_1_shadow.visible = q2_texture != null
+	else:
+		item_queue_1.texture = null
+		item_queue_1.visible = false
+		item_queue_1_shadow.visible = false
+	
+	# queue_2 总是被前移或清空
+	item_queue_2.texture = null
+	item_queue_2.visible = false
+	item_queue_2_shadow.visible = false
+	
+	# 更新背景颜色 (如果 main 仍有物品，保持当前颜色；否则重置)
+	if not item_main.visible and backgrounds:
+		backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
+
 
 func open_lid() -> void:
 	if anim_player.has_animation("lid_open"):
@@ -584,7 +589,13 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 
 ## 仅刷新订单需求图标（局部动画）
 func refresh_hints_animated(display_items: Array[ItemData], satisfied_map: Dictionary) -> void:
-	if not items_grid or not items_grid_pseudo: return
+	if not items_grid or not items_grid_pseudo:
+		return
+	
+	# 如果没有存储初始位置，直接更新不做动画
+	if not _push_initial_positions.has("grid_true"):
+		_update_grid_icons(items_grid, display_items, satisfied_map)
+		return
 	
 	# 1. 更新 Pseudo 节点
 	_update_grid_icons(items_grid_pseudo, display_items, satisfied_map)
@@ -593,22 +604,19 @@ func refresh_hints_animated(display_items: Array[ItemData], satisfied_map: Dicti
 	var tw := create_tween().set_parallel(true)
 	tw.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	
-	if _push_initial_positions.has("grid_true"):
-		var grid_true_start: Vector2 = _push_initial_positions["grid_true"]
-		# True 向右移出
-		tw.tween_property(items_grid, "position:x", grid_true_start.x + PUSH_HORIZONTAL_OFFSET, PUSH_DURATION)
-		# Pseudo 从左侧移入到 True 的起始位置
-		tw.tween_property(items_grid_pseudo, "position:x", grid_true_start.x, PUSH_DURATION)
-		
-		await tw.finished
-		
-		# 3. 动画结束后同步到 True 节点并复位位置
-		_update_grid_icons(items_grid, display_items, satisfied_map)
-		items_grid.position = _push_initial_positions["grid_true"]
-		items_grid_pseudo.position = _push_initial_positions["grid_pseudo"]
-	else:
-		# 兜底：直接更新
-		_update_grid_icons(items_grid, display_items, satisfied_map)
+	var grid_true_start: Vector2 = _push_initial_positions["grid_true"]
+	# True 向右移出
+	tw.tween_property(items_grid, "position:x", grid_true_start.x + PUSH_HORIZONTAL_OFFSET, PUSH_DURATION)
+	# Pseudo 从左侧移入到 True 的起始位置
+	tw.tween_property(items_grid_pseudo, "position:x", grid_true_start.x, PUSH_DURATION)
+	
+	await tw.finished
+	
+	# 3. 动画结束后同步到 True 节点并复位位置
+	_update_grid_icons(items_grid, display_items, satisfied_map)
+	items_grid.position = _push_initial_positions["grid_true"]
+	items_grid_pseudo.position = _push_initial_positions["grid_pseudo"]
+
 
 ## 检查传入的物品列表 ID 是否与当前显示的一致
 func is_hint_content_equal(new_items: Array[ItemData]) -> bool:
@@ -622,11 +630,24 @@ func is_hint_content_equal(new_items: Array[ItemData]) -> bool:
 
 ## 播放推挤动画
 ## [param skip_lid]: 是否跳过盖子的位移动画
+## 注意：场景中有两种节点关系：
+## - 父子关系 (lid, affix, price, description)：Pseudo 是 True 的子节点，只需移动父节点
+## - 兄弟关系 (items_grid)：两者是同级节点，需要分别动画
 func _play_push_away_animation(skip_lid: bool = false) -> void:
+	# 提前检测：如果所有推挤节点都无效，直接返回，避免创建空 Tween
+	var can_animate := (
+		(lid_sprite and _push_initial_positions.has("lid_true")) or
+		(affix_label and _push_initial_positions.has("affix_true")) or
+		(price_label and _push_initial_positions.has("price_true")) or
+		(items_grid and items_grid_pseudo and _push_initial_positions.has("grid_true")) or
+		(description_label and _push_initial_positions.has("desc_true"))
+	)
+	
+	if not can_animate:
+		push_warning("[LotterySlotUI] _play_push_away_animation: No valid nodes for animation, skipping")
+		return
 	var tw := create_tween().set_parallel(true)
 	tw.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
-	
-	var has_tweeners := false
 	
 	# ============ 垂直推挤组 (向下移出，从上移入) ============
 	# 这些都是父子关系：只移动 TRUE 节点，PSEUDO 作为子节点会自动跟随进入视野
@@ -635,19 +656,16 @@ func _play_push_away_animation(skip_lid: bool = false) -> void:
 	if not skip_lid and lid_sprite and _push_initial_positions.has("lid_true"):
 		var lid_true_start: Vector2 = _push_initial_positions["lid_true"]
 		tw.tween_property(lid_sprite, "position:y", lid_true_start.y + PUSH_VERTICAL_OFFSET, PUSH_DURATION)
-		has_tweeners = true
 	
 	# 词缀标签 (父子关系)
 	if affix_label and _push_initial_positions.has("affix_true"):
 		var affix_true_start: Vector2 = _push_initial_positions["affix_true"]
 		tw.tween_property(affix_label, "position:y", affix_true_start.y + PUSH_LABEL_OFFSET, PUSH_DURATION)
-		has_tweeners = true
 	
 	# 价格标签 (父子关系)
 	if price_label and _push_initial_positions.has("price_true"):
 		var price_true_start: Vector2 = _push_initial_positions["price_true"]
 		tw.tween_property(price_label, "position:y", price_true_start.y + PUSH_LABEL_OFFSET, PUSH_DURATION)
-		has_tweeners = true
 	
 	# ============ 水平推挤组 (向右移出，从左移入) ============
 	
@@ -658,20 +676,14 @@ func _play_push_away_animation(skip_lid: bool = false) -> void:
 		tw.tween_property(items_grid, "position:x", grid_true_start.x + PUSH_HORIZONTAL_OFFSET, PUSH_DURATION)
 		# Pseudo 从左侧移入到 True 的起始位置
 		tw.tween_property(items_grid_pseudo, "position:x", grid_true_start.x, PUSH_DURATION)
-		has_tweeners = true
 	
 	# 描述标签 (父子关系)
 	if description_label and _push_initial_positions.has("desc_true"):
 		var desc_true_start: Vector2 = _push_initial_positions["desc_true"]
 		tw.tween_property(description_label, "position:x", desc_true_start.x + PUSH_DESC_OFFSET, PUSH_DURATION)
-		has_tweeners = true
 	
-	# 确保有 tweeners 才 await，否则 Tween 会报错
-	if has_tweeners:
-		await tw.finished
-	else:
-		tw.kill()
-		push_warning("[LotterySlotUI] _play_push_away_animation: No tweeners added, skipping animation")
+	await tw.finished
+
 
 ## 重置所有 Push-Away 节点到初始位置
 ## 注意：父子关系的节点只需重置父节点，子节点会自动回到相对位置

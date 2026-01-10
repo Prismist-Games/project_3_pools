@@ -89,6 +89,12 @@ func _on_item_obtained(item: ItemInstance) -> void:
 		
 	# 背包满了，进入待定队列
 	self.pending_item = item
+	
+	# 清除选中状态，因为新物品获取是与之前的整理操作无关的新上下文
+	if selected_slot_index != -1:
+		self.selected_slot_index = -1
+	
+	# 这里不需要 emit，因为 auto_add 已经 emit 了，或者 pending_item setter emit 了 pending_queue_changed
 
 func add_item_instance(item: ItemInstance) -> bool:
 	for i in range(inventory.size()):
