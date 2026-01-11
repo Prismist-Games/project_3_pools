@@ -22,6 +22,7 @@ extends PanelContainer
 @onready var item_rarity_option: OptionButton = %ItemRarityOption
 @onready var item_sterile_toggle: CheckButton = %ItemSterileToggle
 @onready var generate_button: Button = %GenerateButton
+@onready var skill_select_button: Button = %SkillSelectButton
 
 # 订单品质概率配置
 @onready var order_rarity_common_spinbox: SpinBox = %OrderRarityCommonSpinBox
@@ -178,6 +179,9 @@ func _connect_signals() -> void:
 	# 连接物品生成信号
 	item_type_option.item_selected.connect(func(_idx): _refresh_item_selector_list())
 	generate_button.pressed.connect(_on_generate_pressed)
+	
+	# 连接技能选择测试按钮
+	skill_select_button.pressed.connect(_on_skill_select_pressed)
 
 
 func _sync_from_unlock_manager() -> void:
@@ -447,3 +451,9 @@ func _on_generate_pressed() -> void:
 	EventBus.item_obtained.emit(instance)
 	
 	print("[DebugConsole] 已生成物品: %s (品阶: %d, 绝育: %s)" % [selected_item_data.name, selected_rarity, "是" if is_sterile else "否"])
+
+
+func _on_skill_select_pressed() -> void:
+	"""点击测试技能选择按钮"""
+	EventBus.modal_requested.emit(&"skill_select", null)
+	print("[DebugConsole] 已触发技能三选一流程")

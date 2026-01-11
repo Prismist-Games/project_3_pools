@@ -22,11 +22,17 @@ extends Control
 # "有的放矢"选择面板
 @onready var targeted_panel: Sprite2D = find_child("5 Choose 1", true)
 
+# 技能槽位节点引用
+@onready var skill_slot_0: Node2D = find_child("TheMachineSlot_0", true)
+@onready var skill_slot_1: Node2D = find_child("TheMachineSlot_1", true)
+@onready var skill_slot_2: Node2D = find_child("TheMachineSlot_2", true)
+
 # --- 子控制器 ---
 var inventory_controller: InventoryController
 var pool_controller: PoolController
 var order_controller: OrderController
 var switch_controller: SwitchController
+var skill_slot_controller: SkillSlotController
 
 # --- 新架构: 状态机与 VFX 管理器 ---
 ## 状态机实例（UIStateMachine 类型）
@@ -108,6 +114,13 @@ func _init_controllers() -> void:
 	switch_controller.game_ui = self
 	add_child(switch_controller)
 	switch_controller.setup(submit_switch, recycle_switch)
+	
+	skill_slot_controller = SkillSlotController.new()
+	skill_slot_controller.name = "SkillSlotController"
+	skill_slot_controller.game_ui = self
+	add_child(skill_slot_controller)
+	var skill_slots: Array[Node2D] = [skill_slot_0, skill_slot_1, skill_slot_2]
+	skill_slot_controller.setup(skill_slots)
 
 ## 初始化状态机
 func _init_state_machine() -> void:
@@ -259,19 +272,8 @@ func _on_pending_queue_changed(items: Array[ItemInstance]) -> void:
 	_update_ui_mode_display()
 
 func _on_skills_changed(skills: Array) -> void:
-	# 暂时保留这里的逻辑，未拆分为 SkillController
-	for i in range(3):
-		var slot = find_child("TheMachineSlot " + str(i + 1), true)
-		if slot:
-			var label: RichTextLabel = slot.get_node("Skill Label")
-			var icon: Sprite2D = label.get_node("Skill Icon")
-			if i < skills.size():
-				var skill = skills[i]
-				label.text = skill.name
-				icon.texture = skill.icon
-				slot.visible = true
-			else:
-				slot.visible = false
+	if skill_slot_controller:
+		skill_slot_controller.refresh_slots(skills)
 
 func _on_pools_refreshed(pools: Array) -> void:
 	pool_controller.update_pools_display(pools)
@@ -569,14 +571,8 @@ func _on_modal_requested(modal_id: StringName, payload: Variant) -> void:
 	
 	match modal_id:
 		&"skill_select":
-			var skills = SkillSystem.get_selectable_skills(3)
-			if skills.is_empty(): return
-			state_machine.transition_to(&"Modal", {
-				"modal_type": &"skill_select",
-				"options": skills,
-				"on_select": func(idx):
-					SkillSystem.add_skill(skills[idx])
-			})
+			# 使用新的 SkillSelectionState 处理技能三选一
+			state_machine.transition_to(&"SkillSelection")
 		&"precise_selection":
 			state_machine.transition_to(&"PreciseSelection", payload)
 		&"targeted_selection":

@@ -297,7 +297,7 @@ texture = ExtResource("13_7bc83")
 
 [node name="TheMachineSlot_0" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(-425.75, -1194.75)
+position = Vector2(-426, -1160)
 texture = ExtResource("8_xqbja")
 
 [node name="TheMachineSlot_fill" type="Sprite2D" parent="The Machine/TheMachineSlot_0"]
@@ -316,9 +316,18 @@ tooltip_text = "Skill Description"
 mouse_default_cursor_shape = 16
 texture = ExtResource("9_8hb1a")
 
+[node name="Input Area" type="Control" parent="The Machine/TheMachineSlot_0/TheMachineSlot_fill"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -150.0
+offset_top = -54.0
+offset_right = 265.0
+offset_bottom = 158.0
+mouse_filter = 1
+
 [node name="TheMachineSlot_1" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(392, -1194.75)
+position = Vector2(392, -1160)
 texture = ExtResource("8_xqbja")
 
 [node name="TheMachineSlot_fill" type="Sprite2D" parent="The Machine/TheMachineSlot_1"]
@@ -337,9 +346,17 @@ tooltip_text = "Skill Description"
 mouse_default_cursor_shape = 16
 texture = ExtResource("9_8hb1a")
 
+[node name="Input Area" type="Control" parent="The Machine/TheMachineSlot_1/TheMachineSlot_fill"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -150.0
+offset_top = -54.0
+offset_right = 265.0
+offset_bottom = 158.0
+
 [node name="TheMachineSlot_2" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(1204, -1194.75)
+position = Vector2(1204, -1160)
 texture = ExtResource("8_xqbja")
 
 [node name="TheMachineSlot_fill" type="Sprite2D" parent="The Machine/TheMachineSlot_2"]
@@ -357,6 +374,14 @@ scale = Vector2(0.945, 0.945)
 tooltip_text = "Skill Description"
 mouse_default_cursor_shape = 16
 texture = ExtResource("9_8hb1a")
+
+[node name="Input Area" type="Control" parent="The Machine/TheMachineSlot_2/TheMachineSlot_fill"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -150.0
+offset_top = -54.0
+offset_right = 265.0
+offset_bottom = 158.0
 
 [node name="TheMachineTopFront" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)

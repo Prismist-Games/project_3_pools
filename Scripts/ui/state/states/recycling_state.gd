@@ -50,12 +50,16 @@ func recycle_confirm() -> void:
 		
 	# 找到 Switch_item_root 作为终点 (using SwitchController now available on controller as coordinator)
 	var end_pos = Vector2.ZERO
+	var recycle_icon_node = null
 	if controller.switch_controller:
 		end_pos = controller.switch_controller.get_recycle_bin_pos()
+		recycle_icon_node = controller.switch_controller.get_recycle_icon_node()
 	else:
 		# Fallback
 		var switch_item_root = controller.recycle_switch.find_child("Switch_item_root", true)
-		if switch_item_root: end_pos = switch_item_root.global_position
+		if switch_item_root: 
+			end_pos = switch_item_root.global_position
+			recycle_icon_node = switch_item_root.find_child("Item_icon", true)
 	
 	# 收集要回收的物品信息用于动画
 	var recycle_tasks: Array[Dictionary] = []
@@ -65,20 +69,25 @@ func recycle_confirm() -> void:
 			# Use InventoryController helper
 			var slot_pos = Vector2.ZERO
 			var slot_scale = Vector2.ONE
+			var slot_node = null
 			if controller.inventory_controller:
 				slot_pos = controller.inventory_controller.get_slot_global_position(idx)
 				slot_scale = controller.inventory_controller.get_slot_global_scale(idx)
+				slot_node = controller.inventory_controller.get_slot_node(idx)
 			else:
 				var slot = controller.item_slots_grid.get_node("Item Slot_root_" + str(idx))
 				slot_pos = slot.get_icon_global_position()
 				slot_scale = slot.get_icon_global_scale()
+				slot_node = slot
 				
 			recycle_tasks.append({
 				"type": "fly_to_recycle",
 				"item": item,
 				"start_pos": slot_pos,
 				"start_scale": slot_scale,
-				"target_pos": end_pos
+				"target_pos": end_pos,
+				"source_slot_node": slot_node,
+				"recycle_icon_node": recycle_icon_node
 			})
 	
 	# 执行回收数据逻辑 (从大到小移除)
