@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="SkillData" load_steps=5 format=3 uid="uid://vf42hjbsgdtu"]
 
 [ext_resource type="Resource" path="res://data/skills/effects/time_freeze_effect.tres" id="1"]
-[ext_resource type="Script" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
+[ext_resource type="Script" uid="uid://chtekk8cofiub" path="res://scripts/resources/skill_resources/skill_effect.gd" id="1_1rexi"]
+[ext_resource type="Script" uid="uid://dlo38q68d6m5r" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://iodd5rcmjy1n" path="res://assets/sprites/icons/skills/时间冻结.png" id="3_kmfba"]
 
 [resource]
 script = ExtResource("2")
 id = "skill_time_freeze"
 name = "时间冻结"
 description = "刷新单个订单时，20% 概率不消耗该订单的剩余刷新次数。"
-type = "order"
-effects = [ExtResource("1")]
+icon = ExtResource("3_kmfba")
+effects = Array[ExtResource("1_1rexi")]([ExtResource("1")])

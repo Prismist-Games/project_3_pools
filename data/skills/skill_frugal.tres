@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="SkillData" load_steps=5 format=3 uid="uid://dkpqd603p36dp"]
 
 [ext_resource type="Resource" path="res://data/skills/effects/frugal_effect.tres" id="1"]
-[ext_resource type="Script" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
+[ext_resource type="Script" uid="uid://chtekk8cofiub" path="res://scripts/resources/skill_resources/skill_effect.gd" id="1_1dedg"]
+[ext_resource type="Script" uid="uid://dlo38q68d6m5r" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://diqeim1cxq0kh" path="res://assets/sprites/icons/skills/精打細算.png" id="3_0jofk"]
 
 [resource]
 script = ExtResource("2")
 id = "skill_frugal"
 name = "精打细算"
 description = "当前金币 < 10 时，抽奖金币消耗 -2（最低为 1）。"
-type = "gold"
-effects = [ExtResource("1")]
+icon = ExtResource("3_0jofk")
+effects = Array[ExtResource("1_1dedg")]([ExtResource("1")])

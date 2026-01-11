@@ -15,9 +15,3 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	
 	if randf() < chance:
 		context.get("data")["consume_refresh"] = false
-
-
-
-
-
-

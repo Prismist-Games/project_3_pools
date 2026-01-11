@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="SkillData" load_steps=5 format=3 uid="uid://de7wq0jcjahj7"]
 
 [ext_resource type="Resource" path="res://data/skills/effects/negotiator_effect.tres" id="1"]
-[ext_resource type="Script" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
+[ext_resource type="Script" uid="uid://chtekk8cofiub" path="res://scripts/resources/skill_resources/skill_effect.gd" id="1_1u8t0"]
+[ext_resource type="Script" uid="uid://dlo38q68d6m5r" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://isktokmebdhm" path="res://assets/sprites/icons/skills/谈判专家.png" id="3_slrg0"]
 
 [resource]
 script = ExtResource("2")
 id = "skill_negotiator"
 name = "谈判专家"
 description = "抽到史诗 or 以上品质物品时，所有订单获得 1 次刷新次数。"
-type = "order"
-effects = [ExtResource("1")]
+icon = ExtResource("3_slrg0")
+effects = Array[ExtResource("1_1u8t0")]([ExtResource("1")])

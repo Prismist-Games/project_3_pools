@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="SkillData" load_steps=5 format=3 uid="uid://d0p6a5xleijp"]
 
 [ext_resource type="Resource" path="res://data/skills/effects/ocd_effect.tres" id="1"]
-[ext_resource type="Script" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
+[ext_resource type="Script" uid="uid://chtekk8cofiub" path="res://scripts/resources/skill_resources/skill_effect.gd" id="1_uewuu"]
+[ext_resource type="Script" uid="uid://dlo38q68d6m5r" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://cof8ua7s4pa66" path="res://assets/sprites/icons/skills/强迫症.png" id="3_rdg8u"]
 
 [resource]
 script = ExtResource("2")
 id = "skill_ocd"
 name = "强迫症"
 description = "提交订单时若所有物品同一类型，奖励翻倍。"
-type = "order"
-effects = [ExtResource("1")]
+icon = ExtResource("3_rdg8u")
+effects = Array[ExtResource("1_uewuu")]([ExtResource("1")])
