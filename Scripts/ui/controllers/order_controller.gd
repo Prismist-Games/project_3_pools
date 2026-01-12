@@ -122,10 +122,13 @@ func play_open_sequence(index: int) -> void:
 
 # --- Helpers ---
 
-func _get_slot_node(index: int) -> Control:
+func get_slot_node(index: int) -> Control:
 	if index == -1: return main_quest_slot
 	if index < 1 or index >= _slots.size(): return null
 	return _slots[index]
+
+func _get_slot_node(index: int) -> Control:
+	return get_slot_node(index)
 
 # --- Input ---
 

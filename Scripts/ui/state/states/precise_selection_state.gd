@@ -22,6 +22,9 @@ var selected_slot_index: int = -1
 ## 是否已经做出了选择（防止重复点击）
 var _has_made_selection: bool = false
 
+## Hover 信号连接引用（用于清理）
+var _hover_connections: Array[Dictionary] = []
+
 func enter(payload: Dictionary = {}) -> void:
 	options.assign(payload.get("items", []))
 	source_pool_index = payload.get("source_pool_index", -1)
@@ -38,6 +41,13 @@ func enter(payload: Dictionary = {}) -> void:
 	_setup_precise_display()
 
 func exit() -> void:
+	# 断开 hover 信号连接
+	_disconnect_hover_signals()
+	
+	# 清除订单图标高亮
+	if controller and controller.quest_icon_highlighter:
+		controller.quest_icon_highlighter.clear_all_highlights()
+	
 	# 如果是转向 Replacing 状态，不执行刷新（刷新由 Replacing.exit() 负责）
 	if machine and machine.pending_state_name == &"Replacing":
 		# 只做基本清理
@@ -160,10 +170,15 @@ func _setup_precise_display() -> void:
 		if i < mini(options.size(), 2):
 			var item = options[i]
 			slot.play_reveal_sequence([item])
+			# 清空默认的池类型，防止触发类型高亮
+			slot.current_pool_item_type = -1
+			# 为该 slot 单独连接 hover 信号，高亮特定物品
+			_connect_slot_hover(i, item.item_data.id)
 		else:
 			# slot_2 确保它是关着的 (如果是微开状态，直接复位而不播动画)
 			if slot.lid_sprite:
 				slot.lid_sprite.position.y = 0
+			slot.current_pool_item_type = -1
 	
 	# 允许后续的正常刷新信号
 	if controller.pool_controller:
@@ -172,6 +187,48 @@ func _setup_precise_display() -> void:
 		controller.pool_controller._is_animating_refresh = false
 
 const PUSH_DURATION: float = 0.4
+
+## 为特定 slot 连接 hover 信号
+func _connect_slot_hover(slot_index: int, item_id: StringName) -> void:
+	var slot = _get_slot(slot_index)
+	if not slot:
+		return
+	
+	var input_area = slot.get_node_or_null("Input Area")
+	if not input_area:
+		return
+	
+	# 创建闭包捕获 item_id
+	var on_entered = func():
+		if controller and controller.quest_icon_highlighter:
+			controller.quest_icon_highlighter.highlight_by_item_id(item_id)
+	
+	var on_exited = func():
+		if controller and controller.quest_icon_highlighter:
+			controller.quest_icon_highlighter.clear_all_highlights()
+	
+	# 连接信号
+	input_area.mouse_entered.connect(on_entered)
+	input_area.mouse_exited.connect(on_exited)
+	
+	# 记录连接以便清理
+	_hover_connections.append({
+		"input_area": input_area,
+		"on_entered": on_entered,
+		"on_exited": on_exited
+	})
+
+## 断开所有 hover 信号
+func _disconnect_hover_signals() -> void:
+	for conn in _hover_connections:
+		var input_area = conn.input_area
+		if is_instance_valid(input_area):
+			if input_area.mouse_entered.is_connected(conn.on_entered):
+				input_area.mouse_entered.disconnect(conn.on_entered)
+			if input_area.mouse_exited.is_connected(conn.on_exited):
+				input_area.mouse_exited.disconnect(conn.on_exited)
+	
+	_hover_connections.clear()
 
 ## 辅助：获取 LotterySlot 节点
 func _get_slot(index: int) -> Control:

@@ -1,6 +1,10 @@
 class_name LotterySlotUI
 extends BaseSlotUI
 
+## 鼠标悬停信号 (用于高亮订单需求图标)
+signal hovered(pool_index: int, pool_item_type: int)
+signal unhovered(pool_index: int)
+
 ## =====================================================================
 ## True Nodes (当前显示内容)
 ## =====================================================================
@@ -45,6 +49,9 @@ var is_vfx_source: bool = false # 标记是否为飞行起点，防止动画开�
 var _pending_pool_data: Variant = null # 挂起的新奖池数据，等待关盖后应用
 var _pending_hints: Dictionary = {} # 暂存的新 hints 数据
 var _initial_transforms: Dictionary = {}
+
+## 当前奖池物品类型 (用于 hover 高亮)
+var current_pool_item_type: int = -1
 
 ## 标记：是否处于以旧换新等待物品投入状态
 var is_waiting_for_trade_in: bool = false
@@ -119,12 +126,19 @@ func setup(index: int) -> void:
 		anim_player.seek(anim_player.get_animation("lid_close").length, true)
 
 func _on_mouse_entered() -> void:
+	# 始终发射 hover 信号 (用于高亮订单图标，不受 is_locked/is_drawing 限制)
+	if current_pool_item_type > 0:
+		hovered.emit(pool_index, current_pool_item_type)
+	
 	if is_locked or is_drawing: return
 	
 	# 盖子微开
 	create_tween().tween_property(lid_sprite, "position:y", -20, 0.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 func _on_mouse_exited() -> void:
+	# 始终发射 unhover 信号
+	unhovered.emit(pool_index)
+	
 	if is_locked or is_drawing: return
 	# 恢复原位 (如果没在播放打开动画)
 	if not anim_player.is_playing() or anim_player.current_animation != "lid_open":
@@ -519,6 +533,11 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 	var has_item_type = ("item_type" in pool) or (pool is Dictionary and pool.has("item_type"))
 	if has_item_type:
 		var item_type = pool.item_type if "item_type" in pool else pool.get("item_type")
+		
+		# 记录当前奖池物品类型 (用于 hover 高亮，仅更新 True 节点时记录)
+		if not target_pseudo:
+			current_pool_item_type = item_type
+		
 		var theme_color := Color("#199C80") # 普通门颜色
 		if item_type == Constants.ItemType.MAINLINE:
 			theme_color = Color("#FF6E54") # 核心门颜色

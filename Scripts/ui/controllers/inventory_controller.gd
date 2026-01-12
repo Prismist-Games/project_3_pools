@@ -3,6 +3,10 @@ extends UIController
 
 ## Controller for Inventory Slots and Interactions
 
+## 鼠标悬停信号 (用于高亮订单图标)
+signal slot_hovered(slot_index: int, item_id: StringName)
+signal slot_unhovered(slot_index: int)
+
 var item_slots_grid: GridContainer
 var _slots: Array[Control] = []
 
@@ -152,7 +156,17 @@ func _on_slot_mouse_entered(index: int) -> void:
 	# Preview logic (delegated back to Game2DUI or SwitchController later)
 	if game_ui and game_ui.has_method("_on_item_slot_mouse_entered"):
 		game_ui._on_item_slot_mouse_entered(index)
+	
+	# 发射 hover 信号用于高亮订单图标
+	var item = InventorySystem.inventory[index] if index < InventorySystem.inventory.size() else null
+	if item:
+		slot_hovered.emit(index, item.item_data.id)
+	else:
+		slot_hovered.emit(index, &"")
 
 func _on_slot_mouse_exited(index: int) -> void:
 	if game_ui and game_ui.has_method("_on_item_slot_mouse_exited"):
 		game_ui._on_item_slot_mouse_exited(index)
+	
+	# 发射 unhover 信号
+	slot_unhovered.emit(index)

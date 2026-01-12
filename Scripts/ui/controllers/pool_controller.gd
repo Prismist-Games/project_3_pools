@@ -3,6 +3,10 @@ extends UIController
 
 ## Controller for Pool/Lottery Slots
 
+## 鼠标悬停信号 (用于外部监听)
+signal slot_hovered(pool_index: int, pool_item_type: int)
+signal slot_unhovered(pool_index: int)
+
 var lottery_slots_grid: HBoxContainer
 var _slots: Array[Control] = []
 
@@ -28,6 +32,12 @@ func _init_slots() -> void:
 				if input_area.gui_input.is_connected(_on_slot_input):
 					input_area.gui_input.disconnect(_on_slot_input)
 				input_area.gui_input.connect(_on_slot_input.bind(i))
+			
+			# 连接 hover 信号 (用于高亮订单图标)
+			if slot.has_signal("hovered") and not slot.hovered.is_connected(_on_slot_hovered):
+				slot.hovered.connect(_on_slot_hovered)
+			if slot.has_signal("unhovered") and not slot.unhovered.is_connected(_on_slot_unhovered):
+				slot.unhovered.connect(_on_slot_unhovered)
 
 func update_pools_display(pools: Array) -> void:
 	# 如果正在播放刷新动画，跳过此次更新（由动画函数负责）
@@ -223,3 +233,9 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			# 右键取消逻辑已移至 Game2DUI._input 全局处理
 			pass
+
+func _on_slot_hovered(pool_index: int, pool_item_type: int) -> void:
+	slot_hovered.emit(pool_index, pool_item_type)
+
+func _on_slot_unhovered(pool_index: int) -> void:
+	slot_unhovered.emit(pool_index)

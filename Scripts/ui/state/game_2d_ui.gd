@@ -32,12 +32,15 @@ extends Control
 @onready var rabbit_dialog_label: RichTextLabel = find_child("Dialog Label", true)
 
 # --- 子控制器 ---
+const QuestIconHighlighterScript = preload("res://scripts/ui/controllers/quest_icon_highlighter.gd")
+
 var inventory_controller: InventoryController
 var pool_controller: PoolController
 var order_controller: OrderController
 var switch_controller: SwitchController
 var skill_slot_controller: SkillSlotController
 var rabbit_dialog_controller: RabbitDialogController
+var quest_icon_highlighter: RefCounted # QuestIconHighlighter
 
 # --- 新架构: 状态机与 VFX 管理器 ---
 ## 状态机实例（UIStateMachine 类型）
@@ -131,6 +134,17 @@ func _init_controllers() -> void:
 	rabbit_dialog_controller.name = "RabbitDialogController"
 	add_child(rabbit_dialog_controller)
 	rabbit_dialog_controller.setup(rabbit_dialog_box, rabbit_dialog_label)
+	
+	# 初始化订单图标高亮管理器
+	quest_icon_highlighter = QuestIconHighlighterScript.new()
+	quest_icon_highlighter.order_controller = order_controller
+	quest_icon_highlighter.game_ui = self
+	
+	# 连接 hover 信号
+	pool_controller.slot_hovered.connect(_on_pool_slot_hovered)
+	pool_controller.slot_unhovered.connect(_on_pool_slot_unhovered)
+	inventory_controller.slot_hovered.connect(_on_inventory_slot_hovered)
+	inventory_controller.slot_unhovered.connect(_on_inventory_slot_unhovered)
 
 ## 初始化状态机
 func _init_state_machine() -> void:
@@ -680,3 +694,21 @@ func _on_game_event(event_id: StringName, payload: Variant) -> void:
 			await order_controller.play_open_sequence(index)
 			
 			unlock_ui("order_refresh")
+
+# --- 订单图标高亮 (Hover) ---
+
+func _on_pool_slot_hovered(_pool_index: int, pool_item_type: int) -> void:
+	if quest_icon_highlighter:
+		quest_icon_highlighter.highlight_by_pool_type(pool_item_type)
+
+func _on_pool_slot_unhovered(_pool_index: int) -> void:
+	if quest_icon_highlighter:
+		quest_icon_highlighter.clear_all_highlights()
+
+func _on_inventory_slot_hovered(_slot_index: int, item_id: StringName) -> void:
+	if quest_icon_highlighter and item_id != &"":
+		quest_icon_highlighter.highlight_by_item_id(item_id)
+
+func _on_inventory_slot_unhovered(_slot_index: int) -> void:
+	if quest_icon_highlighter:
+		quest_icon_highlighter.clear_all_highlights()

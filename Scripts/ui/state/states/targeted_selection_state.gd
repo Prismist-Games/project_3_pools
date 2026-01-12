@@ -84,6 +84,10 @@ func exit() -> void:
 	# 断开输入信号
 	_disconnect_input_signals()
 	
+	# 清除订单图标高亮
+	if controller and controller.quest_icon_highlighter:
+		controller.quest_icon_highlighter.clear_all_highlights()
+	
 	# 如果是转向 Replacing 状态，不执行刷新（刷新由 Replacing.exit() 负责）
 	if machine and machine.pending_state_name == &"Replacing":
 		_has_acted = false
@@ -255,18 +259,42 @@ func _connect_input_signals() -> void:
 		if input_area:
 			if not input_area.gui_input.is_connected(_on_icon_input):
 				input_area.gui_input.connect(_on_icon_input.bind(i))
+			# 连接 hover 信号用于高亮订单图标
+			if not input_area.mouse_entered.is_connected(_on_icon_mouse_entered):
+				input_area.mouse_entered.connect(_on_icon_mouse_entered.bind(i))
+			if not input_area.mouse_exited.is_connected(_on_icon_mouse_exited):
+				input_area.mouse_exited.connect(_on_icon_mouse_exited.bind(i))
 
 ## 断开输入区域信号
 func _disconnect_input_signals() -> void:
 	for i in range(_input_areas.size()):
 		var input_area = _input_areas[i]
-		if input_area and input_area.gui_input.is_connected(_on_icon_input):
-			input_area.gui_input.disconnect(_on_icon_input.bind(i))
+		if input_area:
+			if input_area.gui_input.is_connected(_on_icon_input):
+				input_area.gui_input.disconnect(_on_icon_input.bind(i))
+			if input_area.mouse_entered.is_connected(_on_icon_mouse_entered):
+				input_area.mouse_entered.disconnect(_on_icon_mouse_entered.bind(i))
+			if input_area.mouse_exited.is_connected(_on_icon_mouse_exited):
+				input_area.mouse_exited.disconnect(_on_icon_mouse_exited.bind(i))
 
 ## 图标输入处理
 func _on_icon_input(event: InputEvent, index: int) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		select_item(index)
+
+## 图标 hover 进入 (用于高亮订单图标)
+func _on_icon_mouse_entered(index: int) -> void:
+	if index < 0 or index >= available_items.size():
+		return
+	
+	var item_data = available_items[index]
+	if controller and controller.quest_icon_highlighter:
+		controller.quest_icon_highlighter.highlight_by_item_id(item_data.id)
+
+## 图标 hover 离开
+func _on_icon_mouse_exited(_index: int) -> void:
+	if controller and controller.quest_icon_highlighter:
+		controller.quest_icon_highlighter.clear_all_highlights()
 
 ## 播放面板升起动画
 func _play_panel_rise() -> void:

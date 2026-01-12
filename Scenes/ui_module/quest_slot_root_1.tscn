@@ -1,0 +1,299 @@
+[gd_scene load_steps=26 format=3 uid="uid://05ku7kwq0dxp"]
+
+[ext_resource type="Script" uid="uid://con7nyakgbhan" path="res://scripts/ui/components/quest_slot_ui.gd" id="1_cf02l"]
+[ext_resource type="Texture2D" uid="uid://bk6w30hxghp51" path="res://assets/sprites/quest_slots/基地-7.png" id="2_5cnt1"]
+[ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="3_xy8au"]
+[ext_resource type="Texture2D" uid="uid://b6sygmv0sgt3g" path="res://assets/sprites/quest_slots/基地-3.png" id="4_8oyay"]
+[ext_resource type="Texture2D" uid="uid://cppyh38s818ov" path="res://assets/sprites/quest_slots/基地-2.png" id="5_cm3rb"]
+[ext_resource type="Texture2D" uid="uid://fb6h3kogm80w" path="res://assets/sprites/quest_slots/基地-4.png" id="6_cpuw7"]
+[ext_resource type="Texture2D" uid="uid://w7eym4f1436o" path="res://assets/sprites/quest_slots/基地-1.png" id="7_2pth6"]
+[ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="8_uawe1"]
+[ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="9_yv8nx"]
+[ext_resource type="Texture2D" uid="uid://djo0fcuw1ico0" path="res://assets/sprites/light_1.png" id="10_4304g"]
+[ext_resource type="Texture2D" uid="uid://cuq30wijqs4vm" path="res://assets/sprites/light_2.png" id="11_ywy2p"]
+[ext_resource type="Texture2D" uid="uid://fcpknfhqe6td" path="res://assets/sprites/the_machine/the_machine_star.PNG" id="12_b5e45"]
+[ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="13_n0e4s"]
+[ext_resource type="Texture2D" uid="uid://bkthx68vhcd00" path="res://assets/sprites/quest_slots/基地-10.png" id="14_tqhba"]
+[ext_resource type="Texture2D" uid="uid://b83tw66bk1v5s" path="res://assets/sprites/quest_slots/基地-6.png" id="15_vvcjj"]
+[ext_resource type="Texture2D" uid="uid://beldg0xqocq2k" path="res://assets/sprites/quest_slots/基地-5.png" id="16_6ixpp"]
+[ext_resource type="Texture2D" uid="uid://btfsaxb523m4l" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_idle.png" id="17_0v4ru"]
+[ext_resource type="Texture2D" uid="uid://ccfw8sduhx8rm" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_pressed.png" id="18_f4ixj"]
+[ext_resource type="Texture2D" uid="uid://dslsns6p86ffx" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_hover.png" id="19_i1k2m"]
+[ext_resource type="Texture2D" uid="uid://dpf5a45rbg06a" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_disabled.png" id="20_sjlmw"]
+[ext_resource type="Texture2D" uid="uid://4ds5uce4fmqb" path="res://assets/sprites/icons/refresh.png" id="21_3f38i"]
+
+[sub_resource type="Animation" id="Animation_8ocj1"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Quest Slot_mask/Quest Slot_lid:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_jdak2"]
+resource_name = "lid_close"
+length = 0.7
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Quest Slot_mask/Quest Slot_lid:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-220, -0.25, 0, 0.3, 0.72340393, 3.8154068, -0.5333333, -2.1447449, 0, 0),
+"times": PackedFloat32Array(0, 0.7)
+}
+
+[sub_resource type="Animation" id="Animation_jufyi"]
+resource_name = "lid_open"
+length = 0.7
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Quest Slot_mask/Quest Slot_lid:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.3, -11.704876, -221.2287, -0.5333333, 23.280426, 0, 0),
+"times": PackedFloat32Array(0, 0.7)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jdak2"]
+_data = {
+&"RESET": SubResource("Animation_8ocj1"),
+&"lid_close": SubResource("Animation_jdak2"),
+&"lid_open": SubResource("Animation_jufyi")
+}
+
+[node name="Quest Slot_root_1" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_cf02l")
+
+[node name="Quest Slot_mask" type="Sprite2D" parent="."]
+clip_children = 1
+texture = ExtResource("2_5cnt1")
+
+[node name="Quest Slot_background" type="Node2D" parent="Quest Slot_mask"]
+script = ExtResource("3_xy8au")
+color = Color(0.4117647, 0.8509804, 0.3372549, 1)
+
+[node name="Slot_background_side" type="Sprite2D" parent="Quest Slot_mask/Quest Slot_background"]
+modulate = Color(0.4117647, 0.8509804, 0.3372549, 1)
+texture = ExtResource("4_8oyay")
+
+[node name="Slot_background_wall" type="Sprite2D" parent="Quest Slot_mask/Quest Slot_background"]
+modulate = Color(0.4117647, 0.8509804, 0.3372549, 1)
+texture = ExtResource("5_cm3rb")
+
+[node name="Slot_background_floor" type="Sprite2D" parent="Quest Slot_mask/Quest Slot_background"]
+modulate = Color(0.4117647, 0.8509804, 0.3372549, 1)
+texture = ExtResource("6_cpuw7")
+
+[node name="Slot_background_outline" type="Sprite2D" parent="Quest Slot_mask/Quest Slot_background"]
+texture = ExtResource("7_2pth6")
+
+[node name="Quest Reward Icon" type="TextureRect" parent="Quest Slot_mask"]
+offset_left = -394.0
+offset_top = -59.25
+offset_right = -308.0
+offset_bottom = 6.75
+texture = ExtResource("8_uawe1")
+expand_mode = 5
+
+[node name="Quest Reward Label" type="RichTextLabel" parent="Quest Slot_mask/Quest Reward Icon"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 90.0
+offset_top = -97.0
+offset_right = 979.0
+offset_bottom = 96.0
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 141
+bbcode_enabled = true
+text = "33 [s]25[/s]"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[node name="Quest Slot Items Grid" type="HBoxContainer" parent="Quest Slot_mask"]
+offset_left = -186.0
+offset_top = 23.75
+offset_right = 1014.0
+offset_bottom = 63.75
+scale = Vector2(0.5, 0.5)
+theme_override_constants/separation = 325
+alignment = 2
+
+[node name="Quest Slot Item_root_0" type="Control" parent="Quest Slot_mask/Quest Slot Items Grid"]
+layout_mode = 2
+
+[node name="Item_icon" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("9_yv8nx")
+
+[node name="Item_rarity" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+show_behind_parent = true
+position = Vector2(16, -37.333332)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("10_4304g")
+
+[node name="Item_rarity_beam" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon/Item_rarity"]
+texture = ExtResource("11_ywy2p")
+
+[node name="Item_requirement" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
+modulate = Color(0.18431373, 0.74509805, 0.2, 1)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("12_b5e45")
+
+[node name="Item_status" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("13_n0e4s")
+
+[node name="Quest Slot Item_root_1" type="Control" parent="Quest Slot_mask/Quest Slot Items Grid"]
+layout_mode = 2
+
+[node name="Item_icon" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("9_yv8nx")
+
+[node name="Item_rarity" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+show_behind_parent = true
+position = Vector2(16, -37.333332)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("10_4304g")
+
+[node name="Item_rarity_beam" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon/Item_rarity"]
+texture = ExtResource("11_ywy2p")
+
+[node name="Item_requirement" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
+modulate = Color(0.18431373, 0.74509805, 0.2, 1)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("12_b5e45")
+
+[node name="Item_status" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("13_n0e4s")
+
+[node name="Quest Slot Item_root_2" type="Control" parent="Quest Slot_mask/Quest Slot Items Grid"]
+layout_mode = 2
+
+[node name="Item_icon" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("9_yv8nx")
+
+[node name="Item_rarity" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+show_behind_parent = true
+position = Vector2(16, -37.333332)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("10_4304g")
+
+[node name="Item_rarity_beam" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon/Item_rarity"]
+texture = ExtResource("11_ywy2p")
+
+[node name="Item_requirement" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
+modulate = Color(0.18431373, 0.74509805, 0.2, 1)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("12_b5e45")
+
+[node name="Item_status" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("13_n0e4s")
+
+[node name="Quest Slot Item_root_3" type="Control" parent="Quest Slot_mask/Quest Slot Items Grid"]
+layout_mode = 2
+
+[node name="Item_icon" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("9_yv8nx")
+
+[node name="Item_rarity" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+show_behind_parent = true
+position = Vector2(16, -37.333332)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("10_4304g")
+
+[node name="Item_rarity_beam" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon/Item_rarity"]
+texture = ExtResource("11_ywy2p")
+
+[node name="Item_requirement" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
+modulate = Color(0.18431373, 0.74509805, 0.2, 1)
+position = Vector2(146.66667, 133.33334)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("12_b5e45")
+
+[node name="Item_status" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
+position = Vector2(128, -107.333336)
+texture = ExtResource("13_n0e4s")
+
+[node name="Quest Slot_lid" type="Sprite2D" parent="Quest Slot_mask"]
+modulate = Color(0.8627451, 0.7764706, 0, 1)
+texture = ExtResource("14_tqhba")
+
+[node name="Quest Slot_outline" type="Sprite2D" parent="."]
+texture = ExtResource("15_vvcjj")
+
+[node name="Quest Slot_outline" type="Sprite2D" parent="Quest Slot_outline"]
+texture = ExtResource("16_6ixpp")
+
+[node name="Input Area" type="Control" parent="."]
+anchors_preset = 0
+offset_left = -461.0
+offset_top = -127.0
+offset_right = 711.0
+offset_bottom = 162.0
+mouse_default_cursor_shape = 2
+
+[node name="Refresh Button" type="TextureButton" parent="."]
+self_modulate = Color(0.9411765, 0.36078432, 0.38039216, 1)
+layout_mode = 0
+offset_left = 581.0
+offset_top = -90.0
+offset_right = 708.0
+offset_bottom = 51.0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("17_0v4ru")
+texture_pressed = ExtResource("18_f4ixj")
+texture_hover = ExtResource("19_i1k2m")
+texture_disabled = ExtResource("20_sjlmw")
+
+[node name="Refresh Count Label" type="RichTextLabel" parent="Refresh Button"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 28.0
+offset_right = 115.0
+offset_bottom = 130.0
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 61
+bbcode_enabled = true
+text = "2"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Refresh Icon" type="Sprite2D" parent="Refresh Button"]
+position = Vector2(73, 80.75)
+texture = ExtResource("21_3f38i")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_jdak2")
+}
