@@ -105,23 +105,19 @@ func submit_order() -> void:
 	var success = OrderSystem.submit_order(-1, InventorySystem.multi_selected_indices)
 	
 	if success:
-		# 关键修复：检查状态机是否已经转换到了其他状态（如主线任务完成触发的 SkillSelection）
-		# 如果当前状态不再是 Submitting，说明已经发生了自动跳转，不应再强制转回 Idle
-		if machine.get_current_state_name() != &"Submitting":
-			controller.unlock_ui("submit")
-			return
-			
-		# 提交成功后退出模式（通过状态机）
-		machine.transition_to(&"Idle")
-		
-		# 等待订单更新和数据同步
+		# 播放开盖动画逻辑：无论是否跳转状态，只要提交成功就应该开盖
+		# 延迟一帧确保数据已经同步到 UI 节点上
 		await controller.get_tree().process_frame
 		
-		# 播放 lid_open 动画
 		for slot in satisfying_slots:
-			if slot.has_node("AnimationPlayer"):
+			if is_instance_valid(slot) and slot.has_node("AnimationPlayer"):
 				var anim_player = slot.get_node("AnimationPlayer")
 				if anim_player.has_animation("lid_open"):
 					anim_player.play("lid_open")
+		
+		# 检查是否已经发生了自动状态转换（如主线触发的技能选择）
+		if machine.get_current_state_name() == &"Submitting":
+			# 只有还在提交模式时，才手动切回 Idle
+			machine.transition_to(&"Idle")
 	
 	controller.unlock_ui("submit")
