@@ -18,6 +18,9 @@ func set_value(key: StringName, value: Variant) -> void:
 func has_key(key: StringName) -> bool:
 	return data.has(key)
 
+func get_all() -> Dictionary:
+	return data
+
 
 
 

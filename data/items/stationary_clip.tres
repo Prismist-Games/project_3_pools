@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://nn24dtv2crj3"]
+
+[ext_resource type="Texture2D" uid="uid://bl83u6sqh1ma0" path="res://assets/sprites/icons/items/stationary_clip.PNG" id="1_lrjiq"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="2_7fwe8"]
+
+[resource]
+script = ExtResource("2_7fwe8")
+id = &"stationary_clip"
+name = "STATIONARY_CLIP"
+item_type = 3
+icon = ExtResource("1_lrjiq")

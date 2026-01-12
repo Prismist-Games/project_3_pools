@@ -55,21 +55,22 @@ func refresh_all_orders() -> void:
 	EventBus.orders_updated.emit(current_orders)
 
 
-func refresh_order(index: int) -> void:
+func refresh_order(index: int) -> OrderData:
 	if index < 0 or index >= current_orders.size():
-		return
+		return null
 	
 	# 检查订单刷新是否已解锁
 	if not UnlockManager.is_unlocked(UnlockManager.Feature.ORDER_REFRESH):
-		return
+		return current_orders[index]
 
 	var order = current_orders[index]
 	if order.refresh_count <= 0:
-		return
+		return order
 		
 	# 技能检测上下文
-	var ctx = ContextProxy.new({"consume_refresh": true})
-	EventBus.game_event.emit(&"order_refresh_requested", ctx)
+	var ctx = ContextProxy.new({"consume_refresh": true, "index": index})
+	# EventBus.game_event.emit(&"order_refresh_requested", ctx) # 这里的 emit 导致了循环调用，因为 UI 层监听同名事件来触发动画
+	EventBus.game_event.emit(&"order_refresh_logic_check", ctx) # 改名避免冲突
 	
 	if ctx.get_value("consume_refresh"):
 		order.refresh_count -= 1
@@ -80,6 +81,7 @@ func refresh_order(index: int) -> void:
 		current_orders[index] = _generate_normal_order(order.refresh_count)
 		
 	EventBus.orders_updated.emit(current_orders)
+	return current_orders[index]
 
 
 func submit_order(index: int, selected_indices: Array[int] = []) -> bool:

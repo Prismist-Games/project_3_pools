@@ -101,37 +101,15 @@ func setup(order: OrderData, index: int) -> void:
 	# 次数用尽时变灰禁用，但保持可见
 	refresh_button.disabled = order.refresh_count <= 0
 	
-	# 背景样式
-	var style = get_theme_stylebox("panel").duplicate()
-	add_theme_stylebox_override("panel", style)
-	
+	# 背景样式使用了 Theme Variation
 	if preview.is_satisfied:
-		style.bg_color = Color("#fef9c3") # Yellow-50 (暖色)
-		style.border_color = Color("#eab308") # Gold
-		style.border_width_left = 4
-		style.border_width_top = 4
-		style.border_width_right = 4
-		style.border_width_bottom = 4
-	elif GameManager.current_ui_mode == Constants.UIMode.SUBMIT:
-		if GameManager.order_selection_index == _index:
-			style.border_color = Constants.COLOR_BORDER_SELECTED
-			style.border_width_left = 4
-			style.border_width_top = 4
-			style.border_width_right = 4
-			style.border_width_bottom = 4
-		else:
-			style.border_color = Color("#e2e8f0")
-			style.border_width_left = 2
-			style.border_width_top = 2
-			style.border_width_right = 2
-			style.border_width_bottom = 2
+		self.theme_type_variation = "Order_Satisfied"
+	elif GameManager.current_ui_mode == Constants.UIMode.SUBMIT and GameManager.order_selection_index == _index:
+		self.theme_type_variation = "Order_Selected"
+	elif order.is_mainline:
+		self.theme_type_variation = "Order_Mainline"
 	else:
-		if order.is_mainline:
-			style.bg_color = Color("#faf5ff")
-			style.border_color = Color("#a855f7")
-		else:
-			style.bg_color = Color.WHITE
-			style.border_color = Color("#e2e8f0")
+		self.theme_type_variation = "Order_Normal"
 	
 	submit_button.visible = false # 全局按钮已移至底部
 

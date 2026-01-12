@@ -13,6 +13,7 @@ signal merge_limit_changed(limit: Constants.Rarity)
 signal inventory_size_changed(size: int)
 signal order_limit_changed(limit: int)
 signal order_item_req_range_changed(min_val: int, max_val: int)
+signal pool_affix_enabled_changed(affix_id: StringName, enabled: bool)
 
 ## 功能 ID 枚举
 enum Feature {
@@ -21,8 +22,8 @@ enum Feature {
 	ORDER_REFRESH, ## 订单刷新
 	ITEM_TYPE_MEDICINE, ## 物品类型: 药品
 	ITEM_TYPE_STATIONERY, ## 物品类型: 文具
-	ITEM_TYPE_KITCHENWARE, ## 物品类型: 厨具
-	ITEM_TYPE_ELECTRONICS, ## 物品类型: 电器
+	ITEM_TYPE_CONVENIENCE, ## 物品类型: 便利
+	ITEM_TYPE_ENTERTAINMENT, ## 物品类型: 娱乐
 }
 
 ## 功能 ID 到显示名称的映射
@@ -32,21 +33,22 @@ const FEATURE_DISPLAY_NAMES: Dictionary = {
 	Feature.ORDER_REFRESH: "订单刷新",
 	Feature.ITEM_TYPE_MEDICINE: "药品",
 	Feature.ITEM_TYPE_STATIONERY: "文具",
-	Feature.ITEM_TYPE_KITCHENWARE: "厨具",
-	Feature.ITEM_TYPE_ELECTRONICS: "电器",
+	Feature.ITEM_TYPE_CONVENIENCE: "便利",
+	Feature.ITEM_TYPE_ENTERTAINMENT: "娱乐",
 }
 
 ## 内部状态 (默认全锁)
 var _unlocked: Dictionary = {}
+var _disabled_pool_affixes: Dictionary = {} # id (StringName) -> bool (true if disabled)
 
-## 合成品质上限 (非 bool，特殊处理)
-var merge_limit: Constants.Rarity = Constants.Rarity.UNCOMMON:
+## 合成品质上限 (直接设为最高：史诗 -> 传说)
+var merge_limit: Constants.Rarity = Constants.Rarity.MYTHIC:
 	set(v):
 		merge_limit = v
 		merge_limit_changed.emit(merge_limit)
 
-## 背包槽位上限
-var inventory_size: int = 6:
+## 背包槽位上限 (直接设为 10)
+var inventory_size: int = 10:
 	set(v):
 		inventory_size = v
 		inventory_size_changed.emit(inventory_size)
@@ -54,21 +56,21 @@ var inventory_size: int = 6:
 		if InventorySystem:
 			InventorySystem.resize_inventory(inventory_size)
 
-## 订单总数上限
+## 订单总数上限 (设为 4)
 var order_limit: int = 4:
 	set(v):
 		order_limit = v
 		order_limit_changed.emit(order_limit)
 
 ## 单个订单需求物品数量范围
-var order_item_req_min: int = 1:
+var order_item_req_min: int = 2:
 	set(v):
 		order_item_req_min = v
 		if order_item_req_min > order_item_req_max:
 			order_item_req_max = order_item_req_min
 		order_item_req_range_changed.emit(order_item_req_min, order_item_req_max)
 
-var order_item_req_max: int = 2:
+var order_item_req_max: int = 4:
 	set(v):
 		order_item_req_max = v
 		if order_item_req_max < order_item_req_min:
@@ -90,46 +92,31 @@ func _apply_default_unlocks() -> void:
 
 # --- 查询 API ---
 
-func is_unlocked(feature: Feature) -> bool:
-	return _unlocked.get(feature, false)
+func is_unlocked(_feature: Feature) -> bool:
+	return true # 强制全部解锁
 
 
 func get_feature_display_name(feature: Feature) -> String:
 	return FEATURE_DISPLAY_NAMES.get(feature, "未知")
 
 
-func is_item_type_unlocked(item_type: Constants.ItemType) -> bool:
-	## 检查指定物品类型是否已解锁
-	## FRUIT 始终解锁；MAINLINE/NONE 不在此系统管理
-	match item_type:
-		Constants.ItemType.FRUIT:
-			return true
-		Constants.ItemType.MEDICINE:
-			return is_unlocked(Feature.ITEM_TYPE_MEDICINE)
-		Constants.ItemType.STATIONERY:
-			return is_unlocked(Feature.ITEM_TYPE_STATIONERY)
-		Constants.ItemType.KITCHENWARE:
-			return is_unlocked(Feature.ITEM_TYPE_KITCHENWARE)
-		Constants.ItemType.ELECTRONICS:
-			return is_unlocked(Feature.ITEM_TYPE_ELECTRONICS)
-		_:
-			return false
+func is_item_type_unlocked(_item_type: Constants.ItemType) -> bool:
+	## 强制全部解锁
+	return true
 
 
 func get_unlocked_item_types() -> Array[Constants.ItemType]:
-	## 获取当前已解锁的所有物品类型
-	var result: Array[Constants.ItemType] = [Constants.ItemType.FRUIT]
-	
-	if is_unlocked(Feature.ITEM_TYPE_MEDICINE):
-		result.append(Constants.ItemType.MEDICINE)
-	if is_unlocked(Feature.ITEM_TYPE_STATIONERY):
-		result.append(Constants.ItemType.STATIONERY)
-	if is_unlocked(Feature.ITEM_TYPE_KITCHENWARE):
-		result.append(Constants.ItemType.KITCHENWARE)
-	if is_unlocked(Feature.ITEM_TYPE_ELECTRONICS):
-		result.append(Constants.ItemType.ELECTRONICS)
-	
-	return result
+	## 获取所有普通物品类型
+	return Constants.get_normal_item_types()
+
+
+func is_pool_affix_enabled(affix_id: StringName) -> bool:
+	return not _disabled_pool_affixes.get(affix_id, false)
+
+
+func set_pool_affix_enabled(affix_id: StringName, enabled: bool) -> void:
+	_disabled_pool_affixes[affix_id] = not enabled
+	pool_affix_enabled_changed.emit(affix_id, enabled)
 
 
 # --- 修改 API ---
@@ -174,6 +161,6 @@ func _feature_to_id(feature: Feature) -> StringName:
 		Feature.ORDER_REFRESH: return &"order_refresh"
 		Feature.ITEM_TYPE_MEDICINE: return &"item_type_medicine"
 		Feature.ITEM_TYPE_STATIONERY: return &"item_type_stationery"
-		Feature.ITEM_TYPE_KITCHENWARE: return &"item_type_kitchenware"
-		Feature.ITEM_TYPE_ELECTRONICS: return &"item_type_electronics"
+		Feature.ITEM_TYPE_CONVENIENCE: return &"item_type_convenience"
+		Feature.ITEM_TYPE_ENTERTAINMENT: return &"item_type_entertainment"
 		_: return &"unknown"

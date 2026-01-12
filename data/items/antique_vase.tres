@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://ng3587d4f5nn"]
+
+[ext_resource type="Texture2D" uid="uid://c2l71egsupn2s" path="res://assets/sprites/icons/items/antique_vase.PNG" id="1_uelyd"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="2_ebhmj"]
+
+[resource]
+script = ExtResource("2_ebhmj")
+id = &"antique_vase"
+name = "ANTIQUE_VASE"
+item_type = 1
+icon = ExtResource("1_uelyd")

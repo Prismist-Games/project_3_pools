@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="SkillData" load_steps=5 format=3 uid="uid://yp4ifq0y4k6r"]
 
-[ext_resource type="Script" uid="uid://b7quht7htssdm" path="res://scripts/resources/skill_resources/skill_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://dlo38q68d6m5r" path="res://scripts/resources/skill_resources/skill_data.gd" id="1"]
+[ext_resource type="Script" uid="uid://chtekk8cofiub" path="res://scripts/resources/skill_resources/skill_effect.gd" id="1_btxei"]
 [ext_resource type="Resource" path="res://data/skills/effects/lucky_7_skill_effect.tres" id="2"]
+[ext_resource type="Texture2D" uid="uid://dxkf0qa6kex2n" path="res://assets/sprites/icons/skills/幸込7.png" id="3_icp4k"]
 
 [resource]
 script = ExtResource("1")
 id = "skill_lucky_7"
 name = "幸运 7"
 description = "当前金币数量尾数为 7 时，抽到传说的概率翻倍。"
-type = "luck"
-effects = [ExtResource("2")]
-
-
+icon = ExtResource("3_icp4k")
+effects = Array[ExtResource("1_btxei")]([ExtResource("2")])

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://bf6o3xttl186u"]
+
+[ext_resource type="Texture2D" uid="uid://balwec80i4286" path="res://assets/sprites/icons/items/entertainment_pony.PNG" id="1_8am8d"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="2_1bv7i"]
+
+[resource]
+script = ExtResource("2_1bv7i")
+id = &"entertainment_pony"
+name = "ENTERTAINMENT_PONY"
+item_type = 5
+icon = ExtResource("1_8am8d")

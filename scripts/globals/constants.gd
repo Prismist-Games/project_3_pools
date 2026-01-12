@@ -17,11 +17,11 @@ enum Rarity {
 
 enum ItemType {
 	NONE,
-	FRUIT,
+	ANTIQUE,
 	MEDICINE,
 	STATIONERY,
-	KITCHENWARE,
-	ELECTRONICS,
+	CONVENIENCE,
+	ENTERTAINMENT,
 	MAINLINE,
 }
 
@@ -31,11 +31,11 @@ const MAINLINE_STAGES: int = 5
 ## 获取所有普通物品类型
 func get_normal_item_types() -> Array[ItemType]:
 	return [
-		ItemType.FRUIT,
+		ItemType.ANTIQUE,
 		ItemType.MEDICINE,
 		ItemType.STATIONERY,
-		ItemType.KITCHENWARE,
-		ItemType.ELECTRONICS
+		ItemType.CONVENIENCE,
+		ItemType.ENTERTAINMENT
 	]
 
 func is_normal_type(type: ItemType) -> bool:
@@ -43,29 +43,51 @@ func is_normal_type(type: ItemType) -> bool:
 
 func type_to_string(type: ItemType) -> StringName:
 	match type:
-		ItemType.FRUIT: return &"Fruit"
+		ItemType.ANTIQUE: return &"Antique"
 		ItemType.MEDICINE: return &"Medicine"
 		ItemType.STATIONERY: return &"Stationery"
-		ItemType.KITCHENWARE: return &"Kitchenware"
-		ItemType.ELECTRONICS: return &"Electronics"
+		ItemType.CONVENIENCE: return &"Convenience"
+		ItemType.ENTERTAINMENT: return &"Entertainment"
 		ItemType.MAINLINE: return &"Mainline"
 		_: return &"None"
 
 func type_to_display_name(type: ItemType) -> String:
 	match type:
-		ItemType.FRUIT: return "水果"
+		ItemType.ANTIQUE: return "古董"
 		ItemType.MEDICINE: return "药品"
 		ItemType.STATIONERY: return "文具"
-		ItemType.KITCHENWARE: return "厨具"
-		ItemType.ELECTRONICS: return "电器"
+		ItemType.CONVENIENCE: return "便利"
+		ItemType.ENTERTAINMENT: return "娱乐"
 		ItemType.MAINLINE: return "核心"
 		_: return "其他"
 
-const MAINLINE_ITEM_STAGE_1: StringName = &"mainline_fruit"
+func type_to_icon(type: ItemType) -> Texture2D:
+	match type:
+		ItemType.ANTIQUE: return preload("res://assets/sprites/icons/category_antique.png")
+		ItemType.MEDICINE: return preload("res://assets/sprites/icons/category_medicine.png")
+		ItemType.STATIONERY: return preload("res://assets/sprites/icons/category_office.png")
+		ItemType.CONVENIENCE: return preload("res://assets/sprites/icons/category_convenience.png")
+		ItemType.ENTERTAINMENT: return preload("res://assets/sprites/icons/category_entertainment.png")
+		ItemType.MAINLINE:
+			# 核心池图标随阶段变化
+			var stage = 1
+			if Engine.has_singleton("GameManager"):
+				stage = GameManager.mainline_stage
+			
+			match stage:
+				1: return preload("res://assets/sprites/icons/artifact_antique.png")
+				2: return preload("res://assets/sprites/icons/artifact_medicine.png")
+				3: return preload("res://assets/sprites/icons/artifact_stationary.png")
+				4: return preload("res://assets/sprites/icons/artifact_convenience.png")
+				5: return preload("res://assets/sprites/icons/artifact_entertainment.png")
+				_: return null
+		_: return null
+
+const MAINLINE_ITEM_STAGE_1: StringName = &"mainline_antique"
 const MAINLINE_ITEM_STAGE_2: StringName = &"mainline_medicine"
-const MAINLINE_ITEM_STAGE_3: StringName = &"mainline_magic_pen"
-const MAINLINE_ITEM_STAGE_4: StringName = &"mainline_kitchenware"
-const MAINLINE_ITEM_STAGE_5: StringName = &"mainline_tesla"
+const MAINLINE_ITEM_STAGE_3: StringName = &"mainline_stationery"
+const MAINLINE_ITEM_STAGE_4: StringName = &"mainline_convenience"
+const MAINLINE_ITEM_STAGE_5: StringName = &"mainline_entertainment"
 
 func mainline_item_id_for_stage(stage: int) -> StringName:
 	match stage:

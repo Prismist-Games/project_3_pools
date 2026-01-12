@@ -29,13 +29,10 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 		var item_data = pool_items.pick_random()
 		items.append(ItemInstance.new(item_data, rarity))
 	
-	# 发出信号显示二选一弹窗
-	# 我们假设 UI 会监听 modal_requested，并且 modal_id 为 "precise_selection"
+	# 传递给 PreciseSelectionState 处理二选一交互
 	EventBus.modal_requested.emit(&"precise_selection", {
 		"items": items,
-		"callback": func(selected_item: ItemInstance):
-			if selected_item != null:
-				EventBus.item_obtained.emit(selected_item)
+		"source_pool_index": ctx.meta.get("pool_index", -1)
 	})
 
 

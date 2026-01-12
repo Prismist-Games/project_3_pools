@@ -11,6 +11,11 @@ signal inventory_changed(inventory: Array[ItemInstance])
 signal pending_queue_changed(queue: Array[ItemInstance])
 signal selection_changed(index: int)
 signal multi_selection_changed(indices: Array[int])
+signal item_moved(source_index: int, target_index: int)
+signal item_swapped(index1: int, index2: int)
+signal item_added(item: ItemInstance, index: int)
+signal item_replaced(index: int, new_item: ItemInstance, old_item: ItemInstance)
+signal item_merged(index: int, new_item: ItemInstance, target_item: ItemInstance)
 
 # --- 状态 ---
 var inventory: Array[ItemInstance] = []
@@ -43,6 +48,8 @@ var selected_indices_for_order: Array[int]:
 		multi_selected_indices = v
 		multi_selection_changed.emit(multi_selected_indices)
 
+enum InteractionMode {NORMAL, MULTI_SELECT}
+var interaction_mode: InteractionMode = InteractionMode.NORMAL
 
 func _ready() -> void:
 	EventBus.item_obtained.connect(_on_item_obtained)
@@ -52,7 +59,6 @@ func _ready() -> void:
 	# 所以这里不强求立即初始化，可以等待 GameManager 调用 initialize_inventory
 	if GameManager.game_config:
 		initialize_inventory(GameManager.game_config.inventory_size)
-
 
 # --- 初始化与大小管理 ---
 
@@ -77,19 +83,26 @@ func resize_inventory(new_size: int) -> void:
 
 func _on_item_obtained(item: ItemInstance) -> void:
 	# 优先自动放入背包
-	if _auto_add_to_inventory(item):
+	if add_item_instance(item):
+		# inventory_changed 已在 add_item_instance 内部触发
 		return
 		
 	# 背包满了，进入待定队列
 	self.pending_item = item
 	
+	# 清除选中状态，因为新物品获取是与之前的整理操作无关的新上下文
+	if selected_slot_index != -1:
+		self.selected_slot_index = -1
+	
 	# 这里不需要 emit，因为 auto_add 已经 emit 了，或者 pending_item setter emit 了 pending_queue_changed
 
-func _auto_add_to_inventory(item: ItemInstance) -> bool:
+func add_item_instance(item: ItemInstance) -> bool:
 	for i in range(inventory.size()):
 		if inventory[i] == null:
 			inventory[i] = item
+			item_added.emit(item, i)
 			inventory_changed.emit(inventory)
+			EventBus.orders_updated.emit(OrderSystem.current_orders) # 触发订单UI更新，以刷新拥有状态
 			return true
 	return false
 
@@ -100,8 +113,7 @@ func handle_slot_click(index: int) -> void:
 		
 	var target_item = inventory[index]
 	
-	# 如果处于订单提交选择模式
-	if GameManager.order_selection_index != -1:
+	if interaction_mode == InteractionMode.MULTI_SELECT:
 		if target_item == null:
 			return # 只能选择有物品的格子
 			
@@ -111,8 +123,6 @@ func handle_slot_click(index: int) -> void:
 			multi_selected_indices.append(index)
 		
 		multi_selection_changed.emit(multi_selected_indices)
-		# 为了兼容旧 UI 监听，可能还需要通知 inventory_changed？
-		# 暂时不需要，选中状态通常是独立的。但如果 UI 是根据 inventory 重绘选中框，可能需要。
 		return
 
 	var pending = self.pending_item
@@ -123,6 +133,7 @@ func handle_slot_click(index: int) -> void:
 			# 1. 目标格子为空 -> 放入
 			inventory[index] = pending
 			self.pending_item = null
+			item_added.emit(pending, index)
 		else:
 			# 2. 目标格子有物品 -> 判定合并
 			if can_merge(pending, target_item):
@@ -133,6 +144,10 @@ func handle_slot_click(index: int) -> void:
 				# 替换/回收: 旧物品被挤掉
 				recycle_item_instance(target_item)
 				inventory[index] = pending
+				item_replaced.emit(index, pending, target_item)
+				# 关键：如果有选中，清除它
+				if selected_slot_index == index:
+					self.selected_slot_index = -1
 				self.pending_item = null
 	else:
 		# 场景 B: 玩家处于整理模式 (pending_item == null)
@@ -156,20 +171,29 @@ func handle_slot_click(index: int) -> void:
 				# 目标为空 -> 移动
 				inventory[index] = source_item
 				inventory[selected_idx] = null
+				item_moved.emit(selected_idx, index)
 			else:
 				# 判定合并: 检查是否满足合并规则
 				if can_merge(source_item, target_item):
 					# 合并
 					_perform_merge(source_item, target_item, index)
 					inventory[selected_idx] = null
+					item_moved.emit(selected_idx, index)
 				else:
 					# 交换
-					inventory[index] = source_item
-					inventory[selected_idx] = target_item
+					var original_source = source_item
+					var original_target = target_item
+					
+					inventory[index] = original_source
+					inventory[selected_idx] = original_target
+					
+					# 关键修复：信号必须传递交换瞬间的原始对应关系，否则 VFX 会因数据已变而错位
+					item_swapped.emit(selected_idx, index)
 					
 			self.selected_slot_index = -1
 	
 	inventory_changed.emit(inventory)
+	EventBus.orders_updated.emit(OrderSystem.current_orders) # 触发订单UI更新，以刷新拥有状态
 
 ## 判定是否可以合并
 func can_merge(item_a: ItemInstance, item_b: ItemInstance) -> bool:
@@ -188,10 +212,13 @@ func can_merge(item_a: ItemInstance, item_b: ItemInstance) -> bool:
 	return true
 
 ## 执行合并
-func _perform_merge(item_a: ItemInstance, _item_b: ItemInstance, target_index: int) -> void:
+func _perform_merge(item_a: ItemInstance, item_b: ItemInstance, target_index: int) -> void:
 	var next_rarity = item_a.rarity + 1
 	var new_item = ItemInstance.new(item_a.item_data, next_rarity)
 	inventory[target_index] = new_item
+	
+	# Emit merge signal with the item that was in the slot (item_b) as the target context
+	item_merged.emit(target_index, new_item, item_b)
 
 ## 回收物品实例
 func recycle_item_instance(item: ItemInstance) -> void:
@@ -217,7 +244,10 @@ func recycle_item(index: int) -> void:
 	if item != null:
 		recycle_item_instance(item)
 		inventory[index] = null
+		if selected_slot_index == index:
+			self.selected_slot_index = -1
 		inventory_changed.emit(inventory)
+		EventBus.orders_updated.emit(OrderSystem.current_orders) # 触发订单UI更新
 
 ## 批量删除物品
 func remove_items(items_to_remove: Array[ItemInstance]) -> void:
@@ -228,3 +258,21 @@ func remove_items(items_to_remove: Array[ItemInstance]) -> void:
 			changed = true
 	if changed:
 		inventory_changed.emit(inventory)
+		EventBus.orders_updated.emit(OrderSystem.current_orders) # 触发订单UI更新
+
+## 检查背包中是否包含指定物品
+func has_item_data(item_data: ItemData) -> bool:
+	if item_data == null: return false
+	for it in inventory:
+		if it != null and it.item_data.id == item_data.id:
+			return true
+	return false
+
+## 获取背包中某类物品的最高稀有度，如果不存在则返回 -1
+func get_max_rarity_for_item(item_id: StringName) -> int:
+	var max_r = -1
+	for item in inventory:
+		if item != null and item.item_data.id == item_id:
+			if item.rarity > max_r:
+				max_r = item.rarity
+	return max_r

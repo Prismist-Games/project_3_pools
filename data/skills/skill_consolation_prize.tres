@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="SkillData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="SkillData" load_steps=5 format=3 uid="uid://6ipa0m608jca"]
 
 [ext_resource type="Resource" path="res://data/skills/effects/consolation_prize_effect.tres" id="1"]
-[ext_resource type="Script" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
+[ext_resource type="Script" uid="uid://chtekk8cofiub" path="res://scripts/resources/skill_resources/skill_effect.gd" id="1_ehvgx"]
+[ext_resource type="Script" uid="uid://dlo38q68d6m5r" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://bg05d5hgdly14" path="res://assets/sprites/icons/skills/安慰奖.png" id="3_mep0x"]
 
 [resource]
 script = ExtResource("2")
 id = "skill_consolation_prize"
 name = "安慰奖"
 description = "连续抽到 5 个普通品质物品后，下次抽奖必定稀有以上。"
-type = "luck"
-effects = [ExtResource("1")]
+icon = ExtResource("3_mep0x")
+effects = Array[ExtResource("1_ehvgx")]([ExtResource("1")])

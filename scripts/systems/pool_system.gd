@@ -8,9 +8,9 @@ var max_pools: int = 3
 func _ready() -> void:
 	if not GameManager.is_node_ready():
 		await GameManager.ready
-	call_deferred("refresh_pools")
-	# 奖池刷新的时机改为在玩家获取新物品时
-	EventBus.item_obtained.connect(func(_item): call_deferred("refresh_pools"))
+	# call_deferred("refresh_pools")
+	# 奖池刷新的时机改为在 UI 动画序列结束后手动触发，不再自动连接
+	# EventBus.item_obtained.connect(func(_item): call_deferred("refresh_pools"))
 
 
 func refresh_pools() -> void:
@@ -43,6 +43,7 @@ func draw_from_pool(index: int) -> bool:
 	ctx.affix_id = pool.get_affix_id()
 	ctx.gold_cost = pool.gold_cost
 	ctx.ticket_cost = pool.ticket_cost
+	ctx.meta["pool_index"] = index # 传递奖池索引给词缀效果
 	
 	# 填充默认权重
 	var stage_data = GameManager.current_stage_data
@@ -196,13 +197,12 @@ func _generate_normal_pool(excluded_types: Array[Constants.ItemType] = [], exclu
 	
 	if available_types.is_empty():
 		# 如果所有解锁类型都被占用了（理论上不应该，因为 max_pools=3, types=5），则随便选一个非空类型
-		pool.item_type = source_types.pick_random() if not source_types.is_empty() else Constants.ItemType.FRUIT
+		pool.item_type = source_types.pick_random() if not source_types.is_empty() else Constants.ItemType.ANTIQUE
 	else:
 		pool.item_type = available_types.pick_random()
 	
-	# 2. 随机选择词缀，排除已使用的词缀
-	if UnlockManager.is_unlocked(UnlockManager.Feature.POOL_AFFIXES):
-		_assign_random_affix(pool, excluded_affixes)
+	# 2. 随机选择词缀 (开局即拥有)
+	_assign_random_affix(pool, excluded_affixes)
 	
 	# 3. 计算费用
 	var initial_cost = 5
@@ -222,7 +222,7 @@ func _assign_random_affix(pool: PoolConfig, excluded_affixes: Array[RefCounted] 
 	var available_affixes: Array = []
 	
 	for aff in all_affixes:
-		if aff not in excluded_affixes:
+		if aff not in excluded_affixes and UnlockManager.is_pool_affix_enabled(aff.id):
 			available_affixes.append(aff)
 			
 	if not available_affixes.is_empty():

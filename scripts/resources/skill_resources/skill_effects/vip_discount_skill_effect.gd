@@ -16,9 +16,3 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	
 	if ctx.affix_id == &"precise" or ctx.affix_id == &"targeted":
 		ctx.gold_cost = maxi(0, ctx.gold_cost - discount_amount)
-
-
-
-
-
-

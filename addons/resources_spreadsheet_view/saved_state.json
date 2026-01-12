@@ -11,7 +11,73 @@
         "visibility": 0.0
       }
     },
+    "res://data/general/": {
+      "metadata/_custom_type_script": {
+        "visibility": 0.0
+      },
+      "resource_local_to_scene": {
+        "visibility": 0.0
+      },
+      "resource_name": {
+        "visibility": 0.0
+      }
+    },
     "res://data/general/mainline/": {
+      "metadata/_custom_type_script": {
+        "visibility": 0.0
+      },
+      "resource_local_to_scene": {
+        "visibility": 0.0
+      },
+      "resource_name": {
+        "visibility": 0.0
+      }
+    },
+    "res://data/items/": {
+      "metadata/_custom_type_script": {
+        "visibility": 0.0
+      },
+      "resource_local_to_scene": {
+        "visibility": 0.0
+      },
+      "resource_name": {
+        "visibility": 0.0
+      }
+    },
+    "res://data/items/items_table_import.tres": {
+      "metadata/_custom_type_script": {
+        "visibility": 0.0
+      },
+      "resource_local_to_scene": {
+        "visibility": 0.0
+      },
+      "resource_name": {
+        "visibility": 0.0
+      }
+    },
+    "res://data/mainline/stages/": {
+      "metadata/_custom_type_script": {
+        "visibility": 0.0
+      },
+      "resource_local_to_scene": {
+        "visibility": 0.0
+      },
+      "resource_name": {
+        "visibility": 0.0
+      }
+    },
+    "res://data/pool_affixes/": {
+      "metadata/_custom_type_script": {
+        "visibility": 0.0
+      },
+      "resource_local_to_scene": {
+        "visibility": 0.0
+      },
+      "resource_name": {
+        "visibility": 0.0
+      }
+    },
+    "res://data/skills/effects/": {
       "metadata/_custom_type_script": {
         "visibility": 0.0
       },
@@ -25,7 +91,13 @@
   },
   "recent_paths": [
     "res://data/",
-    "res://data/general/mainline/"
+    "res://data/general/mainline/",
+    "res://data/items/",
+    "res://data/items/items_table_import.tres",
+    "res://data/general/",
+    "res://data/mainline/stages/",
+    "res://data/pool_affixes/",
+    "res://data/skills/effects/"
   ],
   "table_functions": {
     "filter": [

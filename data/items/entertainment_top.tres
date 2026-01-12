@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://c6vxne4mhw3t1"]
+
+[ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="1_vsat6"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="2_kud7x"]
+
+[resource]
+script = ExtResource("2_kud7x")
+id = &"entertainment_top"
+name = "ENTERTAINMENT_TOP"
+item_type = 5
+icon = ExtResource("1_vsat6")

@@ -1,0 +1,463 @@
+[gd_scene load_steps=27 format=3 uid="uid://basts7bbr2vav"]
+
+[ext_resource type="Script" uid="uid://cb4r62psbedq3" path="res://scripts/ui/components/lottery_slot_ui.gd" id="1_1b0mf"]
+[ext_resource type="Texture2D" uid="uid://cpcef3r3dbaxq" path="res://assets/sprites/lottery_slots/基地-7.png" id="2_gntc1"]
+[ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="3_ba2ho"]
+[ext_resource type="Texture2D" uid="uid://b3avhgwq0587y" path="res://assets/sprites/lottery_slots/基地-1.png" id="4_662jj"]
+[ext_resource type="Texture2D" uid="uid://dpnahy8wmkeso" path="res://assets/sprites/lottery_slots/基地-2.png" id="5_drypt"]
+[ext_resource type="Texture2D" uid="uid://fjhknpwtlo4g" path="res://assets/sprites/lottery_slots/基地-3.png" id="6_7fxrg"]
+[ext_resource type="Texture2D" uid="uid://cyuji8mwm0rx8" path="res://assets/sprites/lottery_slots/基地-4.png" id="7_yj02r"]
+[ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="8_o6rv1"]
+[ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="9_arr72"]
+[ext_resource type="Texture2D" uid="uid://b4cuujipxrcyu" path="res://assets/sprites/lottery_slots/lottery_slot_lid_fill.png" id="10_4aaut"]
+[ext_resource type="Texture2D" uid="uid://cskvmcwmdj5ew" path="res://assets/sprites/icons/category_entertainment.png" id="11_of7x7"]
+[ext_resource type="Texture2D" uid="uid://u8vv873f380j" path="res://assets/sprites/lottery_slots/lottery_slot_lid_outline.png" id="12_p4alg"]
+[ext_resource type="Texture2D" uid="uid://fnqmsybn8c5r" path="res://assets/sprites/lottery_slots/基地-6.png" id="13_r08pi"]
+[ext_resource type="Texture2D" uid="uid://dhd8bxltte0u1" path="res://assets/sprites/lottery_slots/基地-8.png" id="14_ktq0d"]
+[ext_resource type="Texture2D" uid="uid://law2mtdijaeb" path="res://assets/sprites/lottery_slots/基地-11.png" id="15_do7yb"]
+[ext_resource type="Texture2D" uid="uid://c17ii0rmjfv1n" path="res://assets/sprites/lottery_slots/基地-13.png" id="16_l1p8v"]
+[ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="17_g23h7"]
+[ext_resource type="Texture2D" uid="uid://bh2rrdftruk78" path="res://assets/sprites/lottery_slots/基地-12.png" id="18_yfao2"]
+[ext_resource type="Texture2D" uid="uid://430ts7sfdtgx" path="res://assets/sprites/lottery_slots/基地-10.png" id="19_a03mu"]
+[ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="20_ihuts"]
+[ext_resource type="Texture2D" uid="uid://grqi0oqjnrae" path="res://assets/sprites/the_machine/the_machine_description_display_outline.png" id="21_4kg5p"]
+[ext_resource type="Texture2D" uid="uid://cyo0chqrqd6p7" path="res://assets/sprites/the_machine/the_machine_description_display_fill.png" id="22_dg1ni"]
+
+[sub_resource type="Animation" id="Animation_jptrp"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lottery Slot_mask/Lottery Slot_lid:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_7v8nc"]
+resource_name = "lid_close"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lottery Slot_mask/Lottery Slot_lid:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(3, 0),
+"points": PackedFloat32Array(-555.25, -0.275, -19.74878, 0.275, 19.74878, 0, -0.3333333, -32.805782, 0, -365.75992),
+"times": PackedFloat32Array(0, 0.5)
+}
+
+[sub_resource type="Animation" id="Animation_00smp"]
+resource_name = "lid_open"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lottery Slot_mask/Lottery Slot_lid:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0, -0.25, 0, 0.41666666, -23.013014, -555.25, -0.39999998, -6.3652954, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7v8nc"]
+_data = {
+&"RESET": SubResource("Animation_jptrp"),
+&"lid_close": SubResource("Animation_7v8nc"),
+&"lid_open": SubResource("Animation_00smp")
+}
+
+[node name="Lottery Slot_root_0" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_1b0mf")
+
+[node name="Lottery Slot_mask" type="Sprite2D" parent="."]
+clip_children = 2
+texture = ExtResource("2_gntc1")
+
+[node name="Lottery Slot_backgrounds" type="Node2D" parent="Lottery Slot_mask"]
+script = ExtResource("3_ba2ho")
+color = Color(0.10980392, 0.654902, 0.91764706, 1)
+
+[node name="Slot_background_side" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_backgrounds"]
+modulate = Color(0.10980392, 0.654902, 0.91764706, 1)
+texture = ExtResource("4_662jj")
+
+[node name="Slot_background_wall" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_backgrounds"]
+modulate = Color(0.10980392, 0.654902, 0.91764706, 1)
+texture = ExtResource("5_drypt")
+
+[node name="Slot_background_floor" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_backgrounds"]
+modulate = Color(0.10980392, 0.654902, 0.91764706, 1)
+texture = ExtResource("6_7fxrg")
+
+[node name="Slot_background_outline" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_backgrounds"]
+texture = ExtResource("7_yj02r")
+
+[node name="Lottery Slot_item_root" type="Node2D" parent="Lottery Slot_mask"]
+position = Vector2(-23, 61.75)
+
+[node name="Item_queue_2" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root"]
+position = Vector2(-207, -19)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("8_o6rv1")
+
+[node name="Item_shadow" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root/Item_queue_2"]
+self_modulate = Color(0, 0, 0, 0.39215687)
+show_behind_parent = true
+position = Vector2(6.000001, 164)
+scale = Vector2(0.6, 0.1)
+texture = ExtResource("9_arr72")
+
+[node name="Item_queue_1" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root"]
+position = Vector2(-116, 7)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("8_o6rv1")
+
+[node name="Item_shadow" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root/Item_queue_1"]
+self_modulate = Color(0, 0, 0, 0.39215687)
+show_behind_parent = true
+position = Vector2(6.000001, 164)
+scale = Vector2(0.6, 0.1)
+texture = ExtResource("9_arr72")
+
+[node name="Item_main" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root"]
+texture = ExtResource("8_o6rv1")
+
+[node name="Item_shadow" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root/Item_main"]
+self_modulate = Color(0, 0, 0, 0.39215687)
+show_behind_parent = true
+position = Vector2(6.000001, 164)
+scale = Vector2(0.6, 0.1)
+texture = ExtResource("9_arr72")
+
+[node name="Lottery Slot_lid" type="Sprite2D" parent="Lottery Slot_mask"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+texture = ExtResource("10_4aaut")
+
+[node name="Lottery Slot_lid_icon" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_lid"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+texture = ExtResource("11_of7x7")
+
+[node name="Lottery Pool Name_label" type="RichTextLabel" parent="Lottery Slot_mask/Lottery Slot_lid"]
+offset_left = -281.0
+offset_top = -228.0
+offset_right = -10.0
+offset_bottom = -170.0
+theme_override_font_sizes/normal_font_size = 41
+text = "POOL_NAME"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="Lottery Slot_lid_outline" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_lid"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+texture = ExtResource("12_p4alg")
+
+[node name="Lottery Slot_lid_psudo" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_lid"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+position = Vector2(0, -550)
+texture = ExtResource("10_4aaut")
+
+[node name="Lottery Slot_lid_icon" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_lid/Lottery Slot_lid_psudo"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+texture = ExtResource("11_of7x7")
+
+[node name="Lottery Pool Name_label" type="RichTextLabel" parent="Lottery Slot_mask/Lottery Slot_lid/Lottery Slot_lid_psudo"]
+offset_left = -281.0
+offset_top = -228.0
+offset_right = -10.0
+offset_bottom = -170.0
+theme_override_font_sizes/normal_font_size = 41
+text = "POOL_NAME"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="Lottery Slot_lid_outline" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_lid/Lottery Slot_lid_psudo"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+texture = ExtResource("12_p4alg")
+
+[node name="Lottery Slot_outline" type="Sprite2D" parent="."]
+modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
+texture = ExtResource("13_r08pi")
+
+[node name="Shadow" type="Sprite2D" parent="Lottery Slot_outline"]
+texture = ExtResource("14_ktq0d")
+
+[node name="Lottery Slot_right_screen" type="Sprite2D" parent="."]
+self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
+texture = ExtResource("16_l1p8v")
+
+[node name="Lottery Slot_right_screen_fill" type="Sprite2D" parent="Lottery Slot_right_screen"]
+modulate = Color(0.7490196, 0.7529412, 0.9843137, 1)
+show_behind_parent = true
+clip_children = 2
+texture = ExtResource("15_do7yb")
+
+[node name="Lottery Required Items Icon Grid" type="VBoxContainer" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill"]
+offset_left = 342.0
+offset_top = -234.0
+offset_right = 484.0
+offset_bottom = 292.0
+theme_override_constants/separation = -46
+
+[node name="Item Icon_0" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid"]
+layout_mode = 2
+texture = ExtResource("8_o6rv1")
+expand_mode = 5
+
+[node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid/Item Icon_0"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("17_g23h7")
+expand_mode = 3
+
+[node name="Item Icon_1" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid"]
+layout_mode = 2
+texture = ExtResource("8_o6rv1")
+expand_mode = 5
+
+[node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid/Item Icon_1"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("17_g23h7")
+expand_mode = 3
+
+[node name="Item Icon_2" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid"]
+layout_mode = 2
+texture = ExtResource("8_o6rv1")
+expand_mode = 5
+
+[node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid/Item Icon_2"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("17_g23h7")
+expand_mode = 3
+
+[node name="Item Icon_3" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid"]
+layout_mode = 2
+texture = ExtResource("8_o6rv1")
+expand_mode = 5
+
+[node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid/Item Icon_3"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("17_g23h7")
+expand_mode = 3
+
+[node name="Item Icon_4" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid"]
+layout_mode = 2
+texture = ExtResource("8_o6rv1")
+expand_mode = 5
+
+[node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid/Item Icon_4"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("17_g23h7")
+expand_mode = 3
+
+[node name="Lottery Required Items Icon Grid_psudo" type="VBoxContainer" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill"]
+offset_left = 187.0
+offset_top = -234.25
+offset_right = 329.0
+offset_bottom = 291.75
+theme_override_constants/separation = -46
+
+[node name="Item Icon_0" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"]
+layout_mode = 2
+texture = ExtResource("8_o6rv1")
+expand_mode = 5
+
+[node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo/Item Icon_0"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("17_g23h7")
+expand_mode = 3
+
+[node name="Item Icon_1" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"]
+layout_mode = 2
+texture = ExtResource("8_o6rv1")
+expand_mode = 5
+
+[node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo/Item Icon_1"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("17_g23h7")
+expand_mode = 3
+
+[node name="Item Icon_2" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"]
+layout_mode = 2
+texture = ExtResource("8_o6rv1")
+expand_mode = 5
+
+[node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo/Item Icon_2"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("17_g23h7")
+expand_mode = 3
+
+[node name="Item Icon_3" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"]
+layout_mode = 2
+texture = ExtResource("8_o6rv1")
+expand_mode = 5
+
+[node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo/Item Icon_3"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("17_g23h7")
+expand_mode = 3
+
+[node name="Item Icon_4" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"]
+layout_mode = 2
+texture = ExtResource("8_o6rv1")
+expand_mode = 5
+
+[node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo/Item Icon_4"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 75.75
+offset_right = 137.4762
+offset_bottom = 115.75
+texture = ExtResource("17_g23h7")
+expand_mode = 3
+
+[node name="Lottery Slot_top_screen" type="Sprite2D" parent="."]
+self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
+texture = ExtResource("18_yfao2")
+
+[node name="Lottery Slot_top_screen_fill" type="Sprite2D" parent="Lottery Slot_top_screen"]
+self_modulate = Color(0.61960787, 0.9137255, 0.40392157, 1)
+show_behind_parent = true
+clip_children = 2
+texture = ExtResource("19_a03mu")
+
+[node name="Affix Label" type="RichTextLabel" parent="Lottery Slot_top_screen/Lottery Slot_top_screen_fill"]
+clip_contents = false
+offset_left = -84.0
+offset_top = -471.0
+offset_right = 267.0
+offset_bottom = -348.0
+theme_override_colors/default_color = Color(0.2592937, 0.2592937, 0.2592937, 1)
+theme_override_font_sizes/normal_font_size = 76
+bbcode_enabled = true
+text = "AFFIX"
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Affix Label_psudo" type="RichTextLabel" parent="Lottery Slot_top_screen/Lottery Slot_top_screen_fill/Affix Label"]
+layout_mode = 0
+offset_top = -125.25
+offset_right = 351.0
+offset_bottom = -2.25
+theme_override_colors/default_color = Color(0.2592937, 0.2592937, 0.2592937, 1)
+theme_override_font_sizes/normal_font_size = 76
+bbcode_enabled = true
+text = "AFFIX"
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Price Label" type="RichTextLabel" parent="Lottery Slot_top_screen/Lottery Slot_top_screen_fill"]
+clip_contents = false
+offset_left = -176.0
+offset_top = -471.0
+offset_right = 175.0
+offset_bottom = -348.0
+theme_override_colors/default_color = Color(0.6052743, 0.6052743, 0.6052743, 1)
+theme_override_font_sizes/normal_font_size = 76
+bbcode_enabled = true
+text = "9"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="Price Label_psudo" type="RichTextLabel" parent="Lottery Slot_top_screen/Lottery Slot_top_screen_fill/Price Label"]
+layout_mode = 0
+offset_top = -125.25
+offset_right = 351.0
+offset_bottom = -2.25
+theme_override_colors/default_color = Color(0.6052743, 0.6052743, 0.6052743, 1)
+theme_override_font_sizes/normal_font_size = 76
+bbcode_enabled = true
+text = "9"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="Price Icon" type="Sprite2D" parent="Lottery Slot_top_screen/Lottery Slot_top_screen_fill"]
+position = Vector2(-234, -405.25)
+texture = ExtResource("20_ihuts")
+
+[node name="Lottery Slot_description_screen" type="Sprite2D" parent="."]
+position = Vector2(119, 605.75)
+texture = ExtResource("21_4kg5p")
+
+[node name="Lottery Slot_description_screen_fill" type="Sprite2D" parent="Lottery Slot_description_screen"]
+self_modulate = Color(0, 0.6509804, 1, 1)
+show_behind_parent = true
+clip_children = 2
+texture = ExtResource("22_dg1ni")
+
+[node name="Description Label" type="RichTextLabel" parent="Lottery Slot_description_screen/Lottery Slot_description_screen_fill"]
+clip_contents = false
+offset_left = -394.0
+offset_top = -203.0
+offset_right = 368.0
+offset_bottom = 228.0
+theme_override_font_sizes/normal_font_size = 50
+text = "Description goes here"
+scroll_active = false
+
+[node name="Description Label_psudo" type="RichTextLabel" parent="Lottery Slot_description_screen/Lottery Slot_description_screen_fill/Description Label"]
+layout_mode = 0
+offset_left = -783.0
+offset_right = -21.0
+offset_bottom = 431.0
+theme_override_font_sizes/normal_font_size = 50
+text = "Description goes here"
+scroll_active = false
+
+[node name="Input Area" type="Control" parent="."]
+anchors_preset = 0
+offset_left = -289.0
+offset_top = -235.0
+offset_right = 265.0
+offset_bottom = 287.0
+mouse_default_cursor_shape = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_7v8nc")
+}

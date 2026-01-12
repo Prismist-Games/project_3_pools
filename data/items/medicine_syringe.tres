@@ -1,9 +1,11 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://ii54typv5wba"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://c4ur6106umyhl"]
 
-[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://digpge016wjgw" path="res://assets/sprites/icons/items/medicine_syringe.PNG" id="1_sg5fk"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="2_hxt45"]
 
 [resource]
-script = ExtResource("1")
-id = &"medicine_bandage"
-name = "绷带"
+script = ExtResource("2_hxt45")
+id = &"medicine_syringe"
+name = "MEDICINE_SYRINGE"
 item_type = 2
+icon = ExtResource("1_sg5fk")
