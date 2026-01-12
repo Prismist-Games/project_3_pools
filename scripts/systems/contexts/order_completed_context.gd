@@ -7,7 +7,7 @@ var reward_gold: int = 0
 var reward_tickets: int = 0
 
 ## 本次提交消耗的物品（由订单系统填充）
-var submitted_items: Array[ItemInstance] = []
+var submitted_items: Array = []
 
 ## 扩展数据槽（例如订单类型、是否主线订单等）
 var meta: Dictionary = {}

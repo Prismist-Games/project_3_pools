@@ -257,16 +257,15 @@ func _reveal_skill_slot(slot: Control, skill: SkillData, index: int) -> void:
 	if slot.has_method("refresh_slot_data"):
 		await slot.refresh_slot_data(config, false)
 	
-	# 2. 播放开门揭示
-	await slot.play_reveal_sequence([])
+	# 2. 准备揭示数据：将技能包装成类似 ItemInstance 的结构，以便 play_reveal_sequence 使用
+	# skip_pop_anim = true 确保图标在开盖前就已就位，不会有突然弹出的感觉
+	var dummy_item = {
+		"item_data": skill,
+		"rarity": 0 # 技能统一使用普通背景色或特定颜色
+	}
 	
-	# 3. 强制显示技能图标
-	if slot.item_main:
-		slot.item_main.texture = skill.icon
-		slot.item_main.visible = true
-		slot.item_main.scale = Vector2.ONE
-	if slot.item_main_shadow:
-		slot.item_main_shadow.visible = true
+	# 3. 播放揭示动画
+	await slot.play_reveal_sequence([dummy_item], true)
 	
 	# 4. 连接输入
 	_connect_slot_input(slot, index)
@@ -311,6 +310,9 @@ func _disconnect_all_slot_inputs() -> void:
 ## Lottery slot 输入处理
 func _on_lottery_slot_input(event: InputEvent, index: int) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		# 如果已经在替换模式，点击开着的 lottery slot 应该无效（或者视为确认/取消，但目前需求是只能点击技能 slot）
+		if _in_replace_mode:
+			return
 		select_skill(index)
 
 

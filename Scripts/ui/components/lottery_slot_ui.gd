@@ -212,7 +212,7 @@ func _update_grid_icons(grid: VBoxContainer, display_items: Array[ItemData], sat
 		else:
 			icon_node.visible = false
 
-func play_reveal_sequence(items: Array) -> void:
+func play_reveal_sequence(items: Array, skip_pop_anim: bool = false) -> void:
 	# 进入揭示流程，清除等待标记
 	is_waiting_for_trade_in = false
 	
@@ -233,13 +233,14 @@ func play_reveal_sequence(items: Array) -> void:
 	var interval = 0.05
 	
 	# 临时隐藏/重置图标
-	item_main.scale = Vector2.ZERO
-	item_queue_1.scale = Vector2.ZERO
-	item_queue_2.scale = Vector2.ZERO
+	if not skip_pop_anim:
+		item_main.scale = Vector2.ZERO
+		item_queue_1.scale = Vector2.ZERO
+		item_queue_2.scale = Vector2.ZERO
 	
 	update_queue_display(items)
 	
-	if not items.is_empty():
+	if not items.is_empty() and not skip_pop_anim:
 		var tw = create_tween().set_parallel(true)
 		tw.tween_property(item_main, "scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		if items.size() > 1:

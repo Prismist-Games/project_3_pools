@@ -84,7 +84,7 @@ func find_smart_selection(inventory: Array) -> Array[int]:
 
 
 ## 计算奖励预览：返回是否满足以及计算后的金币/奖券
-func calculate_preview_rewards(selected_items: Array[ItemInstance]) -> Dictionary:
+func calculate_preview_rewards(selected_items: Array) -> Dictionary:
 	var res = {
 		"is_satisfied": false,
 		"gold": reward_gold,
@@ -118,7 +118,7 @@ func calculate_preview_rewards(selected_items: Array[ItemInstance]) -> Dictionar
 
 
 ## 检查提供的物品列表是否满足订单需求（手动选择模式）
-func validate_selection(selected_items: Array[ItemInstance]) -> Dictionary:
+func validate_selection(selected_items: Array) -> Dictionary:
 	var result = {
 		"valid": false,
 		"total_overflow_bonus": 0.0,

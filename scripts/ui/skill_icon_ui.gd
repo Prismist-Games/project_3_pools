@@ -8,7 +8,8 @@ func setup(skill: SkillData) -> void:
 	if skill.icon:
 		self.texture = skill.icon
 	
-	self.tooltip_text = "%s: %s" % [skill.name, skill.description]
+	# 注意：根据需求，tooltip 不再放在 skill_icon 上，而是由父级控制器放在 Input Area 上
+	self.tooltip_text = ""
 
 
 

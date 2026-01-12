@@ -19,7 +19,8 @@ func exit() -> void:
 
 func can_transition_to(next_state: StringName) -> bool:
 	# 可以取消回 Idle，或者提交成功后回 Idle
-	return next_state == &"Idle"
+	# 同时允许在提交主线任务后跳转到技能选择或模态窗口
+	return next_state in [&"Idle", &"SkillSelection", &"Modal"]
 
 func handle_input(event: InputEvent) -> bool:
 	# 右键取消
@@ -37,7 +38,7 @@ func submit_order() -> void:
 	controller.lock_ui("submit")
 	
 	# 1. 预检查哪些订单会被满足
-	var selected_items: Array = []
+	var selected_items: Array[ItemInstance] = []
 	for idx in InventorySystem.multi_selected_indices:
 		if idx >= 0 and idx < InventorySystem.inventory.size() and InventorySystem.inventory[idx] != null:
 			selected_items.append(InventorySystem.inventory[idx])
@@ -59,7 +60,6 @@ func submit_order() -> void:
 				# 普通订单：假设前4个非主线订单对应UI的1-4槽位
 				# Use OrderController mapping if possible, but keep fallback
 				if controller.order_controller:
-					var ui_idx = i + 1 # Simple index map assumption (needs robust mapping)
 					# Better: Find which slot displays this order
 					# controller.order_controller.quest_slots_grid children
 					for child in controller.order_controller.quest_slots_grid.get_children():
@@ -103,6 +103,12 @@ func submit_order() -> void:
 	var success = OrderSystem.submit_order(-1, InventorySystem.multi_selected_indices)
 	
 	if success:
+		# 关键修复：检查状态机是否已经转换到了其他状态（如主线任务完成触发的 SkillSelection）
+		# 如果当前状态不再是 Submitting，说明已经发生了自动跳转，不应再强制转回 Idle
+		if machine.get_current_state_name() != &"Submitting":
+			controller.unlock_ui("submit")
+			return
+			
 		# 提交成功后退出模式（通过状态机）
 		machine.transition_to(&"Idle")
 		

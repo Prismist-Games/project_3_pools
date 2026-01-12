@@ -273,7 +273,7 @@ func _on_orders_updated(orders: Array) -> void:
 		card.refresh_requested.connect(_on_order_refresh_requested)
 
 
-func _on_inventory_changed(items: Array) -> void:
+func _on_inventory_changed(items: Array[ItemInstance]) -> void:
 	# 更新背包格子
 	for child in inventory_grid.get_children():
 		child.queue_free()

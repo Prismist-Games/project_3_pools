@@ -93,8 +93,11 @@ func _initialize_game_state() -> void:
 	# 初始化背包空间 (直接设为 10)
 	InventorySystem.initialize_inventory(10)
 	
-	# 设置初始主线进度为最大
-	mainline_stage = 5
+	# 设置初始主线进度 (优先使用调试设置)
+	if game_config.debug_stage > 0:
+		mainline_stage = game_config.debug_stage
+	else:
+		mainline_stage = 1
 	
 	_update_current_stage_data()
 

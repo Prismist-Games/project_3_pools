@@ -1,6 +1,6 @@
 [gd_scene load_steps=27 format=3 uid="uid://basts7bbr2vav"]
 
-[ext_resource type="Script" uid="uid://cb4r62psbedq3" path="res://scripts/ui/components/lottery_slot_ui.gd" id="1_1b0mf"]
+[ext_resource type="Script" uid="uid://c008hefncbbkm" path="res://scripts/ui/components/lottery_slot_ui.gd" id="1_1b0mf"]
 [ext_resource type="Texture2D" uid="uid://cpcef3r3dbaxq" path="res://assets/sprites/lottery_slots/基地-7.png" id="2_gntc1"]
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="3_ba2ho"]
 [ext_resource type="Texture2D" uid="uid://b3avhgwq0587y" path="res://assets/sprites/lottery_slots/基地-1.png" id="4_662jj"]
@@ -151,6 +151,7 @@ offset_left = -281.0
 offset_top = -228.0
 offset_right = -10.0
 offset_bottom = -170.0
+mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 41
 text = "POOL_NAME"
 scroll_active = false
@@ -174,6 +175,7 @@ offset_left = -281.0
 offset_top = -228.0
 offset_right = -10.0
 offset_bottom = -170.0
+mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 41
 text = "POOL_NAME"
 scroll_active = false
@@ -205,10 +207,12 @@ offset_left = 342.0
 offset_top = -234.0
 offset_right = 484.0
 offset_bottom = 292.0
+mouse_filter = 2
 theme_override_constants/separation = -46
 
 [node name="Item Icon_0" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("8_o6rv1")
 expand_mode = 5
 
@@ -218,11 +222,13 @@ offset_left = 97.0
 offset_top = 75.75
 offset_right = 137.4762
 offset_bottom = 115.75
+mouse_filter = 2
 texture = ExtResource("17_g23h7")
 expand_mode = 3
 
 [node name="Item Icon_1" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("8_o6rv1")
 expand_mode = 5
 
@@ -232,11 +238,13 @@ offset_left = 97.0
 offset_top = 75.75
 offset_right = 137.4762
 offset_bottom = 115.75
+mouse_filter = 2
 texture = ExtResource("17_g23h7")
 expand_mode = 3
 
 [node name="Item Icon_2" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("8_o6rv1")
 expand_mode = 5
 
@@ -246,11 +254,13 @@ offset_left = 97.0
 offset_top = 75.75
 offset_right = 137.4762
 offset_bottom = 115.75
+mouse_filter = 2
 texture = ExtResource("17_g23h7")
 expand_mode = 3
 
 [node name="Item Icon_3" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("8_o6rv1")
 expand_mode = 5
 
@@ -260,11 +270,13 @@ offset_left = 97.0
 offset_top = 75.75
 offset_right = 137.4762
 offset_bottom = 115.75
+mouse_filter = 2
 texture = ExtResource("17_g23h7")
 expand_mode = 3
 
 [node name="Item Icon_4" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("8_o6rv1")
 expand_mode = 5
 
@@ -274,6 +286,7 @@ offset_left = 97.0
 offset_top = 75.75
 offset_right = 137.4762
 offset_bottom = 115.75
+mouse_filter = 2
 texture = ExtResource("17_g23h7")
 expand_mode = 3
 
@@ -282,10 +295,12 @@ offset_left = 187.0
 offset_top = -234.25
 offset_right = 329.0
 offset_bottom = 291.75
+mouse_filter = 2
 theme_override_constants/separation = -46
 
 [node name="Item Icon_0" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("8_o6rv1")
 expand_mode = 5
 
@@ -295,11 +310,13 @@ offset_left = 97.0
 offset_top = 75.75
 offset_right = 137.4762
 offset_bottom = 115.75
+mouse_filter = 2
 texture = ExtResource("17_g23h7")
 expand_mode = 3
 
 [node name="Item Icon_1" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("8_o6rv1")
 expand_mode = 5
 
@@ -309,11 +326,13 @@ offset_left = 97.0
 offset_top = 75.75
 offset_right = 137.4762
 offset_bottom = 115.75
+mouse_filter = 2
 texture = ExtResource("17_g23h7")
 expand_mode = 3
 
 [node name="Item Icon_2" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("8_o6rv1")
 expand_mode = 5
 
@@ -323,11 +342,13 @@ offset_left = 97.0
 offset_top = 75.75
 offset_right = 137.4762
 offset_bottom = 115.75
+mouse_filter = 2
 texture = ExtResource("17_g23h7")
 expand_mode = 3
 
 [node name="Item Icon_3" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("8_o6rv1")
 expand_mode = 5
 
@@ -337,11 +358,13 @@ offset_left = 97.0
 offset_top = 75.75
 offset_right = 137.4762
 offset_bottom = 115.75
+mouse_filter = 2
 texture = ExtResource("17_g23h7")
 expand_mode = 3
 
 [node name="Item Icon_4" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("8_o6rv1")
 expand_mode = 5
 
@@ -351,6 +374,7 @@ offset_left = 97.0
 offset_top = 75.75
 offset_right = 137.4762
 offset_bottom = 115.75
+mouse_filter = 2
 texture = ExtResource("17_g23h7")
 expand_mode = 3
 
@@ -370,6 +394,7 @@ offset_left = -84.0
 offset_top = -471.0
 offset_right = 267.0
 offset_bottom = -348.0
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.2592937, 0.2592937, 0.2592937, 1)
 theme_override_font_sizes/normal_font_size = 76
 bbcode_enabled = true
@@ -383,6 +408,7 @@ layout_mode = 0
 offset_top = -125.25
 offset_right = 351.0
 offset_bottom = -2.25
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.2592937, 0.2592937, 0.2592937, 1)
 theme_override_font_sizes/normal_font_size = 76
 bbcode_enabled = true
@@ -397,6 +423,7 @@ offset_left = -176.0
 offset_top = -471.0
 offset_right = 175.0
 offset_bottom = -348.0
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.6052743, 0.6052743, 0.6052743, 1)
 theme_override_font_sizes/normal_font_size = 76
 bbcode_enabled = true
@@ -409,6 +436,7 @@ layout_mode = 0
 offset_top = -125.25
 offset_right = 351.0
 offset_bottom = -2.25
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.6052743, 0.6052743, 0.6052743, 1)
 theme_override_font_sizes/normal_font_size = 76
 bbcode_enabled = true
@@ -436,6 +464,7 @@ offset_left = -394.0
 offset_top = -203.0
 offset_right = 368.0
 offset_bottom = 228.0
+mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 50
 text = "Description goes here"
 scroll_active = false
@@ -445,6 +474,7 @@ layout_mode = 0
 offset_left = -783.0
 offset_right = -21.0
 offset_bottom = 431.0
+mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 50
 text = "Description goes here"
 scroll_active = false

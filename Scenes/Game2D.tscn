@@ -1,7 +1,7 @@
 [gd_scene load_steps=120 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
-[ext_resource type="Script" uid="uid://rg8ahiwfwlxb" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
+[ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
 [ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
 [ext_resource type="Texture2D" uid="uid://b5uyc48ywtik2" path="res://assets/sprites/wall.png" id="2_xqbja"]
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="3_4wmcb"]
@@ -37,7 +37,7 @@
 [ext_resource type="Texture2D" uid="uid://lw48pfhb1slm" path="res://assets/sprites/the_machine_switch/Recycle_background_outline.png" id="18_u8s40"]
 [ext_resource type="Texture2D" uid="uid://tyc42trcd2xq" path="res://assets/sprites/the_machine_switch/基地-5.png" id="18_xqbja"]
 [ext_resource type="Texture2D" uid="uid://bb0jex82xogr2" path="res://assets/sprites/item_slots/基地-8.png" id="19_sojbq"]
-[ext_resource type="Script" uid="uid://ip5lr6ojc1cq" path="res://scripts/ui/utils/switch_background_follow.gd" id="19_ue141"]
+[ext_resource type="Script" uid="uid://cp4b85c6kcgdl" path="res://scripts/ui/utils/switch_background_follow.gd" id="19_ue141"]
 [ext_resource type="Texture2D" uid="uid://c1rw0mhgt1s1i" path="res://assets/sprites/the_machine/the_machine_display_fill.png" id="21_ue141"]
 [ext_resource type="Texture2D" uid="uid://bclpcjghycqdb" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="22_017ef"]
 [ext_resource type="Texture2D" uid="uid://d3xb6e3385m7k" path="res://assets/sprites/icons/coupon.png" id="25_ccvlu"]
@@ -106,8 +106,8 @@
 [ext_resource type="Texture2D" uid="uid://51nvb4xvrn1c" path="res://assets/sprites/icons/items/antique_cup.PNG" id="102_jdak2"]
 [ext_resource type="Texture2D" uid="uid://ue7e5frhr0kh" path="res://assets/sprites/frames/mini.png" id="102_u4yck"]
 [ext_resource type="Texture2D" uid="uid://djaip0chmnewr" path="res://assets/sprites/frames/popup.png" id="103_otpb1"]
-[ext_resource type="Script" uid="uid://exqnykh1n5lj" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
-[ext_resource type="Script" uid="uid://con7nyakgbhan" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
+[ext_resource type="Script" uid="uid://blxunu142eonv" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
+[ext_resource type="Script" uid="uid://dceb57gqrmaik" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
 
 [sub_resource type="Animation" id="Animation_ovo1l"]
 length = 0.001
@@ -312,9 +312,9 @@ offset_top = -122.25
 offset_right = 358.75
 offset_bottom = 251.75
 scale = Vector2(0.945, 0.945)
-tooltip_text = "Skill Description"
-mouse_default_cursor_shape = 16
+mouse_filter = 2
 texture = ExtResource("9_8hb1a")
+metadata/_edit_use_anchors_ = true
 
 [node name="Input Area" type="Control" parent="The Machine/TheMachineSlot_0/TheMachineSlot_fill"]
 layout_mode = 3
@@ -323,7 +323,8 @@ offset_left = -150.0
 offset_top = -54.0
 offset_right = 265.0
 offset_bottom = 158.0
-mouse_filter = 1
+mouse_default_cursor_shape = 16
+metadata/_edit_use_anchors_ = true
 
 [node name="TheMachineSlot_1" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
@@ -342,8 +343,7 @@ offset_top = -122.25
 offset_right = 358.75
 offset_bottom = 251.75
 scale = Vector2(0.945, 0.945)
-tooltip_text = "Skill Description"
-mouse_default_cursor_shape = 16
+mouse_filter = 2
 texture = ExtResource("9_8hb1a")
 
 [node name="Input Area" type="Control" parent="The Machine/TheMachineSlot_1/TheMachineSlot_fill"]
@@ -353,6 +353,7 @@ offset_left = -150.0
 offset_top = -54.0
 offset_right = 265.0
 offset_bottom = 158.0
+mouse_default_cursor_shape = 16
 
 [node name="TheMachineSlot_2" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
@@ -371,8 +372,7 @@ offset_top = -122.25
 offset_right = 358.75
 offset_bottom = 251.75
 scale = Vector2(0.945, 0.945)
-tooltip_text = "Skill Description"
-mouse_default_cursor_shape = 16
+mouse_filter = 2
 texture = ExtResource("9_8hb1a")
 
 [node name="Input Area" type="Control" parent="The Machine/TheMachineSlot_2/TheMachineSlot_fill"]
@@ -382,6 +382,7 @@ offset_left = -150.0
 offset_top = -54.0
 offset_right = 265.0
 offset_bottom = 158.0
+mouse_default_cursor_shape = 16
 
 [node name="TheMachineTopFront" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)

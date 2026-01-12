@@ -87,6 +87,7 @@ func refresh_slots(skills: Array, animated: bool = true) -> void:
 			continue
 		
 		var icon_node = fill_node.get_node_or_null("Skill_icon") as TextureRect
+		var input_area = fill_node.get_node_or_null("Input Area") as Control
 		
 		if i < skills.size() and skills[i] != null:
 			var skill: SkillData = skills[i]
@@ -94,7 +95,11 @@ func refresh_slots(skills: Array, animated: bool = true) -> void:
 			# 设置图标
 			if icon_node:
 				icon_node.texture = skill.icon
-				icon_node.tooltip_text = skill.description
+				icon_node.tooltip_text = "" # 清除旧位置 tooltip
+			
+			# 设置 Tooltip 到 Input Area
+			if input_area:
+				input_area.tooltip_text = "%s: %s" % [skill.name, skill.description]
 			
 			# 槽位升起
 			if animated:
@@ -106,6 +111,9 @@ func refresh_slots(skills: Array, animated: bool = true) -> void:
 			if icon_node:
 				icon_node.texture = null
 				icon_node.tooltip_text = ""
+			
+			if input_area:
+				input_area.tooltip_text = ""
 			
 			if animated:
 				animate_slot_down(i)
@@ -158,9 +166,14 @@ func update_slot_skill(index: int, skill: SkillData) -> void:
 		return
 	
 	var icon_node = fill_node.get_node_or_null("Skill_icon") as TextureRect
+	var input_area = fill_node.get_node_or_null("Input Area") as Control
+	
 	if icon_node and skill:
 		icon_node.texture = skill.icon
-		icon_node.tooltip_text = skill.description
+		icon_node.tooltip_text = ""
+	
+	if input_area and skill:
+		input_area.tooltip_text = "%s: %s" % [skill.name, skill.description]
 
 
 ## 获取空槽位索引 (-1 表示全满)
@@ -191,6 +204,7 @@ func _set_slot_position(index: int, y_pos: float, _animated: bool = false) -> vo
 	if slot:
 		slot.position.y = y_pos
 		_slot_target_ys[index] = y_pos
+		_update_slot_input_state(index, y_pos)
 
 
 ## 内部: 动画移动槽位到目标位置
@@ -212,6 +226,7 @@ func _animate_slot_to(index: int, target_y: float) -> void:
 		_slot_tweens[index].kill()
 	
 	_slot_target_ys[index] = target_y
+	_update_slot_input_state(index, target_y)
 	
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
@@ -219,6 +234,27 @@ func _animate_slot_to(index: int, target_y: float) -> void:
 	tween.tween_property(slot, "position:y", target_y, ANIMATION_DURATION)
 	
 	_slot_tweens[index] = tween
+
+
+## 内部: 根据位置更新输入区域状态
+func _update_slot_input_state(index: int, y_pos: float) -> void:
+	var slot = _slot_nodes[index]
+	if not slot:
+		return
+	
+	var fill_node = slot.get_node_or_null("TheMachineSlot_fill")
+	if not fill_node:
+		return
+	
+	var input_area = fill_node.get_node_or_null("Input Area") as Control
+	if not input_area:
+		return
+	
+	# 如果在降下状态，忽略鼠标
+	if abs(y_pos - SLOT_Y_DOWN) < 0.1:
+		input_area.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	else:
+		input_area.mouse_filter = Control.MOUSE_FILTER_STOP
 
 
 ## 输入处理

@@ -77,6 +77,17 @@
         "visibility": 0.0
       }
     },
+    "res://data/skills/": {
+      "metadata/_custom_type_script": {
+        "visibility": 0
+      },
+      "resource_local_to_scene": {
+        "visibility": 0
+      },
+      "resource_name": {
+        "visibility": 0
+      }
+    },
     "res://data/skills/effects/": {
       "metadata/_custom_type_script": {
         "visibility": 0.0
@@ -97,7 +108,8 @@
     "res://data/general/",
     "res://data/mainline/stages/",
     "res://data/pool_affixes/",
-    "res://data/skills/effects/"
+    "res://data/skills/effects/",
+    "res://data/skills/"
   ],
   "table_functions": {
     "filter": [
