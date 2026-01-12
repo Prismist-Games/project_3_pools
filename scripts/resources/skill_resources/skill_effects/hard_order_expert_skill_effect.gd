@@ -2,10 +2,10 @@ extends SkillEffect
 class_name HardOrderExpertSkillEffect
 
 ## 【困难订单专家】
-## 完成需要史诗以上品质物品的订单时，额外获得 15 张奖券。
+## 完成需要史诗以上品质物品的订单时，额外获得 60 金币。
 
 @export var rarity_threshold: int = Constants.Rarity.EPIC
-@export var bonus_tickets: int = 15
+@export var bonus_gold: int = 60
 
 
 func on_event(event_id: StringName, context: RefCounted) -> void:
@@ -21,10 +21,4 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 			has_hard = true
 			break
 	if has_hard:
-		ctx.reward_tickets += bonus_tickets
-
-
-
-
-
-
+		ctx.reward_gold += bonus_gold

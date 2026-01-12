@@ -57,15 +57,12 @@ func submit_order() -> void:
 			satisfied_order_count += 1
 			var slot: Control = null
 			
-			if order.is_mainline:
-				slot = controller.main_quest_slot
-			else:
-				# 尝试通过 OrderController 查找
-				if controller.order_controller:
-					for child in controller.order_controller.quest_slots_grid.get_children():
-						if child.has_method("get_order") and child.get_order() == order:
-							slot = child
-							break
+			# 通过 OrderController 查找对应的 UI 槽位
+			if controller.order_controller:
+				for child in controller.order_controller.quest_slots_grid.get_children():
+					if child.has_method("get_order") and child.get_order() == order:
+						slot = child
+						break
 				
 				# 如果还没找到，尝试备选方案
 				if not slot:

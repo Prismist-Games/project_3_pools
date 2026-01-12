@@ -232,8 +232,6 @@ func recycle_item_instance(item: ItemInstance) -> void:
 	
 	if context.reward_gold > 0:
 		GameManager.add_gold(context.reward_gold)
-	if context.reward_tickets > 0:
-		GameManager.add_tickets(context.reward_tickets)
 		
 	EventBus.game_event.emit(&"recycle_finished", context)
 

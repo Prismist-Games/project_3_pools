@@ -14,16 +14,8 @@ func setup(config: PoolConfig, index: int) -> void:
 	_index = index
 	title_label.text = Constants.type_to_display_name(config.item_type)
 	
-	if config.item_type == Constants.ItemType.MAINLINE:
-		title_label.text = "主线奖池"
-		self.theme_type_variation = "Pool_Mainline"
-	else:
-		self.theme_type_variation = "Pool_Normal"
-	
-	if config.ticket_cost > 0:
-		cost_label.text = "消耗: %d 奖券" % config.ticket_cost
-	else:
-		cost_label.text = "消耗: %d 金币" % config.gold_cost
+	self.theme_type_variation = "Pool_Normal"
+	cost_label.text = "消耗: %d 金币" % config.gold_cost
 		
 	var affix_id = config.get_affix_id()
 	if affix_id != &"":

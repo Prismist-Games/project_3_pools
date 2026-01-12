@@ -3,8 +3,6 @@ extends Control
 ## 游戏主 UI：管理各面板与系统的交互。
 
 @onready var gold_label: Label = %GoldLabel
-@onready var tickets_label: Label = %TicketsLabel
-@onready var stage_label: Label = %StageLabel
 
 @onready var pools_container: Container = %PoolsContainer
 @onready var orders_container: Container = %OrdersContainer
@@ -22,7 +20,7 @@ const ORDER_CARD_SCENE = preload("res://scenes/ui/order_card.tscn")
 const INVENTORY_SLOT_SCENE = preload("res://scenes/ui/inventory_slot.tscn")
 const SKILL_ICON_SCENE = preload("res://scenes/ui/skill_icon.tscn")
 const DEBUG_CONSOLE_SCENE = preload("res://scenes/ui/debug_console.tscn")
-const InventorySlotUI = preload("res://scripts/ui/inventory_slot_ui.gd")
+
 
 var _debug_console: Control = null
 
@@ -30,8 +28,6 @@ var _debug_console: Control = null
 func _ready() -> void:
 	# 监听全局信号
 	GameManager.gold_changed.connect(_on_gold_changed)
-	GameManager.tickets_changed.connect(_on_tickets_changed)
-	GameManager.mainline_stage_changed.connect(_on_mainline_stage_changed)
 	# InventorySystem 信号
 	InventorySystem.inventory_changed.connect(_on_inventory_changed)
 	InventorySystem.pending_queue_changed.connect(_on_pending_queue_changed)
@@ -57,8 +53,6 @@ func _ready() -> void:
 	# 初始化显示
 	_update_ui_mode_display()
 	_on_gold_changed(GameManager.gold)
-	_on_tickets_changed(GameManager.tickets)
-	_on_mainline_stage_changed(GameManager.mainline_stage)
 	_on_inventory_changed(InventorySystem.inventory)
 	_on_skills_changed(SkillSystem.current_skills)
 	_on_pending_queue_changed(InventorySystem.pending_items)
@@ -67,8 +61,6 @@ func _ready() -> void:
 func _apply_white_background_styles() -> void:
 	var dark_text = Constants.COLOR_TEXT_MAIN
 	gold_label.add_theme_color_override("font_color", dark_text)
-	tickets_label.add_theme_color_override("font_color", dark_text)
-	stage_label.add_theme_color_override("font_color", dark_text)
 	submit_mode_label.add_theme_color_override("font_color", dark_text)
 
 
@@ -195,7 +187,7 @@ func _cancel_current_mode() -> void:
 	GameManager.current_ui_mode = Constants.UIMode.NORMAL
 	InventorySystem.multi_selected_indices.clear()
 	GameManager.order_selection_index = -1
-	InventorySlotUI.selection_mode_data = {}
+
 	_on_inventory_changed(InventorySystem.inventory)
 
 
@@ -238,14 +230,6 @@ func _on_order_selection_changed(_index: int) -> void:
 
 func _on_gold_changed(val: int) -> void:
 	gold_label.text = "金币: %d" % val
-
-
-func _on_tickets_changed(val: int) -> void:
-	tickets_label.text = "奖券: %d" % val
-
-
-func _on_mainline_stage_changed(val: int) -> void:
-	stage_label.text = "阶段: %d" % val
 
 
 func _on_pools_refreshed(pools: Array) -> void:
@@ -364,7 +348,7 @@ func _on_game_event(event_id: StringName, payload: Variant) -> void:
 		if payload is ContextProxy:
 			data = payload.data
 		
-		InventorySlotUI.selection_mode_data = data
+
 		if data.get("type") == "trade_in":
 			GameManager.current_ui_mode = Constants.UIMode.REPLACE
 		

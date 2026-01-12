@@ -94,10 +94,6 @@ func _setup_generation_ui() -> void:
 	# 初始化物品类型下拉框
 	item_type_option.clear()
 	
-	# 添加主线类型
-	item_type_option.add_item("主线 (Mainline)")
-	item_type_option.set_item_metadata(0, Constants.ItemType.MAINLINE)
-	
 	var normal_types = Constants.get_normal_item_types()
 	for type in normal_types:
 		item_type_option.add_item(Constants.type_to_display_name(type))

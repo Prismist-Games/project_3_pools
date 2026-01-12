@@ -23,7 +23,3 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 				break
 		if consistent:
 			ctx.reward_gold *= multiplier
-			ctx.reward_tickets *= multiplier
-
-
-

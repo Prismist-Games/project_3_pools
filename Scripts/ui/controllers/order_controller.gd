@@ -73,9 +73,11 @@ func update_orders_display(orders: Array) -> void:
 		var req_states = []
 		if mainline_order:
 			req_states = _calculate_req_states(mainline_order, is_submit)
-			
-		if main_quest_slot.has_method("update_order_display"):
-			main_quest_slot.update_order_display(mainline_order, req_states)
+			main_quest_slot.visible = true
+			if main_quest_slot.has_method("update_order_display"):
+				main_quest_slot.update_order_display(mainline_order, req_states)
+		else:
+			main_quest_slot.visible = false
 			
 		if main_quest_slot.is_locked and not game_ui.is_ui_locked():
 			main_quest_slot.is_locked = false

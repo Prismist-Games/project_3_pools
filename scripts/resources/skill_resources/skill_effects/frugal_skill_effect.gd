@@ -15,8 +15,5 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	var ctx = context as DrawContext
 	if ctx == null: return
 	
-	if GameManager.gold < gold_threshold and ctx.item_type != Constants.ItemType.MAINLINE:
+	if GameManager.gold < gold_threshold:
 		ctx.gold_cost = maxi(1, ctx.gold_cost - discount_amount)
-
-
-

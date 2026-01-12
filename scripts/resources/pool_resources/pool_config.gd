@@ -17,7 +17,6 @@ const AffixEffect = preload("pool_affix_effect.gd")
 @export var affix_data: AffixData = null
 
 @export var gold_cost: int = 5
-@export var ticket_cost: int = 0
 
 
 func get_affix_id() -> StringName:

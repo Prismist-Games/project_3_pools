@@ -6,11 +6,9 @@ class_name GameConfig
 @export_dir var items_dir: String = "res://data/items"
 @export_dir var skills_dir: String = "res://data/skills"
 @export_dir var pool_affixes_dir: String = "res://data/pool_affixes"
-@export_dir var mainline_stages_dir: String = "res://data/mainline/stages"
 
 @export_group("Economy", "starting_")
 @export var starting_gold: int = 15
-@export var starting_tickets: int = 0
 @export var normal_draw_gold_cost: int = 5
 @export var inventory_size: int = 10
 
@@ -27,12 +25,6 @@ class_name GameConfig
 @export var weight_epic: float = 10.0
 @export var weight_legendary: float = 1.0
 
-# --- 主线任务相关 ---
-@export_group("Mainline")
-@export var mainline_chance: float = 0.5
-@export var mainline_ticket_cost: int = 10
-@export_range(0, 1) var mainline_drop_rate: float = 0.3
-@export_range(0, 1) var mainline_filler_legendary_rate: float = 0.1
 
 # --- 订单系统 ---
 @export_group("Orders")

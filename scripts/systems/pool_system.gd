@@ -40,16 +40,11 @@ func draw_from_pool(index: int) -> bool:
 	var ctx = DrawContext.new()
 	ctx.pool_id = pool.id
 	ctx.item_type = pool.item_type
-	ctx.affix_id = pool.get_affix_id()
 	ctx.gold_cost = pool.gold_cost
-	ctx.ticket_cost = pool.ticket_cost
 	ctx.meta["pool_index"] = index # 传递奖池索引给词缀效果
 	
 	# 填充默认权重
-	var stage_data = GameManager.current_stage_data
-	if stage_data != null:
-		ctx.rarity_weights = stage_data.get_weights()
-	elif GameManager.game_config != null:
+	if GameManager.game_config != null:
 		var cfg = GameManager.game_config
 		ctx.rarity_weights = PackedFloat32Array([
 			cfg.weight_common,
@@ -71,21 +66,15 @@ func draw_from_pool(index: int) -> bool:
 	if ctx.gold_cost > 0:
 		if not GameManager.spend_gold(ctx.gold_cost):
 			return false
-	if ctx.ticket_cost > 0:
-		if not GameManager.spend_tickets(ctx.ticket_cost):
-			return false
 			
 	# 如果被词缀或技能标记为跳过（通常是进入了某种交互流程）
 	if ctx.skip_draw:
-		# 注意：此时 gold/tickets 可能已经扣除（由词缀决定是否在 draw_requested 中修改 cost）
+		# 注意：此时 gold 可能已经扣除（由词缀决定是否在 draw_requested 中修改 cost）
 		# 此时不再立即刷新，而是等待词缀逻辑最终触发 item_obtained
 		return true
 
 	# 3. 执行抽奖
-	if ctx.item_type == Constants.ItemType.MAINLINE:
-		_do_mainline_draw(ctx)
-	else:
-		_do_normal_draw(ctx)
+	_do_normal_draw(ctx)
 
 	# 4. 词缀后处理
 	pool.dispatch_affix_event(&"draw_finished", ctx)
@@ -115,77 +104,17 @@ func _do_normal_draw(ctx: DrawContext) -> void:
 		EventBus.item_obtained.emit(item_instance)
 
 
-func _do_mainline_draw(ctx: DrawContext) -> void:
-	var rng = GameManager.rng
-	var stage = GameManager.mainline_stage
-	var stage_data = GameManager.get_mainline_stage_data(stage)
-	
-	var drop_rate = 0.3
-	if GameManager.game_config != null:
-		drop_rate = GameManager.game_config.mainline_drop_rate
-		
-	for i in range(ctx.item_count):
-		var item_instance: ItemInstance = null
-		
-		# 一次抽奖（即便产出多个）通常只允许一个主线道具，其余为填充物
-		var should_drop_mainline = (i == 0) and (rng.randf() < drop_rate)
-		
-		if should_drop_mainline and stage_data != null and stage_data.mainline_item != null:
-			item_instance = ItemInstance.new(stage_data.mainline_item, Constants.Rarity.MYTHIC, false)
-		else:
-			# 掉落填充物逻辑
-			var rarity = Constants.Rarity.EPIC
-			if stage_data != null:
-				rarity = stage_data.filler_rarity
-				# 如果是阶段 5，且不是神话，有概率出传说
-				if stage == 5 and rng.randf() < 0.1:
-					rarity = Constants.Rarity.LEGENDARY
-			
-			var items = GameManager.get_all_normal_items()
-			if not items.is_empty():
-				var item_data = items.pick_random()
-				item_instance = ItemInstance.new(item_data, rarity, false)
-		
-		if item_instance:
-			ctx.result_items.append(item_instance)
-			EventBus.item_obtained.emit(item_instance)
-
-
 func _generate_pool(excluded_types: Array[Constants.ItemType] = [], excluded_affixes: Array[RefCounted] = []) -> PoolConfig:
 	var rng = GameManager.rng
-	var pool: PoolConfig
-	
-	# 检查是否可以生成核心奖池 (核心池类型唯一)
-	var can_mainline = Constants.ItemType.MAINLINE not in excluded_types
-	
-	if can_mainline and GameManager.tickets >= 10 and GameManager.mainline_stage <= Constants.MAINLINE_STAGES:
-		var mainline_chance = 0.5
-		if GameManager.game_config != null:
-			mainline_chance = GameManager.game_config.mainline_chance
-		if rng.randf() < mainline_chance:
-			pool = _generate_mainline_pool()
-		else:
-			pool = _generate_normal_pool(excluded_types, excluded_affixes)
-	else:
-		pool = _generate_normal_pool(excluded_types, excluded_affixes)
+	var pool: PoolConfig = _generate_normal_pool(excluded_types, excluded_affixes)
 	
 	# 分配唯一 ID
 	pool.id = StringName(str(Time.get_ticks_msec()) + "_" + str(rng.randi()))
 	return pool
 
 
-func _generate_mainline_pool() -> PoolConfig:
-	var pool = PoolConfig.new()
-	pool.item_type = Constants.ItemType.MAINLINE
-	pool.ticket_cost = 10
-	if GameManager.game_config != null:
-		pool.ticket_cost = GameManager.game_config.mainline_ticket_cost
-	return pool
-
-
 func _generate_normal_pool(excluded_types: Array[Constants.ItemType] = [], excluded_affixes: Array[RefCounted] = []) -> PoolConfig:
 	var pool = PoolConfig.new()
-	var stage_data = GameManager.current_stage_data
 	
 	# 1. 随机选择物品类型，排除已使用的类型
 	var available_types: Array[Constants.ItemType] = []
