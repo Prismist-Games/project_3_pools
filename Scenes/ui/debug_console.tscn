@@ -1,10 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://dm5n2cwj6kxqy"]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" uid="uid://cqeex1805p6yk" path="res://scripts/ui/debug_console_ui.gd" id="1_debug"]
+[ext_resource type="Script" path="res://scripts/ui/debug_console_ui.gd" id="1_debug"]
 
 [node name="DebugConsole" type="PanelContainer"]
 custom_minimum_size = Vector2(380, 0)
-anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -400.0
@@ -469,3 +468,14 @@ text = "全部解锁"
 [node name="LockAllButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/QuickActions"]
 layout_mode = 2
 text = "全部锁定"
+
+[node name="HSeparator10" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AnimTestLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "动画测试"
+
+[node name="TestShockAnimButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "测试震惊动画 (Shocked)"

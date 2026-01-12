@@ -45,6 +45,15 @@ func _ready() -> void:
 	_setup_ui()
 	_connect_signals()
 	_sync_from_unlock_manager()
+	
+	# 连接动画测试按钮 (手动添加的节点)
+	var anim_btn = find_child("TestShockAnimButton", true, false)
+	if anim_btn:
+		anim_btn.pressed.connect(func():
+			# 使用 Debug 组调用，支持任何场景中的 RabbitAnimator
+			get_tree().call_group("debug_animator", "test_shock")
+			print("[DebugConsole] 已触发震惊动画测试")
+		)
 
 
 func _setup_ui() -> void:
