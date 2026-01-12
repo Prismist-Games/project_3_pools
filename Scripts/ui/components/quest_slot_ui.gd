@@ -9,6 +9,7 @@ extends BaseSlotUI
 
 var order_index: int = -1
 var is_submit_mode: bool = false
+var _current_order: OrderData = null
 
 func setup(index: int) -> void:
 	order_index = index
@@ -19,6 +20,9 @@ func setup(index: int) -> void:
 	var refresh_btn = find_child("Refresh Button", true)
 	if refresh_btn:
 		refresh_btn.pressed.connect(_on_refresh_button_pressed)
+
+func get_order() -> OrderData:
+	return _current_order
 
 func _on_refresh_button_pressed() -> void:
 	if order_index != -1:
@@ -37,6 +41,7 @@ func set_submit_mode(active: bool) -> void:
 	is_submit_mode = active
 
 func update_order_display(order_data: OrderData, req_states: Array = []) -> void:
+	_current_order = order_data
 	if not order_data:
 		visible = false
 		return

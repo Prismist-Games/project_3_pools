@@ -49,28 +49,30 @@ func submit_order() -> void:
 	
 	# 找出所有会被满足的订单及其对应的UI槽位
 	var satisfying_slots: Array[Control] = []
+	var satisfied_order_count: int = 0
+	
 	for i in range(OrderSystem.current_orders.size()):
 		var order = OrderSystem.current_orders[i]
 		if order.validate_selection(selected_items).valid:
+			satisfied_order_count += 1
 			var slot: Control = null
 			
 			if order.is_mainline:
 				slot = controller.main_quest_slot
 			else:
-				# 普通订单：假设前4个非主线订单对应UI的1-4槽位
-				# Use OrderController mapping if possible, but keep fallback
+				# 尝试通过 OrderController 查找
 				if controller.order_controller:
-					# Better: Find which slot displays this order
-					# controller.order_controller.quest_slots_grid children
 					for child in controller.order_controller.quest_slots_grid.get_children():
 						if child.has_method("get_order") and child.get_order() == order:
 							slot = child
 							break
-				else:
+				
+				# 如果还没找到，尝试备选方案
+				if not slot:
 					for ui_idx in range(1, 5):
 						var ui_slot = controller.quest_slots_grid.get_node_or_null("Quest Slot_root_" + str(ui_idx))
 						if ui_slot:
-							# Assuming order matches index
+							# 这里假设顺序匹配，虽然不够严谨但作为保底
 							var displayed_order_idx = ui_idx - 1
 							if displayed_order_idx < OrderSystem.current_orders.size():
 								if OrderSystem.current_orders[displayed_order_idx] == order:
@@ -80,7 +82,7 @@ func submit_order() -> void:
 			if slot:
 				satisfying_slots.append(slot)
 	
-	if satisfying_slots.is_empty():
+	if satisfied_order_count == 0:
 		# 提交失败，没有任何订单被满足
 		controller.unlock_ui("submit")
 		return

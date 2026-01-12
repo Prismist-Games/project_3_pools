@@ -108,7 +108,7 @@
 [ext_resource type="Texture2D" uid="uid://ue7e5frhr0kh" path="res://assets/sprites/frames/mini.png" id="102_u4yck"]
 [ext_resource type="Texture2D" uid="uid://djaip0chmnewr" path="res://assets/sprites/frames/popup.png" id="103_otpb1"]
 [ext_resource type="Script" uid="uid://blxunu142eonv" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
-[ext_resource type="Script" uid="uid://dceb57gqrmaik" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
+[ext_resource type="Script" uid="uid://con7nyakgbhan" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
 
 [sub_resource type="Animation" id="Animation_ovo1l"]
 length = 0.001
