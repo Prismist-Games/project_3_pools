@@ -134,6 +134,7 @@ func _on_mouse_entered() -> void:
 	
 	# 盖子微开
 	create_tween().tween_property(lid_sprite, "position:y", -20, 0.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	EventBus.game_event.emit(&"lottery_slot_hovered", self)
 
 func _on_mouse_exited() -> void:
 	# 始终发射 unhover 信号
@@ -143,6 +144,7 @@ func _on_mouse_exited() -> void:
 	# 恢复原位 (如果没在播放打开动画)
 	if not anim_player.is_playing() or anim_player.current_animation != "lid_open":
 		create_tween().tween_property(lid_sprite, "position:y", 0, 0.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	EventBus.game_event.emit(&"lottery_slot_unhovered", null)
 
 func get_main_icon_global_position() -> Vector2:
 	return item_main.global_position
