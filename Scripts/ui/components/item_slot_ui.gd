@@ -125,17 +125,9 @@ func set_selected(selected: bool) -> void:
 	
 	_animate_selection(selected)
 	
-	if selected:
-		if status_icon:
-			status_icon.visible = true
-			status_icon.texture = preload("res://assets/sprites/icons/cross.png")
-	else:
+	if not selected:
 		if backgrounds:
 			backgrounds.modulate = Color.WHITE
-		# Status badge should be re-applied by controller if selection clears
-		if status_icon: status_icon.visible = false
-		# Wait, if we deselect, we might want to show the green tick again if it matches an order.
-		# This requires the controller to refresh the badge state after deselection.
 
 func _animate_selection(active: bool) -> void:
 	if not icon_display: return
