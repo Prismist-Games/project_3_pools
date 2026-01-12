@@ -79,6 +79,10 @@ func play_all_refresh_animations(pools: Array, clicked_slot_idx: int = -1) -> vo
 	# 使用 Dictionary 作为共享引用容器（lambda 捕获值副本问题）
 	var state := {"pending": 0}
 	
+	# 关键修复：刷新动画期间锁定 UI
+	if game_ui and game_ui.has_method("lock_ui"):
+		game_ui.lock_ui("pool_refresh")
+	
 	for i in range(3):
 		var slot = _get_slot_node(i)
 		if slot and i < pools.size() and slot.has_method("refresh_slot_data"):
@@ -96,6 +100,10 @@ func play_all_refresh_animations(pools: Array, clicked_slot_idx: int = -1) -> vo
 	
 	# 动画完成，清除标志
 	_is_animating_refresh = false
+	
+	# 解锁 UI
+	if game_ui and game_ui.has_method("unlock_ui"):
+		game_ui.unlock_ui("pool_refresh")
 
 ## 刷新所有奖池的订单 Hints（当订单改变时调用）
 func refresh_all_order_hints(animate: bool = true) -> void:
@@ -204,7 +212,7 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 				# Fallback
 				return
 				
-			if not game_ui.is_ui_locked() and InventorySystem.pending_items.is_empty():
+			if not game_ui.is_ui_locked() and not _is_animating_refresh and InventorySystem.pending_items.is_empty():
 				# Draw logic
 				if game_ui.state_machine:
 					game_ui.state_machine.transition_to(&"Drawing", {"pool_index": index})
