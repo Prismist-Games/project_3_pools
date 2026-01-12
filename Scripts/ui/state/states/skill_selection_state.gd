@@ -150,6 +150,10 @@ func _add_skill_to_slot(skill: SkillData, _slot_index: int) -> void:
 func _enter_replace_mode() -> void:
 	_in_replace_mode = true
 	
+	# 更新兔子对话：技能满
+	if controller.rabbit_dialog_controller:
+		controller.rabbit_dialog_controller.update_dialog_text(RabbitDialogController.DialogType.SKILL_FULL)
+	
 	# 关闭未选中的 lottery slot
 	for i in range(3):
 		if i != selected_skill_index:

@@ -27,12 +27,17 @@ extends Control
 @onready var skill_slot_1: Node2D = find_child("TheMachineSlot_1", true)
 @onready var skill_slot_2: Node2D = find_child("TheMachineSlot_2", true)
 
+# 兔子对话框节点引用
+@onready var rabbit_dialog_box: Sprite2D = find_child("Dialog Box", true)
+@onready var rabbit_dialog_label: RichTextLabel = find_child("Dialog Label", true)
+
 # --- 子控制器 ---
 var inventory_controller: InventoryController
 var pool_controller: PoolController
 var order_controller: OrderController
 var switch_controller: SwitchController
 var skill_slot_controller: SkillSlotController
+var rabbit_dialog_controller: RabbitDialogController
 
 # --- 新架构: 状态机与 VFX 管理器 ---
 ## 状态机实例（UIStateMachine 类型）
@@ -121,6 +126,11 @@ func _init_controllers() -> void:
 	add_child(skill_slot_controller)
 	var skill_slots: Array[Node2D] = [skill_slot_0, skill_slot_1, skill_slot_2]
 	skill_slot_controller.setup(skill_slots)
+	
+	rabbit_dialog_controller = RabbitDialogController.new()
+	rabbit_dialog_controller.name = "RabbitDialogController"
+	add_child(rabbit_dialog_controller)
+	rabbit_dialog_controller.setup(rabbit_dialog_box, rabbit_dialog_label)
 
 ## 初始化状态机
 func _init_state_machine() -> void:
@@ -153,9 +163,40 @@ func _init_vfx_manager() -> void:
 ## 状态机状态变更回调
 func _on_state_changed(from_state: StringName, to_state: StringName) -> void:
 	print("[Game2DUI] 状态转换: %s -> %s" % [from_state, to_state])
+	
+	# 处理兔子对话框
+	_handle_rabbit_dialog(from_state, to_state)
+	
 	# State changed -> Mode might allow interaction or not, update display
 	_update_ui_mode_display()
 	_refresh_all() # Ensure visuals are correct for new state
+
+## 处理兔子对话框的显示与隐藏
+func _handle_rabbit_dialog(from_state: StringName, to_state: StringName) -> void:
+	if not rabbit_dialog_controller:
+		return
+	
+	# 定义需要显示对话的状态
+	const DIALOG_STATES: Array[StringName] = [
+		&"SkillSelection",
+		&"TargetedSelection",
+		&"TradeIn",
+		&"PreciseSelection",
+		&"Replacing",
+		&"Recycling",
+		&"Submitting",
+	]
+	
+	var was_dialog_state = from_state in DIALOG_STATES
+	var is_dialog_state = to_state in DIALOG_STATES
+	
+	# 如果离开对话状态，隐藏对话框
+	if was_dialog_state and not is_dialog_state:
+		rabbit_dialog_controller.hide_dialog()
+	# 如果进入对话状态，显示对话框
+	elif is_dialog_state:
+		var dialog_type = RabbitDialogController.state_to_dialog_type(to_state)
+		rabbit_dialog_controller.show_dialog(dialog_type)
 
 ## VFX 队列开始回调
 func _on_vfx_queue_started() -> void:
