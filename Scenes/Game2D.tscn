@@ -1,4 +1,4 @@
-[gd_scene load_steps=121 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=122 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
@@ -53,7 +53,8 @@
 [ext_resource type="Texture2D" uid="uid://cyixck513ac1o" path="res://assets/sprites/quest_slots/基地-9.png" id="33_0ehwc"]
 [ext_resource type="Texture2D" uid="uid://ddymclsitprmc" path="res://assets/sprites/quest_slots/基地-8.png" id="34_oeaov"]
 [ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="37_50t6p"]
-[ext_resource type="PackedScene" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
+[ext_resource type="PackedScene" uid="uid://basts7bbr2vav" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
+[ext_resource type="Texture2D" uid="uid://bgojvj4bx4ihm" path="res://assets/sprites/the_rabbit/eye_shape_1.png" id="50_50t6p"]
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
 [ext_resource type="Texture2D" uid="uid://dj5be2vipyhi4" path="res://assets/sprites/the_rabbit/the_rabbit_head_left.png" id="62_enqmm"]
 [ext_resource type="Texture2D" uid="uid://b067gbir0lby" path="res://assets/sprites/the_rabbit/the_rabbit_head_mid.png" id="63_6sdua"]
@@ -1604,7 +1605,18 @@ position = Vector2(1434, 1998)
 
 [node name="TheRabbitAnimator" type="Node" parent="The Rabbit/MascotVisuals"]
 script = ExtResource("99_anim")
+eye_socket_texture = ExtResource("70_u4yck")
+eye_outline_color = Color(0, 0, 0, 1)
+eye_outline_thickness = 0.1
+eye_pupil_texture = ExtResource("68_jdak2")
+eye_pupil_initial_size = 0.5
+eye_pupil_initial_offset = Vector2(1, 0)
+eye_pupil_color = Color(0.21960784, 0.21960784, 0.21960784, 0.8862745)
+eye_pupil_outline_thickness = 0.1
 shock_eye_center_offset = Vector2(-30, 0)
+impatient_eye_target_texture = ExtResource("50_50t6p")
+impatient_eye_pupil_scale = 0.4
+impatient_eye_pupil_offset = Vector2(1, 0)
 
 [node name="AnimationTree" type="AnimationTree" parent="The Rabbit/MascotVisuals"]
 root_node = NodePath("../..")
@@ -1659,11 +1671,13 @@ texture = ExtResource("72_017ef")
 
 [node name="TheRabbitLeftFoot" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
-position = Vector2(19.5, -307.5)
+position = Vector2(30, 972)
 texture = ExtResource("73_u8s40")
+offset = Vector2(-10.5, -1279.5)
 
 [node name="TheRabbitLeftLeg" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftFoot"]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+position = Vector2(-10.5, -1279.5)
 texture = ExtResource("74_8y6ih")
 
 [node name="TheRabbitRightFoot" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
@@ -1745,7 +1759,6 @@ position = Vector2(19.5, -307.5)
 texture = ExtResource("88_yytn1")
 
 [node name="TheRabbitLeftEyeFill" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
-z_index = 2
 position = Vector2(168, -718)
 texture = ExtResource("70_u4yck")
 
@@ -1765,7 +1778,6 @@ texture = ExtResource("71_otpb1")
 [node name="ShockedOverlay" type="ColorRect" parent="The Rabbit/MascotVisuals/TheRabbitLeftEyeFill"]
 
 [node name="TheRabbitRightEyeFill" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
-z_index = 2
 position = Vector2(-347, -719)
 texture = ExtResource("85_q6adl")
 
@@ -2818,11 +2830,12 @@ libraries = {
 }
 
 [node name="Popup_mini" type="Sprite2D" parent="The Rabbit/QuestSystem"]
-z_index = 10
+z_index = -1
 position = Vector2(-614, 0)
 texture = ExtResource("102_u4yck")
 
 [node name="Dialog Box" type="Sprite2D" parent="The Rabbit/QuestSystem"]
+visible = false
 z_index = 10
 position = Vector2(-1093, 577.75)
 texture = ExtResource("101_6kw3k")

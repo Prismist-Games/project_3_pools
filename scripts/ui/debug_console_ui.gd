@@ -47,12 +47,26 @@ func _ready() -> void:
 	_sync_from_unlock_manager()
 	
 	# 连接动画测试按钮 (手动添加的节点)
-	var anim_btn = find_child("TestShockAnimButton", true, false)
-	if anim_btn:
-		anim_btn.pressed.connect(func():
-			# 使用 Debug 组调用，支持任何场景中的 RabbitAnimator
+	var anim_shock_btn = find_child("TestShockAnimButton", true, false)
+	if anim_shock_btn:
+		anim_shock_btn.pressed.connect(func():
 			get_tree().call_group("debug_animator", "test_shock")
 			print("[DebugConsole] 已触发震惊动画测试")
+		)
+	
+	var anim_impatient_btn = find_child("TestImpatientAnimButton", true, false)
+	if anim_impatient_btn:
+		anim_impatient_btn.pressed.connect(func():
+			get_tree().call_group("debug_animator", "test_impatient")
+			print("[DebugConsole] 已触发不耐烦动画测试")
+		)
+	
+	var anim_reset_btn = find_child("ResetAnimButton", true, false)
+	if anim_reset_btn:
+		anim_reset_btn.pressed.connect(func():
+			# 强制回到 IDLE
+			get_tree().call_group("debug_animator", "_transition_to_state", &"Idle")
+			print("[DebugConsole] 已重置动画到 Idle")
 		)
 
 
