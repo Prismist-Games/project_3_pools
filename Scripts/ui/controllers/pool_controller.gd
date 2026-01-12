@@ -221,7 +221,5 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 						await drawing_state.draw()
 
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			if game_ui:
-				if game_ui.state_machine and game_ui.state_machine.get_current_state().handle_input(event):
-					return
-				game_ui._handle_cancel()
+			# 右键取消逻辑已移至 Game2DUI._input 全局处理
+			pass

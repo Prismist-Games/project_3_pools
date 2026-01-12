@@ -248,6 +248,22 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_F12:
 		_toggle_debug_console()
 		get_viewport().set_input_as_handled()
+		return
+		
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+		_handle_cancel_input(event)
+
+
+func _handle_cancel_input(event: InputEvent) -> void:
+	# 1. 优先让状态机处理（如提交、回收、技能选择等专用状态）
+	if state_machine and state_machine.handle_input(event):
+		get_viewport().set_input_as_handled()
+		return
+	
+	# 2. 状态机未处理（通常在 Idle 状态），执行通用取消逻辑
+	_handle_cancel()
+	get_viewport().set_input_as_handled()
+
 
 func _toggle_debug_console() -> void:
 	if _debug_console == null:
@@ -440,10 +456,21 @@ func _handle_single_item_recycle(selected_idx: int) -> void:
 	unlock_ui("recycle")
 
 func _handle_cancel() -> void:
-	# Revert to Idle via state machine
+	# 1. 如果处于非 NORMAL 模式，强制回退到 Idle
 	if state_machine and state_machine.get_ui_mode() != Constants.UIMode.NORMAL:
 		state_machine.transition_to(&"Idle")
+	
+	# 2. 清除所有选择状态
+	var changed = false
+	if InventorySystem.selected_slot_index != -1:
+		InventorySystem.selected_slot_index = -1
+		changed = true
+	
+	if not InventorySystem.multi_selected_indices.is_empty():
 		InventorySystem.multi_selected_indices.clear()
+		changed = true
+	
+	if changed:
 		_refresh_all()
 
 # --- 锁管理 ---

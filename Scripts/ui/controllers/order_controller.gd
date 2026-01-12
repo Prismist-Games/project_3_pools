@@ -136,8 +136,8 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 				var order_idx = index - 1 if index != -1 else -1
 				_handle_smart_select_for_order(order_idx)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			if game_ui:
-				game_ui._handle_cancel()
+			# 右键取消逻辑已移至 Game2DUI._input 全局处理
+			pass
 
 func _handle_smart_select_for_order(order_index: int) -> void:
 	var order: OrderData = null
