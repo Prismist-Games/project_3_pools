@@ -106,8 +106,9 @@
 [ext_resource type="Texture2D" uid="uid://51nvb4xvrn1c" path="res://assets/sprites/icons/items/antique_cup.PNG" id="102_jdak2"]
 [ext_resource type="Texture2D" uid="uid://ue7e5frhr0kh" path="res://assets/sprites/frames/mini.png" id="102_u4yck"]
 [ext_resource type="Texture2D" uid="uid://djaip0chmnewr" path="res://assets/sprites/frames/popup.png" id="103_otpb1"]
-[ext_resource type="Script" uid="uid://blxunu142eonv" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
-[ext_resource type="Script" uid="uid://dceb57gqrmaik" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
+[ext_resource type="Script" uid="uid://exqnykh1n5lj" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
+[ext_resource type="Script" uid="uid://con7nyakgbhan" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
+[ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="99_anim"]
 
 [sub_resource type="Animation" id="Animation_ovo1l"]
 length = 0.001
@@ -2791,6 +2792,9 @@ offset_right = 614.0
 offset_bottom = 162.0
 mouse_default_cursor_shape = 2
 
+[node name="Animator" type="Node" parent="The Rabbit"]
+script = ExtResource("99_anim")
+max_eye_offset = 32.0
 [node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/Main Quest Slot_root"]
 libraries = {
 &"": SubResource("AnimationLibrary_jdak2")
