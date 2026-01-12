@@ -43,7 +43,9 @@ func update_orders_display(orders: Array) -> void:
 
 	for i in range(1, 5):
 		var slot = _get_slot_node(i)
-		var order = orders[i - 1] if (i - 1) < orders.size() else null
+		var order_candidate = orders[i - 1] if (i - 1) < orders.size() else null
+		# 确保普通槽位不显示主线订单 (防御性编程)
+		var order = order_candidate if (order_candidate and not order_candidate.is_mainline) else null
 		
 		if slot:
 			# Propagate state to View Component

@@ -34,12 +34,12 @@ func refresh_all_orders() -> void:
 	# 使用 UnlockManager 控制订单数量
 	var count = UnlockManager.order_limit
 		
-	# 1. 生成 1 个主线订单
-	current_orders.append(_generate_mainline_order())
-	
-	# 2. 生成 (count - 1) 个普通订单
-	for i in range(count - 1):
+	# 1. 生成 count 个普通订单 (对应下方 4 个槽位)
+	for i in range(count):
 		current_orders.append(_generate_normal_order())
+		
+	# 2. 生成 1 个额外的主线订单
+	current_orders.append(_generate_mainline_order())
 	
 	EventBus.orders_updated.emit(current_orders)
 
