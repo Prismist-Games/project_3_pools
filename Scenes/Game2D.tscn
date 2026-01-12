@@ -751,8 +751,7 @@ offset_right = 363.0
 offset_bottom = 63.0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 66
-text = "+ 100
-%"
+text = "+ 100%"
 scroll_active = false
 vertical_alignment = 1
 
