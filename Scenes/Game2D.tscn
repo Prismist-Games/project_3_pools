@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
+[ext_resource type="PackedScene" uid="uid://bf2agyjeyvvp6" path="res://scenes/background_animated.tscn" id="2_u8s40"]
 [ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
-[ext_resource type="Texture2D" uid="uid://b5uyc48ywtik2" path="res://assets/sprites/wall.png" id="2_xqbja"]
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="3_4wmcb"]
 [ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="3_fiado"]
 [ext_resource type="Texture2D" uid="uid://b4qoptplb61wr" path="res://assets/sprites/the_machine/the_machine_display_outline.png" id="4_6b2j4"]
@@ -556,14 +556,13 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_x7wb1")
 
+[node name="Background2" parent="." instance=ExtResource("2_u8s40")]
+
 [node name="Background" type="Node2D" parent="."]
 position = Vector2(3001, 1689.25)
 
 [node name="Background_floor" type="Sprite2D" parent="Background"]
 texture = ExtResource("2_vave4")
-
-[node name="Background_wall" type="Sprite2D" parent="Background"]
-texture = ExtResource("2_xqbja")
 
 [node name="The Machine" type="Node2D" parent="."]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
@@ -2171,7 +2170,7 @@ position = Vector2(128, -107.333336)
 texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask"]
-modulate = Color(0.8627451, 0.7764706, 0, 1)
+modulate = Color(0.84313726, 0.84313726, 0.84313726, 1)
 texture = ExtResource("30_iq50s")
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root"]
@@ -2211,18 +2210,14 @@ texture = ExtResource("25_y6c7h")
 
 [node name="Quest Slot_background" type="Node2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask"]
 script = ExtResource("2_ovo1l")
-color = Color(0.4117647, 0.8509804, 0.3372549, 1)
 
 [node name="Slot_background_side" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot_background"]
-modulate = Color(0.4117647, 0.8509804, 0.3372549, 1)
 texture = ExtResource("26_5jtl3")
 
 [node name="Slot_background_wall" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot_background"]
-modulate = Color(0.4117647, 0.8509804, 0.3372549, 1)
 texture = ExtResource("27_lyel0")
 
 [node name="Slot_background_floor" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot_background"]
-modulate = Color(0.4117647, 0.8509804, 0.3372549, 1)
 texture = ExtResource("28_mfdr7")
 
 [node name="Slot_background_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot_background"]
@@ -2372,7 +2367,7 @@ position = Vector2(128, -107.333336)
 texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask"]
-modulate = Color(0.8627451, 0.7764706, 0, 1)
+modulate = Color(0.84313726, 0.84313726, 0.84313726, 1)
 texture = ExtResource("30_iq50s")
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1"]
@@ -2435,18 +2430,14 @@ texture = ExtResource("25_y6c7h")
 
 [node name="Quest Slot_background" type="Node2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask"]
 script = ExtResource("2_ovo1l")
-color = Color(0.4117647, 0.8509804, 0.3372549, 1)
 
 [node name="Slot_background_side" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot_background"]
-modulate = Color(0.4117647, 0.8509804, 0.3372549, 1)
 texture = ExtResource("26_5jtl3")
 
 [node name="Slot_background_wall" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot_background"]
-modulate = Color(0.4117647, 0.8509804, 0.3372549, 1)
 texture = ExtResource("27_lyel0")
 
 [node name="Slot_background_floor" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot_background"]
-modulate = Color(0.4117647, 0.8509804, 0.3372549, 1)
 texture = ExtResource("28_mfdr7")
 
 [node name="Slot_background_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot_background"]
@@ -2596,7 +2587,7 @@ position = Vector2(128, -107.333336)
 texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask"]
-modulate = Color(0.8627451, 0.7764706, 0, 1)
+modulate = Color(0.84313726, 0.84313726, 0.84313726, 1)
 texture = ExtResource("30_iq50s")
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2"]
@@ -2659,18 +2650,14 @@ texture = ExtResource("25_y6c7h")
 
 [node name="Quest Slot_background" type="Node2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask"]
 script = ExtResource("2_ovo1l")
-color = Color(0.4117647, 0.8509804, 0.3372549, 1)
 
 [node name="Slot_background_side" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot_background"]
-modulate = Color(0.4117647, 0.8509804, 0.3372549, 1)
 texture = ExtResource("26_5jtl3")
 
 [node name="Slot_background_wall" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot_background"]
-modulate = Color(0.4117647, 0.8509804, 0.3372549, 1)
 texture = ExtResource("27_lyel0")
 
 [node name="Slot_background_floor" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot_background"]
-modulate = Color(0.4117647, 0.8509804, 0.3372549, 1)
 texture = ExtResource("28_mfdr7")
 
 [node name="Slot_background_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot_background"]
@@ -2820,7 +2807,7 @@ position = Vector2(128, -107.333336)
 texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask"]
-modulate = Color(0.8627451, 0.7764706, 0, 1)
+modulate = Color(0.84313726, 0.84313726, 0.84313726, 1)
 texture = ExtResource("30_iq50s")
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3"]
@@ -2883,18 +2870,14 @@ texture = ExtResource("25_y6c7h")
 
 [node name="Quest Slot_background" type="Node2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask"]
 script = ExtResource("2_ovo1l")
-color = Color(0.4117647, 0.8509804, 0.3372549, 1)
 
 [node name="Slot_background_side" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot_background"]
-modulate = Color(0.4117647, 0.8509804, 0.3372549, 1)
 texture = ExtResource("26_5jtl3")
 
 [node name="Slot_background_wall" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot_background"]
-modulate = Color(0.4117647, 0.8509804, 0.3372549, 1)
 texture = ExtResource("27_lyel0")
 
 [node name="Slot_background_floor" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot_background"]
-modulate = Color(0.4117647, 0.8509804, 0.3372549, 1)
 texture = ExtResource("28_mfdr7")
 
 [node name="Slot_background_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot_background"]
@@ -3044,7 +3027,7 @@ position = Vector2(128, -107.333336)
 texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask"]
-modulate = Color(0.8627451, 0.7764706, 0, 1)
+modulate = Color(0.84313726, 0.84313726, 0.84313726, 1)
 texture = ExtResource("30_iq50s")
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4"]
