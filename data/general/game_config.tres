@@ -11,4 +11,4 @@
 script = ExtResource("1")
 starting_gold = 9999999
 normal_draw_gold_cost = 1
-era_configs = Array[ExtResource("1_o3oqh")]([ExtResource("2_umle8"), ExtResource("3_5a3jv"), ExtResource("4_3uqxb"), ExtResource("5_p6tfl")])
+era_configs = Array[ExtResource("1_o3oqh")]([ExtResource("4_3uqxb"), ExtResource("5_p6tfl"), ExtResource("2_umle8"), ExtResource("3_5a3jv")])

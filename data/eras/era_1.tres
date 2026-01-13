@@ -4,3 +4,4 @@
 
 [resource]
 script = ExtResource("1")
+era_name = "普通时代"

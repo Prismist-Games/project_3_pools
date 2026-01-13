@@ -213,7 +213,13 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 			target_slot_node.set_temp_hidden(false)
 	
 	if source_slot and source_slot.get("is_vfx_source") != null:
-		source_slot.is_vfx_source = false
+		# 只有当队列中没有更多针对该槽位的任务时，才清除标志并刷新
+		# 否则，保持锁定状态，直到最后一个飞行动画完成
+		if not _has_more_tasks_for_source(source_slot):
+			source_slot.is_vfx_source = false
+			# 强制刷新待定队列显示，防止被 is_vfx_source 检查阻止
+			if source_slot.has_method("update_pending_display") and InventorySystem:
+				source_slot.update_pending_display(InventorySystem.pending_items)
 	
 	# 清理
 	fly_sprite.queue_free()
@@ -276,7 +282,8 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 	
 	if source_lottery_slot:
 		if source_lottery_slot.get("is_vfx_source") != null:
-			source_lottery_slot.is_vfx_source = false
+			if not _has_more_tasks_for_source(source_lottery_slot):
+				source_lottery_slot.is_vfx_source = false
 
 ## 执行合成动画
 func _execute_merge(_task: Dictionary) -> void:
@@ -371,3 +378,10 @@ func _create_fly_sprite(item, start_pos: Vector2, start_scale: Vector2) -> Sprit
 	vfx_layer.add_child(sprite)
 	
 	return sprite
+
+## 检查队列中是否还有针对同一来源槽位的任务（用于平滑 state 切换）
+func _has_more_tasks_for_source(source_node: Node) -> bool:
+	for task in _queue:
+		if task.get("source_lottery_slot") == source_node:
+			return true
+	return false

@@ -6,6 +6,7 @@ extends UIController
 ## 鼠标悬停信号 (用于外部监听)
 signal slot_hovered(pool_index: int, pool_item_type: int)
 signal slot_unhovered(pool_index: int)
+signal slot_item_hovered(item_id: StringName)
 
 var lottery_slots_grid: HBoxContainer
 var _slots: Array[Control] = []
@@ -38,6 +39,8 @@ func _init_slots() -> void:
 				slot.hovered.connect(_on_slot_hovered)
 			if slot.has_signal("unhovered") and not slot.unhovered.is_connected(_on_slot_unhovered):
 				slot.unhovered.connect(_on_slot_unhovered)
+			if slot.has_signal("item_hovered") and not slot.item_hovered.is_connected(_on_slot_item_hovered):
+				slot.item_hovered.connect(_on_slot_item_hovered)
 
 func update_pools_display(pools: Array) -> void:
 	# 如果正在播放刷新动画，跳过此次更新（由动画函数负责）
@@ -239,3 +242,6 @@ func _on_slot_hovered(pool_index: int, pool_item_type: int) -> void:
 
 func _on_slot_unhovered(pool_index: int) -> void:
 	slot_unhovered.emit(pool_index)
+
+func _on_slot_item_hovered(item_id: StringName) -> void:
+	slot_item_hovered.emit(item_id)

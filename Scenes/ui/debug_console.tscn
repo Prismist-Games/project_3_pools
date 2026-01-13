@@ -47,73 +47,9 @@ flat = true
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="FeaturesLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "功能开关"
 
-[node name="FeatureContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 4
 
-[node name="MergeToggle" type="CheckButton" parent="MarginContainer/ScrollContainer/VBoxContainer/FeatureContainer"]
-layout_mode = 2
-text = "合成"
-metadata/feature = 0
 
-[node name="PoolAffixesToggle" type="CheckButton" parent="MarginContainer/ScrollContainer/VBoxContainer/FeatureContainer"]
-layout_mode = 2
-text = "奖池词缀"
-metadata/feature = 1
-
-[node name="OrderRefreshToggle" type="CheckButton" parent="MarginContainer/ScrollContainer/VBoxContainer/FeatureContainer"]
-layout_mode = 2
-text = "订单刷新"
-metadata/feature = 2
-
-[node name="HSeparator2" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="ItemTypesLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "物品类型"
-
-[node name="ItemTypeContainer" type="HFlowContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 4
-
-[node name="FruitToggle" type="CheckButton" parent="MarginContainer/ScrollContainer/VBoxContainer/ItemTypeContainer"]
-layout_mode = 2
-disabled = true
-button_pressed = true
-text = "水果"
-
-[node name="MedicineToggle" type="CheckButton" parent="MarginContainer/ScrollContainer/VBoxContainer/ItemTypeContainer"]
-layout_mode = 2
-text = "药品"
-metadata/feature = 3
-
-[node name="StationeryToggle" type="CheckButton" parent="MarginContainer/ScrollContainer/VBoxContainer/ItemTypeContainer"]
-layout_mode = 2
-text = "文具"
-metadata/feature = 4
-
-[node name="KitchenwareToggle" type="CheckButton" parent="MarginContainer/ScrollContainer/VBoxContainer/ItemTypeContainer"]
-layout_mode = 2
-text = "厨具"
-metadata/feature = 5
-
-[node name="ElectronicsToggle" type="CheckButton" parent="MarginContainer/ScrollContainer/VBoxContainer/ItemTypeContainer"]
-layout_mode = 2
-text = "电器"
-metadata/feature = 6
-
-[node name="HSeparator_Affix" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
 
 [node name="AffixesLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -202,166 +138,23 @@ min_value = 1.0
 max_value = 6.0
 value = 2.0
 
-[node name="HSeparator4" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="GoldRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="OrderRarityLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "订单品质概率"
-
-[node name="OrderRarityCommonRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/OrderRarityCommonRow"]
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/GoldRow"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "普通"
+text = "当前金币"
 
-[node name="OrderRarityCommonSpinBox" type="SpinBox" parent="MarginContainer/ScrollContainer/VBoxContainer/OrderRarityCommonRow"]
+[node name="GoldSpinBox" type="SpinBox" parent="MarginContainer/ScrollContainer/VBoxContainer/GoldRow"]
 unique_name_in_owner = true
 layout_mode = 2
-max_value = 1000.0
-step = 0.1
-value = 100.0
+max_value = 1e+06
+step = 10.0
+allow_greater = true
+allow_lesser = true
 
-[node name="OrderRarityUncommonRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/OrderRarityUncommonRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "优秀"
-
-[node name="OrderRarityUncommonSpinBox" type="SpinBox" parent="MarginContainer/ScrollContainer/VBoxContainer/OrderRarityUncommonRow"]
-unique_name_in_owner = true
-layout_mode = 2
-max_value = 1000.0
-step = 0.1
-
-[node name="OrderRarityRareRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/OrderRarityRareRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "稀有"
-
-[node name="OrderRarityRareSpinBox" type="SpinBox" parent="MarginContainer/ScrollContainer/VBoxContainer/OrderRarityRareRow"]
-unique_name_in_owner = true
-layout_mode = 2
-max_value = 1000.0
-step = 0.1
-
-[node name="OrderRarityEpicRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/OrderRarityEpicRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "史诗"
-
-[node name="OrderRarityEpicSpinBox" type="SpinBox" parent="MarginContainer/ScrollContainer/VBoxContainer/OrderRarityEpicRow"]
-unique_name_in_owner = true
-layout_mode = 2
-max_value = 1000.0
-step = 0.1
-
-[node name="OrderRarityLegendaryRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/OrderRarityLegendaryRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "传说"
-
-[node name="OrderRarityLegendarySpinBox" type="SpinBox" parent="MarginContainer/ScrollContainer/VBoxContainer/OrderRarityLegendaryRow"]
-unique_name_in_owner = true
-layout_mode = 2
-max_value = 1000.0
-step = 0.1
-
-[node name="HSeparator5" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="PoolRarityLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "抽取品质概率"
-
-[node name="PoolRarityCommonRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PoolRarityCommonRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "普通"
-
-[node name="PoolRarityCommonSpinBox" type="SpinBox" parent="MarginContainer/ScrollContainer/VBoxContainer/PoolRarityCommonRow"]
-unique_name_in_owner = true
-layout_mode = 2
-max_value = 1000.0
-step = 0.1
-value = 100.0
-
-[node name="PoolRarityUncommonRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PoolRarityUncommonRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "优秀"
-
-[node name="PoolRarityUncommonSpinBox" type="SpinBox" parent="MarginContainer/ScrollContainer/VBoxContainer/PoolRarityUncommonRow"]
-unique_name_in_owner = true
-layout_mode = 2
-max_value = 1000.0
-step = 0.1
-
-[node name="PoolRarityRareRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PoolRarityRareRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "稀有"
-
-[node name="PoolRarityRareSpinBox" type="SpinBox" parent="MarginContainer/ScrollContainer/VBoxContainer/PoolRarityRareRow"]
-unique_name_in_owner = true
-layout_mode = 2
-max_value = 1000.0
-step = 0.1
-
-[node name="PoolRarityEpicRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PoolRarityEpicRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "史诗"
-
-[node name="PoolRarityEpicSpinBox" type="SpinBox" parent="MarginContainer/ScrollContainer/VBoxContainer/PoolRarityEpicRow"]
-unique_name_in_owner = true
-layout_mode = 2
-max_value = 1000.0
-step = 0.1
-
-[node name="PoolRarityLegendaryRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/PoolRarityLegendaryRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "传说"
-
-[node name="PoolRarityLegendarySpinBox" type="SpinBox" parent="MarginContainer/ScrollContainer/VBoxContainer/PoolRarityLegendaryRow"]
-unique_name_in_owner = true
-layout_mode = 2
-max_value = 1000.0
-step = 0.1
-
-[node name="HSeparator6" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
 
 [node name="ActionsLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -381,18 +174,13 @@ text = "立即应用更改"
 [node name="HSeparator7" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="GenerationLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "物品生成"
-
 [node name="GenTypeRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/GenTypeRow"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "物品类型"
+text = "物品种类"
 
 [node name="ItemTypeOption" type="OptionButton" parent="MarginContainer/ScrollContainer/VBoxContainer/GenTypeRow"]
 unique_name_in_owner = true
@@ -441,6 +229,11 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 text = "生成到背包"
+
+[node name="GenerateBatchButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "一键生成7种物品"
 
 [node name="HSeparator8" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2

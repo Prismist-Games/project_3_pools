@@ -1,8 +1,6 @@
-[gd_resource type="Resource" script_class="ItemTypeLimitEffect" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="ItemTypeLimitEffect" load_steps=2 format=3 uid="uid://cjvkg8akhdt5a"]
 
-[ext_resource type="Script" path="res://scripts/resources/era_effects/item_type_limit_effect.gd" id="1"]
+[ext_resource type="Script" uid="uid://bxgglnw8kg5cj" path="res://scripts/resources/era_effects/item_type_limit_effect.gd" id="1"]
 
 [resource]
 script = ExtResource("1")
-effect_name = "物品种类限制"
-max_item_types = 7

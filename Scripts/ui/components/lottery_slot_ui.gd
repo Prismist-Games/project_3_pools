@@ -4,6 +4,7 @@ extends BaseSlotUI
 ## 鼠标悬停信号 (用于高亮订单需求图标)
 signal hovered(pool_index: int, pool_item_type: int)
 signal unhovered(pool_index: int)
+signal item_hovered(item_id: StringName) # NEW: 针对抽奖结果中具体物品的高亮
 
 ## =====================================================================
 ## True Nodes (当前显示内容)
@@ -55,6 +56,7 @@ var current_pool_item_type: int = -1
 
 ## 标记：是否处于以旧换新等待物品投入状态
 var is_waiting_for_trade_in: bool = false
+var _top_item_id: StringName = &"" # 当前排在首位的物品 ID
 
 ## =====================================================================
 ## Push-Away 动画配置
@@ -130,6 +132,10 @@ func _on_mouse_entered() -> void:
 	if current_pool_item_type > 0:
 		hovered.emit(pool_index, current_pool_item_type)
 	
+	# 如果正在抽奖展示且有具体物品，发射物品高亮信号
+	if is_drawing and _top_item_id != &"":
+		item_hovered.emit(_top_item_id)
+		
 	if is_locked or is_drawing: return
 	
 	# 盖子微开
@@ -226,7 +232,7 @@ func _update_grid_icons(grid: VBoxContainer, display_items: Array[ItemData], sat
 		else:
 			icon_node.visible = false
 
-func play_reveal_sequence(items: Array, skip_pop_anim: bool = false) -> void:
+func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffle: bool = false) -> void:
 	# 进入揭示流程，清除等待标记
 	is_waiting_for_trade_in = false
 	
@@ -241,16 +247,15 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false) -> void:
 	if anim_player.has_animation("lid_open"):
 		anim_player.play("lid_open")
 	
-	# 2. 背景颜色洗牌感 (即便 items 为空也播放视觉洗牌)
-	var shuffle_timer = 0.0
-	var duration = 0.5
-	var interval = 0.05
-	
 	# 临时隐藏/重置图标
 	if not skip_pop_anim:
 		item_main.scale = Vector2.ZERO
 		item_queue_1.scale = Vector2.ZERO
 		item_queue_2.scale = Vector2.ZERO
+	else:
+		item_main.scale = Vector2.ONE
+		item_queue_1.scale = Vector2(queue_1_scale, queue_1_scale)
+		item_queue_2.scale = Vector2(queue_2_scale, queue_2_scale)
 	
 	update_queue_display(items)
 	
@@ -262,11 +267,16 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false) -> void:
 		if items.size() > 2:
 			tw.tween_property(item_queue_2, "scale", Vector2(queue_2_scale, queue_2_scale), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
-	while shuffle_timer < duration:
-		if backgrounds:
-			backgrounds.color = Constants.get_rarity_border_color(randi() % 5)
-		await get_tree().create_timer(interval).timeout
-		shuffle_timer += interval
+	# 2. 背景颜色洗牌感
+	if not skip_shuffle:
+		var shuffle_timer = 0.0
+		var duration = 0.5
+		var interval = 0.05
+		while shuffle_timer < duration:
+			if backgrounds:
+				backgrounds.color = Constants.get_rarity_border_color(randi() % 5)
+			await get_tree().create_timer(interval).timeout
+			shuffle_timer += interval
 	
 	# 3. 定格最终品质
 	if not items.is_empty() and backgrounds:
@@ -274,7 +284,8 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false) -> void:
 	elif backgrounds:
 		backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
 	
-	await get_tree().create_timer(0.3).timeout # 最终揭示后的停留
+	if not skip_shuffle:
+		await get_tree().create_timer(0.3).timeout # 最终揭示后的停留
 
 ## 播放关盖序列（仅关盖和重置显示，刷新动画由 PoolController 统一处理）
 func play_close_sequence() -> void:
@@ -298,9 +309,14 @@ func play_draw_anim() -> void:
 	pass
 
 func update_pending_display(pending_list: Array) -> void:
-	if is_vfx_source: return # 正在从这里飞出物品，由 VFXManager 控制显示，防止逻辑更新导致提前消失
+	# 关键保护：如果当前槽位是 VFX 起点，绝对不允许逻辑更新覆盖 UI
+	# 否则会导致：1. 正在飞行的物品图标在原位复现；2. 队列由于逻辑超前更新而闪烁
+	if is_vfx_source:
+		return
+		
 	if pending_list.is_empty():
-		is_drawing = false # 只有队列空了才重置
+		is_drawing = false
+		_top_item_id = &""
 		if backgrounds:
 			backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
 		# 清空所有显示
@@ -314,6 +330,9 @@ func update_pending_display(pending_list: Array) -> void:
 		item_queue_2.visible = false
 		item_queue_2_shadow.visible = false
 		return
+	
+	# 队列不为空时，始终更新显示（即使 is_vfx_source = true）
+	# 因为队列的变化反映了真实的待定状态，必须及时更新以避免显示错误的物品
 	
 	# 设置背景颜色 (根据第一个物品的稀有度，与 ItemSlot 保持一致)
 	if backgrounds:
@@ -332,35 +351,44 @@ func update_queue_display(items: Array) -> void:
 	
 	# item_main 永远显示 items[0]
 	if items.size() > 0:
-		item_main.texture = items[0].item_data.icon
+		var top_item = items[0]
+		_top_item_id = top_item.item_data.id if top_item is ItemInstance else top_item.get("id", &"")
+		
+		item_main.texture = top_item.item_data.icon if top_item is ItemInstance else top_item.get("icon")
 		item_main.visible = true
 		item_main_shadow.visible = true
 		item_main.z_index = 0
 	else:
+		_top_item_id = &""
+		item_main.texture = null
 		item_main.visible = false
 		item_main_shadow.visible = false
 		
 	# queue_1 显示 items[1]
 	if items.size() > 1:
-		item_queue_1.texture = items[1].item_data.icon
+		var q1_item = items[1]
+		item_queue_1.texture = q1_item.item_data.icon if q1_item is ItemInstance else q1_item.get("icon")
 		item_queue_1.visible = true
 		item_queue_1_shadow.visible = true
 		item_queue_1.position = base_pos + queue_1_offset
 		item_queue_1.scale = Vector2(queue_1_scale, queue_1_scale)
 		item_queue_1.z_index = 0
 	else:
+		item_queue_1.texture = null
 		item_queue_1.visible = false
 		item_queue_1_shadow.visible = false
 	
 	# queue_2 显示 items[2]
 	if items.size() > 2:
-		item_queue_2.texture = items[2].item_data.icon
+		var q2_item = items[2]
+		item_queue_2.texture = q2_item.item_data.icon if q2_item is ItemInstance else q2_item.get("icon")
 		item_queue_2.visible = true
 		item_queue_2_shadow.visible = true
 		item_queue_2.position = base_pos + queue_2_offset
 		item_queue_2.scale = Vector2(queue_2_scale, queue_2_scale)
 		item_queue_2.z_index = 0
 	else:
+		item_queue_2.texture = null
 		item_queue_2.visible = false
 		item_queue_2_shadow.visible = false
 	

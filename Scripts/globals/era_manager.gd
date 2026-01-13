@@ -3,8 +3,6 @@ extends Node
 ## EraManager (Autoload)
 ## 管理游戏时代状态、时代切换和时代效果应用。
 
-const EraConfig = preload("res://scripts/resources/era_config.gd")
-
 signal era_changed(era_index: int)
 
 var current_era_index: int = 0
@@ -19,8 +17,17 @@ func _ready() -> void:
 	if not GameManager.is_node_ready():
 		await GameManager.ready
 	
+	# 监听技能选择完成信号（通过 game_event）
+	EventBus.game_event.connect(_on_game_event)
+	
 	# 启动第一个时代
 	call_deferred("start_era", 0)
+
+
+func _on_game_event(event_id: StringName, _payload: RefCounted) -> void:
+	# 技能选择完成后切换到下一个时代
+	if event_id == &"skill_selected":
+		advance_to_next_era()
 
 
 func _get_era_config(index: int) -> EraConfig:
@@ -57,6 +64,11 @@ func _apply_era_reset() -> void:
 	UnlockManager.inventory_size = cfg.inventory_size
 	InventorySystem.initialize_inventory(cfg.inventory_size)
 	
-	# 刷新订单
-	if OrderSystem.is_node_ready():
-		OrderSystem.refresh_all_orders()
+	# 刷新奖池 (ERA_2 价格波动等效果需要数据更新)
+	if PoolSystem.is_node_ready():
+		PoolSystem.refresh_pools()
+	
+	# 调用所有效果的 on_era_start
+	for effect in cfg.effects:
+		if effect != null and effect.has_method("on_era_start"):
+			effect.on_era_start()

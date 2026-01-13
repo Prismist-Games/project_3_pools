@@ -27,6 +27,9 @@ extends Control
 @onready var skill_slot_1: Node2D = find_child("TheMachineSlot_1", true)
 @onready var skill_slot_2: Node2D = find_child("TheMachineSlot_2", true)
 
+# 时代显示组件引用 (待手动添加后通过 find_child 自动获取)
+var era_label: Control = null
+
 # 兔子对话框节点引用
 @onready var rabbit_dialog_box: Sprite2D = find_child("Dialog Box", true)
 @onready var rabbit_dialog_label: RichTextLabel = find_child("Dialog Label", true)
@@ -94,9 +97,14 @@ func _ready() -> void:
 	EventBus.orders_updated.connect(_on_orders_updated)
 	EventBus.modal_requested.connect(_on_modal_requested)
 	EventBus.game_event.connect(_on_game_event)
+	EventBus.item_recycled.connect(_on_item_recycled)
 	
 	# 4. 初始刷新
 	_refresh_all()
+	
+	# 5. 获取时代显示标签 (如果已手动添加到场景)
+	era_label = find_child("EraLabel", true)
+
 
 func _init_controllers() -> void:
 	inventory_controller = InventoryController.new()
@@ -143,8 +151,10 @@ func _init_controllers() -> void:
 	# 连接 hover 信号
 	pool_controller.slot_hovered.connect(_on_pool_slot_hovered)
 	pool_controller.slot_unhovered.connect(_on_pool_slot_unhovered)
-	inventory_controller.slot_hovered.connect(_on_inventory_slot_hovered)
-	inventory_controller.slot_unhovered.connect(_on_inventory_slot_unhovered)
+	pool_controller.slot_item_hovered.connect(_on_pool_item_hovered)
+	
+	inventory_controller.slot_hovered.connect(_on_item_slot_hovered)
+	inventory_controller.slot_unhovered.connect(_on_item_slot_unhovered)
 
 ## 初始化状态机
 func _init_state_machine() -> void:
@@ -584,6 +594,15 @@ func _on_item_replaced(index: int, _new_item: ItemInstance, old_item: ItemInstan
 		
 		var start_pos = pool_slot.get_main_icon_global_position()
 		var start_scale = pool_slot.get_main_icon_global_scale()
+		
+		# 安全检查：如果起点位置无效（例如队列已空或槽位处于特殊状态），则跳过飞行动画
+		if start_pos == Vector2.ZERO or not is_instance_valid(pool_slot):
+			# 直接更新 UI，不播放动画
+			if target_slot_node: target_slot_node.is_vfx_target = false
+			if pool_slot: pool_slot.is_vfx_source = false
+			_on_inventory_changed(InventorySystem.inventory)
+			_update_ui_mode_display()
+			return
 			
 		var task = {
 			"type": "fly_to_inventory",
@@ -650,6 +669,9 @@ func _on_modal_requested(modal_id: StringName, payload: Variant) -> void:
 		InventorySystem.selected_slot_index = -1
 	
 	match modal_id:
+		&"skill_selection":
+			# 主线订单完成后的时代切换技能选择
+			state_machine.transition_to(&"SkillSelection")
 		&"skill_select":
 			# 使用新的 SkillSelectionState 处理技能三选一
 			state_machine.transition_to(&"SkillSelection")
@@ -695,18 +717,56 @@ func _on_game_event(event_id: StringName, payload: Variant) -> void:
 
 # --- 订单图标高亮 (Hover) ---
 
-func _on_pool_slot_hovered(_pool_index: int, pool_item_type: int) -> void:
+func _on_pool_slot_hovered(_pool_index: int, item_type: int) -> void:
+	# 高亮订单需求
 	if quest_icon_highlighter:
-		quest_icon_highlighter.highlight_by_pool_type(pool_item_type)
+		quest_icon_highlighter.highlight_by_pool_type(item_type)
 
 func _on_pool_slot_unhovered(_pool_index: int) -> void:
+	# 取消高亮
 	if quest_icon_highlighter:
 		quest_icon_highlighter.clear_all_highlights()
+	inventory_controller.clear_highlights()
 
-func _on_inventory_slot_hovered(_slot_index: int, item_id: StringName) -> void:
-	if quest_icon_highlighter and item_id != &"":
+func _on_pool_item_hovered(item_id: StringName) -> void:
+	# 高亮背包中同名物品
+	inventory_controller.highlight_items_by_id(item_id)
+
+func _on_item_slot_hovered(_index: int, item_id: StringName) -> void:
+	# 1. 高亮订单
+	if quest_icon_highlighter:
 		quest_icon_highlighter.highlight_by_item_id(item_id)
+	
+	# 2. 高亮背包中所有同名物品
+	if item_id != &"":
+		inventory_controller.highlight_items_by_id(item_id)
 
-func _on_inventory_slot_unhovered(_slot_index: int) -> void:
+func _on_item_slot_unhovered(_index: int) -> void:
 	if quest_icon_highlighter:
 		quest_icon_highlighter.clear_all_highlights()
+	inventory_controller.clear_highlights()
+
+func _on_item_recycled(slot_index: int, item: ItemInstance) -> void:
+	"""处理批量回收时的单个物品回收动画（ERA_3 种类替换场景）"""
+	if not vfx_manager:
+		return
+		
+	var slot_node = inventory_controller.get_slot_node(slot_index)
+	if not slot_node:
+		return
+		
+	var start_pos = inventory_controller.get_slot_global_position(slot_index)
+	var start_scale = inventory_controller.get_slot_global_scale(slot_index)
+	var recycle_pos = switch_controller.get_recycle_bin_pos()
+	var recycle_icon_node = switch_controller.get_recycle_icon_node()
+	
+	vfx_manager.enqueue({
+"type": "fly_to_recycle",
+"item": item,
+"start_pos": start_pos,
+"start_scale": start_scale,
+"target_pos": recycle_pos,
+"source_slot_node": slot_node,
+"recycle_icon_node": recycle_icon_node,
+"on_complete": func(): pass
+	})

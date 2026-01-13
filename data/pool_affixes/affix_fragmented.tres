@@ -9,5 +9,5 @@ script = ExtResource("1")
 id = &"fragmented"
 name = "稀碎的"
 description = "产出 3 个物品，但必定是普通。"
-base_gold_cost = 3
+base_gold_cost = 1
 effects = Array[ExtResource("1_v0gia")]([ExtResource("2")])
