@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EraConfig" load_steps=3 format=3 uid="uid://pkutkaxl1lwn"]
+
+[ext_resource type="Script" uid="uid://dm06bf5x3llkt" path="res://scripts/resources/era_config.gd" id="1"]
+[ext_resource type="Resource" path="res://data/eras/era_effects/shelf_life.tres" id="1_lvcee"]
+
+[resource]
+script = ExtResource("1")
+era_name = "时代 4"
+effects = Array[Resource]([ExtResource("1_lvcee")])

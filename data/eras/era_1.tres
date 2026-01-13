@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="EraConfig" load_steps=2 format=3 uid="uid://xl7cwkdnnl41"]
+
+[ext_resource type="Script" uid="uid://dm06bf5x3llkt" path="res://scripts/resources/era_config.gd" id="1"]
+
+[resource]
+script = ExtResource("1")

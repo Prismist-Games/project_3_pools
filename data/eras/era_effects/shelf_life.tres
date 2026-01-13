@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="ShelfLifeEffect" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/era_effects/shelf_life_effect.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+effect_name = "保质期"
+default_shelf_life = 25

@@ -39,6 +39,7 @@ InventorySystem="*res://scripts/systems/inventory_system.gd"
 OrderSystem="*res://scripts/systems/order_system.gd"
 PoolSystem="*res://scripts/systems/pool_system.gd"
 AnimationDirector="*res://scripts/systems/animation_director.gd"
+EraManager="*res://scripts/globals/era_manager.gd"
 
 [display]
 

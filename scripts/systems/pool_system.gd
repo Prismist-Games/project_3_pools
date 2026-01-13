@@ -102,6 +102,13 @@ func _do_normal_draw(ctx: DrawContext) -> void:
 		ctx.result_items.append(item_instance)
 		
 		EventBus.item_obtained.emit(item_instance)
+	
+	# ERA_4: 抽奖后递减保质期（通过效果系统）
+	var cfg = EraManager.current_config if EraManager else null
+	if cfg:
+		var shelf_life_effect = cfg.get_effect_of_type("ShelfLifeEffect")
+		if shelf_life_effect:
+			shelf_life_effect.decrement_all_shelf_lives(InventorySystem)
 
 
 func _generate_pool(excluded_types: Array[Constants.ItemType] = [], excluded_affixes: Array[RefCounted] = []) -> PoolConfig:
@@ -138,6 +145,15 @@ func _generate_normal_pool(excluded_types: Array[Constants.ItemType] = [], exclu
 	if GameManager.game_config != null:
 		initial_cost = GameManager.game_config.normal_draw_gold_cost
 	
+	# ERA_2: 价格波动（通过效果系统）
+	var cfg = EraManager.current_config
+	if cfg:
+		var price_effect = cfg.get_effect_of_type("PriceFluctuationEffect")
+		if price_effect:
+			price_effect.apply_to_pool(pool, GameManager.rng)
+			return pool
+	
+	# 默认逻辑
 	if pool.affix_data != null:
 		pool.gold_cost = pool.affix_data.base_gold_cost
 	else:

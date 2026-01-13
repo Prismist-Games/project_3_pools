@@ -214,7 +214,11 @@ func can_merge(item_a: ItemInstance, item_b: ItemInstance) -> bool:
 ## 执行合并
 func _perform_merge(item_a: ItemInstance, item_b: ItemInstance, target_index: int) -> void:
 	var next_rarity = item_a.rarity + 1
-	var new_item = ItemInstance.new(item_a.item_data, next_rarity)
+	
+	# ERA_4: 保质期取两者中较长的值
+	var merged_shelf_life = maxi(item_a.shelf_life, item_b.shelf_life)
+	var new_item = ItemInstance.new(item_a.item_data, next_rarity, false, merged_shelf_life)
+	
 	inventory[target_index] = new_item
 	
 	# Emit merge signal with the item that was in the slot (item_b) as the target context
@@ -274,3 +278,60 @@ func get_max_rarity_for_item(item_id: StringName) -> int:
 			if item.rarity > max_r:
 				max_r = item.rarity
 	return max_r
+
+
+# --- ERA_3: 种类限制相关方法 ---
+
+## 获取背包中所有不同的物品名称
+func get_unique_item_names() -> Array[StringName]:
+	var names: Array[StringName] = []
+	for item in inventory:
+		if item != null and item.item_data.id not in names:
+			names.append(item.item_data.id)
+	return names
+
+
+## 检查添加新物品是否会超出种类限制
+func would_exceed_type_limit(new_item: ItemInstance) -> bool:
+	var cfg = EraManager.current_config if EraManager else null
+	if not cfg:
+		return false
+	
+	var type_limit_effect = cfg.get_effect_of_type("ItemTypeLimitEffect")
+	if not type_limit_effect:
+		return false
+	
+	return type_limit_effect.would_exceed_limit(self, new_item)
+
+
+## 获取指定物品名称的所有背包槽位索引
+func get_indices_by_name(item_id: StringName) -> Array[int]:
+	var indices: Array[int] = []
+	for i in range(inventory.size()):
+		if inventory[i] != null and inventory[i].item_data.id == item_id:
+			indices.append(i)
+	return indices
+
+
+## 获取同名物品的总回收价值
+func get_total_recycle_value_for_name(item_id: StringName) -> int:
+	var total: int = 0
+	for item in inventory:
+		if item != null and item.item_data.id == item_id:
+			total += Constants.rarity_recycle_value(item.rarity)
+	return total
+
+
+## 回收指定名称的所有物品
+func recycle_all_by_name(item_id: StringName) -> void:
+	var total_gold: int = 0
+	for i in range(inventory.size()):
+		if inventory[i] != null and inventory[i].item_data.id == item_id:
+			total_gold += Constants.rarity_recycle_value(inventory[i].rarity)
+			inventory[i] = null
+	
+	if total_gold > 0:
+		GameManager.add_gold(total_gold)
+	
+	inventory_changed.emit(inventory)
+	EventBus.orders_updated.emit(OrderSystem.current_orders)

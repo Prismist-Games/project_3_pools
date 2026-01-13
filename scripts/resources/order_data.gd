@@ -124,6 +124,12 @@ func validate_selection(selected_items: Array) -> Dictionary:
 	
 	if selected_items.is_empty() and not requirements.is_empty():
 		return result
+	
+	# ERA_4: 检查过期物品
+	for item in selected_items:
+		if item != null and item.is_expired:
+			result["reason"] = "expired"
+			return result
 		
 	var total_bonus = 0.0
 	
