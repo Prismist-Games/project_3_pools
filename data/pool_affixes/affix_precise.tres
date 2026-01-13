@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PoolAffixData" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="PoolAffixData" load_steps=4 format=3 uid="uid://dcylvw6fo8l0m"]
 
 [ext_resource type="Script" uid="uid://d1725wsbx1i5" path="res://scripts/resources/pool_resources/pool_affix_data.gd" id="1"]
 [ext_resource type="Script" uid="uid://6f2x8h4j1lal" path="res://scripts/resources/pool_resources/pool_affix_effect.gd" id="1_v0gia"]
@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1")
 id = &"precise"
-name = "精准的"
-description = "二选一交互。"
+name = "AFFIX_PRECISE"
+description = "AFFIX_PRECISE_DESC"
 base_gold_cost = 2
 effects = Array[ExtResource("1_v0gia")]([ExtResource("2")])

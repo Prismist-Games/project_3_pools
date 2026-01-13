@@ -73,11 +73,11 @@ func _setup_skill_selection_display() -> void:
 		var slot = controller.lottery_slots_grid.get_node("Lottery Slot_root_" + str(i))
 		if i < options.size():
 			var skill = options[i]
-			slot.pool_name_label.text = skill.name
+			slot.pool_name_label.text = tr(skill.name)
 			slot.item_main.texture = skill.icon
 			slot.price_label.text = "CHOOSE"
 			slot.affix_label.text = ""
-			slot.description_label.text = skill.description
+			slot.description_label.text = tr(skill.description)
 			slot.visible = true
 			slot.open_lid()
 		else:

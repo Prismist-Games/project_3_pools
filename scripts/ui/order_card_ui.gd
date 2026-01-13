@@ -75,17 +75,17 @@ func setup(order: OrderData, index: int) -> void:
 			slot.setup_preview(item_data, min_rarity, is_fulfilled)
 	
 	# 奖励预览
-	var reward_text = "奖励: "
+	var reward_text = tr("ORDER_REWARD")
 	if preview.is_satisfied:
-		reward_text += "%d -> %d 金币 " % [order.reward_gold, preview.gold]
+		reward_text += tr("ORDER_REWARD_PREVIEW") % [order.reward_gold, preview.gold]
 		reward_label.add_theme_color_override("font_color", Color("#854d0e")) # 暖褐色
 	else:
-		reward_text += "%d 金币 " % order.reward_gold
+		reward_text += tr("ORDER_REWARD_GOLD") % order.reward_gold
 		reward_label.add_theme_color_override("font_color", dark_text)
 	
 	reward_label.text = ("✅ " if preview.is_satisfied else "") + reward_text
 	
-	refresh_button.text = "刷新 (%d)" % order.refresh_count
+	refresh_button.text = tr("ORDER_REFRESH") % order.refresh_count
 	
 	var stage_allows_refresh = true
 	var stage_data = GameManager.current_stage_data

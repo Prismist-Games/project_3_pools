@@ -829,12 +829,13 @@ texture = ExtResource("15_fvhsr")
 
 [node name="Switch_off_label" type="RichTextLabel" parent="The Machine/TheMachineSwitch_Submit/Switch_mask/Switch_background_up"]
 offset_left = -88.0
-offset_top = -3.0
+offset_top = -81.5
 offset_right = 96.0
-offset_bottom = 37.0
+offset_bottom = 125.5
 theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 26
-text = "SUBMIT"
+theme_override_font_sizes/normal_font_size = 42
+bbcode_enabled = true
+text = "SWITCH_SUBMIT"
 fit_content = true
 scroll_active = false
 horizontal_alignment = 1
@@ -847,12 +848,12 @@ texture = ExtResource("15_fvhsr")
 
 [node name="Switch_on_label" type="RichTextLabel" parent="The Machine/TheMachineSwitch_Submit/Switch_mask/Switch_background_down"]
 offset_left = -88.0
-offset_top = -56.0
+offset_top = -134.5
 offset_right = 96.0
-offset_bottom = -16.0
+offset_bottom = 72.5
 theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 26
-text = "CONFIRM"
+theme_override_font_sizes/normal_font_size = 42
+text = "SWITCH_CONFIRM"
 fit_content = true
 scroll_active = false
 horizontal_alignment = 1
@@ -964,7 +965,7 @@ theme_override_constants/separation = 489
 layout_mode = 2
 
 [node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_0"]
-self_modulate = Color(0.61960787, 0.9137255, 0.40392157, 1)
+self_modulate = Color(0.38431373, 0.7294118, 0.15686275, 1)
 position = Vector2(40, 23)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("25_ue141")
@@ -985,7 +986,7 @@ vertical_alignment = 1
 layout_mode = 2
 
 [node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_1"]
-self_modulate = Color(0, 0.6509804, 1, 1)
+self_modulate = Color(0.3372549, 0.64705884, 0.9254902, 1)
 position = Vector2(40, 23)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("25_ue141")
@@ -1006,7 +1007,7 @@ vertical_alignment = 1
 layout_mode = 2
 
 [node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_2"]
-self_modulate = Color(0.43638366, 0.23866898, 1, 1)
+self_modulate = Color(0.78431374, 0.37254903, 0.8901961, 1)
 position = Vector2(40, 23)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("25_ue141")
@@ -1027,7 +1028,7 @@ vertical_alignment = 1
 layout_mode = 2
 
 [node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_3"]
-self_modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+self_modulate = Color(0.9254902, 0.60784316, 0.16078432, 1)
 position = Vector2(40, 23)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("25_ue141")
@@ -1048,7 +1049,7 @@ vertical_alignment = 1
 layout_mode = 2
 
 [node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_4"]
-self_modulate = Color(0.8980392, 0.3647059, 0.3372549, 1)
+self_modulate = Color(0.8980392, 0.31764707, 0.2509804, 1)
 position = Vector2(40, 23)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("25_ue141")
@@ -3247,3 +3248,10 @@ editor_draw_drag_margin = true
 
 [node name="VfxLayer" type="Node2D" parent="."]
 z_index = 999
+
+[node name="Language Switch" type="Button" parent="."]
+layout_mode = 0
+offset_right = 132.0
+offset_bottom = 153.0
+theme_override_font_sizes/font_size = 32
+text = "EN/ZH"

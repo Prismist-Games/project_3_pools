@@ -50,12 +50,12 @@ func type_to_string(type: ItemType) -> StringName:
 
 func type_to_display_name(type: ItemType) -> String:
 	match type:
-		ItemType.ANTIQUE: return "古董"
-		ItemType.MEDICINE: return "药品"
-		ItemType.STATIONERY: return "文具"
-		ItemType.CONVENIENCE: return "便利"
-		ItemType.ENTERTAINMENT: return "娱乐"
-		_: return "其他"
+		ItemType.ANTIQUE: return "TYPE_ANTIQUE"
+		ItemType.MEDICINE: return "TYPE_MEDICINE"
+		ItemType.STATIONERY: return "TYPE_STATIONERY"
+		ItemType.CONVENIENCE: return "TYPE_CONVENIENCE"
+		ItemType.ENTERTAINMENT: return "TYPE_ENTERTAINMENT"
+		_: return "TYPE_NONE"
 
 func type_to_icon(type: ItemType) -> Texture2D:
 	match type:
@@ -88,19 +88,19 @@ func rarity_id(rarity: int) -> StringName:
 func rarity_display_name(rarity: int) -> String:
 	match rarity:
 		Rarity.COMMON:
-			return "普通"
+			return "RARITY_COMMON"
 		Rarity.UNCOMMON:
-			return "优秀"
+			return "RARITY_UNCOMMON"
 		Rarity.RARE:
-			return "稀有"
+			return "RARITY_RARE"
 		Rarity.EPIC:
-			return "史诗"
+			return "RARITY_EPIC"
 		Rarity.LEGENDARY:
-			return "传说"
+			return "RARITY_LEGENDARY"
 		Rarity.MYTHIC:
-			return "神话"
+			return "RARITY_MYTHIC"
 		_:
-			return "未知"
+			return "RARITY_UNKNOWN"
 
 
 func rarity_recycle_value(rarity: int) -> int:

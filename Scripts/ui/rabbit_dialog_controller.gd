@@ -19,16 +19,16 @@ enum DialogType {
 	SUBMIT,             ## 提交模式：请选择要提交的道具（右键取消）
 }
 
-## 对话文本映射
-const DIALOG_TEXTS: Dictionary = {
-	DialogType.SKILL_SELECT: "请选择需要的技能（右键取消）。",
-	DialogType.SKILL_FULL: "技能槽满！请选择需要替换的技能。",
-	DialogType.TARGETED: "请选择想要的道具类型（右键取消）。",
-	DialogType.TRADE_IN: "请选择要置换的道具。",
-	DialogType.PRECISE: "请选择一个道具。",
-	DialogType.INVENTORY_FULL: "背包满！请替换一件背包内的道具，或回收当前奖品。",
-	DialogType.RECYCLE: "请选择要回收的道具（右键取消）。",
-	DialogType.SUBMIT: "请选择要提交的道具（右键取消）。",
+## 对话文本 KEY 映射
+const DIALOG_KEYS: Dictionary = {
+	DialogType.SKILL_SELECT: "DIALOG_SKILL_SELECT",
+	DialogType.SKILL_FULL: "DIALOG_SKILL_FULL",
+	DialogType.TARGETED: "DIALOG_TARGETED",
+	DialogType.TRADE_IN: "DIALOG_TRADE_IN",
+	DialogType.PRECISE: "DIALOG_PRECISE",
+	DialogType.INVENTORY_FULL: "DIALOG_INVENTORY_FULL",
+	DialogType.RECYCLE: "DIALOG_RECYCLE",
+	DialogType.SUBMIT: "DIALOG_SUBMIT",
 }
 
 ## 节点引用
@@ -72,8 +72,8 @@ func show_dialog(dialog_type: DialogType) -> void:
 	_current_dialog_type = dialog_type
 	
 	# 设置文本
-	var text = DIALOG_TEXTS.get(dialog_type, "")
-	dialog_label.text = text
+	var key = DIALOG_KEYS.get(dialog_type, "")
+	dialog_label.text = key
 	dialog_label.visible_ratio = 0.0
 	
 	# 确保对话框可见
@@ -163,14 +163,14 @@ func update_dialog_text(dialog_type: DialogType) -> void:
 		return
 	
 	_current_dialog_type = dialog_type
-	var text = DIALOG_TEXTS.get(dialog_type, "")
+	var key = DIALOG_KEYS.get(dialog_type, "")
 	
 	# 如果正在播放动画，取消当前动画
 	if _current_tween and _current_tween.is_valid():
 		_current_tween.kill()
 	
 	# 立即设置新文本并重新播放显示动画
-	dialog_label.text = text
+	dialog_label.text = key
 	dialog_label.visible_ratio = 0.0
 	
 	_current_tween = dialog_label.create_tween()

@@ -149,10 +149,11 @@ texture = ExtResource("11_of7x7")
 [node name="Lottery Pool Name_label" type="RichTextLabel" parent="Lottery Slot_mask/Lottery Slot_lid"]
 offset_left = -281.0
 offset_top = -228.0
-offset_right = -10.0
+offset_right = 256.0
 offset_bottom = -170.0
 mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 41
+bbcode_enabled = true
 text = "POOL_NAME"
 scroll_active = false
 vertical_alignment = 1
@@ -173,10 +174,11 @@ texture = ExtResource("11_of7x7")
 [node name="Lottery Pool Name_label" type="RichTextLabel" parent="Lottery Slot_mask/Lottery Slot_lid/Lottery Slot_lid_psudo"]
 offset_left = -281.0
 offset_top = -228.0
-offset_right = -10.0
+offset_right = 256.0
 offset_bottom = -170.0
 mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 41
+bbcode_enabled = true
 text = "POOL_NAME"
 scroll_active = false
 vertical_alignment = 1
@@ -396,7 +398,7 @@ offset_right = 267.0
 offset_bottom = -348.0
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.2592937, 0.2592937, 0.2592937, 1)
-theme_override_font_sizes/normal_font_size = 76
+theme_override_font_sizes/normal_font_size = 70
 bbcode_enabled = true
 text = "AFFIX"
 scroll_active = false
@@ -410,7 +412,7 @@ offset_right = 351.0
 offset_bottom = -2.25
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.2592937, 0.2592937, 0.2592937, 1)
-theme_override_font_sizes/normal_font_size = 76
+theme_override_font_sizes/normal_font_size = 70
 bbcode_enabled = true
 text = "AFFIX"
 scroll_active = false
@@ -466,7 +468,8 @@ offset_right = 368.0
 offset_bottom = 228.0
 mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 50
-text = "Description goes here"
+bbcode_enabled = true
+text = "抽到[color=#A557F0] 史诗 [/color]及以上品质物品时，所有订单获得 1 次刷新次数。"
 scroll_active = false
 
 [node name="Description Label_psudo" type="RichTextLabel" parent="Lottery Slot_description_screen/Lottery Slot_description_screen_fill/Description Label"]
@@ -476,6 +479,7 @@ offset_right = -21.0
 offset_bottom = 431.0
 mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
 text = "Description goes here"
 scroll_active = false
 

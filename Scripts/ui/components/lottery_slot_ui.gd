@@ -551,7 +551,7 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 	# 更新奖池名称
 	if target_pool_name and has_item_type:
 		var item_type = pool.item_type if "item_type" in pool else pool.get("item_type")
-		target_pool_name.text = Constants.type_to_display_name(item_type) + "池"
+		target_pool_name.text = tr(Constants.type_to_display_name(item_type)) + " " + tr("POOL_SUFFIX")
 		target_pool_name.visible = true
 	
 	# 更新价格 (始终保持可见)

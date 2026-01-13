@@ -92,29 +92,29 @@ func _update_ui_mode_display() -> void:
 	if has_pending:
 		var count = InventorySystem.pending_items.size()
 		if count > 1:
-			submit_mode_label.text = "背包已满！还有 %d 个物品待处理，请替换或丢弃" % count
+			submit_mode_label.text = tr("UI_INVENTORY_FULL_MULTI") % count
 		else:
-			submit_mode_label.text = "背包已满！请点击格子替换或点击右端丢弃"
+			submit_mode_label.text = tr("UI_INVENTORY_FULL_SINGLE")
 		
 		submit_mode_label.add_theme_color_override("font_color", Color.FIREBRICK)
-		submit_mode_button.text = "丢弃新物品"
+		submit_mode_button.text = tr("BTN_DISCARD_NEW")
 		submit_mode_button.disabled = false
-		recycle_mode_button.text = "回收模式"
+		recycle_mode_button.text = tr("BTN_RECYCLE_MODE")
 		recycle_mode_button.disabled = true
 		return
 
 	match mode:
 		Constants.UIMode.NORMAL:
-			submit_mode_label.text = "整理模式"
+			submit_mode_label.text = tr("UI_MODE_NORMAL")
 			submit_mode_label.add_theme_color_override("font_color", Constants.COLOR_TEXT_MAIN)
-			submit_mode_button.text = "提交订单"
+			submit_mode_button.text = tr("BTN_SUBMIT_ORDER")
 			submit_mode_button.disabled = false
-			recycle_mode_button.text = "回收模式"
+			recycle_mode_button.text = tr("BTN_RECYCLE_MODE")
 			recycle_mode_button.disabled = false
 		Constants.UIMode.SUBMIT:
-			submit_mode_label.text = "提交模式：请选择物品并点击订单填充"
+			submit_mode_label.text = tr("UI_MODE_SUBMIT")
 			submit_mode_label.add_theme_color_override("font_color", Constants.COLOR_BORDER_SELECTED)
-			submit_mode_button.text = "确认提交"
+			submit_mode_button.text = tr("BTN_CONFIRM_SUBMIT")
 			submit_mode_button.disabled = true
 			
 			var selected_items: Array[ItemInstance] = []
@@ -133,19 +133,19 @@ func _update_ui_mode_display() -> void:
 						submit_mode_button.disabled = false
 						break
 			
-			recycle_mode_button.text = "取消"
+			recycle_mode_button.text = tr("BTN_CANCEL")
 			recycle_mode_button.disabled = false
 		Constants.UIMode.RECYCLE:
-			submit_mode_label.text = "回收模式：选择物品并点击执行"
+			submit_mode_label.text = tr("UI_MODE_RECYCLE")
 			submit_mode_label.add_theme_color_override("font_color", Constants.COLOR_RECYCLE_ACTION)
-			submit_mode_button.text = "取消"
+			submit_mode_button.text = tr("BTN_CANCEL")
 			submit_mode_button.disabled = false
-			recycle_mode_button.text = "确认回收"
+			recycle_mode_button.text = tr("BTN_CONFIRM_RECYCLE")
 			recycle_mode_button.disabled = false
 		Constants.UIMode.REPLACE:
-			submit_mode_label.text = "以旧换新：请选择置换目标"
+			submit_mode_label.text = tr("UI_MODE_REPLACE")
 			submit_mode_label.add_theme_color_override("font_color", Color.GOLDENROD)
-			submit_mode_button.text = "取消"
+			submit_mode_button.text = tr("BTN_CANCEL")
 			submit_mode_button.disabled = false
 			recycle_mode_button.disabled = true
 
@@ -229,7 +229,7 @@ func _on_order_selection_changed(_index: int) -> void:
 
 
 func _on_gold_changed(val: int) -> void:
-	gold_label.text = "金币: %d" % val
+	gold_label.text = tr("UI_GOLD_DISPLAY") % val
 
 
 func _on_pools_refreshed(pools: Array) -> void:
@@ -378,14 +378,14 @@ func _handle_skill_selection(_payload: Dictionary) -> void:
 		return
 		
 	var dialog = AcceptDialog.new()
-	dialog.title = "解锁新技能"
+	dialog.title = tr("MODAL_SKILL_UNLOCK")
 	add_child(dialog)
 	
 	var v_box = VBoxContainer.new()
 	dialog.add_child(v_box)
 	
 	var label = Label.new()
-	label.text = "请选择一个技能加入你的技能槽："
+	label.text = tr("MODAL_SKILL_SELECT_PROMPT")
 	v_box.add_child(label)
 	
 	var h_box = HBoxContainer.new()
@@ -394,7 +394,7 @@ func _handle_skill_selection(_payload: Dictionary) -> void:
 	for skill in skills:
 		var btn = Button.new()
 		btn.custom_minimum_size = Vector2(150, 100)
-		btn.text = "%s\n\n%s" % [skill.name, skill.description]
+		btn.text = "%s\n\n%s" % [tr(skill.name), tr(skill.description)]
 		btn.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		
 		btn.pressed.connect(func():
@@ -413,12 +413,12 @@ func _handle_skill_selection(_payload: Dictionary) -> void:
 
 
 func _handle_general_confirmation(payload: Dictionary) -> void:
-	var title = payload.get("title", "确认")
+	var title = payload.get("title", tr("MODAL_CONFIRM"))
 	var text = payload.get("text", "")
 	var confirm_callback = payload.get("confirm_callback")
 	var cancel_callback = payload.get("cancel_callback")
-	var confirm_text = payload.get("confirm_text", "确认")
-	var cancel_text = payload.get("cancel_text", "取消")
+	var confirm_text = payload.get("confirm_text", tr("MODAL_CONFIRM"))
+	var cancel_text = payload.get("cancel_text", tr("MODAL_CANCEL"))
 	
 	var dialog = ConfirmationDialog.new()
 	dialog.title = title
@@ -449,8 +449,8 @@ func _handle_precise_selection(payload: Dictionary) -> void:
 	var callback: Callable = payload.get("callback")
 	
 	var dialog = ConfirmationDialog.new()
-	dialog.title = "精准抽奖：二选一"
-	dialog.dialog_text = "请选择一个物品："
+	dialog.title = tr("MODAL_PRECISE_TITLE")
+	dialog.dialog_text = tr("MODAL_PRECISE_PROMPT")
 	add_child(dialog)
 	
 	var h_box = HBoxContainer.new()
@@ -467,7 +467,7 @@ func _handle_precise_selection(payload: Dictionary) -> void:
 		h_box.add_child(btn)
 	
 	dialog.get_ok_button().hide()
-	dialog.get_cancel_button().text = "放弃"
+	dialog.get_cancel_button().text = tr("MODAL_ABANDON")
 	dialog.popup_centered()
 
 
@@ -477,7 +477,7 @@ func _handle_targeted_selection(payload: Dictionary) -> void:
 	var callback: Callable = payload.get("callback")
 	
 	var dialog = AcceptDialog.new()
-	dialog.title = "有的放矢：选择类型"
+	dialog.title = tr("MODAL_TARGETED_TITLE")
 	add_child(dialog)
 	
 	var scroll = ScrollContainer.new()
@@ -489,7 +489,7 @@ func _handle_targeted_selection(payload: Dictionary) -> void:
 	
 	for item_data in items:
 		var btn = Button.new()
-		btn.text = item_data.name
+		btn.text = tr(item_data.name)
 		btn.pressed.connect(func():
 			if callback.is_valid():
 				callback.call(item_data)

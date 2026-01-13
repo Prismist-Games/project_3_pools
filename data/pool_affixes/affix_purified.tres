@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1")
 id = &"purified"
-name = "提纯的"
-description = "保底产出稀有及以上。"
+name = "AFFIX_PURIFIED"
+description = "AFFIX_PURIFIED_DESC"
 base_gold_cost = 6
 effects = Array[ExtResource("1_v0gia")]([ExtResource("2")])

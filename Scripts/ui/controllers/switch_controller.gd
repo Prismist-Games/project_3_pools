@@ -25,6 +25,12 @@ func _init_switches() -> void:
 			if input.gui_input.is_connected(_on_submit_switch_input):
 				input.gui_input.disconnect(_on_submit_switch_input)
 			input.gui_input.connect(_on_submit_switch_input)
+		
+		var off_label = submit_switch.find_child("Switch_off_label", true)
+		if off_label: off_label.text = "SWITCH_SUBMIT"
+		
+		var on_label = submit_switch.find_child("Switch_on_label", true)
+		if on_label: on_label.text = "SWITCH_CONFIRM"
 
 	if recycle_switch:
 		var input = recycle_switch.get_node("Input Area")
@@ -43,6 +49,9 @@ func _init_switches() -> void:
 
 		var label = recycle_switch.find_child("Switch_on_label", true)
 		if label: label.text = "0"
+		
+		var off_label = recycle_switch.find_child("Switch_off_label", true)
+		if off_label: off_label.text = "SWITCH_RECYCLE"
 
 func update_switch_visuals(mode: Constants.UIMode) -> void:
 	update_submit_visuals(mode == Constants.UIMode.SUBMIT)

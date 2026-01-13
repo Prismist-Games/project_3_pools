@@ -31,6 +31,8 @@ extends Control
 @onready var rabbit_dialog_box: Sprite2D = find_child("Dialog Box", true)
 @onready var rabbit_dialog_label: RichTextLabel = find_child("Dialog Label", true)
 
+@onready var language_switch: Button = get_node_or_null("Language Switch")
+
 # --- 子控制器 ---
 const QuestIconHighlighterScript = preload("res://scripts/ui/controllers/quest_icon_highlighter.gd")
 
@@ -97,6 +99,28 @@ func _ready() -> void:
 	
 	# 4. 初始刷新
 	_refresh_all()
+	
+	if language_switch:
+		language_switch.pressed.connect(_on_language_switch_pressed)
+
+func _on_language_switch_pressed() -> void:
+	var current_locale = TranslationServer.get_locale()
+	var new_locale = "en" if current_locale.begins_with("zh") else "zh"
+	TranslationServer.set_locale(new_locale)
+	
+	# Godot 会自动发出 NOTIFICATION_TRANSLATION_CHANGED
+	# 我们在 _notification 中处理强制刷新
+	print("[Game2DUI] 语言切换至: %s" % new_locale)
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSLATION_CHANGED:
+		# 强制刷新所有 UI 文本
+		if is_node_ready():
+			_refresh_all()
+			
+			# 如果当前有兔子对话，也需要刷新
+			if rabbit_dialog_controller and rabbit_dialog_controller.is_showing():
+				rabbit_dialog_controller.update_dialog_text(rabbit_dialog_controller.get_current_type())
 
 func _init_controllers() -> void:
 	inventory_controller = InventoryController.new()

@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1")
 id = &"hardened"
-name = "硬化的"
-description = "稀有度概率提升，但物品绝育 (不可合成)。"
+name = "AFFIX_HARDENED"
+description = "AFFIX_HARDENED_DESC"
 base_gold_cost = 7
 effects = Array[ExtResource("1_v0gia")]([ExtResource("2")])

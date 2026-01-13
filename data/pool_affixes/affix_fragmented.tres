@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1")
 id = &"fragmented"
-name = "稀碎的"
-description = "产出 3 个物品，但必定是普通。"
+name = "AFFIX_FRAGMENTED"
+description = "AFFIX_FRAGMENTED_DESC"
 base_gold_cost = 3
 effects = Array[ExtResource("1_v0gia")]([ExtResource("2")])
