@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cwtg2r4anpk68"
-path="res://.godot/imported/antique_magatama.PNG-d3cce340d822552ecddad9487ebaf944.ctex"
+path.s3tc="res://.godot/imported/antique_magatama.PNG-d3cce340d822552ecddad9487ebaf944.s3tc.ctex"
+path.etc2="res://.godot/imported/antique_magatama.PNG-d3cce340d822552ecddad9487ebaf944.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/icons/items/antique_magatama.PNG"
-dest_files=["res://.godot/imported/antique_magatama.PNG-d3cce340d822552ecddad9487ebaf944.ctex"]
+dest_files=["res://.godot/imported/antique_magatama.PNG-d3cce340d822552ecddad9487ebaf944.s3tc.ctex", "res://.godot/imported/antique_magatama.PNG-d3cce340d822552ecddad9487ebaf944.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

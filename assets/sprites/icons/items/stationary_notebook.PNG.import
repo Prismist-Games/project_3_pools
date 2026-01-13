@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dfhquxc8s1dgk"
-path="res://.godot/imported/stationary_notebook.PNG-b95849c72ac8a0d9861439ecf846935f.ctex"
+path.s3tc="res://.godot/imported/stationary_notebook.PNG-b95849c72ac8a0d9861439ecf846935f.s3tc.ctex"
+path.etc2="res://.godot/imported/stationary_notebook.PNG-b95849c72ac8a0d9861439ecf846935f.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/icons/items/stationary_notebook.PNG"
-dest_files=["res://.godot/imported/stationary_notebook.PNG-b95849c72ac8a0d9861439ecf846935f.ctex"]
+dest_files=["res://.godot/imported/stationary_notebook.PNG-b95849c72ac8a0d9861439ecf846935f.s3tc.ctex", "res://.godot/imported/stationary_notebook.PNG-b95849c72ac8a0d9861439ecf846935f.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

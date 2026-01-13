@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dp2k5ss5oefjc"
-path="res://.godot/imported/the_machine_slot_outline.png-0ecda16e6383d156a888b01ad8229e44.ctex"
+path.s3tc="res://.godot/imported/the_machine_slot_outline.png-0ecda16e6383d156a888b01ad8229e44.s3tc.ctex"
+path.etc2="res://.godot/imported/the_machine_slot_outline.png-0ecda16e6383d156a888b01ad8229e44.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/the_machine/the_machine_slot_outline.png"
-dest_files=["res://.godot/imported/the_machine_slot_outline.png-0ecda16e6383d156a888b01ad8229e44.ctex"]
+dest_files=["res://.godot/imported/the_machine_slot_outline.png-0ecda16e6383d156a888b01ad8229e44.s3tc.ctex", "res://.godot/imported/the_machine_slot_outline.png-0ecda16e6383d156a888b01ad8229e44.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

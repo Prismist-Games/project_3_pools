@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://r7gdoc6t0w76"
-path="res://.godot/imported/medicine_pill.PNG-947290fa9073716208c683397126c039.ctex"
+path.s3tc="res://.godot/imported/medicine_pill.PNG-947290fa9073716208c683397126c039.s3tc.ctex"
+path.etc2="res://.godot/imported/medicine_pill.PNG-947290fa9073716208c683397126c039.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/icons/items/medicine_pill.PNG"
-dest_files=["res://.godot/imported/medicine_pill.PNG-947290fa9073716208c683397126c039.ctex"]
+dest_files=["res://.godot/imported/medicine_pill.PNG-947290fa9073716208c683397126c039.s3tc.ctex", "res://.godot/imported/medicine_pill.PNG-947290fa9073716208c683397126c039.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dj5be2vipyhi4"
-path="res://.godot/imported/the_rabbit_head_left.png-0f771a893c0fd81c60c007611beec6b8.ctex"
+path.s3tc="res://.godot/imported/the_rabbit_head_left.png-0f771a893c0fd81c60c007611beec6b8.s3tc.ctex"
+path.etc2="res://.godot/imported/the_rabbit_head_left.png-0f771a893c0fd81c60c007611beec6b8.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/the_rabbit/the_rabbit_head_left.png"
-dest_files=["res://.godot/imported/the_rabbit_head_left.png-0f771a893c0fd81c60c007611beec6b8.ctex"]
+dest_files=["res://.godot/imported/the_rabbit_head_left.png-0f771a893c0fd81c60c007611beec6b8.s3tc.ctex", "res://.godot/imported/the_rabbit_head_left.png-0f771a893c0fd81c60c007611beec6b8.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

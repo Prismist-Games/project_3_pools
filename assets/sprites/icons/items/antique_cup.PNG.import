@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://51nvb4xvrn1c"
-path="res://.godot/imported/antique_cup.PNG-aeeb5ff82ee3a4f32cc14051d7a1683c.ctex"
+path.s3tc="res://.godot/imported/antique_cup.PNG-aeeb5ff82ee3a4f32cc14051d7a1683c.s3tc.ctex"
+path.etc2="res://.godot/imported/antique_cup.PNG-aeeb5ff82ee3a4f32cc14051d7a1683c.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/icons/items/antique_cup.PNG"
-dest_files=["res://.godot/imported/antique_cup.PNG-aeeb5ff82ee3a4f32cc14051d7a1683c.ctex"]
+dest_files=["res://.godot/imported/antique_cup.PNG-aeeb5ff82ee3a4f32cc14051d7a1683c.s3tc.ctex", "res://.godot/imported/antique_cup.PNG-aeeb5ff82ee3a4f32cc14051d7a1683c.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

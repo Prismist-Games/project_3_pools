@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cjvwo40l2innf"
-path="res://.godot/imported/the_rabbit_right_eyeball_fill.png-e4218f44af210169f2437db90e72f614.ctex"
+path.s3tc="res://.godot/imported/the_rabbit_right_eyeball_fill.png-e4218f44af210169f2437db90e72f614.s3tc.ctex"
+path.etc2="res://.godot/imported/the_rabbit_right_eyeball_fill.png-e4218f44af210169f2437db90e72f614.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/the_rabbit/the_rabbit_right_eyeball_fill.png"
-dest_files=["res://.godot/imported/the_rabbit_right_eyeball_fill.png-e4218f44af210169f2437db90e72f614.ctex"]
+dest_files=["res://.godot/imported/the_rabbit_right_eyeball_fill.png-e4218f44af210169f2437db90e72f614.s3tc.ctex", "res://.godot/imported/the_rabbit_right_eyeball_fill.png-e4218f44af210169f2437db90e72f614.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

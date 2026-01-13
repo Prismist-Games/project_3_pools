@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cv32cj6ieg6h4"
-path="res://.godot/imported/背景-2.png-d78d8d9d09ca25bca45244d80cf7fea9.ctex"
+path.s3tc="res://.godot/imported/背景-2.png-d78d8d9d09ca25bca45244d80cf7fea9.s3tc.ctex"
+path.etc2="res://.godot/imported/背景-2.png-d78d8d9d09ca25bca45244d80cf7fea9.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/background/背景-2.png"
-dest_files=["res://.godot/imported/背景-2.png-d78d8d9d09ca25bca45244d80cf7fea9.ctex"]
+dest_files=["res://.godot/imported/背景-2.png-d78d8d9d09ca25bca45244d80cf7fea9.s3tc.ctex", "res://.godot/imported/背景-2.png-d78d8d9d09ca25bca45244d80cf7fea9.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

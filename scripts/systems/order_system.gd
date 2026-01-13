@@ -179,6 +179,10 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 	var target_requirement_count: int = rng.randi_range(UnlockManager.order_item_req_min, UnlockManager.order_item_req_max)
 	
 	var normal_items = GameManager.get_all_normal_items()
+	if normal_items.is_empty():
+		push_error("OrderSystem: No normal items found! Cannot generate order.")
+		return order
+
 	var total_rarity_score: int = 0
 	
 	# 生成指定数量的需求项
@@ -250,6 +254,10 @@ func _generate_mainline_order() -> OrderData:
 	var _rng = GameManager.rng
 	
 	var normal_items = GameManager.get_all_normal_items()
+	if normal_items.is_empty():
+		push_error("OrderSystem: No items found for mainline order!")
+		return order
+
 	# 主线需求：2个随机史诗品质的物品
 	for i in range(2):
 		var item_data = normal_items.pick_random()

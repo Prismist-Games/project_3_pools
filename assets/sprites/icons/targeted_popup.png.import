@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c74gwjx5fw1dg"
-path="res://.godot/imported/targeted_popup.png-d6740c2b58576b0f00e5db666c61300b.ctex"
+path.s3tc="res://.godot/imported/targeted_popup.png-d6740c2b58576b0f00e5db666c61300b.s3tc.ctex"
+path.etc2="res://.godot/imported/targeted_popup.png-d6740c2b58576b0f00e5db666c61300b.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/icons/targeted_popup.png"
-dest_files=["res://.godot/imported/targeted_popup.png-d6740c2b58576b0f00e5db666c61300b.ctex"]
+dest_files=["res://.godot/imported/targeted_popup.png-d6740c2b58576b0f00e5db666c61300b.s3tc.ctex", "res://.godot/imported/targeted_popup.png-d6740c2b58576b0f00e5db666c61300b.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

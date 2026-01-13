@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dy6qxp86y1vw3"
-path="res://.godot/imported/the_rabbit_left_ear_inner.png-d02b77da50edc64a7d5ff9769b8041be.ctex"
+path.s3tc="res://.godot/imported/the_rabbit_left_ear_inner.png-d02b77da50edc64a7d5ff9769b8041be.s3tc.ctex"
+path.etc2="res://.godot/imported/the_rabbit_left_ear_inner.png-d02b77da50edc64a7d5ff9769b8041be.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/the_rabbit/the_rabbit_left_ear_inner.png"
-dest_files=["res://.godot/imported/the_rabbit_left_ear_inner.png-d02b77da50edc64a7d5ff9769b8041be.ctex"]
+dest_files=["res://.godot/imported/the_rabbit_left_ear_inner.png-d02b77da50edc64a7d5ff9769b8041be.s3tc.ctex", "res://.godot/imported/the_rabbit_left_ear_inner.png-d02b77da50edc64a7d5ff9769b8041be.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

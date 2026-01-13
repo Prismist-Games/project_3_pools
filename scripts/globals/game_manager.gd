@@ -119,10 +119,15 @@ func _load_all_from_dir(path: String, _type_name: String) -> Array:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
-			if not dir.current_is_dir() and file_name.ends_with(".tres"):
-				var full_path = path.path_join(file_name)
-				var res = load(full_path)
-				if res:
-					result.append(res)
+			if not dir.current_is_dir():
+				# Export fix: Handle .remap files in exported projects
+				if file_name.ends_with(".remap"):
+					file_name = file_name.trim_suffix(".remap")
+				
+				if file_name.ends_with(".tres"):
+					var full_path = path.path_join(file_name)
+					var res = load(full_path)
+					if res:
+						result.append(res)
 			file_name = dir.get_next()
 	return result

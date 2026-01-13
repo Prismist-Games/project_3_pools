@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://r1t455tosudp"
-path="res://.godot/imported/the_rabbit_left_eyeball_outline.png-94e45c0c43d47ee7e5c4f9590c4bd32e.ctex"
+path.s3tc="res://.godot/imported/the_rabbit_left_eyeball_outline.png-94e45c0c43d47ee7e5c4f9590c4bd32e.s3tc.ctex"
+path.etc2="res://.godot/imported/the_rabbit_left_eyeball_outline.png-94e45c0c43d47ee7e5c4f9590c4bd32e.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/the_rabbit/the_rabbit_left_eyeball_outline.png"
-dest_files=["res://.godot/imported/the_rabbit_left_eyeball_outline.png-94e45c0c43d47ee7e5c4f9590c4bd32e.ctex"]
+dest_files=["res://.godot/imported/the_rabbit_left_eyeball_outline.png-94e45c0c43d47ee7e5c4f9590c4bd32e.s3tc.ctex", "res://.godot/imported/the_rabbit_left_eyeball_outline.png-94e45c0c43d47ee7e5c4f9590c4bd32e.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
