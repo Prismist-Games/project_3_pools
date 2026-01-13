@@ -1,112 +1,111 @@
-[gd_scene load_steps=130 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=129 format=3]
 
-[ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
-[ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
-[ext_resource type="PackedScene" uid="uid://bf2agyjeyvvp6" path="res://scenes/background_animated.tscn" id="2_u8s40"]
-[ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
-[ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="3_4wmcb"]
-[ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="3_fiado"]
-[ext_resource type="Texture2D" uid="uid://b4qoptplb61wr" path="res://assets/sprites/the_machine/the_machine_display_outline.png" id="4_6b2j4"]
-[ext_resource type="Texture2D" uid="uid://c4wpgax5wfhpa" path="res://assets/sprites/the_machine/the_machine_legacy_fill.png" id="5_0dgko"]
-[ext_resource type="Texture2D" uid="uid://usox228a20t7" path="res://assets/sprites/the_machine/the_machine_legacy_outline.png" id="6_2v31b"]
-[ext_resource type="Texture2D" uid="uid://58c1gxlj405r" path="res://assets/sprites/the_machine/the_machine_slot_mask.png" id="7_d4ujc"]
-[ext_resource type="Texture2D" uid="uid://dp2k5ss5oefjc" path="res://assets/sprites/the_machine/the_machine_slot_outline.png" id="8_xqbja"]
-[ext_resource type="Texture2D" uid="uid://b6xu5iewxjacd" path="res://assets/sprites/icons/skills/偷工減料.png" id="9_8hb1a"]
-[ext_resource type="Texture2D" uid="uid://2sp6p7grlidd" path="res://assets/sprites/the_machine/the_machine_slot_outline_front.png" id="9_fvhsr"]
-[ext_resource type="Texture2D" uid="uid://cemheosuktfhj" path="res://assets/sprites/item_slots/基地-5.png" id="11_bobrt"]
-[ext_resource type="Texture2D" uid="uid://7s7gx5sytssb" path="res://assets/sprites/item_slots/基地-6 2.png" id="11_fkxe6"]
-[ext_resource type="Texture2D" uid="uid://b5gnskrlq8d81" path="res://assets/sprites/the_machine/the_machine_top.png" id="11_h0822"]
-[ext_resource type="Texture2D" uid="uid://balbu2vdssbb4" path="res://assets/sprites/the_machine/the_machine_top_outline_behind.png" id="12_lql4v"]
-[ext_resource type="Texture2D" uid="uid://x0x66srb2i00" path="res://assets/sprites/the_machine/the_machine_slot_outline_behind.png" id="13_7bc83"]
-[ext_resource type="Texture2D" uid="uid://bok47535elxgj" path="res://assets/sprites/the_machine_switch/基地-1.png" id="14_6b2j4"]
-[ext_resource type="Texture2D" uid="uid://ct1fu4kglmejc" path="res://assets/sprites/the_machine/the_machine_top_front.png" id="14_8sogx"]
-[ext_resource type="Texture2D" uid="uid://oxm0lvuajhqy" path="res://assets/sprites/item_slots/基地-1.png" id="14_o2140"]
-[ext_resource type="Texture2D" uid="uid://cmkaptn0k1n1x" path="res://assets/sprites/the_machine_switch/基地-4.png" id="15_0dgko"]
-[ext_resource type="Texture2D" uid="uid://cglvasc20q3mu" path="res://assets/sprites/item_slots/基地-2.png" id="15_aiivw"]
-[ext_resource type="Texture2D" uid="uid://dw0b4i78tkpru" path="res://assets/sprites/the_machine_switch/基地-7.png" id="15_fvhsr"]
-[ext_resource type="Texture2D" uid="uid://dwq0bu4hxfo5j" path="res://assets/sprites/the_machine/the_machine_side.png" id="15_phh48"]
-[ext_resource type="Texture2D" uid="uid://bfeh4pui1k6k1" path="res://assets/sprites/the_machine_switch/基地-3.png" id="16_2v31b"]
-[ext_resource type="Texture2D" uid="uid://d30sfg17qmuxb" path="res://assets/sprites/the_machine/the_machine_side_outline.png" id="16_aagg1"]
-[ext_resource type="Texture2D" uid="uid://coaai2i4vi1sh" path="res://assets/sprites/item_slots/基地-3.png" id="16_cu6b6"]
-[ext_resource type="Texture2D" uid="uid://bugs5jj4i014q" path="res://assets/sprites/the_machine_switch/基地-6.png" id="17_d4ujc"]
-[ext_resource type="Texture2D" uid="uid://caieb4p7g0f64" path="res://assets/sprites/item_slots/基地-4.png" id="17_ivepa"]
-[ext_resource type="Texture2D" uid="uid://dscqm4kp5fmva" path="res://assets/sprites/the_machine/the_machine_front.png" id="17_tmso7"]
-[ext_resource type="Texture2D" uid="uid://w68mqbo8q5e2" path="res://assets/sprites/the_machine/the_machine_front_outline.png" id="18_2kwm8"]
-[ext_resource type="Texture2D" uid="uid://dpqibsn4l8hxe" path="res://assets/sprites/the_machine_switch/Recycle_background_shade.png" id="18_8y6ih"]
-[ext_resource type="Texture2D" uid="uid://dlywfo3j61bw8" path="res://assets/sprites/item_slots/基地-6.png" id="18_ivepa"]
-[ext_resource type="Texture2D" uid="uid://lw48pfhb1slm" path="res://assets/sprites/the_machine_switch/Recycle_background_outline.png" id="18_u8s40"]
-[ext_resource type="Texture2D" uid="uid://tyc42trcd2xq" path="res://assets/sprites/the_machine_switch/基地-5.png" id="18_xqbja"]
-[ext_resource type="Texture2D" uid="uid://bb0jex82xogr2" path="res://assets/sprites/item_slots/基地-8.png" id="19_sojbq"]
-[ext_resource type="Script" uid="uid://cp4b85c6kcgdl" path="res://scripts/ui/utils/switch_background_follow.gd" id="19_ue141"]
-[ext_resource type="Texture2D" uid="uid://c1rw0mhgt1s1i" path="res://assets/sprites/the_machine/the_machine_display_fill.png" id="21_ue141"]
-[ext_resource type="Texture2D" uid="uid://bclpcjghycqdb" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="22_017ef"]
-[ext_resource type="Texture2D" uid="uid://d3xb6e3385m7k" path="res://assets/sprites/icons/coupon.png" id="25_ccvlu"]
-[ext_resource type="Texture2D" uid="uid://fcpknfhqe6td" path="res://assets/sprites/the_machine/the_machine_star.PNG" id="25_ue141"]
-[ext_resource type="Texture2D" uid="uid://bk6w30hxghp51" path="res://assets/sprites/quest_slots/基地-7.png" id="25_y6c7h"]
-[ext_resource type="Texture2D" uid="uid://b6sygmv0sgt3g" path="res://assets/sprites/quest_slots/基地-3.png" id="26_5jtl3"]
-[ext_resource type="Texture2D" uid="uid://b83tw66bk1v5s" path="res://assets/sprites/quest_slots/基地-6.png" id="26_a718j"]
-[ext_resource type="Texture2D" uid="uid://beldg0xqocq2k" path="res://assets/sprites/quest_slots/基地-5.png" id="27_0phgb"]
-[ext_resource type="Texture2D" uid="uid://cppyh38s818ov" path="res://assets/sprites/quest_slots/基地-2.png" id="27_lyel0"]
-[ext_resource type="Texture2D" uid="uid://fb6h3kogm80w" path="res://assets/sprites/quest_slots/基地-4.png" id="28_mfdr7"]
-[ext_resource type="Texture2D" uid="uid://w7eym4f1436o" path="res://assets/sprites/quest_slots/基地-1.png" id="29_xpfcn"]
-[ext_resource type="Texture2D" uid="uid://bkthx68vhcd00" path="res://assets/sprites/quest_slots/基地-10.png" id="30_iq50s"]
-[ext_resource type="Texture2D" uid="uid://cyixck513ac1o" path="res://assets/sprites/quest_slots/基地-9.png" id="33_0ehwc"]
-[ext_resource type="Texture2D" uid="uid://ddymclsitprmc" path="res://assets/sprites/quest_slots/基地-8.png" id="34_oeaov"]
-[ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="37_50t6p"]
-[ext_resource type="PackedScene" uid="uid://basts7bbr2vav" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
-[ext_resource type="Texture2D" uid="uid://bgojvj4bx4ihm" path="res://assets/sprites/the_rabbit/eye_shape_1.png" id="50_50t6p"]
-[ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
-[ext_resource type="Texture2D" uid="uid://dj5be2vipyhi4" path="res://assets/sprites/the_rabbit/the_rabbit_head_left.png" id="62_enqmm"]
-[ext_resource type="Texture2D" uid="uid://b067gbir0lby" path="res://assets/sprites/the_rabbit/the_rabbit_head_mid.png" id="63_6sdua"]
-[ext_resource type="Texture2D" uid="uid://hoc6uaci42sv" path="res://assets/sprites/the_rabbit/the_rabbit_head_right.png" id="64_4tp6t"]
-[ext_resource type="Texture2D" uid="uid://bjlpf6bxe6kb1" path="res://assets/sprites/the_rabbit/the_rabbit_wand_stick.png" id="64_enqmm"]
-[ext_resource type="Texture2D" uid="uid://bwjokbfgqmqme" path="res://assets/sprites/the_rabbit/the_rabbit_wand_head.png" id="65_6sdua"]
-[ext_resource type="Texture2D" uid="uid://ciklekvdp5hak" path="res://assets/sprites/the_rabbit/the_rabbit_left_arm.png" id="65_p2bqf"]
-[ext_resource type="Texture2D" uid="uid://0fvod413bhf0" path="res://assets/sprites/the_rabbit/the_rabbit_left_ear.png" id="66_jufyi"]
-[ext_resource type="Texture2D" uid="uid://dy6qxp86y1vw3" path="res://assets/sprites/the_rabbit/the_rabbit_left_ear_inner.png" id="67_8ocj1"]
-[ext_resource type="Texture2D" uid="uid://b3bino57bjulh" path="res://assets/sprites/the_rabbit/the_rabbit_left_eyeball_fill.png" id="68_jdak2"]
-[ext_resource type="Texture2D" uid="uid://defnrkt223vrw" path="res://assets/sprites/the_rabbit/the_rabbit_left_eye_fill.png" id="70_u4yck"]
-[ext_resource type="Texture2D" uid="uid://dgwh6jt3m78qv" path="res://assets/sprites/the_rabbit/the_rabbit_left_fingers.png" id="72_017ef"]
-[ext_resource type="Texture2D" uid="uid://cgiluolu8nixl" path="res://assets/sprites/the_rabbit/the_rabbit_left_foot.png" id="73_u8s40"]
-[ext_resource type="Texture2D" uid="uid://pu4fbtq6iil2" path="res://assets/sprites/the_rabbit/the_rabbit_left_leg.png" id="74_8y6ih"]
-[ext_resource type="Texture2D" uid="uid://bsdf5iwmcegpx" path="res://assets/sprites/the_rabbit/the_rabbit_left_palm.png" id="75_ccvlu"]
-[ext_resource type="Texture2D" uid="uid://deairpal3cmlr" path="res://assets/sprites/the_rabbit/the_rabbit_left_thumb.png" id="76_50t6p"]
-[ext_resource type="Texture2D" uid="uid://d2ab00eoch5f4" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_all_stick.png" id="76_jdak2"]
-[ext_resource type="Texture2D" uid="uid://bsrjw1go3ivse" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_all_handle.png" id="77_6kw3k"]
-[ext_resource type="Texture2D" uid="uid://b7q2v5u4k6akt" path="res://assets/sprites/the_rabbit/the_rabbit_mustache_left.png" id="77_ivmbw"]
-[ext_resource type="Texture2D" uid="uid://cgehbcf1mmosn" path="res://assets/sprites/the_rabbit/the_rabbit_mustache_right.png" id="78_tiwwg"]
-[ext_resource type="Texture2D" uid="uid://dpf1mwji6h4d" path="res://assets/sprites/the_rabbit/the_rabbit_nose.png" id="79_2a6p6"]
-[ext_resource type="Texture2D" uid="uid://ce882nggx5db7" path="res://assets/sprites/the_rabbit/the_rabbit_right_arm.png" id="80_caxmy"]
-[ext_resource type="Texture2D" uid="uid://djo0fcuw1ico0" path="res://assets/sprites/light_1.png" id="81_6sdua"]
-[ext_resource type="Shader" uid="uid://cjhdeyga11esx" path="res://assets/shaders/eye_procedural.gdshader" id="81_017ef"]
-[ext_resource type="Texture2D" uid="uid://du7f02gcpaycx" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear.png" id="81_65xho"]
-[ext_resource type="Texture2D" uid="uid://c5i1aenksh4av" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear_inner.png" id="82_00smp"]
-[ext_resource type="Texture2D" uid="uid://cuq30wijqs4vm" path="res://assets/sprites/light_2.png" id="82_4tp6t"]
-[ext_resource type="Texture2D" uid="uid://cjvwo40l2innf" path="res://assets/sprites/the_rabbit/the_rabbit_right_eyeball_fill.png" id="83_jptrp"]
-[ext_resource type="Texture2D" uid="uid://c1v0nvxbrf6c" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_fill.png" id="85_q6adl"]
-[ext_resource type="Texture2D" uid="uid://btfsaxb523m4l" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_idle.png" id="86_8ocj1"]
-[ext_resource type="Texture2D" uid="uid://ca5ud3ae3x378" path="res://assets/sprites/the_rabbit/the_rabbit_right_foot.png" id="87_fs1h7"]
-[ext_resource type="Texture2D" uid="uid://ccfw8sduhx8rm" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_pressed.png" id="87_jdak2"]
-[ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="87_u8s40"]
-[ext_resource type="Texture2D" uid="uid://dslsns6p86ffx" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_hover.png" id="88_6kw3k"]
-[ext_resource type="Texture2D" uid="uid://dokmgcwoitk6l" path="res://assets/sprites/the_rabbit/the_rabbit_right_hand.png" id="88_yytn1"]
-[ext_resource type="Texture2D" uid="uid://b0qmpkep8t4hu" path="res://assets/sprites/the_rabbit/the_rabbit_right_leg.png" id="89_g7jj0"]
-[ext_resource type="Texture2D" uid="uid://dpf5a45rbg06a" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_disabled.png" id="89_u4yck"]
-[ext_resource type="Texture2D" uid="uid://blfi1cynn45pb" path="res://assets/sprites/the_rabbit/the_rabbit_wand_face.png" id="91_v12rw"]
-[ext_resource type="Texture2D" uid="uid://bta1pq0iskiiy" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_1.png" id="92_ishf8"]
-[ext_resource type="Texture2D" uid="uid://ba8n4bffxpxgp" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_2.png" id="93_yhupc"]
-[ext_resource type="Texture2D" uid="uid://4ds5uce4fmqb" path="res://assets/sprites/icons/refresh.png" id="94_017ef"]
-[ext_resource type="Texture2D" uid="uid://ctkkq7iwtmubj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_3.png" id="94_i65o3"]
-[ext_resource type="Texture2D" uid="uid://dfn54hrs485jj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_4.png" id="95_bttk6"]
-[ext_resource type="Texture2D" uid="uid://da0ig7cexq40g" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_5.png" id="96_jf2x3"]
-[ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="99_anim"]
-[ext_resource type="Texture2D" uid="uid://wu4k3jwrgfaj" path="res://assets/sprites/frames/dialog.png" id="101_6kw3k"]
-[ext_resource type="Texture2D" uid="uid://csk65f0qvtg84" path="res://assets/sprites/frames/5_choose_1.png" id="101_8ocj1"]
-[ext_resource type="Texture2D" uid="uid://51nvb4xvrn1c" path="res://assets/sprites/icons/items/antique_cup.png" id="102_jdak2"]
-[ext_resource type="Texture2D" uid="uid://ue7e5frhr0kh" path="res://assets/sprites/frames/mini.png" id="102_u4yck"]
-[ext_resource type="Texture2D" uid="uid://djaip0chmnewr" path="res://assets/sprites/frames/popup.png" id="103_otpb1"]
-[ext_resource type="Script" uid="uid://exqnykh1n5lj" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
-[ext_resource type="Script" uid="uid://con7nyakgbhan" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
+[ext_resource type="Script" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
+[ext_resource type="Script" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
+[ext_resource type="PackedScene" path="res://scenes/background_animated.tscn" id="2_u8s40"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ground.png" id="2_vave4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/circle.png" id="3_4wmcb"]
+[ext_resource type="Texture2D" path="res://assets/sprites/icons/items/entertainment_top.png" id="3_fiado"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_display_outline.png" id="4_6b2j4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_legacy_fill.png" id="5_0dgko"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_legacy_outline.png" id="6_2v31b"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_slot_mask.png" id="7_d4ujc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_slot_outline.png" id="8_xqbja"]
+[ext_resource type="Texture2D" path="res://assets/sprites/icons/skills/偷工減料.png" id="9_8hb1a"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_slot_outline_front.png" id="9_fvhsr"]
+[ext_resource type="Texture2D" path="res://assets/sprites/item_slots/基地-5.png" id="11_bobrt"]
+[ext_resource type="Texture2D" path="res://assets/sprites/item_slots/基地-6 2.png" id="11_fkxe6"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_top.png" id="11_h0822"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_top_outline_behind.png" id="12_lql4v"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_slot_outline_behind.png" id="13_7bc83"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine_switch/基地-1.png" id="14_6b2j4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_top_front.png" id="14_8sogx"]
+[ext_resource type="Texture2D" path="res://assets/sprites/item_slots/基地-1.png" id="14_o2140"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine_switch/基地-4.png" id="15_0dgko"]
+[ext_resource type="Texture2D" path="res://assets/sprites/item_slots/基地-2.png" id="15_aiivw"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine_switch/基地-7.png" id="15_fvhsr"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_side.png" id="15_phh48"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine_switch/基地-3.png" id="16_2v31b"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_side_outline.png" id="16_aagg1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/item_slots/基地-3.png" id="16_cu6b6"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine_switch/基地-6.png" id="17_d4ujc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/item_slots/基地-4.png" id="17_ivepa"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_front.png" id="17_tmso7"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_front_outline.png" id="18_2kwm8"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine_switch/Recycle_background_shade.png" id="18_8y6ih"]
+[ext_resource type="Texture2D" path="res://assets/sprites/item_slots/基地-6.png" id="18_ivepa"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine_switch/Recycle_background_outline.png" id="18_u8s40"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine_switch/基地-5.png" id="18_xqbja"]
+[ext_resource type="Texture2D" path="res://assets/sprites/item_slots/基地-8.png" id="19_sojbq"]
+[ext_resource type="Script" path="res://scripts/ui/utils/switch_background_follow.gd" id="19_ue141"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_display_fill.png" id="21_ue141"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="22_017ef"]
+[ext_resource type="Texture2D" path="res://assets/sprites/icons/coupon.png" id="25_ccvlu"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_machine/the_machine_star.PNG" id="25_ue141"]
+[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-7.png" id="25_y6c7h"]
+[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-3.png" id="26_5jtl3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-6.png" id="26_a718j"]
+[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-5.png" id="27_0phgb"]
+[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-2.png" id="27_lyel0"]
+[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-4.png" id="28_mfdr7"]
+[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-1.png" id="29_xpfcn"]
+[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-10.png" id="30_iq50s"]
+[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-9.png" id="33_0ehwc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/quest_slots/基地-8.png" id="34_oeaov"]
+[ext_resource type="Texture2D" path="res://assets/sprites/icons/cross.png" id="37_50t6p"]
+[ext_resource type="PackedScene" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
+[ext_resource type="Script" path="res://scripts/ui/components/lottery_slot_ui.gd" id="48_017ef"]
+[ext_resource type="Texture2D" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_head_left.png" id="62_enqmm"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_head_mid.png" id="63_6sdua"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_head_right.png" id="64_4tp6t"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_wand_stick.png" id="64_enqmm"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_wand_head.png" id="65_6sdua"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_arm.png" id="65_p2bqf"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_ear.png" id="66_jufyi"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_ear_inner.png" id="67_8ocj1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_eye_fill.png" id="70_u4yck"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_fingers.png" id="72_017ef"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_foot.png" id="73_u8s40"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_leg.png" id="74_8y6ih"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_palm.png" id="75_ccvlu"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_left_thumb.png" id="76_50t6p"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_all_stick.png" id="76_jdak2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_all_handle.png" id="77_6kw3k"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_mustache_left.png" id="77_ivmbw"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_mustache_right.png" id="78_tiwwg"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_nose.png" id="79_2a6p6"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_arm.png" id="80_caxmy"]
+[ext_resource type="Texture2D" path="res://assets/sprites/light_1.png" id="81_6sdua"]
+[ext_resource type="Shader" path="res://assets/shaders/eye_procedural.gdshader" id="81_017ef"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear.png" id="81_65xho"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear_inner.png" id="82_00smp"]
+[ext_resource type="Texture2D" path="res://assets/sprites/light_2.png" id="82_4tp6t"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_eyeball_fill.png" id="83_jptrp"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_fill.png" id="85_q6adl"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_idle.png" id="86_8ocj1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_foot.png" id="87_fs1h7"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_pressed.png" id="87_jdak2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/icons/tick_green.png" id="87_u8s40"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_hover.png" id="88_6kw3k"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_hand.png" id="88_yytn1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_right_leg.png" id="89_g7jj0"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_disabled.png" id="89_u4yck"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_wand_face.png" id="91_v12rw"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_1.png" id="92_ishf8"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_2.png" id="93_yhupc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/icons/refresh.png" id="94_017ef"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_3.png" id="94_i65o3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_4.png" id="95_bttk6"]
+[ext_resource type="Texture2D" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_5.png" id="96_jf2x3"]
+[ext_resource type="Script" path="res://scripts/ui/the_rabbit_animator.gd" id="99_anim"]
+[ext_resource type="Texture2D" path="res://assets/sprites/frames/dialog.png" id="101_6kw3k"]
+[ext_resource type="Texture2D" path="res://assets/sprites/frames/5_choose_1.png" id="101_8ocj1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/icons/items/antique_cup.png" id="102_jdak2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/frames/mini.png" id="102_u4yck"]
+[ext_resource type="Texture2D" path="res://assets/sprites/frames/popup.png" id="103_otpb1"]
+[ext_resource type="Script" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
+[ext_resource type="Script" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
 
 [sub_resource type="Animation" id="Animation_ovo1l"]
 length = 0.001
@@ -556,12 +555,14 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_x7wb1")
 
-[node name="Background2" parent="." instance=ExtResource("2_u8s40")]
+[node name="Background2" type="Node2D" parent="." instance=ExtResource("2_u8s40")]
+position = Vector2(3001, 1689.25)
 
 [node name="Background" type="Node2D" parent="."]
 position = Vector2(3001, 1689.25)
 
 [node name="Background_floor" type="Sprite2D" parent="Background"]
+position = Vector2(0, 3.75)
 texture = ExtResource("2_vave4")
 offset = Vector2(0, 1272)
 region_enabled = true
@@ -766,8 +767,8 @@ offset_left = -147.75
 offset_top = -88.5
 offset_right = 36.25
 offset_bottom = 16.5
-theme_override_colors/default_color = Color(0.70380783, 0.70380783, 0.70380783, 1)
 theme_override_font_sizes/normal_font_size = 76
+theme_override_colors/default_color = Color(0.70380783, 0.70380783, 0.70380783, 1)
 text = "123"
 fit_content = true
 scroll_active = false
@@ -816,8 +817,8 @@ offset_left = -88.0
 offset_top = 3.0
 offset_right = 96.0
 offset_bottom = 43.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 26
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 text = "RECYCLE"
 fit_content = true
 scroll_active = false
@@ -897,8 +898,8 @@ offset_left = -88.0
 offset_top = -81.5
 offset_right = 96.0
 offset_bottom = 125.5
-theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 42
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
 text = "SWITCH_SUBMIT"
 fit_content = true
@@ -916,8 +917,8 @@ offset_left = -88.0
 offset_top = -134.5
 offset_right = 96.0
 offset_bottom = 72.5
-theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 42
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 text = "SWITCH_CONFIRM"
 fit_content = true
 scroll_active = false
@@ -1060,8 +1061,8 @@ offset_top = -19.0
 offset_right = 363.0
 offset_bottom = 63.0
 mouse_filter = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 66
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 text = "+ 10%"
 scroll_active = false
 vertical_alignment = 1
@@ -1082,8 +1083,8 @@ offset_top = -19.0
 offset_right = 363.0
 offset_bottom = 63.0
 mouse_filter = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 66
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 text = "+ 20%"
 scroll_active = false
 vertical_alignment = 1
@@ -1104,8 +1105,8 @@ offset_top = -19.0
 offset_right = 363.0
 offset_bottom = 63.0
 mouse_filter = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 66
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 text = "+ 40%"
 scroll_active = false
 vertical_alignment = 1
@@ -1126,8 +1127,8 @@ offset_top = -19.0
 offset_right = 363.0
 offset_bottom = 63.0
 mouse_filter = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 66
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 text = "+ 100%"
 scroll_active = false
 vertical_alignment = 1
@@ -1148,8 +1149,8 @@ offset_top = -19.0
 offset_right = 363.0
 offset_bottom = 63.0
 mouse_filter = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 66
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 text = "+ 150%"
 scroll_active = false
 vertical_alignment = 1
@@ -2110,14 +2111,17 @@ offset_right = 1456.25
 offset_bottom = -313.75
 theme_override_constants/separation = 894
 
-[node name="Lottery Slot_root_0" parent="The Machine/Lottery Slots Grid" instance=ExtResource("44_jptrp")]
+[node name="Lottery Slot_root_0" type="Control" parent="The Machine/Lottery Slots Grid" instance=ExtResource("44_jptrp")]
 layout_mode = 2
+script = ExtResource("48_017ef")
 
-[node name="Lottery Slot_root_1" parent="The Machine/Lottery Slots Grid" instance=ExtResource("44_jptrp")]
+[node name="Lottery Slot_root_1" type="Control" parent="The Machine/Lottery Slots Grid" instance=ExtResource("44_jptrp")]
 layout_mode = 2
+script = ExtResource("48_017ef")
 
-[node name="Lottery Slot_root_2" parent="The Machine/Lottery Slots Grid" instance=ExtResource("44_jptrp")]
+[node name="Lottery Slot_root_2" type="Control" parent="The Machine/Lottery Slots Grid" instance=ExtResource("44_jptrp")]
 layout_mode = 2
+script = ExtResource("48_017ef")
 
 [node name="The Rabbit" type="Node2D" parent="."]
 position = Vector2(1434, 1998)
@@ -2126,15 +2130,6 @@ position = Vector2(1434, 1998)
 
 [node name="TheRabbitAnimator" type="Node" parent="The Rabbit/MascotVisuals"]
 script = ExtResource("99_anim")
-eye_socket_texture = ExtResource("70_u4yck")
-eye_outline_color = Color(0, 0, 0, 1)
-eye_outline_thickness = 0.1
-eye_pupil_texture = ExtResource("68_jdak2")
-eye_pupil_initial_size = 0.5
-eye_pupil_initial_offset = Vector2(1, 0)
-eye_pupil_color = Color(0.36, 0.36, 0.36, 1)
-eye_pupil_outline_thickness = 0.1
-impatient_eye_target_texture = ExtResource("50_50t6p")
 
 [node name="AnimationTree" type="AnimationTree" parent="The Rabbit/MascotVisuals"]
 tree_root = SubResource("AnimationNodeStateMachine_otpb1")
@@ -2612,8 +2607,8 @@ offset_top = -97.0
 offset_right = 979.0
 offset_bottom = 96.0
 grow_vertical = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 141
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
 text = "33 [s]25[/s]"
 fit_content = true
@@ -2880,8 +2875,8 @@ offset_top = -97.0
 offset_right = 979.0
 offset_bottom = 96.0
 grow_vertical = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 141
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
 text = "33 [s]25[/s]"
 fit_content = true
@@ -3148,8 +3143,8 @@ offset_top = -97.0
 offset_right = 979.0
 offset_bottom = 96.0
 grow_vertical = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 141
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
 text = "33 [s]25[/s]"
 fit_content = true
@@ -3416,8 +3411,8 @@ offset_top = -97.0
 offset_right = 979.0
 offset_bottom = 96.0
 grow_vertical = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 141
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
 text = "33 [s]25[/s]"
 fit_content = true
@@ -3650,8 +3645,8 @@ offset_left = -194.0
 offset_top = 206.0
 offset_right = 2257.0
 offset_bottom = 731.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 125
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
 text = "asdofiasdflahjksd;lfj la;sdkfjlasdkjflkg lkfdgjdfklgd gdfjg klg dflgj dfg lkdfgj ldfkgj lkdf dflk jsdl jsdfl sdj fjweorjw woe rjeoir jweor  ioj weor oiwj e"
 scroll_active = false
@@ -3682,8 +3677,8 @@ offset_right = 2050.0
 offset_bottom = 360.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 125
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
 text = "asdofiasdflahjksd;lfj la;sdkfjlasdkjflkg lkfdgjdfklgd gdfjg klg dflgj dfg lkdfgj ldfkgj lkdf dflk jsdl jsdfl sdj fjweorjw woe rjeoir jweor  ioj weor oiwj e"
 scroll_active = false

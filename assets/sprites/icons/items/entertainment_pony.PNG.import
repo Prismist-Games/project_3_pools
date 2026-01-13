@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://balwec80i4286"
-path.s3tc="res://.godot/imported/entertainment_pony.PNG-4e66de44423481c5f45d206bd1a5dec0.s3tc.ctex"
-path.etc2="res://.godot/imported/entertainment_pony.PNG-4e66de44423481c5f45d206bd1a5dec0.etc2.ctex"
+path.s3tc="res://.godot/imported/entertainment_pony.png-4ecb0a8334e43cb4f101966eda9f8c6b.s3tc.ctex"
+path.etc2="res://.godot/imported/entertainment_pony.png-4ecb0a8334e43cb4f101966eda9f8c6b.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/entertainment_pony.PNG"
-dest_files=["res://.godot/imported/entertainment_pony.PNG-4e66de44423481c5f45d206bd1a5dec0.s3tc.ctex", "res://.godot/imported/entertainment_pony.PNG-4e66de44423481c5f45d206bd1a5dec0.etc2.ctex"]
+source_file="res://assets/sprites/icons/items/entertainment_pony.png"
+dest_files=["res://.godot/imported/entertainment_pony.png-4ecb0a8334e43cb4f101966eda9f8c6b.s3tc.ctex", "res://.godot/imported/entertainment_pony.png-4ecb0a8334e43cb4f101966eda9f8c6b.etc2.ctex"]
 
 [params]
 

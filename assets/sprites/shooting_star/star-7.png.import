@@ -2,20 +2,22 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dkvp2w8cjj61i"
-path="res://.godot/imported/基地-11.png-564e71842d830626792ff1804a521dad.ctex"
+uid="uid://q5hrw4p7c3sk"
+path.s3tc="res://.godot/imported/star-7.png-ada6e1d3ff3d9fb927810c197a75ca80.s3tc.ctex"
+path.etc2="res://.godot/imported/star-7.png-ada6e1d3ff3d9fb927810c197a75ca80.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://assets/sprites/shooting_star/基地-11.png"
-dest_files=["res://.godot/imported/基地-11.png-564e71842d830626792ff1804a521dad.ctex"]
+source_file="res://assets/sprites/shooting_star/star-7.png"
+dest_files=["res://.godot/imported/star-7.png-ada6e1d3ff3d9fb927810c197a75ca80.s3tc.ctex", "res://.godot/imported/star-7.png-ada6e1d3ff3d9fb927810c197a75ca80.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://50vylcprrk8y"
-path.s3tc="res://.godot/imported/IMG_0119.PNG-2bccbb0a6b96c9aae839f7a065fba00a.s3tc.ctex"
-path.etc2="res://.godot/imported/IMG_0119.PNG-2bccbb0a6b96c9aae839f7a065fba00a.etc2.ctex"
+path.s3tc="res://.godot/imported/IMG_0119.png-43175c43db1987de6cbafa3721ce3a32.s3tc.ctex"
+path.etc2="res://.godot/imported/IMG_0119.png-43175c43db1987de6cbafa3721ce3a32.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/IMG_0119.PNG"
-dest_files=["res://.godot/imported/IMG_0119.PNG-2bccbb0a6b96c9aae839f7a065fba00a.s3tc.ctex", "res://.godot/imported/IMG_0119.PNG-2bccbb0a6b96c9aae839f7a065fba00a.etc2.ctex"]
+source_file="res://assets/sprites/icons/items/IMG_0119.png"
+dest_files=["res://.godot/imported/IMG_0119.png-43175c43db1987de6cbafa3721ce3a32.s3tc.ctex", "res://.godot/imported/IMG_0119.png-43175c43db1987de6cbafa3721ce3a32.etc2.ctex"]
 
 [params]
 
