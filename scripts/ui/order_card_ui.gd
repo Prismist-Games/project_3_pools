@@ -87,10 +87,7 @@ func setup(order: OrderData, index: int) -> void:
 	
 	refresh_button.text = tr("ORDER_REFRESH") % order.refresh_count
 	
-	var stage_allows_refresh = true
-	var stage_data = GameManager.current_stage_data
-	if stage_data != null and not stage_data.has_order_refresh:
-		stage_allows_refresh = false
+	var stage_allows_refresh = UnlockManager.is_unlocked(UnlockManager.Feature.ORDER_REFRESH)
 	
 	# 主线订单或该阶段未解锁刷新时完全隐藏
 	# 主线订单或该阶段未解锁刷新时完全隐藏

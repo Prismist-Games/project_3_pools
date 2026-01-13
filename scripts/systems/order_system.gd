@@ -12,23 +12,17 @@ func _ready() -> void:
 		await UnlockManager.ready
 	
 	# 初始生成订单
-	call_deferred("refresh_all_orders")
+	call_deferred("initialize_orders")
 	
 	EventBus.game_event.connect(_on_game_event)
 
 
-func _on_game_event(event_id: StringName, _payload: RefCounted) -> void:
-	if event_id == &"add_order_refreshes":
-		_add_refreshes_to_all_orders(1)
+func _on_game_event(_event_id: StringName, _payload: RefCounted) -> void:
+	pass
 
 
-func _add_refreshes_to_all_orders(amount: int) -> void:
-	for order in current_orders:
-		order.refresh_count += amount
-	EventBus.orders_updated.emit(current_orders)
-
-
-func refresh_all_orders() -> void:
+## 初始化订单 (仅限系统初始化时使用，不再对玩家开放“全部刷新”功能)
+func initialize_orders() -> void:
 	current_orders.clear()
 	
 	# 使用 UnlockManager 控制订单数量
@@ -165,6 +159,15 @@ func _execute_submission(order: OrderData, items_to_consume: Array[ItemInstance]
 	
 	# 发放奖励
 	GameManager.add_gold(context.reward_gold)
+	
+	# 主线订单完成后触发时代切换流程
+	if order.is_mainline:
+		_on_mainline_completed()
+
+
+func _on_mainline_completed() -> void:
+	# 请求技能选择弹窗（复用奖池3选1 UI）
+	EventBus.modal_requested.emit(&"skill_selection", null)
 
 
 func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:

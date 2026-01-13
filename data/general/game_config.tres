@@ -1,10 +1,14 @@
-[gd_resource type="Resource" script_class="GameConfig" load_steps=2 format=3 uid="uid://cnjbai52lih0v"]
+[gd_resource type="Resource" script_class="GameConfig" load_steps=7 format=3 uid="uid://cnjbai52lih0v"]
 
-[ext_resource type="Script" uid="uid://dmjtd0oxhv6f4" path="res://scripts/resources/game_config.gd" id="1"]
+[ext_resource type="Script" uid="uid://dukw21eiv5c6u" path="res://scripts/resources/game_config.gd" id="1"]
+[ext_resource type="Script" uid="uid://dm06bf5x3llkt" path="res://scripts/resources/era_config.gd" id="1_o3oqh"]
+[ext_resource type="Resource" uid="uid://xl7cwkdnnl41" path="res://data/eras/era_1.tres" id="2_umle8"]
+[ext_resource type="Resource" uid="uid://cxwln6e484gmt" path="res://data/eras/era_2.tres" id="3_5a3jv"]
+[ext_resource type="Resource" uid="uid://d21p8vd837yja" path="res://data/eras/era_3.tres" id="4_3uqxb"]
+[ext_resource type="Resource" uid="uid://pkutkaxl1lwn" path="res://data/eras/era_4.tres" id="5_p6tfl"]
 
 [resource]
 script = ExtResource("1")
 starting_gold = 9999999
-starting_tickets = 999999
 normal_draw_gold_cost = 1
-debug_stage = 0
+era_configs = Array[ExtResource("1_o3oqh")]([ExtResource("4_3uqxb"), ExtResource("5_p6tfl"), ExtResource("2_umle8"), ExtResource("3_5a3jv")])

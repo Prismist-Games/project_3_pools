@@ -2035,7 +2035,6 @@ position = Vector2(19.5, -307.5)
 texture = ExtResource("80_caxmy")
 
 [node name="TheRabbitRefreshAll" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
-visible = false
 self_modulate = Color(0.9411765, 0.36078432, 0.38039216, 1)
 position = Vector2(19.5, -307.5)
 texture = ExtResource("77_6kw3k")
@@ -2065,6 +2064,7 @@ texture = ExtResource("70_u4yck")
 [node name="TheRabbitRightEyeFill" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
 material = SubResource("ShaderMaterial_8y6ih")
 position = Vector2(-347, -719)
+rotation = -0.04909912
 texture = ExtResource("85_q6adl")
 
 [node name="TheRabbitNose" type="Sprite2D" parent="The Rabbit/MascotVisuals"]

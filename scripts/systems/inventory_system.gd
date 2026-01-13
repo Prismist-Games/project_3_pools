@@ -82,19 +82,16 @@ func resize_inventory(new_size: int) -> void:
 # --- 核心逻辑 ---
 
 func _on_item_obtained(item: ItemInstance) -> void:
-	# 优先自动放入背包
-	if add_item_instance(item):
-		# inventory_changed 已在 add_item_instance 内部触发
-		return
-		
-	# 背包满了，进入待定队列
+	# 核心：为了维持队列顺序，所有新获得的物品必须先进待定队列
+	# 这可以防止“插队”现象：即 Item 1 还在队列等待替换，而 Item 2 却尝试直接进入背包
 	self.pending_item = item
 	
 	# 清除选中状态，因为新物品获取是与之前的整理操作无关的新上下文
 	if selected_slot_index != -1:
 		self.selected_slot_index = -1
-	
-	# 这里不需要 emit，因为 auto_add 已经 emit 了，或者 pending_item setter emit 了 pending_queue_changed
+		
+	# 触发自动处理流程。如果背包有空位且满足种类限制，物品会从队列首部自动飞入背包
+	try_auto_add_pending()
 
 func add_item_instance(item: ItemInstance) -> bool:
 	for i in range(inventory.size()):
@@ -130,10 +127,19 @@ func handle_slot_click(index: int) -> void:
 	if pending != null:
 		# 场景 A: 玩家正拿着新抽到的物品
 		if target_item == null:
+			# ERA_3: 如果物品因为种类限制而待定，必须替换已有物品，不能放入空槽
+			if would_exceed_type_limit(pending):
+				# 拒绝操作，不做任何处理
+				# TODO: 可以在这里触发一个提示音效或视觉反馈
+				return
+			
 			# 1. 目标格子为空 -> 放入
 			inventory[index] = pending
 			self.pending_item = null
 			item_added.emit(pending, index)
+			
+			# 尝试自动填充剩余的待定项
+			try_auto_add_pending()
 		else:
 			# 2. 目标格子有物品 -> 判定合并
 			if can_merge(pending, target_item):
@@ -141,14 +147,33 @@ func handle_slot_click(index: int) -> void:
 				_perform_merge(pending, target_item, index)
 				self.pending_item = null
 			else:
-				# 替换/回收: 旧物品被挤掉
-				recycle_item_instance(target_item)
-				inventory[index] = pending
-				item_replaced.emit(index, pending, target_item)
+				# 替换/回收
+				# ERA_3: 如果当前物品是因为超出种类限制而待定，且玩家选择了一个已有的种类进行替换
+				# 则回收该种类的所有物品，以确保真正腾出一个种类位
+				var is_type_limited = would_exceed_type_limit(pending)
+				
+				if is_type_limited:
+					# 批量回收所有同名物品
+					var target_id = target_item.item_data.id
+					recycle_all_by_name(target_id)
+					
+					# 将新物品放入当前点击的槽位（该槽位在 recycle_all_by_name 中已被置空）
+					inventory[index] = pending
+					item_replaced.emit(index, pending, target_item) # 这里传递的 old_item 只是为了动画效果
+				else:
+					# 正常单个替换
+					recycle_item_instance(target_item)
+					inventory[index] = pending
+					item_replaced.emit(index, pending, target_item)
+				
 				# 关键：如果有选中，清除它
 				if selected_slot_index == index:
 					self.selected_slot_index = -1
 				self.pending_item = null
+				
+				# 尝试自动填充剩余的待定项 (针对稀碎奖池/批量回收后的空间释放)
+				try_auto_add_pending()
+		return
 	else:
 		# 场景 B: 玩家处于整理模式 (pending_item == null)
 		var selected_idx = selected_slot_index
@@ -214,7 +239,11 @@ func can_merge(item_a: ItemInstance, item_b: ItemInstance) -> bool:
 ## 执行合并
 func _perform_merge(item_a: ItemInstance, item_b: ItemInstance, target_index: int) -> void:
 	var next_rarity = item_a.rarity + 1
-	var new_item = ItemInstance.new(item_a.item_data, next_rarity)
+	
+	# ERA_4: 保质期取两者中较长的值
+	var merged_shelf_life = maxi(item_a.shelf_life, item_b.shelf_life)
+	var new_item = ItemInstance.new(item_a.item_data, next_rarity, false, merged_shelf_life)
+	
 	inventory[target_index] = new_item
 	
 	# Emit merge signal with the item that was in the slot (item_b) as the target context
@@ -235,6 +264,54 @@ func recycle_item_instance(item: ItemInstance) -> void:
 		
 	EventBus.game_event.emit(&"recycle_finished", context)
 
+
+## 回收背包中所有同名物品（用于 ERA_3 种类替换）
+func recycle_all_by_name(item_id: StringName) -> int:
+	var count = 0
+	# 先收集索引，避免在循环中修改数组导致的问题
+	var indices = get_indices_by_name(item_id)
+	
+	for idx in indices:
+		var item = inventory[idx]
+		if item != null:
+			# 为每个被回收的物品触发单独的信号，以便 UI 层可以播放回收动画
+			# 注意：这里先发信号，再清空槽位，这样 UI 可以获取到槽位信息
+			EventBus.item_recycled.emit(idx, item)
+			
+			recycle_item_instance(item)
+			inventory[idx] = null
+			count += 1
+			
+	if count > 0:
+		inventory_changed.emit(inventory)
+		EventBus.orders_updated.emit(OrderSystem.current_orders)
+		
+	return count
+
+
+## 尝试自动将待定队列中的物品放入背包（当空间或种类位释放时）
+func try_auto_add_pending() -> void:
+	# 注意：pending_item 的 setter/getter 逻辑会自动处理 pending_items 数组
+	while not pending_items.is_empty():
+		var next_item = pending_items[0]
+		
+		# 检查是否满足种类限制且有空槽
+		if not would_exceed_type_limit(next_item) and _has_empty_slot():
+			var added = add_item_instance(next_item)
+			if added:
+				# 成功添加，通过设置 pending_item = null 来触发 pop_front
+				self.pending_item = null
+				continue
+		
+		# 如果不能自动添加（种类限制或没格子），则停止自动处理，等待玩家手动交互
+		break
+
+
+func _has_empty_slot() -> bool:
+	for item in inventory:
+		if item == null: return true
+	return false
+
 ## 回收指定索引的物品
 func recycle_item(index: int) -> void:
 	if index < 0 or index >= inventory.size(): return
@@ -246,6 +323,9 @@ func recycle_item(index: int) -> void:
 			self.selected_slot_index = -1
 		inventory_changed.emit(inventory)
 		EventBus.orders_updated.emit(OrderSystem.current_orders) # 触发订单UI更新
+		
+		# 尝试自动填充剩余的待定项
+		try_auto_add_pending()
 
 ## 批量删除物品
 func remove_items(items_to_remove: Array[ItemInstance]) -> void:
@@ -257,6 +337,9 @@ func remove_items(items_to_remove: Array[ItemInstance]) -> void:
 	if changed:
 		inventory_changed.emit(inventory)
 		EventBus.orders_updated.emit(OrderSystem.current_orders) # 触发订单UI更新
+		
+		# 尝试自动填充剩余的待定项
+		try_auto_add_pending()
 
 ## 检查背包中是否包含指定物品
 func has_item_data(item_data: ItemData) -> bool:
@@ -274,3 +357,45 @@ func get_max_rarity_for_item(item_id: StringName) -> int:
 			if item.rarity > max_r:
 				max_r = item.rarity
 	return max_r
+
+
+# --- ERA_3: 种类限制相关方法 ---
+
+## 获取背包中所有不同的物品名称
+func get_unique_item_names() -> Array[StringName]:
+	var names: Array[StringName] = []
+	for item in inventory:
+		if item != null and item.item_data.id not in names:
+			names.append(item.item_data.id)
+	return names
+
+
+## 检查添加新物品是否会超出种类限制
+func would_exceed_type_limit(new_item: ItemInstance) -> bool:
+	var cfg = EraManager.current_config if EraManager else null
+	if not cfg:
+		return false
+	
+	var type_limit_effect = cfg.get_effect_of_type("ItemTypeLimitEffect")
+	if not type_limit_effect:
+		return false
+	
+	return type_limit_effect.would_exceed_limit(self, new_item)
+
+
+## 获取指定物品名称的所有背包槽位索引
+func get_indices_by_name(item_id: StringName) -> Array[int]:
+	var indices: Array[int] = []
+	for i in range(inventory.size()):
+		if inventory[i] != null and inventory[i].item_data.id == item_id:
+			indices.append(i)
+	return indices
+
+
+## 获取同名物品的总回收价值
+func get_total_recycle_value_for_name(item_id: StringName) -> int:
+	var total: int = 0
+	for item in inventory:
+		if item != null and item.item_data.id == item_id:
+			total += Constants.rarity_recycle_value(item.rarity)
+	return total

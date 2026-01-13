@@ -116,7 +116,12 @@ func _on_ui_state_changed(_from: StringName, to: StringName) -> void:
 func _on_bus_game_event(event_id: StringName, payload: Variant) -> void:
 	if event_id == &"lottery_slot_hovered":
 		_has_hovered_lottery = true
-		_current_lottery_hover_pos = payload.global_position
+		if payload is RefCounted:
+			var ctx = payload as RefCounted
+			if "get_value" in ctx:
+				_current_lottery_hover_pos = ctx.get_value(&"global_position", Vector2.ZERO)
+		else:
+			_current_lottery_hover_pos = Vector2.ZERO
 	elif event_id == &"lottery_slot_unhovered":
 		_has_hovered_lottery = false
 

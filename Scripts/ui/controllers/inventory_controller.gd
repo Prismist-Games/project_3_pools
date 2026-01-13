@@ -114,6 +114,24 @@ func set_slots_locked(locked: bool) -> void:
 		if slot:
 			slot.is_locked = locked
 
+func highlight_items_by_id(item_id: StringName) -> void:
+	for i in range(10):
+		var slot = get_slot_node(i)
+		if not slot: continue
+		
+		var item = InventorySystem.inventory[i] if i < InventorySystem.inventory.size() else null
+		if item and item.item_data.id == item_id:
+			if slot.has_method("set_highlight"):
+				slot.set_highlight(true)
+		else:
+			if slot.has_method("set_highlight"):
+				slot.set_highlight(false)
+
+func clear_highlights() -> void:
+	for slot in _slots:
+		if slot and slot.has_method("set_highlight"):
+			slot.set_highlight(false)
+
 # --- Helpers ---
 
 func get_slot_node(index: int) -> Control:
@@ -159,7 +177,7 @@ func _on_slot_mouse_entered(index: int) -> void:
 	
 	# 发射 hover 信号用于高亮订单图标
 	var item = InventorySystem.inventory[index] if index < InventorySystem.inventory.size() else null
-	if item:
+	if item and not item.is_expired: # ERA_4: 过期物品不触发订单高亮
 		slot_hovered.emit(index, item.item_data.id)
 	else:
 		slot_hovered.emit(index, &"")

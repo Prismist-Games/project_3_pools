@@ -112,6 +112,21 @@ func select_option(index: int) -> void:
 	controller.last_clicked_pool_idx = index
 	controller.pending_source_pool_idx = index
 	
+	# ERA_3: 检查种类限制
+	var would_exceed = InventorySystem.would_exceed_type_limit(item_instance)
+	
+	if would_exceed:
+		# 如果超出种类限制，直接进入待定队列，然后转到 Replacing 状态
+		# 关闭另一扇盖子
+		var other_index = 1 - index
+		var other_slot = _get_slot(other_index)
+		if other_slot:
+			other_slot.close_lid()
+		
+		InventorySystem.pending_item = item_instance
+		machine.transition_to(&"Replacing", {"source_pool_index": index})
+		return
+	
 	# 尝试添加到背包
 	var added = InventorySystem.add_item_instance(item_instance)
 	
@@ -157,33 +172,32 @@ func _setup_precise_display() -> void:
 		"skip_lid_animation": true # 关键：进入二选一时跳过盖子的推挤位移
 	}
 	
-	# 1. 所有槽位并行播放 UI 刷新动画 (Push-Away) 和开门动画
+	# 1. 所有槽位并行更新数据和开门动画
 	for i in range(3):
 		var slot = _get_slot(i)
 		if not slot: continue
 		
-		# 所有槽位同步推走旧标签 (价格、词缀等)
+		# 关键优化：使用 instant=true 立即更新标签数据，避免 Push-Away 带来的延迟
 		if slot.has_method("refresh_slot_data"):
-			slot.refresh_slot_data(selection_ui_config, false)
+			slot.refresh_slot_data(selection_ui_config, true)
 		
 		# slot_0 和 slot_1 同时开始播放揭示动画 (开盖)
 		if i < mini(options.size(), 2):
 			var item = options[i]
-			slot.play_reveal_sequence([item])
+			# 关键优化：增加 skip_shuffle=true 跳过洗牌，消除闪烁
+			slot.play_reveal_sequence([item], false, true)
 			# 清空默认的池类型，防止触发类型高亮
 			slot.current_pool_item_type = -1
 			# 为该 slot 单独连接 hover 信号，高亮特定物品
 			_connect_slot_hover(i, item.item_data.id)
 		else:
-			# slot_2 确保它是关着的 (如果是微开状态，直接复位而不播动画)
+			# slot_2 确保它是关着的
 			if slot.lid_sprite:
 				slot.lid_sprite.position.y = 0
 			slot.current_pool_item_type = -1
 	
-	# 允许后续的正常刷新信号
+	# 立即解锁界面
 	if controller.pool_controller:
-		# 等待推挤动画的大致时长后解锁，或者直接解锁（因为 _is_animating_refresh 主要防止竞态）
-		await controller.get_tree().create_timer(PUSH_DURATION).timeout
 		controller.pool_controller._is_animating_refresh = false
 
 const PUSH_DURATION: float = 0.4

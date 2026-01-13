@@ -7,6 +7,7 @@ extends BaseSlotUI
 @onready var led_display: Sprite2D = find_child("Slot_led", true)
 @onready var status_icon: Sprite2D = find_child("Item_status", true)
 @onready var backgrounds: Node2D = find_child("Item Slot_backgrounds", true)
+var shelf_life_label: Label = null
 
 var slot_index: int = -1
 var is_vfx_target: bool = false # 标记是否为飞行目标，防止动画中背景色提前刷新
@@ -17,6 +18,12 @@ var _icon_original_scale: Vector2 = Vector2.ONE
 
 func _ready() -> void:
 	super._ready()
+	
+	# 自动查找或创建保质期标签
+	shelf_life_label = find_child("ShelfLifeLabel", true)
+	if not shelf_life_label:
+		_create_shelf_life_label()
+		
 	# 关键修复：在一开始就记录图标的初始状态，不再动态捕获，防止缩放累加
 	if icon_display:
 		_icon_original_position = icon_display.position
@@ -76,6 +83,7 @@ func update_display(item: ItemInstance) -> void:
 		if item_shadow: item_shadow.visible = false
 		affix_display.visible = false
 		status_icon.visible = false
+		if shelf_life_label: shelf_life_label.visible = false
 		led_display.modulate = Color(0.5, 0.5, 0.5, 0.5) # Grayed out
 		
 		# 背景颜色渐变到空槽颜色
@@ -96,6 +104,21 @@ func update_display(item: ItemInstance) -> void:
 	
 	# Affix display logic based on item properties
 	affix_display.visible = item.sterile
+	
+	# ERA_4: 过期物品视觉标识
+	if item.is_expired:
+		# 降低亮度和饱和度，显示过期状态
+		if icon_display:
+			icon_display.modulate = Color(0.5, 0.5, 0.5, 1.0) # 暗灰色调
+		# 可选：在 status_icon 上显示过期标记
+		# （暂时不显示，因为 update_status_badge 会覆盖）
+	else:
+		# 正常显示
+		if icon_display:
+			icon_display.modulate = Color.WHITE
+	
+	# ERA_4: 保质期数值显示
+	_update_shelf_life_label(item)
 	
 	# 背景颜色渐变到稀有度颜色
 	if backgrounds:
@@ -128,6 +151,12 @@ func set_selected(selected: bool) -> void:
 	if not selected:
 		if backgrounds:
 			backgrounds.modulate = Color.WHITE
+
+func set_highlight(active: bool) -> void:
+	if active:
+		modulate = Color(1.2, 1.2, 1.2, 1.0)
+	else:
+		modulate = Color.WHITE
 
 func _animate_selection(active: bool) -> void:
 	if not icon_display: return
@@ -201,3 +230,55 @@ func update_status_badge(badge_state: int) -> void:
 		2:
 			status_icon.visible = true
 			status_icon.texture = preload("res://assets/sprites/icons/tick_green.png")
+
+
+func _update_shelf_life_label(item: ItemInstance) -> void:
+	if not shelf_life_label:
+		return
+	
+	# 检查当前时代是否有保质期效果
+	var cfg = EraManager.current_config if EraManager else null
+	if not cfg or not cfg.has_shelf_life():
+		shelf_life_label.visible = false
+		return
+	
+	# 显示保质期
+	if item.shelf_life >= 0:
+		shelf_life_label.visible = true
+		shelf_life_label.text = str(item.shelf_life)
+		
+		# 根据保质期剩余量改变颜色
+		if item.is_expired:
+			shelf_life_label.modulate = Color(1.0, 0.3, 0.3) # 红色：过期
+		elif item.shelf_life <= 5:
+			shelf_life_label.modulate = Color(1.0, 0.7, 0.3) # 橙色：警告
+		else:
+			shelf_life_label.modulate = Color.WHITE # 白色：正常
+	else:
+		shelf_life_label.visible = false
+
+
+func _create_shelf_life_label() -> void:
+	# 在代码中动态创建标签，以解决 .tscn 难以手动修改的问题
+	shelf_life_label = Label.new()
+	shelf_life_label.name = "ShelfLifeLabel"
+	add_child(shelf_life_label)
+	
+	# 设置样式
+	shelf_life_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	shelf_life_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	
+	# 设置字体大小
+	var font_size = 40
+	shelf_life_label.add_theme_font_size_override("font_size", font_size)
+	
+	# 设置描边以提高可读性
+	shelf_life_label.add_theme_constant_override("outline_size", 8)
+	shelf_life_label.add_theme_color_override("font_outline_color", Color.BLACK)
+	
+	# 设置位置 (根据项目 Sprite2D 坐标系统调整)
+	# 假设图标中心在 (0,0)，我们将标签放在右下角
+	shelf_life_label.position = Vector2(50, 50)
+	
+	# 初始隐藏
+	shelf_life_label.visible = false

@@ -1,6 +1,8 @@
 extends Resource
 class_name GameConfig
 
+const EraConfig = preload("era_config.gd")
+
 # --- 基础经济配置 ---
 @export_group("Paths")
 @export_dir var items_dir: String = "res://data/items"
@@ -30,3 +32,7 @@ class_name GameConfig
 @export_group("Orders")
 @export var normal_orders_count: int = 4
 @export var order_refreshes_per_order: int = 2
+
+# --- 时代系统 ---
+@export_group("Eras")
+@export var era_configs: Array[EraConfig] = []

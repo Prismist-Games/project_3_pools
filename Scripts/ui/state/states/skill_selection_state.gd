@@ -139,6 +139,9 @@ func _add_skill_to_slot(skill: SkillData, _slot_index: int) -> void:
 	# 添加技能到系统 (会自动触发 SkillSlotController 的升起动画)
 	SkillSystem.add_skill(skill)
 	
+	# 发出技能选择完成事件（用于时代切换）
+	EventBus.game_event.emit(&"skill_selected", null)
+	
 	# 等待一小段时间让动画播放
 	await controller.get_tree().create_timer(0.4).timeout
 	
@@ -210,6 +213,9 @@ func _on_skill_slot_clicked(slot_index: int) -> void:
 	# 替换技能 (会自动触发 SkillSlotController 的刷新/升起动画)
 	SkillSystem.replace_skill(slot_index, selected_skill)
 	
+	# 发出技能选择完成事件（用于时代切换）
+	EventBus.game_event.emit(&"skill_selected", null)
+	
 	# 等待升起动画
 	await controller.get_tree().create_timer(0.4).timeout
 	
@@ -265,6 +271,8 @@ func _reveal_skill_slot(slot: Control, skill: SkillData, index: int) -> void:
 	# skip_pop_anim = true 确保图标在开盖前就已就位，不会有突然弹出的感觉
 	var dummy_item = {
 		"item_data": skill,
+		"id": skill.id,
+		"icon": skill.icon,
 		"rarity": 0 # 技能统一使用普通背景色或特定颜色
 	}
 	
