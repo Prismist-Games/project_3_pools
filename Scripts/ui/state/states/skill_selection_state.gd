@@ -249,7 +249,7 @@ func _setup_skill_display() -> void:
 func _reveal_skill_slot(slot: Control, skill: SkillData, index: int) -> void:
 	# 1. 更新描述和配置
 	if slot.description_label:
-		slot.description_label.text = skill.description
+		slot.description_label.text = tr(skill.description)
 	
 	_clear_slot_hints(slot)
 	

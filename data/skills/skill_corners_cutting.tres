@@ -1,14 +1,14 @@
 [gd_resource type="Resource" script_class="SkillData" load_steps=5 format=3 uid="uid://bgouuo7usmaio"]
 
 [ext_resource type="Resource" path="res://data/skills/effects/corners_cutting_effect.tres" id="1"]
-[ext_resource type="Script" uid="uid://chtekk8cofiub" path="res://scripts/resources/skill_resources/skill_effect.gd" id="1_en5sx"]
+[ext_resource type="Script" uid="uid://dq7irl88qq5j5" path="res://scripts/resources/skill_resources/skill_effect.gd" id="1_en5sx"]
 [ext_resource type="Script" uid="uid://dlo38q68d6m5r" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://b6xu5iewxjacd" path="res://assets/sprites/icons/skills/偷工減料.png" id="3_scqiv"]
 
 [resource]
 script = ExtResource("2")
 id = "skill_corners_cutting"
-name = "偷工减料"
-description = "刷新出新订单时，20% 概率使订单需求数量 -1（最低为 1）。"
+name = "SKILL_NAME_CORNERS_CUTTING"
+description = "SKILL_DESC_CORNERS_CUTTING"
 icon = ExtResource("3_scqiv")
 effects = Array[ExtResource("1_en5sx")]([ExtResource("1")])

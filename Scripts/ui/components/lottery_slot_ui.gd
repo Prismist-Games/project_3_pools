@@ -140,6 +140,7 @@ func _on_mouse_entered() -> void:
 	
 	# 盖子微开
 	create_tween().tween_property(lid_sprite, "position:y", -20, 0.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	EventBus.game_event.emit(&"lottery_slot_hovered", self)
 
 func _on_mouse_exited() -> void:
 	# 始终发射 unhover 信号
@@ -149,6 +150,7 @@ func _on_mouse_exited() -> void:
 	# 恢复原位 (如果没在播放打开动画)
 	if not anim_player.is_playing() or anim_player.current_animation != "lid_open":
 		create_tween().tween_property(lid_sprite, "position:y", 0, 0.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	EventBus.game_event.emit(&"lottery_slot_unhovered", null)
 
 func get_main_icon_global_position() -> Vector2:
 	return item_main.global_position
@@ -577,7 +579,7 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 	# 更新奖池名称
 	if target_pool_name and has_item_type:
 		var item_type = pool.item_type if "item_type" in pool else pool.get("item_type")
-		target_pool_name.text = Constants.type_to_display_name(item_type) + "池"
+		target_pool_name.text = tr(Constants.type_to_display_name(item_type)) + " " + tr("POOL_SUFFIX")
 		target_pool_name.visible = true
 	
 	# 更新价格 (始终保持可见)

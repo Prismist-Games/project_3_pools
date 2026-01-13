@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1")
 id = &"trade_in"
-name = "以旧换新"
-description = "消耗背包 1 个物品，随机置换同品质物品。"
+name = "AFFIX_TRADE_IN"
+description = "AFFIX_TRADE_IN_DESC"
 base_gold_cost = 1
 effects = Array[ExtResource("1_v0gia")]([ExtResource("2")])

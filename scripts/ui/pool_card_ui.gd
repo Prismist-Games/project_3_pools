@@ -15,11 +15,10 @@ func setup(config: PoolConfig, index: int) -> void:
 	title_label.text = Constants.type_to_display_name(config.item_type)
 	
 	self.theme_type_variation = "Pool_Normal"
-	cost_label.text = "消耗: %d 金币" % config.gold_cost
+	cost_label.text = tr("POOL_COST") % config.gold_cost
 		
-	var affix_id = config.get_affix_id()
-	if affix_id != &"":
-		affix_label.text = "词缀: %s" % affix_id
+	if config.affix_data != null and config.affix_data.name != "":
+		affix_label.text = tr("POOL_AFFIX") % config.affix_data.name
 		affix_label.show()
 	else:
 		affix_label.hide()

@@ -166,7 +166,7 @@ func _setup_precise_display() -> void:
 	# 构建二选一专用的 UI 配置
 	var selection_ui_config = {
 		"price_text": "",
-		"affix_name": "二选一",
+		"affix_name": "AFFIX_CHOOSE_ONE",
 		"description_text": "",
 		"clear_hints": true,
 		"skip_lid_animation": true # 关键：进入二选一时跳过盖子的推挤位移

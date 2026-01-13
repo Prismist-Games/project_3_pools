@@ -41,4 +41,6 @@ func _init(p_item_data: ItemData, p_rarity: int, p_sterile: bool = false, p_shel
 func get_display_name() -> String:
 	if item_data != null and "name" in item_data:
 		return String(item_data.get("name"))
-	return "未知物品"
+	return "ITEM_UNKNOWN"
+
+

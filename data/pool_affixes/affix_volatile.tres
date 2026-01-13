@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1")
 id = &"volatile"
-name = "波动的"
-description = "仅产出普通或传说 (传说概率极高)。"
-base_gold_cost = 1
+name = "AFFIX_VOLATILE"
+description = "AFFIX_VOLATILE_DESC"
+base_gold_cost = 8
 effects = Array[ExtResource("1_v0gia")]([ExtResource("2")])
