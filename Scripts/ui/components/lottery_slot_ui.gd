@@ -140,7 +140,7 @@ func _on_mouse_entered() -> void:
 	
 	# 盖子微开
 	create_tween().tween_property(lid_sprite, "position:y", -20, 0.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	EventBus.game_event.emit(&"lottery_slot_hovered", self)
+	EventBus.game_event.emit(&"lottery_slot_hovered", ContextProxy.new({"global_position": global_position}))
 
 func _on_mouse_exited() -> void:
 	# 始终发射 unhover 信号
