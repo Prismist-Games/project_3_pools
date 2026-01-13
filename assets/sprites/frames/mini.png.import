@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ue7e5frhr0kh"
-path="res://.godot/imported/mini.png-52e0e99c59c93ea8f2456ee5788f8030.ctex"
+path.s3tc="res://.godot/imported/mini.png-52e0e99c59c93ea8f2456ee5788f8030.s3tc.ctex"
+path.etc2="res://.godot/imported/mini.png-52e0e99c59c93ea8f2456ee5788f8030.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/frames/mini.png"
-dest_files=["res://.godot/imported/mini.png-52e0e99c59c93ea8f2456ee5788f8030.ctex"]
+dest_files=["res://.godot/imported/mini.png-52e0e99c59c93ea8f2456ee5788f8030.s3tc.ctex", "res://.godot/imported/mini.png-52e0e99c59c93ea8f2456ee5788f8030.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

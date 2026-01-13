@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c2l71egsupn2s"
-path="res://.godot/imported/antique_vase.PNG-8cd19c857f1f041d5058211736857d1a.ctex"
+path.s3tc="res://.godot/imported/antique_vase.png-0aad2c598c111b16c17ee3c4436e57cc.s3tc.ctex"
+path.etc2="res://.godot/imported/antique_vase.png-0aad2c598c111b16c17ee3c4436e57cc.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/antique_vase.PNG"
-dest_files=["res://.godot/imported/antique_vase.PNG-8cd19c857f1f041d5058211736857d1a.ctex"]
+source_file="res://assets/sprites/icons/items/antique_vase.png"
+dest_files=["res://.godot/imported/antique_vase.png-0aad2c598c111b16c17ee3c4436e57cc.s3tc.ctex", "res://.godot/imported/antique_vase.png-0aad2c598c111b16c17ee3c4436e57cc.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

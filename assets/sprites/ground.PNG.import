@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b48curv0diwvx"
-path="res://.godot/imported/ground.PNG-2ea0369d6d742d4a02e6d27c78c7999b.ctex"
+path.s3tc="res://.godot/imported/ground.png-2752b5d28f9196b8533751adb848ed24.s3tc.ctex"
+path.etc2="res://.godot/imported/ground.png-2752b5d28f9196b8533751adb848ed24.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://assets/sprites/ground.PNG"
-dest_files=["res://.godot/imported/ground.PNG-2ea0369d6d742d4a02e6d27c78c7999b.ctex"]
+source_file="res://assets/sprites/ground.png"
+dest_files=["res://.godot/imported/ground.png-2752b5d28f9196b8533751adb848ed24.s3tc.ctex", "res://.godot/imported/ground.png-2752b5d28f9196b8533751adb848ed24.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

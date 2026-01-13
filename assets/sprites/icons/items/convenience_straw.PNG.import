@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bgf6cqigm8r6t"
-path="res://.godot/imported/convenience_straw.PNG-ca8f06f9418cc09e08920671ee9f46db.ctex"
+path.s3tc="res://.godot/imported/convenience_straw.png-e3e5a55edba6bccee304192e6b771e95.s3tc.ctex"
+path.etc2="res://.godot/imported/convenience_straw.png-e3e5a55edba6bccee304192e6b771e95.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/convenience_straw.PNG"
-dest_files=["res://.godot/imported/convenience_straw.PNG-ca8f06f9418cc09e08920671ee9f46db.ctex"]
+source_file="res://assets/sprites/icons/items/convenience_straw.png"
+dest_files=["res://.godot/imported/convenience_straw.png-e3e5a55edba6bccee304192e6b771e95.s3tc.ctex", "res://.godot/imported/convenience_straw.png-e3e5a55edba6bccee304192e6b771e95.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

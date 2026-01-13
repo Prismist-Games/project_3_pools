@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bgojvj4bx4ihm"
-path="res://.godot/imported/eye_shape_1.png-b5263d28ba37a53ff3df91ec08562ed0.ctex"
+path.s3tc="res://.godot/imported/eye_shape_1.png-b5263d28ba37a53ff3df91ec08562ed0.s3tc.ctex"
+path.etc2="res://.godot/imported/eye_shape_1.png-b5263d28ba37a53ff3df91ec08562ed0.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/the_rabbit/eye_shape_1.png"
-dest_files=["res://.godot/imported/eye_shape_1.png-b5263d28ba37a53ff3df91ec08562ed0.ctex"]
+dest_files=["res://.godot/imported/eye_shape_1.png-b5263d28ba37a53ff3df91ec08562ed0.s3tc.ctex", "res://.godot/imported/eye_shape_1.png-b5263d28ba37a53ff3df91ec08562ed0.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

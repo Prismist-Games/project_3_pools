@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://wu4k3jwrgfaj"
-path="res://.godot/imported/dialog.png-f30cbc7600731789f946999a748b895e.ctex"
+path.s3tc="res://.godot/imported/dialog.png-f30cbc7600731789f946999a748b895e.s3tc.ctex"
+path.etc2="res://.godot/imported/dialog.png-f30cbc7600731789f946999a748b895e.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/frames/dialog.png"
-dest_files=["res://.godot/imported/dialog.png-f30cbc7600731789f946999a748b895e.ctex"]
+dest_files=["res://.godot/imported/dialog.png-f30cbc7600731789f946999a748b895e.s3tc.ctex", "res://.godot/imported/dialog.png-f30cbc7600731789f946999a748b895e.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

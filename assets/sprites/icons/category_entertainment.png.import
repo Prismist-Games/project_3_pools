@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cskvmcwmdj5ew"
-path="res://.godot/imported/category_entertainment.png-dadd6e67b0e3de7844be57e5702df5c7.ctex"
+path.s3tc="res://.godot/imported/category_entertainment.png-dadd6e67b0e3de7844be57e5702df5c7.s3tc.ctex"
+path.etc2="res://.godot/imported/category_entertainment.png-dadd6e67b0e3de7844be57e5702df5c7.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/icons/category_entertainment.png"
-dest_files=["res://.godot/imported/category_entertainment.png-dadd6e67b0e3de7844be57e5702df5c7.ctex"]
+dest_files=["res://.godot/imported/category_entertainment.png-dadd6e67b0e3de7844be57e5702df5c7.s3tc.ctex", "res://.godot/imported/category_entertainment.png-dadd6e67b0e3de7844be57e5702df5c7.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

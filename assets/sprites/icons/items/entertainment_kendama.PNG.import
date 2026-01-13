@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bb3i8h7c81isi"
-path="res://.godot/imported/entertainment_kendama.PNG-e481bc1d454025cac1dcf4c1b2493caa.ctex"
+path.s3tc="res://.godot/imported/entertainment_kendama.png-72bc55f18b345410d449391d2661345a.s3tc.ctex"
+path.etc2="res://.godot/imported/entertainment_kendama.png-72bc55f18b345410d449391d2661345a.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/entertainment_kendama.PNG"
-dest_files=["res://.godot/imported/entertainment_kendama.PNG-e481bc1d454025cac1dcf4c1b2493caa.ctex"]
+source_file="res://assets/sprites/icons/items/entertainment_kendama.png"
+dest_files=["res://.godot/imported/entertainment_kendama.png-72bc55f18b345410d449391d2661345a.s3tc.ctex", "res://.godot/imported/entertainment_kendama.png-72bc55f18b345410d449391d2661345a.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

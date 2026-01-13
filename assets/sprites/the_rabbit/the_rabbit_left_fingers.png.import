@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dgwh6jt3m78qv"
-path="res://.godot/imported/the_rabbit_left_fingers.png-7b06773aac9757be73d1704ffb9ffa04.ctex"
+path.s3tc="res://.godot/imported/the_rabbit_left_fingers.png-7b06773aac9757be73d1704ffb9ffa04.s3tc.ctex"
+path.etc2="res://.godot/imported/the_rabbit_left_fingers.png-7b06773aac9757be73d1704ffb9ffa04.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/the_rabbit/the_rabbit_left_fingers.png"
-dest_files=["res://.godot/imported/the_rabbit_left_fingers.png-7b06773aac9757be73d1704ffb9ffa04.ctex"]
+dest_files=["res://.godot/imported/the_rabbit_left_fingers.png-7b06773aac9757be73d1704ffb9ffa04.s3tc.ctex", "res://.godot/imported/the_rabbit_left_fingers.png-7b06773aac9757be73d1704ffb9ffa04.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

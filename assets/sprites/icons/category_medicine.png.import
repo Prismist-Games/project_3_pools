@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://x36jhialpj4l"
-path="res://.godot/imported/category_medicine.png-5ae42fbfb26b6a6ba17011ec9d5b66c5.ctex"
+path.s3tc="res://.godot/imported/category_medicine.png-5ae42fbfb26b6a6ba17011ec9d5b66c5.s3tc.ctex"
+path.etc2="res://.godot/imported/category_medicine.png-5ae42fbfb26b6a6ba17011ec9d5b66c5.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/icons/category_medicine.png"
-dest_files=["res://.godot/imported/category_medicine.png-5ae42fbfb26b6a6ba17011ec9d5b66c5.ctex"]
+dest_files=["res://.godot/imported/category_medicine.png-5ae42fbfb26b6a6ba17011ec9d5b66c5.s3tc.ctex", "res://.godot/imported/category_medicine.png-5ae42fbfb26b6a6ba17011ec9d5b66c5.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

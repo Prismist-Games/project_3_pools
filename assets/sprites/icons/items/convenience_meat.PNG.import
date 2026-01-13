@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cdcv5btyi38kp"
-path="res://.godot/imported/convenience_meat.PNG-0bcf46028d0d35b16458f7817894ed42.ctex"
+path.s3tc="res://.godot/imported/convenience_meat.png-cab0439df1b24a7cb6e0ea98623925af.s3tc.ctex"
+path.etc2="res://.godot/imported/convenience_meat.png-cab0439df1b24a7cb6e0ea98623925af.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/convenience_meat.PNG"
-dest_files=["res://.godot/imported/convenience_meat.PNG-0bcf46028d0d35b16458f7817894ed42.ctex"]
+source_file="res://assets/sprites/icons/items/convenience_meat.png"
+dest_files=["res://.godot/imported/convenience_meat.png-cab0439df1b24a7cb6e0ea98623925af.s3tc.ctex", "res://.godot/imported/convenience_meat.png-cab0439df1b24a7cb6e0ea98623925af.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

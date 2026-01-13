@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/spinning_top.png-7e5d467e4d9ccd72c1d4b7bcd5ba
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
