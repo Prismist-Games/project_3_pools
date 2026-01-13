@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cevai4fgvnr"
-path.s3tc="res://.godot/imported/convenience_ramen.PNG-2e614732bd3e5978d90d197728a29289.s3tc.ctex"
-path.etc2="res://.godot/imported/convenience_ramen.PNG-2e614732bd3e5978d90d197728a29289.etc2.ctex"
+path.s3tc="res://.godot/imported/convenience_ramen.png-16ce0281eff4e18046f374dea32f76c1.s3tc.ctex"
+path.etc2="res://.godot/imported/convenience_ramen.png-16ce0281eff4e18046f374dea32f76c1.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/convenience_ramen.PNG"
-dest_files=["res://.godot/imported/convenience_ramen.PNG-2e614732bd3e5978d90d197728a29289.s3tc.ctex", "res://.godot/imported/convenience_ramen.PNG-2e614732bd3e5978d90d197728a29289.etc2.ctex"]
+source_file="res://assets/sprites/icons/items/convenience_ramen.png"
+dest_files=["res://.godot/imported/convenience_ramen.png-16ce0281eff4e18046f374dea32f76c1.s3tc.ctex", "res://.godot/imported/convenience_ramen.png-16ce0281eff4e18046f374dea32f76c1.etc2.ctex"]
 
 [params]
 

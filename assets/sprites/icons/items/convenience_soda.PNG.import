@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ckuqwmt3g6iyb"
-path.s3tc="res://.godot/imported/convenience_soda.PNG-94f2430e8e2cdf2987bee49d090468da.s3tc.ctex"
-path.etc2="res://.godot/imported/convenience_soda.PNG-94f2430e8e2cdf2987bee49d090468da.etc2.ctex"
+path.s3tc="res://.godot/imported/convenience_soda.png-b82076c42c96165be2ea81547fe1c73a.s3tc.ctex"
+path.etc2="res://.godot/imported/convenience_soda.png-b82076c42c96165be2ea81547fe1c73a.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/convenience_soda.PNG"
-dest_files=["res://.godot/imported/convenience_soda.PNG-94f2430e8e2cdf2987bee49d090468da.s3tc.ctex", "res://.godot/imported/convenience_soda.PNG-94f2430e8e2cdf2987bee49d090468da.etc2.ctex"]
+source_file="res://assets/sprites/icons/items/convenience_soda.png"
+dest_files=["res://.godot/imported/convenience_soda.png-b82076c42c96165be2ea81547fe1c73a.s3tc.ctex", "res://.godot/imported/convenience_soda.png-b82076c42c96165be2ea81547fe1c73a.etc2.ctex"]
 
 [params]
 

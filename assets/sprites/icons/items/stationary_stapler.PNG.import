@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cv1a7fotuh50e"
-path.s3tc="res://.godot/imported/stationary_stapler.PNG-00505f5032cd7ec81df0adcf1ee511f9.s3tc.ctex"
-path.etc2="res://.godot/imported/stationary_stapler.PNG-00505f5032cd7ec81df0adcf1ee511f9.etc2.ctex"
+path.s3tc="res://.godot/imported/stationary_stapler.png-e59ade97eab45fd533fee171797347c6.s3tc.ctex"
+path.etc2="res://.godot/imported/stationary_stapler.png-e59ade97eab45fd533fee171797347c6.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/stationary_stapler.PNG"
-dest_files=["res://.godot/imported/stationary_stapler.PNG-00505f5032cd7ec81df0adcf1ee511f9.s3tc.ctex", "res://.godot/imported/stationary_stapler.PNG-00505f5032cd7ec81df0adcf1ee511f9.etc2.ctex"]
+source_file="res://assets/sprites/icons/items/stationary_stapler.png"
+dest_files=["res://.godot/imported/stationary_stapler.png-e59ade97eab45fd533fee171797347c6.s3tc.ctex", "res://.godot/imported/stationary_stapler.png-e59ade97eab45fd533fee171797347c6.etc2.ctex"]
 
 [params]
 

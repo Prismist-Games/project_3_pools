@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwjokbfgqmqme"
-path.s3tc="res://.godot/imported/the_rabbit_wand_head.png-ef8ab13c880a739d7b390351570a03df.s3tc.ctex"
-path.etc2="res://.godot/imported/the_rabbit_wand_head.png-ef8ab13c880a739d7b390351570a03df.etc2.ctex"
+uid="uid://dyx7bj267u0ep"
+path.s3tc="res://.godot/imported/star-2.png-086c78092ff56b81e7a5f1501ea296ad.s3tc.ctex"
+path.etc2="res://.godot/imported/star-2.png-086c78092ff56b81e7a5f1501ea296ad.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/the_rabbit/the_rabbit_wand_head.png"
-dest_files=["res://.godot/imported/the_rabbit_wand_head.png-ef8ab13c880a739d7b390351570a03df.s3tc.ctex", "res://.godot/imported/the_rabbit_wand_head.png-ef8ab13c880a739d7b390351570a03df.etc2.ctex"]
+source_file="res://assets/sprites/shooting_star/star-2.png"
+dest_files=["res://.godot/imported/star-2.png-086c78092ff56b81e7a5f1501ea296ad.s3tc.ctex", "res://.godot/imported/star-2.png-086c78092ff56b81e7a5f1501ea296ad.etc2.ctex"]
 
 [params]
 

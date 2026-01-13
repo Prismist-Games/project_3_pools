@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bf4bveueq2v23"
-path.s3tc="res://.godot/imported/convenience_oden.PNG-42e6f99c7240b8565563ab073bb5f2d8.s3tc.ctex"
-path.etc2="res://.godot/imported/convenience_oden.PNG-42e6f99c7240b8565563ab073bb5f2d8.etc2.ctex"
+path.s3tc="res://.godot/imported/convenience_oden.png-82702375888b9bca92ef98104dc1134c.s3tc.ctex"
+path.etc2="res://.godot/imported/convenience_oden.png-82702375888b9bca92ef98104dc1134c.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/convenience_oden.PNG"
-dest_files=["res://.godot/imported/convenience_oden.PNG-42e6f99c7240b8565563ab073bb5f2d8.s3tc.ctex", "res://.godot/imported/convenience_oden.PNG-42e6f99c7240b8565563ab073bb5f2d8.etc2.ctex"]
+source_file="res://assets/sprites/icons/items/convenience_oden.png"
+dest_files=["res://.godot/imported/convenience_oden.png-82702375888b9bca92ef98104dc1134c.s3tc.ctex", "res://.godot/imported/convenience_oden.png-82702375888b9bca92ef98104dc1134c.etc2.ctex"]
 
 [params]
 

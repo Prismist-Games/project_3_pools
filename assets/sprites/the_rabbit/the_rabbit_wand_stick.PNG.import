@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bjlpf6bxe6kb1"
-path.s3tc="res://.godot/imported/the_rabbit_wand_stick.PNG-0fc161f604f0a01727bdf9d554a0f941.s3tc.ctex"
-path.etc2="res://.godot/imported/the_rabbit_wand_stick.PNG-0fc161f604f0a01727bdf9d554a0f941.etc2.ctex"
+path.s3tc="res://.godot/imported/the_rabbit_wand_stick.png-89cd92f47c4dfa6d501eee85b9301d6b.s3tc.ctex"
+path.etc2="res://.godot/imported/the_rabbit_wand_stick.png-89cd92f47c4dfa6d501eee85b9301d6b.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/the_rabbit/the_rabbit_wand_stick.PNG"
-dest_files=["res://.godot/imported/the_rabbit_wand_stick.PNG-0fc161f604f0a01727bdf9d554a0f941.s3tc.ctex", "res://.godot/imported/the_rabbit_wand_stick.PNG-0fc161f604f0a01727bdf9d554a0f941.etc2.ctex"]
+source_file="res://assets/sprites/the_rabbit/the_rabbit_wand_stick.png"
+dest_files=["res://.godot/imported/the_rabbit_wand_stick.png-89cd92f47c4dfa6d501eee85b9301d6b.s3tc.ctex", "res://.godot/imported/the_rabbit_wand_stick.png-89cd92f47c4dfa6d501eee85b9301d6b.etc2.ctex"]
 
 [params]
 
