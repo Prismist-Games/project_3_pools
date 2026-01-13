@@ -43,7 +43,9 @@ func update_orders_display(orders: Array) -> void:
 
 	for i in range(1, 5):
 		var slot = _get_slot_node(i)
-		var order = orders[i - 1] if (i - 1) < orders.size() else null
+		var order_candidate = orders[i - 1] if (i - 1) < orders.size() else null
+		# 确保普通槽位不显示主线订单 (防御性编程)
+		var order = order_candidate if (order_candidate and not order_candidate.is_mainline) else null
 		
 		if slot:
 			# Propagate state to View Component
@@ -73,9 +75,11 @@ func update_orders_display(orders: Array) -> void:
 		var req_states = []
 		if mainline_order:
 			req_states = _calculate_req_states(mainline_order, is_submit)
-			
-		if main_quest_slot.has_method("update_order_display"):
-			main_quest_slot.update_order_display(mainline_order, req_states)
+			main_quest_slot.visible = true
+			if main_quest_slot.has_method("update_order_display"):
+				main_quest_slot.update_order_display(mainline_order, req_states)
+		else:
+			main_quest_slot.visible = false
 			
 		if main_quest_slot.is_locked and not game_ui.is_ui_locked():
 			main_quest_slot.is_locked = false

@@ -541,8 +541,6 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 			current_pool_item_type = item_type
 		
 		var theme_color := Color("#199C80") # 普通门颜色
-		if item_type == Constants.ItemType.MAINLINE:
-			theme_color = Color("#FF6E54") # 核心门颜色
 		
 		if target_lid_sprite:
 			target_lid_sprite.self_modulate = theme_color
@@ -563,19 +561,14 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 			cost_text = pool.price_text
 		else:
 			var cost_gold: int = pool.get("gold_cost") if "gold_cost" in pool else 0
-			var cost_tickets: int = pool.get("ticket_cost") if "ticket_cost" in pool else 0
-			cost_text = str(cost_tickets) if cost_tickets > 0 else str(cost_gold)
+			cost_text = str(cost_gold)
 		
 		target_price.text = cost_text
 		target_price.visible = true # 强制保持可见，即使文本为空
 	
 	# Price Icon 逻辑 (始终保持可见)
 	if not target_pseudo and price_icon:
-		var has_tickets = pool.get("ticket_cost") > 0 if "ticket_cost" in pool else false
-		if has_tickets:
-			price_icon.texture = preload("res://assets/sprites/icons/coupon.png")
-		else:
-			price_icon.texture = preload("res://assets/sprites/icons/money.png")
+		price_icon.texture = preload("res://assets/sprites/icons/money.png")
 		price_icon.visible = true # 强制保持可见
 	
 	# 更新词缀

@@ -95,11 +95,6 @@ func select_slot(index: int) -> void:
 	if item == null:
 		return
 	
-	# 主线物品不可置换
-	if item.item_data.item_type == Constants.ItemType.MAINLINE:
-		# TODO: 播放错误提示音
-		return
-	
 	_is_selecting = true
 	_is_animating = true
 	

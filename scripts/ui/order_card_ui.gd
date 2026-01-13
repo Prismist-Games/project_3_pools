@@ -77,14 +77,10 @@ func setup(order: OrderData, index: int) -> void:
 	# 奖励预览
 	var reward_text = "奖励: "
 	if preview.is_satisfied:
-		if order.reward_gold > 0:
-			reward_text += "%d -> %d 金币 " % [order.reward_gold, preview.gold]
-		if order.reward_tickets > 0:
-			reward_text += "%d -> %d 奖券" % [order.reward_tickets, preview.tickets]
+		reward_text += "%d -> %d 金币 " % [order.reward_gold, preview.gold]
 		reward_label.add_theme_color_override("font_color", Color("#854d0e")) # 暖褐色
 	else:
-		if order.reward_gold > 0: reward_text += "%d 金币 " % order.reward_gold
-		if order.reward_tickets > 0: reward_text += "%d 奖券" % order.reward_tickets
+		reward_text += "%d 金币 " % order.reward_gold
 		reward_label.add_theme_color_override("font_color", dark_text)
 	
 	reward_label.text = ("✅ " if preview.is_satisfied else "") + reward_text
@@ -96,6 +92,7 @@ func setup(order: OrderData, index: int) -> void:
 	if stage_data != null and not stage_data.has_order_refresh:
 		stage_allows_refresh = false
 	
+	# 主线订单或该阶段未解锁刷新时完全隐藏
 	# 主线订单或该阶段未解锁刷新时完全隐藏
 	refresh_button.visible = stage_allows_refresh and not order.is_mainline
 	# 次数用尽时变灰禁用，但保持可见

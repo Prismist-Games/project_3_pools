@@ -48,44 +48,25 @@ func update_order_display(order_data: OrderData, req_states: Array = []) -> void
 	
 	visible = true
 	# Update reward display
-	var reward_text = ""
-	if order_data.reward_gold > 0:
-		reward_text += str(order_data.reward_gold)
-	if order_data.reward_tickets > 0:
-		reward_text += "%d" % order_data.reward_tickets
-	
 	if reward_label:
-		reward_label.text = reward_text
+		reward_label.text = str(order_data.reward_gold)
 	
-	# Update reward icon and background color based on reward type
+	# 设置背景和图标（统一为金币，但区分主线/普通颜色）
 	if order_data.is_mainline:
-		# 主线订单：红色背景
+		# 主线订单：橙色/红色背景
 		if backgrounds:
 			backgrounds.color = Color("#FBB03B")
 		else:
 			var mainline_bg = find_child("Main Quest Slot_background", true)
 			if mainline_bg:
 				mainline_bg.self_modulate = Color("#FF585D")
-		# 主线订单可能同时有金币和奖券，优先显示奖券图标
-		if reward_icon:
-			if order_data.reward_tickets > 0:
-				reward_icon.texture = preload("res://assets/sprites/icons/coupon.png")
-			else:
-				reward_icon.texture = preload("res://assets/sprites/icons/money.png")
 	else:
-		# 普通订单：根据奖励类型设置背景和图标
-		if order_data.reward_tickets > 0:
-			# 奖券：蓝色背景
-			if backgrounds:
-				backgrounds.color = Color("#4C90F3")
-			if reward_icon:
-				reward_icon.texture = preload("res://assets/sprites/icons/coupon.png")
-		else:
-			# 金币：绿色背景
-			if backgrounds:
-				backgrounds.color = Color("#62DC40")
-			if reward_icon:
-				reward_icon.texture = preload("res://assets/sprites/icons/money.png")
+		# 普通订单：绿色背景
+		if backgrounds:
+			backgrounds.color = Color("#62DC40")
+			
+	if reward_icon:
+		reward_icon.texture = preload("res://assets/sprites/icons/money.png")
 	
 	if refresh_label:
 		refresh_label.text = str(order_data.refresh_count)

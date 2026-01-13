@@ -11,7 +11,6 @@ var item_type: Constants.ItemType = Constants.ItemType.NONE
 var affix_id: StringName = &""
 
 var gold_cost: int = 0
-var ticket_cost: int = 0
 
 ## 权重数组：仅覆盖 COMMON~LEGENDARY（不含 MYTHIC）。
 ## index 对应 Constants.Rarity：COMMON(0)~LEGENDARY(4)

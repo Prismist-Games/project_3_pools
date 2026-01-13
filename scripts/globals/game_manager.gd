@@ -9,8 +9,6 @@ extends Node
 
 # --- 信号 ---
 signal gold_changed(amount: int)
-signal tickets_changed(amount: int)
-signal mainline_stage_changed(stage: int)
 signal order_selection_changed(index: int)
 signal ui_mode_changed(mode: int)
 
@@ -20,16 +18,6 @@ var gold: int = 0:
 		gold = v
 		gold_changed.emit(gold)
 
-var tickets: int = 0:
-	set(v):
-		tickets = v
-		tickets_changed.emit(tickets)
-
-var mainline_stage: int = 1:
-	set(v):
-		mainline_stage = v
-		_update_current_stage_data()
-		mainline_stage_changed.emit(mainline_stage)
 
 # --- UI 状态 ---
 var current_ui_mode: Constants.UIMode = Constants.UIMode.NORMAL:
@@ -53,12 +41,10 @@ var selected_slot_index: int = -1
 
 # --- 资源引用 ---
 var game_config: GameConfig
-var current_stage_data: MainlineStageData
 
 var all_items: Array[ItemData] = []
 var all_skills: Array[SkillData] = []
 var all_pool_affixes: Array[PoolAffixData] = []
-var all_stages: Array[MainlineStageData] = []
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
@@ -82,30 +68,12 @@ func _load_resources() -> void:
 	all_skills.assign(_load_all_from_dir(game_config.skills_dir, "SkillData"))
 	# 加载所有奖池词缀资源
 	all_pool_affixes.assign(_load_all_from_dir(game_config.pool_affixes_dir, "PoolAffixData"))
-	# 加载所有主线阶段数据
-	all_stages.assign(_load_all_from_dir(game_config.mainline_stages_dir, "MainlineStageData"))
-	all_stages.sort_custom(func(a, b): return a.stage < b.stage)
 
 func _initialize_game_state() -> void:
 	gold = game_config.starting_gold
-	tickets = game_config.starting_tickets
 	
 	# 初始化背包空间 (直接设为 10)
 	InventorySystem.initialize_inventory(10)
-	
-	# 设置初始主线进度 (优先使用调试设置)
-	if game_config.debug_stage > 0:
-		mainline_stage = game_config.debug_stage
-	else:
-		mainline_stage = 1
-	
-	_update_current_stage_data()
-
-func _update_current_stage_data() -> void:
-	current_stage_data = get_mainline_stage_data(mainline_stage)
-	if current_stage_data:
-		# 根据当前阶段调整背包大小 (委托给 InventorySystem)
-		InventorySystem.resize_inventory(current_stage_data.inventory_size)
 
 # --- 经济与状态方法 ---
 
@@ -118,14 +86,6 @@ func spend_gold(amount: int) -> bool:
 		return true
 	return false
 
-func add_tickets(amount: int) -> void:
-	tickets += amount
-
-func spend_tickets(amount: int) -> bool:
-	if tickets >= amount:
-		tickets -= amount
-		return true
-	return false
 
 # --- 数据查询方法 ---
 
@@ -148,12 +108,6 @@ func get_all_normal_items() -> Array[ItemData]:
 		if Constants.is_normal_type(item.item_type):
 			result.append(item)
 	return result
-
-func get_mainline_stage_data(stage_idx: int) -> MainlineStageData:
-	for s in all_stages:
-		if s.stage == stage_idx:
-			return s
-	return null
 
 
 # --- 内部工具 ---

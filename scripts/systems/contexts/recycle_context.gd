@@ -5,6 +5,5 @@ class_name RecycleContext
 
 var item: ItemInstance = null
 var reward_gold: int = 0
-var reward_tickets: int = 0
 
 var meta: Dictionary = {}

@@ -5,29 +5,16 @@ extends Node
 var current_orders: Array[OrderData] = []
 
 func _ready() -> void:
-	# 等待 GameManager 初始化完成
+	# 等待 GameManager 和 UnlockManager 初始化完成
 	if not GameManager.is_node_ready():
 		await GameManager.ready
+	if not UnlockManager.is_node_ready():
+		await UnlockManager.ready
 	
 	# 初始生成订单
 	call_deferred("refresh_all_orders")
 	
 	EventBus.game_event.connect(_on_game_event)
-	
-	# 监听进度变化，动态添加主线任务
-	GameManager.mainline_stage_changed.connect(_on_mainline_stage_changed)
-	GameManager.tickets_changed.connect(_on_tickets_changed)
-
-
-func _on_mainline_stage_changed(_stage: int) -> void:
-	_check_and_add_mainline_order()
-	EventBus.orders_updated.emit(current_orders)
-
-
-func _on_tickets_changed(_tickets: int) -> void:
-	# 虽然移除了任务显示的奖券门槛，但保持监听以防未来逻辑变更
-	_check_and_add_mainline_order()
-	EventBus.orders_updated.emit(current_orders)
 
 
 func _on_game_event(event_id: StringName, _payload: RefCounted) -> void:
@@ -37,8 +24,7 @@ func _on_game_event(event_id: StringName, _payload: RefCounted) -> void:
 
 func _add_refreshes_to_all_orders(amount: int) -> void:
 	for order in current_orders:
-		if not order.is_mainline:
-			order.refresh_count += amount
+		order.refresh_count += amount
 	EventBus.orders_updated.emit(current_orders)
 
 
@@ -48,10 +34,13 @@ func refresh_all_orders() -> void:
 	# 使用 UnlockManager 控制订单数量
 	var count = UnlockManager.order_limit
 		
+	# 1. 生成 count 个普通订单 (对应下方 4 个槽位)
 	for i in range(count):
 		current_orders.append(_generate_normal_order())
+		
+	# 2. 生成 1 个额外的主线订单
+	current_orders.append(_generate_mainline_order())
 	
-	_check_and_add_mainline_order()
 	EventBus.orders_updated.emit(current_orders)
 
 
@@ -72,12 +61,11 @@ func refresh_order(index: int) -> OrderData:
 	# EventBus.game_event.emit(&"order_refresh_requested", ctx) # 这里的 emit 导致了循环调用，因为 UI 层监听同名事件来触发动画
 	EventBus.game_event.emit(&"order_refresh_logic_check", ctx) # 改名避免冲突
 	
-	if ctx.get_value("consume_refresh"):
-		order.refresh_count -= 1
-	
 	if order.is_mainline:
-		current_orders[index] = _generate_mainline_order()
+		current_orders[index] = _generate_mainline_order() # 主线不减少刷新次数? 或者减少? 暂时保持原样
 	else:
+		if ctx.get_value("consume_refresh"):
+			order.refresh_count -= 1
 		current_orders[index] = _generate_normal_order(order.refresh_count)
 		
 	EventBus.orders_updated.emit(current_orders)
@@ -115,8 +103,7 @@ func _submit_single_order(index: int, selected_indices: Array[int]) -> bool:
 	
 	# 替换订单
 	if order.is_mainline:
-		current_orders.erase(order)
-		_check_and_add_mainline_order()
+		current_orders[index] = _generate_mainline_order()
 	else:
 		current_orders[index] = _generate_normal_order()
 		
@@ -155,8 +142,7 @@ func _submit_all_satisfied(selected_indices: Array[int]) -> bool:
 		
 		# 替换
 		if order.is_mainline:
-			current_orders.remove_at(idx)
-			_check_and_add_mainline_order()
+			current_orders[idx] = _generate_mainline_order()
 		else:
 			current_orders[idx] = _generate_normal_order()
 			
@@ -172,46 +158,18 @@ func _execute_submission(order: OrderData, items_to_consume: Array[ItemInstance]
 	var context = OrderCompletedContext.new()
 	# 基础奖励 * (1 + 溢出加成)
 	context.reward_gold = roundi(order.reward_gold * (1.0 + total_rarity_bonus))
-	context.reward_tickets = roundi(order.reward_tickets * (1.0 + total_rarity_bonus))
 	context.submitted_items = items_to_consume
-	context.meta["is_mainline"] = order.is_mainline
 	
-
-	# PVT: logic moved to SkillEffects (PovertyReliefSkillEffect, OcdSkillEffect)
 	# 发出信号让技能系统进一步修改
 	EventBus.order_completed.emit(context)
 	
 	# 发放奖励
 	GameManager.add_gold(context.reward_gold)
-	GameManager.add_tickets(context.reward_tickets)
-	
-	# 如果是主线，进阶
-	if order.is_mainline:
-		GameManager.mainline_stage += 1
-		if GameManager.mainline_stage <= Constants.MAINLINE_STAGES:
-			EventBus.modal_requested.emit(&"skill_select", null)
-
-
-func _check_and_add_mainline_order() -> void:
-	var has_mainline = false
-	for o in current_orders:
-		if o.is_mainline:
-			has_mainline = true
-			break
-			
-	if not has_mainline and _should_generate_mainline_order():
-		current_orders.append(_generate_mainline_order())
-
-
-func _should_generate_mainline_order() -> bool:
-	return GameManager.mainline_stage <= Constants.MAINLINE_STAGES
 
 
 func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 	var order = OrderData.new()
 	var rng = GameManager.rng
-	var stage = GameManager.mainline_stage
-	var stage_data = GameManager.get_mainline_stage_data(stage)
 	
 	# 1. 决定需求项总数 (由 UnlockManager 控制范围)
 	# 注意：这里的数量是需求项的数量，每个需求项需要 1 个物品
@@ -234,10 +192,17 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 		
 		# 2. 决定品质要求
 		var min_rarity = Constants.Rarity.COMMON
-		if stage_data:
-			var weights = stage_data.get_order_rarity_weights()
-			if weights.size() >= 5:
-				min_rarity = Constants.pick_weighted_index(weights, rng) as Constants.Rarity
+		if GameManager.game_config != null:
+			# 如果没有 stage_data，使用基础权重
+			var cfg = GameManager.game_config
+			var weights = PackedFloat32Array([
+				cfg.weight_common,
+				cfg.weight_uncommon,
+				cfg.weight_rare,
+				cfg.weight_epic,
+				cfg.weight_legendary
+			])
+			min_rarity = Constants.pick_weighted_index(weights, rng) as Constants.Rarity
 		
 		total_rarity_score += min_rarity * count
 			
@@ -249,31 +214,22 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 
 	
 	# 3. 设定基础奖励：根据总物品数和品质深度加成
-	var is_gold_reward = rng.randf() < 0.5
 	# 每个品质等级提升 25% 基础奖励
 	var reward_multiplier = 1.0 + (total_rarity_score * 0.25)
 	
-	match target_requirement_count:
-		1:
-			if is_gold_reward: order.reward_gold = roundi(3 * reward_multiplier)
-			else: order.reward_tickets = roundi(5 * reward_multiplier)
-		2:
-			if is_gold_reward: order.reward_gold = roundi(5 * reward_multiplier)
-			else: order.reward_tickets = roundi(10 * reward_multiplier)
-		3:
-			if is_gold_reward: order.reward_gold = roundi(10 * reward_multiplier)
-			else: order.reward_tickets = roundi(20 * reward_multiplier)
-		4:
-			if is_gold_reward: order.reward_gold = roundi(15 * reward_multiplier)
-			else: order.reward_tickets = roundi(30 * reward_multiplier)
-		5:
-			if is_gold_reward: order.reward_gold = roundi(20 * reward_multiplier)
-			else: order.reward_tickets = roundi(40 * reward_multiplier)
-		6:
-			if is_gold_reward: order.reward_gold = roundi(25 * reward_multiplier)
-			else: order.reward_tickets = roundi(50 * reward_multiplier)
-		_:
-			order.reward_gold = roundi(5 * reward_multiplier)
+	# 简化奖励逻辑，不再区分金币/奖券，统一为金币
+	var base_rewards = {
+		1: 3,
+		2: 5,
+		3: 10,
+		4: 15,
+		5: 20,
+		6: 25
+	}
+	
+	var base_gold = base_rewards.get(target_requirement_count, 5)
+	order.reward_gold = roundi(base_gold * reward_multiplier)
+
 	
 	if force_refresh_count >= 0:
 		order.refresh_count = force_refresh_count
@@ -288,26 +244,20 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 func _generate_mainline_order() -> OrderData:
 	var order = OrderData.new()
 	order.is_mainline = true
+	var _rng = GameManager.rng
 	
-	var stage = GameManager.mainline_stage
-	var stage_data = GameManager.get_mainline_stage_data(stage)
-	
-	if stage_data != null:
+	var normal_items = GameManager.get_all_normal_items()
+	# 主线需求：2个随机史诗品质的物品
+	for i in range(2):
+		var item_data = normal_items.pick_random()
 		order.requirements.append({
-			"item_id": stage_data.mainline_item.id,
-			"min_rarity": Constants.Rarity.MYTHIC,
+			"item_id": item_data.id,
+			"min_rarity": Constants.Rarity.EPIC,
 			"count": 1
 		})
-		
-		# 根据阶段数据决定副物品需求
-		var secondary_item = GameManager.get_all_normal_items().pick_random()
-		order.requirements.append({
-			"item_id": secondary_item.id,
-			"min_rarity": stage_data.required_secondary_rarity,
-			"count": 1
-		})
-		
-	order.reward_gold = 50
-	order.reward_tickets = 20
-	order.refresh_count = 0
+	
+	# 主线奖励：高额金币 (例如 100)
+	order.reward_gold = 100
+	order.refresh_count = 0 # 主线通常不可刷新，或者跟随普通逻辑
+	
 	return order

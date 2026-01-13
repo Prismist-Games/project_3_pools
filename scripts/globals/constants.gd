@@ -22,11 +22,9 @@ enum ItemType {
 	STATIONERY,
 	CONVENIENCE,
 	ENTERTAINMENT,
-	MAINLINE,
 }
 
 const SKILL_SLOTS: int = 3
-const MAINLINE_STAGES: int = 5
 
 ## 获取所有普通物品类型
 func get_normal_item_types() -> Array[ItemType]:
@@ -39,7 +37,7 @@ func get_normal_item_types() -> Array[ItemType]:
 	]
 
 func is_normal_type(type: ItemType) -> bool:
-	return type != ItemType.NONE and type != ItemType.MAINLINE
+	return type != ItemType.NONE
 
 func type_to_string(type: ItemType) -> StringName:
 	match type:
@@ -48,7 +46,6 @@ func type_to_string(type: ItemType) -> StringName:
 		ItemType.STATIONERY: return &"Stationery"
 		ItemType.CONVENIENCE: return &"Convenience"
 		ItemType.ENTERTAINMENT: return &"Entertainment"
-		ItemType.MAINLINE: return &"Mainline"
 		_: return &"None"
 
 func type_to_display_name(type: ItemType) -> String:
@@ -58,7 +55,6 @@ func type_to_display_name(type: ItemType) -> String:
 		ItemType.STATIONERY: return "文具"
 		ItemType.CONVENIENCE: return "便利"
 		ItemType.ENTERTAINMENT: return "娱乐"
-		ItemType.MAINLINE: return "核心"
 		_: return "其他"
 
 func type_to_icon(type: ItemType) -> Texture2D:
@@ -68,41 +64,8 @@ func type_to_icon(type: ItemType) -> Texture2D:
 		ItemType.STATIONERY: return preload("res://assets/sprites/icons/category_office.png")
 		ItemType.CONVENIENCE: return preload("res://assets/sprites/icons/category_convenience.png")
 		ItemType.ENTERTAINMENT: return preload("res://assets/sprites/icons/category_entertainment.png")
-		ItemType.MAINLINE:
-			# 核心池图标随阶段变化
-			var stage = 1
-			if Engine.has_singleton("GameManager"):
-				stage = GameManager.mainline_stage
-			
-			match stage:
-				1: return preload("res://assets/sprites/icons/artifact_antique.png")
-				2: return preload("res://assets/sprites/icons/artifact_medicine.png")
-				3: return preload("res://assets/sprites/icons/artifact_stationary.png")
-				4: return preload("res://assets/sprites/icons/artifact_convenience.png")
-				5: return preload("res://assets/sprites/icons/artifact_entertainment.png")
-				_: return null
 		_: return null
 
-const MAINLINE_ITEM_STAGE_1: StringName = &"mainline_antique"
-const MAINLINE_ITEM_STAGE_2: StringName = &"mainline_medicine"
-const MAINLINE_ITEM_STAGE_3: StringName = &"mainline_stationery"
-const MAINLINE_ITEM_STAGE_4: StringName = &"mainline_convenience"
-const MAINLINE_ITEM_STAGE_5: StringName = &"mainline_entertainment"
-
-func mainline_item_id_for_stage(stage: int) -> StringName:
-	match stage:
-		1:
-			return MAINLINE_ITEM_STAGE_1
-		2:
-			return MAINLINE_ITEM_STAGE_2
-		3:
-			return MAINLINE_ITEM_STAGE_3
-		4:
-			return MAINLINE_ITEM_STAGE_4
-		5:
-			return MAINLINE_ITEM_STAGE_5
-		_:
-			return &""
 
 func rarity_id(rarity: int) -> StringName:
 	match rarity:

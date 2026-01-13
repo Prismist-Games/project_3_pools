@@ -87,11 +87,9 @@ func get_selectable_skills(count: int = 3) -> Array[SkillData]:
 	# 依赖 GameManager.all_skills 数据源
 	var all_skills = GameManager.all_skills
 	var available: Array[SkillData] = []
-	var stage = GameManager.mainline_stage
-	
 	for skill in all_skills:
-		# 只有满足解锁阶段，且当前未拥有的技能才可供选择
-		if skill.unlock_stage <= stage and not has_skill(skill.id):
+		# 只要当前未拥有的技能才可供选择
+		if not has_skill(skill.id):
 			available.append(skill)
 	
 	available.shuffle()

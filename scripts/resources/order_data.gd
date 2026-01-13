@@ -8,13 +8,12 @@ class_name OrderData
 @export var requirements: Array[Dictionary] = []
 
 @export var reward_gold: int = 0
-@export var reward_tickets: int = 0
-@export var is_mainline: bool = false
 
 ## 剩余刷新次数
 @export var refresh_count: int = 1
 
 ## 运行时标识
+@export var is_mainline: bool = false
 var order_id: StringName = &""
 
 
@@ -88,7 +87,6 @@ func calculate_preview_rewards(selected_items: Array) -> Dictionary:
 	var res = {
 		"is_satisfied": false,
 		"gold": reward_gold,
-		"tickets": reward_tickets,
 		"fulfilled_requirements": [] # 记录哪些需求已满足
 	}
 	
@@ -112,7 +110,6 @@ func calculate_preview_rewards(selected_items: Array) -> Dictionary:
 	if validation.valid:
 		res.is_satisfied = true
 		res.gold = roundi(reward_gold * (1.0 + validation.total_overflow_bonus))
-		res.tickets = roundi(reward_tickets * (1.0 + validation.total_overflow_bonus))
 	
 	return res
 

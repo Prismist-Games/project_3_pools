@@ -6,7 +6,7 @@ extends Control
 
 # --- 节点引用 (根据 game2d-uiux-integration-spec.md) ---
 @onready var money_label: RichTextLabel = find_child("Money_label", true)
-@onready var coupon_label: RichTextLabel = find_child("Coupon_label", true)
+
 @onready var game_theme: Theme = preload("res://data/game_theme.tres")
 
 @onready var item_slots_grid: GridContainer = find_child("Item Slots Grid", true)
@@ -76,7 +76,7 @@ func _ready() -> void:
 	
 	# 3. 基础信号绑定
 	GameManager.gold_changed.connect(_on_gold_changed)
-	GameManager.tickets_changed.connect(_on_tickets_changed)
+
 	
 	InventorySystem.inventory_changed.connect(_on_inventory_changed)
 	InventorySystem.pending_queue_changed.connect(_on_pending_queue_changed)
@@ -237,7 +237,7 @@ func _on_vfx_queue_finished() -> void:
 
 func _refresh_all() -> void:
 	_on_gold_changed(GameManager.gold)
-	_on_tickets_changed(GameManager.tickets)
+
 	inventory_controller.update_all_slots(InventorySystem.inventory)
 	_on_skills_changed(SkillSystem.current_skills)
 	
@@ -328,8 +328,6 @@ func _update_ui_mode_display() -> void:
 func _on_gold_changed(val: int) -> void:
 	money_label.text = str(val)
 
-func _on_tickets_changed(val: int) -> void:
-	coupon_label.text = str(val)
 
 func _on_inventory_changed(inventory: Array) -> void:
 	inventory_controller.update_all_slots(inventory)
