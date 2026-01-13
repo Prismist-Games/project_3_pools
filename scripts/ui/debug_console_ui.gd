@@ -27,6 +27,12 @@ extends PanelContainer
 
 var _is_updating: bool = false # 防止循环更新
 
+# 性能监控相关
+var _perf_container: VBoxContainer
+var _perf_labels: Dictionary = {}
+const PERF_UPDATE_INTERVAL: float = 0.5
+var _perf_timer: float = 0.0
+
 
 func _ready() -> void:
 	_setup_ui()
@@ -48,6 +54,7 @@ func _ready() -> void:
 			print("[DebugConsole] 已触发不耐烦动画测试")
 		)
 	
+
 	var anim_reset_btn = find_child("ResetAnimButton", true, false)
 	if anim_reset_btn:
 		anim_reset_btn.pressed.connect(func():
@@ -55,6 +62,18 @@ func _ready() -> void:
 			get_tree().call_group("debug_animator", "_transition_to_state", &"Idle")
 			print("[DebugConsole] 已重置动画到 Idle")
 		)
+	
+	_setup_performance_monitor()
+
+
+func _process(delta: float) -> void:
+	if not visible:
+		return
+		
+	_perf_timer += delta
+	if _perf_timer >= PERF_UPDATE_INTERVAL:
+		_perf_timer = 0.0
+		_update_performance_stats()
 
 
 func _setup_ui() -> void:
@@ -282,6 +301,72 @@ func _input(event: InputEvent) -> void:
 		if visible:
 			hide()
 			get_viewport().set_input_as_handled()
+
+
+## 性能监控
+func _setup_performance_monitor() -> void:
+	var main_vbox = $MarginContainer/ScrollContainer/VBoxContainer
+	if not main_vbox:
+		return
+		
+	# 创建性能监控容器
+	_perf_container = VBoxContainer.new()
+	_perf_container.name = "PerformanceMonitor"
+	
+	# 添加标题
+	var header = Label.new()
+	header.text = "📊 性能监控"
+	header.add_theme_font_size_override("font_size", 14)
+	_perf_container.add_child(header)
+	
+	# 添加各项指标 Label
+	var metrics = ["FPS", "Memory", "DrawCalls", "Objects", "Orphans"]
+	for metric in metrics:
+		var row = HBoxContainer.new()
+		var label_name = Label.new()
+		label_name.text = metric
+		label_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		
+		var label_value = Label.new()
+		label_value.name = "Value_" + metric
+		label_value.text = "0"
+		_perf_labels[metric] = label_value
+		
+		row.add_child(label_name)
+		row.add_child(label_value)
+		_perf_container.add_child(row)
+	
+	# 添加分隔符
+	var sep = HSeparator.new()
+	_perf_container.add_child(sep)
+	
+	# 插入到 Header 之后 (index 1)
+	main_vbox.add_child(_perf_container)
+	main_vbox.move_child(_perf_container, 2) # Header(0), HSeparator(1), then Here
+
+
+func _update_performance_stats() -> void:
+	if _perf_labels.is_empty():
+		return
+		
+	# FPS
+	_perf_labels["FPS"].text = str(Engine.get_frames_per_second())
+	
+	# Memory (MB)
+	var mem = OS.get_static_memory_usage() / 1024.0 / 1024.0
+	_perf_labels["Memory"].text = "%.2f MB" % mem
+	
+	# Draw Calls
+	var draw_calls = Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)
+	_perf_labels["DrawCalls"].text = str(draw_calls)
+	
+	# Objects
+	var objects = Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
+	_perf_labels["Objects"].text = str(objects)
+	
+	# Orphan Nodes
+	var orphans = Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)
+	_perf_labels["Orphans"].text = str(orphans)
 
 
 ## 物品生成逻辑
