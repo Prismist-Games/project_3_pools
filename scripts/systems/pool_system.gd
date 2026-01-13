@@ -97,6 +97,10 @@ func _do_normal_draw(ctx: DrawContext) -> void:
 		if items.is_empty():
 			items = GameManager.get_all_normal_items()
 			
+		if items.is_empty():
+			push_error("PoolSystem: No items found to draw! (Type: %s)" % ctx.item_type)
+			return
+
 		var item_data = items.pick_random()
 		var item_instance = ItemInstance.new(item_data, rarity, ctx.force_sterile)
 		ctx.result_items.append(item_instance)
