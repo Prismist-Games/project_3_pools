@@ -568,7 +568,7 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 		if not target_pseudo:
 			current_pool_item_type = item_type
 		
-		var theme_color := Color("#199C80") # 普通门颜色
+		var theme_color := Color("#199C80") # 普通门颜色为机器色
 		
 		if target_lid_sprite:
 			target_lid_sprite.self_modulate = theme_color

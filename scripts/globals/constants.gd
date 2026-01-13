@@ -148,30 +148,30 @@ enum UIMode {
 
 ## UX 规范颜色 (针对白色背景优化)
 const COLOR_TEXT_MAIN = Color("#0f172a") # 深蓝色文字 (Slate-900)
-const COLOR_BG_SLOT_EMPTY = Color("#f1f5f9") # 极浅灰色背景 (Slate-100)
+const COLOR_BG_SLOT_EMPTY = Color("#199C80") # 机器色背景
 const COLOR_BORDER_SELECTED = Color("#2563eb") # 鲜蓝色边框
 const COLOR_RECYCLE_ACTION = Color("#ef4444") # 鲜红色边框
 
 func get_rarity_border_color(rarity: int) -> Color:
 	match rarity:
-		Rarity.COMMON: return Color("#94a3b8") # Slate-400
-		Rarity.UNCOMMON: return Color("#22c55e") # Green-500
-		Rarity.RARE: return Color("#3b82f6") # Blue-500
-		Rarity.EPIC: return Color("#a855f7") # Purple-500
-		Rarity.LEGENDARY: return Color("#f97316") # Orange-500
-		Rarity.MYTHIC: return Color("#e11d48") # Rose-600
+		Rarity.COMMON: return Color("#f0f0f0") # Grey-100
+		Rarity.UNCOMMON: return Color("#62BA28") # Green-500
+		Rarity.RARE: return Color("#56A5EC") # Blue-500
+		Rarity.EPIC: return Color("#C85FE3") # Purple-500
+		Rarity.LEGENDARY: return Color("#EC9B29") # Orange-500
+		Rarity.MYTHIC: return Color("#E55140") # Rose-600
 		_: return Color.BLACK
 
 func get_rarity_bg_color(rarity: int) -> Color:
 	# 在白色背景上，背景色需要稍微加深一点以便区分
 	match rarity:
-		Rarity.COMMON: return Color("#f1f5f9") # Slate-100
-		Rarity.UNCOMMON: return Color("#dcfce7") # Green-100
-		Rarity.RARE: return Color("#dbeafe") # Blue-100
-		Rarity.EPIC: return Color("#f3e8ff") # Purple-100
-		Rarity.LEGENDARY: return Color("#ffedd5") # Orange-100
-		Rarity.MYTHIC: return Color("#ffe4e6") # Rose-100
-		_: return Color.WHITE
+		Rarity.COMMON: return Color("#f0f0f0") # Grey-100
+		Rarity.UNCOMMON: return Color("#62BA28") # Green-500
+		Rarity.RARE: return Color("#56A5EC") # Blue-500
+		Rarity.EPIC: return Color("#C85FE3") # Purple-500
+		Rarity.LEGENDARY: return Color("#EC9B29") # Orange-500
+		Rarity.MYTHIC: return Color("#E55140") # Rose-600
+		_: return Color.BLACK
 
 
 func pick_weighted_index(weights: PackedFloat32Array, rng: RandomNumberGenerator) -> int:
