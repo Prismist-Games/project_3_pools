@@ -7,6 +7,9 @@ extends UIController
 signal slot_hovered(slot_index: int, item_id: StringName)
 signal slot_unhovered(slot_index: int)
 
+## 当前被hover的slot索引 (-1表示无)
+var _hovered_slot_index: int = -1
+
 var item_slots_grid: GridContainer
 var _slots: Array[Control] = []
 
@@ -171,6 +174,16 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 			pass
 
 func _on_slot_mouse_entered(index: int) -> void:
+	_hovered_slot_index = index
+	
+	# 通知slot被hover
+	var slot = get_slot_node(index)
+	if slot and slot.has_method("on_mouse_enter"):
+		slot.on_mouse_enter()
+	
+	# 更新hover可操作状态
+	_update_slot_hover_action_state(index)
+	
 	# Preview logic (delegated back to Game2DUI or SwitchController later)
 	if game_ui and game_ui.has_method("_on_item_slot_mouse_entered"):
 		game_ui._on_item_slot_mouse_entered(index)
@@ -182,9 +195,74 @@ func _on_slot_mouse_entered(index: int) -> void:
 	else:
 		slot_hovered.emit(index, &"")
 
+
 func _on_slot_mouse_exited(index: int) -> void:
+	_hovered_slot_index = -1
+	
+	# 通知slot不再被hover（会自动清除hover视觉效果）
+	var slot = get_slot_node(index)
+	if slot and slot.has_method("on_mouse_exit"):
+		slot.on_mouse_exit()
+	
 	if game_ui and game_ui.has_method("_on_item_slot_mouse_exited"):
 		game_ui._on_item_slot_mouse_exited(index)
 	
 	# 发射 unhover 信号
 	slot_unhovered.emit(index)
+
+
+## 更新指定slot的hover可操作状态
+func _update_slot_hover_action_state(index: int) -> void:
+	var slot = get_slot_node(index) as ItemSlotUI
+	if not slot:
+		return
+	
+	# 只有真的在hover才继续，否则确保状态清除
+	if not slot.is_hovered():
+		slot.set_hover_action_state(ItemSlotUI.HoverType.NONE)
+		return
+	
+	var target_item = InventorySystem.inventory[index] if index < InventorySystem.inventory.size() else null
+	var pending = InventorySystem.pending_item
+	var has_pending = pending != null
+	var selected_idx = InventorySystem.selected_slot_index
+	var has_selection = selected_idx != -1
+	var ui_mode = Constants.UIMode.NORMAL
+	
+	if game_ui and game_ui.state_machine:
+		ui_mode = game_ui.state_machine.get_ui_mode()
+	
+	# 默认无状态
+	var hover_type = ItemSlotUI.HoverType.NONE
+	
+	# 1. 回收模式下 hover item slot -> 可回收
+	if ui_mode == Constants.UIMode.RECYCLE and target_item != null:
+		hover_type = ItemSlotUI.HoverType.RECYCLABLE
+	
+	# 2. pending时 hover 在有东西的 item_slot -> 可回收 (如果不能合成)
+	elif has_pending and target_item != null:
+		if InventorySystem.can_merge(pending, target_item):
+			# 可合成
+			hover_type = ItemSlotUI.HoverType.MERGEABLE
+		else:
+			# 不能合成，替换 = 回收
+			hover_type = ItemSlotUI.HoverType.RECYCLABLE
+	
+	# 3. 选中item物品时 hover 在可合成的另一个 item slot 上 -> 可合成
+	elif has_selection and selected_idx != index and target_item != null:
+		var selected_item = InventorySystem.inventory[selected_idx] if selected_idx < InventorySystem.inventory.size() else null
+		if selected_item and InventorySystem.can_merge(selected_item, target_item):
+			hover_type = ItemSlotUI.HoverType.MERGEABLE
+	
+	slot.set_hover_action_state(hover_type)
+
+
+## 刷新当前被hover的slot的状态（当游戏状态变化时调用）
+func refresh_hovered_slot_state() -> void:
+	if _hovered_slot_index >= 0:
+		_update_slot_hover_action_state(_hovered_slot_index)
+
+
+## 获取当前被hover的slot索引
+func get_hovered_slot_index() -> int:
+	return _hovered_slot_index

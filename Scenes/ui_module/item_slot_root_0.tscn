@@ -1,0 +1,197 @@
+[gd_scene load_steps=22 format=3 uid="uid://cr0uv8jj87n1f"]
+
+[ext_resource type="Script" uid="uid://exqnykh1n5lj" path="res://scripts/ui/components/item_slot_ui.gd" id="1_ixbl1"]
+[ext_resource type="Texture2D" uid="uid://caieb4p7g0f64" path="res://assets/sprites/item_slots/基地-4.png" id="2_kitn1"]
+[ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="3_rs8t5"]
+[ext_resource type="Texture2D" uid="uid://oxm0lvuajhqy" path="res://assets/sprites/item_slots/基地-1.png" id="4_rfv0q"]
+[ext_resource type="Texture2D" uid="uid://cglvasc20q3mu" path="res://assets/sprites/item_slots/基地-2.png" id="5_gnepb"]
+[ext_resource type="Texture2D" uid="uid://coaai2i4vi1sh" path="res://assets/sprites/item_slots/基地-3.png" id="6_idsbx"]
+[ext_resource type="Texture2D" uid="uid://bb0jex82xogr2" path="res://assets/sprites/item_slots/基地-8.png" id="7_731lk"]
+[ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="8_tc38w"]
+[ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="9_nc6kv"]
+[ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="10_y5mjh"]
+[ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="11_emsc1"]
+[ext_resource type="Texture2D" uid="uid://bclpcjghycqdb" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="11_kitn1"]
+[ext_resource type="Texture2D" uid="uid://dlywfo3j61bw8" path="res://assets/sprites/item_slots/基地-6.png" id="12_80j2g"]
+[ext_resource type="Texture2D" uid="uid://7s7gx5sytssb" path="res://assets/sprites/item_slots/基地-6 2.png" id="13_6ggen"]
+[ext_resource type="Texture2D" uid="uid://cemheosuktfhj" path="res://assets/sprites/item_slots/基地-5.png" id="14_0lcdy"]
+
+[sub_resource type="Shader" id="Shader_ixbl1"]
+code = "shader_type canvas_item;
+
+// 剪影颜色
+uniform vec4 silhouette_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
+// 是否开启剪影效果
+uniform bool is_enabled = false;
+
+void fragment() {
+    // 获取原始贴图颜色
+    vec4 texture_color = texture(TEXTURE, UV);
+    
+    if (is_enabled) {
+        // 【纯色剪影】完全用指定颜色替换，只保留贴图的形状 (Alpha)
+        // 不与 COLOR 相乘，确保 ffffff 会渲染成纯白色
+        // 但保留节点的整体透明度调制
+        float alpha = texture_color.a * COLOR.a;
+        COLOR = vec4(silhouette_color.rgb, alpha);
+    } else {
+        // 正常渲染
+        COLOR = texture_color * COLOR;
+    }
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ixbl1"]
+shader = SubResource("Shader_ixbl1")
+shader_parameter/silhouette_color = Color(0.5, 0.5, 0.5, 1)
+shader_parameter/is_enabled = false
+
+[sub_resource type="Animation" id="Animation_ovo1l"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_lid:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(2),
+"points": PackedFloat32Array(-337.5, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_u4yck"]
+resource_name = "item_lid_close"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_lid:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(3, 0),
+"points": PackedFloat32Array(-341.5, -0.4, -0.088775635, 0.4, 0.088775635, -39.5, -0.43333334, 21.216349, 0.35, -17.843029),
+"times": PackedFloat32Array(0, 0.5)
+}
+
+[sub_resource type="Animation" id="Animation_6kw3k"]
+resource_name = "item_lid_open"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_lid:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(2, 2),
+"points": PackedFloat32Array(-39.5, -0.24998589, 12.744301, 0.35, -17.843029, -341.5, -0.38333333, 7.19046, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vy3lb"]
+_data = {
+&"RESET": SubResource("Animation_ovo1l"),
+&"item_lid_close": SubResource("Animation_u4yck"),
+&"item_lid_open": SubResource("Animation_6kw3k")
+}
+
+[node name="Item Slot_root_0" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+script = ExtResource("1_ixbl1")
+
+[node name="Item Slot_mask" type="Sprite2D" parent="."]
+clip_children = 1
+texture = ExtResource("2_kitn1")
+
+[node name="Item Slot_backgrounds" type="Node2D" parent="Item Slot_mask"]
+position = Vector2(16, 6)
+script = ExtResource("3_rs8t5")
+color = Color(0.99215686, 0.5921569, 0.18431373, 1)
+
+[node name="Slot_background_side" type="Sprite2D" parent="Item Slot_mask/Item Slot_backgrounds"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+texture = ExtResource("4_rfv0q")
+offset = Vector2(196, -24.5)
+region_enabled = true
+region_rect = Rect2(392, 16, 296, 588)
+
+[node name="Slot_background_wall" type="Sprite2D" parent="Item Slot_mask/Item Slot_backgrounds"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+texture = ExtResource("5_gnepb")
+offset = Vector2(-127.5, -108)
+region_enabled = true
+region_rect = Rect2(37, 53, 359, 347)
+
+[node name="Slot_background_floor" type="Sprite2D" parent="Item Slot_mask/Item Slot_backgrounds"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+texture = ExtResource("6_idsbx")
+offset = Vector2(-26.5, 200)
+region_enabled = true
+region_rect = Rect2(0, 400, 635, 269)
+
+[node name="Slot_background_outline" type="Sprite2D" parent="Item Slot_mask/Item Slot_backgrounds"]
+texture = ExtResource("7_731lk")
+offset = Vector2(-12.5, -15.5)
+region_enabled = true
+region_rect = Rect2(144, 116, 375, 406)
+
+[node name="Item Slot_item_root" type="Node2D" parent="Item Slot_mask"]
+position = Vector2(-0.5, 1.5)
+scale = Vector2(0.65, 0.65)
+
+[node name="Item_icon" type="Sprite2D" parent="Item Slot_mask/Item Slot_item_root"]
+material = SubResource("ShaderMaterial_ixbl1")
+texture = ExtResource("8_tc38w")
+offset = Vector2(9, -0.5)
+region_enabled = true
+region_rect = Rect2(85, 75, 450, 450)
+
+[node name="Item_shadow" type="Sprite2D" parent="Item Slot_mask/Item Slot_item_root/Item_icon"]
+self_modulate = Color(0, 0, 0, 0.39215687)
+show_behind_parent = true
+position = Vector2(6.000001, 156)
+scale = Vector2(0.6, 0.1)
+texture = ExtResource("9_nc6kv")
+
+[node name="Item_affix" type="Sprite2D" parent="Item Slot_mask/Item Slot_item_root/Item_icon"]
+position = Vector2(139, -127)
+texture = ExtResource("10_y5mjh")
+
+[node name="Item_hover_icon" type="Sprite2D" parent="Item Slot_mask/Item Slot_item_root/Item_icon"]
+visible = false
+texture = ExtResource("11_kitn1")
+
+[node name="Item_status" type="Sprite2D" parent="Item Slot_mask"]
+position = Vector2(87.5, 94.5)
+texture = ExtResource("11_emsc1")
+
+[node name="Item Slot_lid" type="Sprite2D" parent="Item Slot_mask"]
+self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
+position = Vector2(0, -337.5)
+texture = ExtResource("12_80j2g")
+
+[node name="Slot_led" type="Sprite2D" parent="Item Slot_mask/Item Slot_lid"]
+self_modulate = Color(0.74190307, 0, 0.14498982, 1)
+position = Vector2(0, 136)
+texture = ExtResource("13_6ggen")
+
+[node name="Item Slot_outline" type="Sprite2D" parent="."]
+texture = ExtResource("14_0lcdy")
+
+[node name="Input Area" type="Control" parent="."]
+anchors_preset = 0
+offset_left = -136.0
+offset_top = -138.0
+offset_right = 138.0
+offset_bottom = 138.0
+mouse_default_cursor_shape = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../../../..")
+libraries = {
+&"": SubResource("AnimationLibrary_vy3lb")
+}

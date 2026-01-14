@@ -14,6 +14,9 @@ var _slots: Array[Control] = []
 ## 是否正在播放刷新动画（此时应跳过 update_pools_display）
 var _is_animating_refresh: bool = false
 
+## 当前被hover的slot索引 (-1表示无)
+var _hovered_slot_index: int = -1
+
 func setup(grid: HBoxContainer) -> void:
 	lottery_slots_grid = grid
 	_init_slots()
@@ -226,6 +229,10 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 				return
 				
 			if not game_ui.is_ui_locked() and not _is_animating_refresh and InventorySystem.pending_items.is_empty():
+				# 记录当前点击的奖池索引，用于后续 pending 物品的定位
+				game_ui.last_clicked_pool_idx = index
+				game_ui.pending_source_pool_idx = index
+				
 				# Draw logic
 				if game_ui.state_machine:
 					game_ui.state_machine.transition_to(&"Drawing", {"pool_index": index})
@@ -238,10 +245,55 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 			pass
 
 func _on_slot_hovered(pool_index: int, pool_item_type: int) -> void:
+	_hovered_slot_index = pool_index
+	
+	# 更新hover可操作状态
+	_update_slot_hover_action_state(pool_index)
+	
 	slot_hovered.emit(pool_index, pool_item_type)
 
+
 func _on_slot_unhovered(pool_index: int) -> void:
+	_hovered_slot_index = -1
+	
+	# 清除hover视觉效果
+	var slot = _get_slot_node(pool_index) as LotterySlotUI
+	if slot:
+		slot.set_hover_action_state(LotterySlotUI.HoverType.NONE)
+	
 	slot_unhovered.emit(pool_index)
+
 
 func _on_slot_item_hovered(item_id: StringName) -> void:
 	slot_item_hovered.emit(item_id)
+
+
+## 更新指定lottery slot的hover可操作状态
+func _update_slot_hover_action_state(pool_index: int) -> void:
+	var slot = _get_slot_node(pool_index) as LotterySlotUI
+	if not slot:
+		return
+	
+	var has_pending = not InventorySystem.pending_items.is_empty()
+	
+	# 默认无状态
+	var hover_type = LotterySlotUI.HoverType.NONE
+	
+	# pending时 hover 在已抽出物品（is_drawing）的 lottery slot -> 可回收
+	# 这里判断slot是否有物品显示（is_drawing 且有 _top_item_id）
+	if has_pending and slot.is_drawing and slot._top_item_id != &"":
+		# 在pending状态下hover lottery slot中的物品，显示可回收
+		hover_type = LotterySlotUI.HoverType.RECYCLABLE
+	
+	slot.set_hover_action_state(hover_type)
+
+
+## 刷新当前被hover的slot的状态（当游戏状态变化时调用）
+func refresh_hovered_slot_state() -> void:
+	if _hovered_slot_index >= 0:
+		_update_slot_hover_action_state(_hovered_slot_index)
+
+
+## 获取当前被hover的slot索引
+func get_hovered_slot_index() -> int:
+	return _hovered_slot_index

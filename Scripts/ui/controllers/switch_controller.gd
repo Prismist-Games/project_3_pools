@@ -263,11 +263,61 @@ func _on_recycle_switch_hover() -> void:
 	if game_ui and game_ui.has_method("_on_recycle_switch_mouse_entered"):
 		game_ui._on_recycle_switch_mouse_entered()
 	
+	# 更新选中/pending物品的hover状态显示
+	_update_recyclable_item_hover_state(true)
+	
 	_refresh_switch_visual(recycle_switch, _recycle_is_on, _is_recycle_hovered, _is_recycle_pressed)
+
 
 func _on_recycle_switch_unhover() -> void:
 	_is_recycle_hovered = false
 	if game_ui and game_ui.has_method("_on_recycle_switch_mouse_exited"):
 		game_ui._on_recycle_switch_mouse_exited()
 	
+	# 清除选中/pending物品的hover状态显示
+	_update_recyclable_item_hover_state(false)
+	
 	_refresh_switch_visual(recycle_switch, _recycle_is_on, _is_recycle_hovered, _is_recycle_pressed)
+
+
+## 更新选中/pending物品在hover recycle switch时的视觉状态
+## [param is_hovering]: true = 鼠标在recycle switch上, false = 离开
+func _update_recyclable_item_hover_state(is_hovering: bool) -> void:
+	if not game_ui or not game_ui.state_machine:
+		return
+	
+	var ui_mode = game_ui.state_machine.get_ui_mode()
+	
+	# 仅在 NORMAL 模式或存在待处理物品的状态（Replacing 等通常属于 NORMAL 逻辑分支）下允许
+	# 注意：如果正在批量回收（RECYCLE 模式），我们不在此处处理单项 hover 视觉，因为全员都是可回收的
+	if ui_mode == Constants.UIMode.RECYCLE or ui_mode == Constants.UIMode.SUBMIT:
+		return
+	
+	var selected_idx = InventorySystem.selected_slot_index
+	var has_pending = not InventorySystem.pending_items.is_empty()
+	
+	# 选中item_slot物品时hover在recycle switch上 -> 可回收
+	if selected_idx != -1:
+		var slot = game_ui.inventory_controller.get_slot_node(selected_idx) as ItemSlotUI
+		if slot:
+			if is_hovering:
+				slot.set_hover_action_state(ItemSlotUI.HoverType.RECYCLABLE)
+			else:
+				slot.set_hover_action_state(ItemSlotUI.HoverType.NONE)
+	
+	# pending时hover在recycle switch上 -> 可回收 (lottery slot中的物品)
+	elif has_pending:
+		# 获取pending物品所在的lottery slot
+		var source_pool_idx = game_ui.pending_source_pool_idx
+		if source_pool_idx >= 0:
+			var pool_slot = game_ui.pool_controller._get_slot_node(source_pool_idx) as LotterySlotUI
+			if pool_slot:
+				if is_hovering:
+					pool_slot.set_hover_action_state(LotterySlotUI.HoverType.RECYCLABLE)
+				else:
+					pool_slot.set_hover_action_state(LotterySlotUI.HoverType.NONE)
+
+
+## 检查recycle switch是否被hover
+func is_recycle_hovered() -> bool:
+	return _is_recycle_hovered

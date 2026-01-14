@@ -33,13 +33,23 @@ signal item_hovered(item_id: StringName) # NEW: 针对抽奖结果中具体物�
 ## Item Display Nodes
 ## =====================================================================
 @onready var item_main: Sprite2D = find_child("Item_main", true)
-@onready var item_main_shadow: Sprite2D = item_main.get_node("Item_shadow")
+@onready var item_main_shadow: Sprite2D = item_main.get_node("Item_shadow") if item_main else null
+@onready var item_main_hover_icon: Sprite2D = item_main.get_node_or_null("Item_hover_icon") if item_main else null
 @onready var item_queue_1: Sprite2D = find_child("Item_queue_1", true)
-@onready var item_queue_1_shadow: Sprite2D = item_queue_1.get_node("Item_shadow")
+@onready var item_queue_1_shadow: Sprite2D = item_queue_1.get_node("Item_shadow") if item_queue_1 else null
 @onready var item_queue_2: Sprite2D = find_child("Item_queue_2", true)
-@onready var item_queue_2_shadow: Sprite2D = item_queue_2.get_node("Item_shadow")
+@onready var item_queue_2_shadow: Sprite2D = item_queue_2.get_node("Item_shadow") if item_queue_2 else null
 
 @onready var backgrounds: Node2D = find_child("Lottery Slot_backgrounds", true)
+
+## Hover 图标素材（占位）
+var _recycle_hover_texture: Texture2D = preload("res://assets/sprites/the_machine_switch/Recycle_icon.png")
+var _merge_hover_texture: Texture2D = preload("res://assets/sprites/icons/tick_green.png")
+
+## Hover 状态类型 (与 ItemSlotUI 保持一致)
+enum HoverType { NONE, RECYCLABLE, MERGEABLE }
+var _current_hover_type: HoverType = HoverType.NONE
+var _is_hovered: bool = false
 
 ## =====================================================================
 ## 状态变量
@@ -85,6 +95,10 @@ func _ready() -> void:
 	_initial_transforms[item_queue_1] = {"pos": item_queue_1.position, "scale": item_queue_1.scale}
 	_initial_transforms[item_queue_2] = {"pos": item_queue_2.position, "scale": item_queue_2.scale}
 	
+	# 关键修复 2：将材质唯一化
+	if item_main and item_main.material:
+		item_main.material = item_main.material.duplicate()
+	
 	# 记录 Push-Away 节点的初始位置
 	_store_push_initial_positions()
 
@@ -128,6 +142,8 @@ func setup(index: int) -> void:
 		anim_player.seek(anim_player.get_animation("lid_close").length, true)
 
 func _on_mouse_entered() -> void:
+	_is_hovered = true
+	
 	# 始终发射 hover 信号 (用于高亮订单图标，不受 is_locked/is_drawing 限制)
 	if current_pool_item_type > 0:
 		hovered.emit(pool_index, current_pool_item_type)
@@ -143,6 +159,11 @@ func _on_mouse_entered() -> void:
 	EventBus.game_event.emit(&"lottery_slot_hovered", ContextProxy.new({"global_position": global_position}))
 
 func _on_mouse_exited() -> void:
+	_is_hovered = false
+	
+	# 清除hover视觉效果
+	set_hover_action_state(HoverType.NONE)
+	
 	# 始终发射 unhover 信号
 	unhovered.emit(pool_index)
 	
@@ -319,6 +340,11 @@ func update_pending_display(pending_list: Array) -> void:
 	if pending_list.is_empty():
 		is_drawing = false
 		_top_item_id = &""
+		
+		# 关键修复 1：重置 hover 状态
+		_disable_hover_visuals()
+		_current_hover_type = HoverType.NONE
+		
 		if backgrounds:
 			backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
 		# 清空所有显示
@@ -748,3 +774,58 @@ func _reset_push_positions() -> void:
 	# 水平组 - 父子关系 (只重置 True 节点)
 	if description_label and _push_initial_positions.has("desc_true"):
 		description_label.position = _push_initial_positions["desc_true"]
+
+
+## =====================================================================
+## Hover 可操作状态视觉效果
+## =====================================================================
+
+## 设置hover时的可操作状态视觉
+## [param hover_type]: HoverType.NONE / RECYCLABLE / MERGEABLE
+func set_hover_action_state(hover_type: HoverType) -> void:
+	_current_hover_type = hover_type
+	
+	if hover_type == HoverType.NONE:
+		_disable_hover_visuals()
+	else:
+		_enable_hover_visuals(hover_type)
+
+
+## 启用hover视觉效果
+func _enable_hover_visuals(hover_type: HoverType) -> void:
+	# 1. 启用shader剪影效果
+	if item_main and item_main.material:
+		var mat = item_main.material as ShaderMaterial
+		if mat:
+			mat.set_shader_parameter("is_enabled", true)
+			# 可以根据类型设置不同的剪影颜色
+			if hover_type == HoverType.RECYCLABLE:
+				mat.set_shader_parameter("silhouette_color", Color(0.8, 0.3, 0.3, 1.0)) # 红色调
+			elif hover_type == HoverType.MERGEABLE:
+				mat.set_shader_parameter("silhouette_color", Color(0.3, 0.8, 0.3, 1.0)) # 绿色调
+	
+	# 2. 显示hover图标
+	if item_main_hover_icon:
+		item_main_hover_icon.visible = true
+		if hover_type == HoverType.RECYCLABLE:
+			item_main_hover_icon.texture = _recycle_hover_texture
+		elif hover_type == HoverType.MERGEABLE:
+			item_main_hover_icon.texture = _merge_hover_texture
+
+
+## 禁用hover视觉效果
+func _disable_hover_visuals() -> void:
+	# 1. 禁用shader剪影效果
+	if item_main and item_main.material:
+		var mat = item_main.material as ShaderMaterial
+		if mat:
+			mat.set_shader_parameter("is_enabled", false)
+	
+	# 2. 隐藏hover图标
+	if item_main_hover_icon:
+		item_main_hover_icon.visible = false
+
+
+## 检查当前是否被hover
+func is_hovered() -> bool:
+	return _is_hovered

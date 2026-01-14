@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://basts7bbr2vav"]
+[gd_scene load_steps=30 format=3 uid="uid://basts7bbr2vav"]
 
 [ext_resource type="Script" uid="uid://c008hefncbbkm" path="res://scripts/ui/components/lottery_slot_ui.gd" id="1_1b0mf"]
 [ext_resource type="Texture2D" uid="uid://cpcef3r3dbaxq" path="res://assets/sprites/lottery_slots/基地-7.png" id="2_gntc1"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="8_o6rv1"]
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="9_arr72"]
 [ext_resource type="Texture2D" uid="uid://b4cuujipxrcyu" path="res://assets/sprites/lottery_slots/lottery_slot_lid_fill.png" id="10_4aaut"]
+[ext_resource type="Texture2D" uid="uid://bclpcjghycqdb" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="10_gntc1"]
 [ext_resource type="Texture2D" uid="uid://cskvmcwmdj5ew" path="res://assets/sprites/icons/category_entertainment.png" id="11_of7x7"]
 [ext_resource type="Texture2D" uid="uid://u8vv873f380j" path="res://assets/sprites/lottery_slots/lottery_slot_lid_outline.png" id="12_p4alg"]
 [ext_resource type="Texture2D" uid="uid://fnqmsybn8c5r" path="res://assets/sprites/lottery_slots/基地-6.png" id="13_r08pi"]
@@ -22,6 +23,36 @@
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="20_ihuts"]
 [ext_resource type="Texture2D" uid="uid://grqi0oqjnrae" path="res://assets/sprites/the_machine/the_machine_description_display_outline.png" id="21_4kg5p"]
 [ext_resource type="Texture2D" uid="uid://cyo0chqrqd6p7" path="res://assets/sprites/the_machine/the_machine_description_display_fill.png" id="22_dg1ni"]
+
+[sub_resource type="Shader" id="Shader_1b0mf"]
+code = "shader_type canvas_item;
+
+// 剪影颜色
+uniform vec4 silhouette_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
+// 是否开启剪影效果
+uniform bool is_enabled = false;
+
+void fragment() {
+    // 获取原始贴图颜色
+    vec4 texture_color = texture(TEXTURE, UV);
+    
+    if (is_enabled) {
+        // 【纯色剪影】完全用指定颜色替换，只保留贴图的形状 (Alpha)
+        // 不与 COLOR 相乘，确保 ffffff 会渲染成纯白色
+        // 但保留节点的整体透明度调制
+        float alpha = texture_color.a * COLOR.a;
+        COLOR = vec4(silhouette_color.rgb, alpha);
+    } else {
+        // 正常渲染
+        COLOR = texture_color * COLOR;
+    }
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gntc1"]
+shader = SubResource("Shader_1b0mf")
+shader_parameter/silhouette_color = Color(0.5, 0.5, 0.5, 1)
+shader_parameter/is_enabled = false
 
 [sub_resource type="Animation" id="Animation_jptrp"]
 length = 0.001
@@ -129,6 +160,7 @@ scale = Vector2(0.6, 0.1)
 texture = ExtResource("9_arr72")
 
 [node name="Item_main" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root"]
+material = SubResource("ShaderMaterial_gntc1")
 texture = ExtResource("8_o6rv1")
 
 [node name="Item_shadow" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root/Item_main"]
@@ -137,6 +169,10 @@ show_behind_parent = true
 position = Vector2(6.000001, 164)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("9_arr72")
+
+[node name="Item_hover_icon" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root/Item_main"]
+visible = false
+texture = ExtResource("10_gntc1")
 
 [node name="Lottery Slot_lid" type="Sprite2D" parent="Lottery Slot_mask"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
@@ -469,7 +505,7 @@ offset_bottom = 228.0
 mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "抽到[color=#A557F0] 史诗 [/color]及以上品质物品时，所有订单获得 1 次刷新次数。"
+text = "抽到 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 及以上品质物品时，所有订单获得 1 次刷新次数。"
 scroll_active = false
 
 [node name="Description Label_psudo" type="RichTextLabel" parent="Lottery Slot_description_screen/Lottery Slot_description_screen_fill/Description Label"]

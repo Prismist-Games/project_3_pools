@@ -1,13 +1,26 @@
 class_name ItemSlotUI
 extends BaseSlotUI
 
-@onready var icon_display: Sprite2D = find_child("Item_example", true)
+## 鼠标悬停状态信号
+signal hover_state_changed(slot_index: int, is_hovered: bool)
+
+@onready var icon_display: Sprite2D = find_child("Item_icon", true)
 @onready var item_shadow: Sprite2D = find_child("Item_shadow", true)
 @onready var affix_display: Sprite2D = find_child("Item_affix", true)
 @onready var led_display: Sprite2D = find_child("Slot_led", true)
 @onready var status_icon: Sprite2D = find_child("Item_status", true)
 @onready var backgrounds: Node2D = find_child("Item Slot_backgrounds", true)
+@onready var hover_icon: Sprite2D = find_child("Item_hover_icon", true)
 var shelf_life_label: Label = null
+
+## Hover 图标素材（占位）
+var _recycle_hover_texture: Texture2D = preload("res://assets/sprites/the_machine_switch/Recycle_icon.png")
+var _merge_hover_texture: Texture2D = preload("res://assets/sprites/icons/tick_green.png")
+
+## Hover 状态类型
+enum HoverType { NONE, RECYCLABLE, MERGEABLE }
+var _current_hover_type: HoverType = HoverType.NONE
+var _is_hovered: bool = false
 
 var slot_index: int = -1
 var is_vfx_target: bool = false # 标记是否为飞行目标，防止动画中背景色提前刷新
@@ -23,6 +36,10 @@ func _ready() -> void:
 	shelf_life_label = find_child("ShelfLifeLabel", true)
 	if not shelf_life_label:
 		_create_shelf_life_label()
+		
+	# 关键修复 2：将材质唯一化，防止多个 Slot 共享同一个 Shader 实例
+	if icon_display and icon_display.material:
+		icon_display.material = icon_display.material.duplicate()
 		
 	# 关键修复：在一开始就记录图标的初始状态，不再动态捕获，防止缩放累加
 	if icon_display:
@@ -69,6 +86,10 @@ func set_temp_hidden(is_hidden: bool) -> void:
 
 func update_display(item: ItemInstance) -> void:
 	if is_vfx_target: return # 飞行中锁定视觉，落地后再更新
+	
+	# 关键修复 1：无论是否有物品，先重置 hover 视觉状态，防止残留
+	_disable_hover_visuals()
+	_current_hover_type = HoverType.NONE
 	
 	# 如果处于临时隐藏状态，且确实有物品（为了防止误隐藏空槽），则不更新显示
 	if _temp_hide_until_vfx:
@@ -230,6 +251,75 @@ func update_status_badge(badge_state: int) -> void:
 		2:
 			status_icon.visible = true
 			status_icon.texture = preload("res://assets/sprites/icons/tick_green.png")
+
+
+## =====================================================================
+## Hover 可操作状态视觉效果
+## =====================================================================
+
+## 设置hover时的可操作状态视觉
+## [param hover_type]: HoverType.NONE / RECYCLABLE / MERGEABLE
+func set_hover_action_state(hover_type: HoverType) -> void:
+	_current_hover_type = hover_type
+	
+	if hover_type == HoverType.NONE:
+		_disable_hover_visuals()
+	else:
+		_enable_hover_visuals(hover_type)
+
+
+## 启用hover视觉效果
+func _enable_hover_visuals(hover_type: HoverType) -> void:
+	# 1. 启用shader剪影效果
+	if icon_display and icon_display.material:
+		var mat = icon_display.material as ShaderMaterial
+		if mat:
+			mat.set_shader_parameter("is_enabled", true)
+			# 可以根据类型设置不同的剪影颜色
+			if hover_type == HoverType.RECYCLABLE:
+				mat.set_shader_parameter("silhouette_color", Color(0.8, 0.3, 0.3, 1.0)) # 红色调
+			elif hover_type == HoverType.MERGEABLE:
+				mat.set_shader_parameter("silhouette_color", Color(0.3, 0.8, 0.3, 1.0)) # 绿色调
+	
+	# 2. 显示hover图标
+	if hover_icon:
+		hover_icon.visible = true
+		if hover_type == HoverType.RECYCLABLE:
+			hover_icon.texture = _recycle_hover_texture
+		elif hover_type == HoverType.MERGEABLE:
+			hover_icon.texture = _merge_hover_texture
+
+
+## 禁用hover视觉效果
+func _disable_hover_visuals() -> void:
+	# 1. 禁用shader剪影效果
+	if icon_display and icon_display.material:
+		var mat = icon_display.material as ShaderMaterial
+		if mat:
+			mat.set_shader_parameter("is_enabled", false)
+	
+	# 2. 隐藏hover图标
+	if hover_icon:
+		hover_icon.visible = false
+
+
+## 通知slot被hover
+func on_mouse_enter() -> void:
+	_is_hovered = true
+	hover_state_changed.emit(slot_index, true)
+
+
+## 通知slot不再被hover
+func on_mouse_exit() -> void:
+	_is_hovered = false
+	# 清除hover视觉效果
+	set_hover_action_state(HoverType.NONE)
+	hover_state_changed.emit(slot_index, false)
+
+
+## 检查当前是否被hover
+func is_hovered() -> bool:
+	return _is_hovered
 
 
 func _update_shelf_life_label(item: ItemInstance) -> void:

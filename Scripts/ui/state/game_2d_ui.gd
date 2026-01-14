@@ -217,6 +217,9 @@ func _on_state_changed(from_state: StringName, to_state: StringName) -> void:
 	# State changed -> Mode might allow interaction or not, update display
 	_update_ui_mode_display()
 	_refresh_all() # Ensure visuals are correct for new state
+	
+	# 刷新当前hover的slot的状态（模式变化可能影响显示）
+	_refresh_all_hovered_slot_states()
 
 ## 处理兔子对话框的显示与隐藏
 func _handle_rabbit_dialog(from_state: StringName, to_state: StringName) -> void:
@@ -372,6 +375,9 @@ func _on_pending_queue_changed(items: Array[ItemInstance]) -> void:
 	else:
 		pool_controller.update_pending_display(items, pending_source_pool_idx)
 	_update_ui_mode_display()
+	
+	# 刷新当前hover的slot的状态
+	_refresh_all_hovered_slot_states()
 
 func _on_skills_changed(skills: Array) -> void:
 	if skill_slot_controller:
@@ -435,6 +441,9 @@ func _on_recycle_switch_mouse_exited() -> void:
 
 func _on_selection_changed(index: int) -> void:
 	inventory_controller.update_selection(index)
+	
+	# 刷新当前hover的slot的状态
+	_refresh_all_hovered_slot_states()
 
 # --- Coordinator Action Handlers ---
 
@@ -768,6 +777,21 @@ func _on_item_slot_unhovered(_index: int) -> void:
 	if quest_icon_highlighter:
 		quest_icon_highlighter.clear_all_highlights()
 	inventory_controller.clear_highlights()
+
+
+## 刷新所有当前被hover的slot的状态（当游戏状态变化时调用）
+func _refresh_all_hovered_slot_states() -> void:
+	# 刷新inventory slot的hover状态
+	if inventory_controller:
+		inventory_controller.refresh_hovered_slot_state()
+	
+	# 刷新lottery slot的hover状态
+	if pool_controller:
+		pool_controller.refresh_hovered_slot_state()
+	
+	# 刷新recycle switch相关的hover状态
+	if switch_controller and switch_controller.is_recycle_hovered():
+		switch_controller._update_recyclable_item_hover_state(true)
 
 func _on_item_recycled(slot_index: int, item: ItemInstance) -> void:
 	"""处理批量回收时的单个物品回收动画（ERA_3 种类替换场景）"""
