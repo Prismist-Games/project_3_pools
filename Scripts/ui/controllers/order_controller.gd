@@ -114,15 +114,25 @@ func play_refresh_sequence(index: int) -> void:
 	var slot = _get_slot_node(index + 1)
 	if not slot: return
 	
+	# 设置按钮保持按下
+	if slot.has_method("set_refresh_visual"):
+		slot.set_refresh_visual(true)
+	
 	if slot.anim_player.has_animation("lid_close"):
 		slot.anim_player.play("lid_close")
 		await slot.anim_player.animation_finished
 
 func play_open_sequence(index: int) -> void:
 	var slot = _get_slot_node(index + 1)
-	if slot and slot.anim_player.has_animation("lid_open"):
+	if not slot: return
+	
+	if slot.anim_player.has_animation("lid_open"):
 		slot.anim_player.play("lid_open")
 		await slot.anim_player.animation_finished
+	
+	# 动画完全结束后，设置按钮弹起
+	if slot.has_method("set_refresh_visual"):
+		slot.set_refresh_visual(false)
 
 # --- Helpers ---
 

@@ -6,10 +6,12 @@ extends BaseSlotUI
 @onready var items_grid: HBoxContainer = find_child("Quest Slot Items Grid", true)
 @onready var backgrounds: Node2D = find_child("Quest Slot_background", true)
 @onready var refresh_label: RichTextLabel = find_child("Refresh Count Label", true)
+@onready var refresh_button: TextureButton = find_child("Refresh Button", true)
 
 var order_index: int = -1
 var is_submit_mode: bool = false
 var _current_order: OrderData = null
+var _original_mouse_filter: Control.MouseFilter = Control.MOUSE_FILTER_STOP
 
 ## 突出动画相关
 const PROTRUDE_OFFSET: float = 100.0 # 向右突出的像素距离
@@ -23,9 +25,10 @@ func setup(index: int) -> void:
 	if anim_player.has_animation("lid_open"):
 		anim_player.play("lid_open")
 	
-	var refresh_btn = find_child("Refresh Button", true)
-	if refresh_btn:
-		refresh_btn.pressed.connect(_on_refresh_button_pressed)
+	if refresh_button:
+		refresh_button.pressed.connect(_on_refresh_button_pressed)
+		# 保存原始的 mouse_filter 值，用于恢复交互状态
+		_original_mouse_filter = refresh_button.mouse_filter
 	
 	# 记录原始 position.x（只记录 x 坐标，y 由 VBoxContainer 管理）
 	_original_position_x = position.x
@@ -36,6 +39,19 @@ func get_order() -> OrderData:
 func _on_refresh_button_pressed() -> void:
 	if order_index != -1:
 		EventBus.game_event.emit(&"order_refresh_requested", ContextProxy.new({"index": order_index - 1}))
+
+## 设置刷新按钮的视觉状态（按下保持/弹起）和交互锁定
+func set_refresh_visual(active: bool) -> void:
+	if refresh_button:
+		if active:
+			# 刷新动画期间：保持按下视觉 + 通过 mouse_filter 锁定交互（不改变视觉）
+			refresh_button.toggle_mode = true
+			refresh_button.set_pressed_no_signal(true)
+			refresh_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		else:
+			# 动画结束后：恢复普通按钮模式和交互状态
+			refresh_button.toggle_mode = false
+			refresh_button.mouse_filter = _original_mouse_filter
 
 func play_refresh_anim() -> void:
 	if anim_player.has_animation("lid_close"):
@@ -83,9 +99,8 @@ func update_order_display(order_data: OrderData, req_states: Array = []) -> void
 	if refresh_label:
 		refresh_label.text = str(order_data.refresh_count)
 	
-	var refresh_btn = find_child("Refresh Button", true)
-	if refresh_btn:
-		refresh_btn.disabled = order_data.refresh_count <= 0
+	if refresh_button:
+		refresh_button.disabled = order_data.refresh_count <= 0
 	
 	_update_requirements(order_data.requirements, req_states)
 	

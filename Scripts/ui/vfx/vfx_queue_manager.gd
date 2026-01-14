@@ -475,7 +475,7 @@ func _create_fly_sprite(item, start_pos: Vector2, start_scale: Vector2, animate_
 		var rotation_tween = create_tween()
 		rotation_tween.set_loops()
 		# 使用 from(0.0) 确保每次循环都从 0 开始
-		rotation_tween.tween_property(rarity_sprite, "rotation", TAU, 2.0) \
+		rotation_tween.tween_property(rarity_sprite, "rotation", TAU, 3.0) \
 			.from(0.0) \
 			.set_trans(Tween.TRANS_LINEAR)
 		

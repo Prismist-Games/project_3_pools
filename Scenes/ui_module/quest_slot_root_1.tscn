@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://05ku7kwq0dxp"]
+[gd_scene load_steps=27 format=3 uid="uid://05ku7kwq0dxp"]
 
 [ext_resource type="Script" uid="uid://con7nyakgbhan" path="res://scripts/ui/components/quest_slot_ui.gd" id="1_cf02l"]
 [ext_resource type="Texture2D" uid="uid://bk6w30hxghp51" path="res://assets/sprites/quest_slots/基地-7.png" id="2_5cnt1"]
@@ -16,11 +16,12 @@
 [ext_resource type="Texture2D" uid="uid://bkthx68vhcd00" path="res://assets/sprites/quest_slots/基地-10.png" id="14_tqhba"]
 [ext_resource type="Texture2D" uid="uid://b83tw66bk1v5s" path="res://assets/sprites/quest_slots/基地-6.png" id="15_vvcjj"]
 [ext_resource type="Texture2D" uid="uid://beldg0xqocq2k" path="res://assets/sprites/quest_slots/基地-5.png" id="16_6ixpp"]
-[ext_resource type="Texture2D" uid="uid://btfsaxb523m4l" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_idle.png" id="17_0v4ru"]
-[ext_resource type="Texture2D" uid="uid://ccfw8sduhx8rm" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_pressed.png" id="18_f4ixj"]
-[ext_resource type="Texture2D" uid="uid://dslsns6p86ffx" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_hover.png" id="19_i1k2m"]
-[ext_resource type="Texture2D" uid="uid://dpf5a45rbg06a" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_disabled.png" id="20_sjlmw"]
-[ext_resource type="Texture2D" uid="uid://4ds5uce4fmqb" path="res://assets/sprites/icons/refresh.png" id="21_3f38i"]
+[ext_resource type="Texture2D" uid="uid://catqi262iinqu" path="res://assets/sprites/quest_slots/正常按钮.png" id="17_cf02l"]
+[ext_resource type="Texture2D" uid="uid://dhiw5ekpxpxp" path="res://assets/sprites/quest_slots/按下去按钮.png" id="18_5cnt1"]
+[ext_resource type="Texture2D" uid="uid://ckul04ymxsleg" path="res://assets/sprites/quest_slots/废废按钮.png" id="20_cf02l"]
+[ext_resource type="Texture2D" uid="uid://ductaol4jp4ix" path="res://assets/sprites/quest_slots/ho按钮.png" id="20_xy8au"]
+[ext_resource type="Texture2D" uid="uid://cndfk2veulvf7" path="res://assets/sprites/quest_slots/1.png" id="22_xy8au"]
+[ext_resource type="Texture2D" uid="uid://bq06dygb38pu3" path="res://assets/sprites/quest_slots/2.png" id="23_8oyay"]
 
 [sub_resource type="Animation" id="Animation_8ocj1"]
 length = 0.001
@@ -245,7 +246,6 @@ position = Vector2(128, -107.333336)
 texture = ExtResource("13_n0e4s")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="Quest Slot_mask"]
-modulate = Color(0.8627451, 0.7764706, 0, 1)
 texture = ExtResource("14_tqhba")
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="."]
@@ -263,25 +263,28 @@ offset_bottom = 162.0
 mouse_default_cursor_shape = 2
 
 [node name="Refresh Button" type="TextureButton" parent="."]
-self_modulate = Color(0.9411765, 0.36078432, 0.38039216, 1)
 layout_mode = 0
-offset_left = 581.0
-offset_top = -90.0
-offset_right = 708.0
-offset_bottom = 51.0
+offset_left = 595.0
+offset_top = -111.0
+offset_right = 722.0
+offset_bottom = 30.0
 mouse_default_cursor_shape = 2
-texture_normal = ExtResource("17_0v4ru")
-texture_pressed = ExtResource("18_f4ixj")
-texture_hover = ExtResource("19_i1k2m")
-texture_disabled = ExtResource("20_sjlmw")
+texture_normal = ExtResource("17_cf02l")
+texture_pressed = ExtResource("18_5cnt1")
+texture_hover = ExtResource("20_xy8au")
+texture_disabled = ExtResource("20_cf02l")
 
-[node name="Refresh Count Label" type="RichTextLabel" parent="Refresh Button"]
-layout_mode = 0
-offset_left = 30.0
-offset_top = 28.0
-offset_right = 115.0
-offset_bottom = 130.0
+[node name="Refresh Screen_fill" type="Sprite2D" parent="Refresh Button"]
+position = Vector2(53.5, 180.5)
+texture = ExtResource("22_xy8au")
+
+[node name="Refresh Count Label" type="RichTextLabel" parent="Refresh Button/Refresh Screen_fill"]
+offset_left = -41.5
+offset_top = -53.5
+offset_right = 32.5
+offset_bottom = 42.5
 mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 61
 bbcode_enabled = true
 text = "2"
@@ -289,9 +292,8 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Refresh Icon" type="Sprite2D" parent="Refresh Button"]
-position = Vector2(73, 80.75)
-texture = ExtResource("21_3f38i")
+[node name="Refresh Screen_outline" type="Sprite2D" parent="Refresh Button/Refresh Screen_fill"]
+texture = ExtResource("23_8oyay")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
