@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1")
 gold_threshold = 5
-bonus_gold = 10
+bonus_gold = 5

@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1")
 count_threshold = 4
-bonus_tickets = 10
+bonus_gold = 5

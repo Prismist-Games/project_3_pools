@@ -90,7 +90,7 @@ func _submit_single_order(index: int, selected_indices: Array[int]) -> bool:
 		return false
 		
 	# 执行提交核心逻辑
-	_execute_submission(order, selected_items, validation.total_overflow_bonus)
+	_execute_submission(order, selected_items, validation.total_submitted_bonus)
 	
 	# 消耗物品
 	InventorySystem.remove_items(selected_items)
@@ -132,7 +132,7 @@ func _submit_all_satisfied(selected_indices: Array[int]) -> bool:
 		var order = current_orders[idx]
 		var validation = order.validate_selection(selected_items)
 		# 提交
-		_execute_submission(order, selected_items, validation.total_overflow_bonus)
+		_execute_submission(order, selected_items, validation.total_submitted_bonus)
 		
 		# 替换
 		if order.is_mainline:
@@ -147,11 +147,11 @@ func _submit_all_satisfied(selected_indices: Array[int]) -> bool:
 	return true
 
 
-func _execute_submission(order: OrderData, items_to_consume: Array[ItemInstance], total_rarity_bonus: float) -> void:
+func _execute_submission(order: OrderData, items_to_consume: Array[ItemInstance], total_submitted_bonus: float) -> void:
 	# 创建上下文，允许技能修改奖励
 	var context = OrderCompletedContext.new()
-	# 基础奖励 * (1 + 溢出加成)
-	context.reward_gold = roundi(order.reward_gold * (1.0 + total_rarity_bonus))
+	# 最终奖励 = 显示奖励 * (1 + 提交物品品质加成之和)
+	context.reward_gold = roundi(order.reward_gold * (1.0 + total_submitted_bonus))
 	context.submitted_items = items_to_consume
 	
 	# 发出信号让技能系统进一步修改
@@ -174,20 +174,45 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 	var order = OrderData.new()
 	var rng = GameManager.rng
 	
-	# 1. 决定需求项总数 (由 UnlockManager 控制范围)
-	# 注意：这里的数量是需求项的数量，每个需求项需要 1 个物品
-	var target_requirement_count: int = rng.randi_range(UnlockManager.order_item_req_min, UnlockManager.order_item_req_max)
+	# 1. 决定需求项总数 (按概率分布: 20%=2个, 65%=3个, 15%=4个)
+	var count_roll: float = rng.randf()
+	var target_requirement_count: int
+	if count_roll < 0.20:
+		target_requirement_count = 2
+	elif count_roll < 0.85: # 0.20 + 0.65
+		target_requirement_count = 3
+	else:
+		target_requirement_count = 4
 	
 	var normal_items = GameManager.get_all_normal_items()
 	if normal_items.is_empty():
 		push_error("OrderSystem: No normal items found! Cannot generate order.")
 		return order
 
-	var total_rarity_score: int = 0
+	# 订单需求品质权重 (普通40%, 优秀35%, 稀有20%, 史诗5%, 传说0%)
+	var order_rarity_weights = PackedFloat32Array([0.40, 0.35, 0.20, 0.05, 0.0])
+	
+	# 累计需求品质加成（加算）
+	var total_requirement_bonus: float = 0.0
+	
+	# 已使用的物品ID，用于避免同一订单内重复
+	var used_item_ids: Array[StringName] = []
 	
 	# 生成指定数量的需求项
 	for i in range(target_requirement_count):
-		var item_data = normal_items.pick_random()
+		# 过滤掉已经使用的物品
+		var available_items: Array[ItemData] = []
+		for item in normal_items:
+			if item.id not in used_item_ids:
+				available_items.append(item)
+		
+		# 如果没有可用物品了，跳过（理论上不会发生，因为物品数量 > 最大需求数量）
+		if available_items.is_empty():
+			break
+		
+		var item_data = available_items.pick_random()
+		used_item_ids.append(item_data.id)
+		
 		var count = 1 # 每个需求项固定需要 1 个物品（validate_selection 不检查数量）
 		
 		# 技能：偷工减料（保留接口，虽然当前实现下 count 固定为 1）
@@ -197,21 +222,12 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 		
 		if count <= 0: count = 1 # 保底
 		
-		# 2. 决定品质要求
-		var min_rarity = Constants.Rarity.COMMON
-		if GameManager.game_config != null:
-			# 如果没有 stage_data，使用基础权重
-			var cfg = GameManager.game_config
-			var weights = PackedFloat32Array([
-				cfg.weight_common,
-				cfg.weight_uncommon,
-				cfg.weight_rare,
-				cfg.weight_epic,
-				cfg.weight_legendary
-			])
-			min_rarity = Constants.pick_weighted_index(weights, rng) as Constants.Rarity
+		# 2. 决定品质要求（使用订单专用权重，不使用全局抽奖权重）
+		var min_rarity = Constants.pick_weighted_index(order_rarity_weights, rng) as Constants.Rarity
 		
-		total_rarity_score += min_rarity * count
+		# 累加该需求的品质加成（使用 Constants.rarity_bonus）
+		# 例如：Epic = 0.4，两个 Epic 就是 0.4 + 0.4 = 0.8
+		total_requirement_bonus += Constants.rarity_bonus(min_rarity) * count
 			
 		order.requirements.append({
 			"item_id": item_data.id,
@@ -220,22 +236,17 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 		})
 
 	
-	# 3. 设定基础奖励：根据总物品数和品质深度加成
-	# 每个品质等级提升 25% 基础奖励
-	var reward_multiplier = 1.0 + (total_rarity_score * 0.25)
-	
-	# 简化奖励逻辑，不再区分金币/奖券，统一为金币
+	# 3. 设定基础奖励：根据需求数量 (2=5, 3=7, 4=10)
 	var base_rewards = {
-		1: 3,
 		2: 5,
-		3: 10,
-		4: 15,
-		5: 20,
-		6: 25
+		3: 7,
+		4: 10
 	}
 	
-	var base_gold = base_rewards.get(target_requirement_count, 5)
-	order.reward_gold = roundi(base_gold * reward_multiplier)
+	# 显示奖励 = 基础奖励 * (1 + 需求品质加成之和)
+	# 例如：2个紫色(Epic)订单 = 5 * (1 + 0.8) = 9
+	var base_gold = base_rewards.get(target_requirement_count, 7)
+	order.reward_gold = roundi(base_gold * (1.0 + total_requirement_bonus))
 
 	
 	if force_refresh_count >= 0:

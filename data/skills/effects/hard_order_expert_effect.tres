@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1")
 rarity_threshold = 3
-bonus_tickets = 15
+bonus_gold = 10

@@ -10,7 +10,7 @@ const EraConfig = preload("era_config.gd")
 @export_dir var pool_affixes_dir: String = "res://data/pool_affixes"
 
 @export_group("Economy", "starting_")
-@export var starting_gold: int = 15
+@export var starting_gold: int = 30
 @export var normal_draw_gold_cost: int = 5
 @export var inventory_size: int = 10
 
@@ -21,11 +21,11 @@ const EraConfig = preload("era_config.gd")
 
 # --- 抽奖权重 (归一化处理) ---
 @export_group("Rarity Weights", "weight_")
-@export var weight_common: float = 40.0
+@export var weight_common: float = 37.0
 @export var weight_uncommon: float = 30.0
-@export var weight_rare: float = 19.0
+@export var weight_rare: float = 20.0
 @export var weight_epic: float = 10.0
-@export var weight_legendary: float = 1.0
+@export var weight_legendary: float = 3.0
 
 
 # --- 订单系统 ---
