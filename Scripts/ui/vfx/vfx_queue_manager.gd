@@ -178,15 +178,15 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 		if not task.get("is_merge", false):
 			target_slot_node.hide_icon()
 	
-	# 创建飞行精灵
-	var fly_sprite = _create_fly_sprite(item, start_pos, start_scale)
+	# 如果有来源奖池槽位，处理推进动画
+	var source_slot = task.get("source_lottery_slot")
+	
+	# 创建飞行精灵（从 lottery slot 飞出时播放 rarity 入场动画）
+	var fly_sprite = _create_fly_sprite(item, start_pos, start_scale, source_slot != null)
 	if not fly_sprite:
 		if target_slot_node:
 			target_slot_node.is_vfx_target = false
 		return
-	
-	# 如果有来源奖池槽位，处理推进动画
-	var source_slot = task.get("source_lottery_slot")
 	if source_slot and source_slot.has_method("hide_main_icon"):
 		source_slot.hide_main_icon()
 		if source_slot.has_method("play_queue_advance_anim"):
@@ -249,12 +249,13 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 	if not item:
 		return
 	
-	var fly_sprite = _create_fly_sprite(item, start_pos, start_scale)
-	if not fly_sprite:
-		return
-	
 	# 来源槽位处理 (Lottery Slot or Inventory Slot)
 	var source_lottery_slot = task.get("source_lottery_slot")
+	
+	# 创建飞行精灵（从 lottery slot 飞出时播放 rarity 入场动画）
+	var fly_sprite = _create_fly_sprite(item, start_pos, start_scale, source_lottery_slot != null)
+	if not fly_sprite:
+		return
 	if source_lottery_slot:
 		if source_lottery_slot.get("is_vfx_source") != null:
 			source_lottery_slot.is_vfx_source = true
@@ -433,7 +434,8 @@ func _execute_swap(task: Dictionary) -> void:
 		slot2.is_vfx_target = false
 
 ## 创建飞行精灵
-func _create_fly_sprite(item, start_pos: Vector2, start_scale: Vector2) -> Sprite2D:
+## [param animate_rarity_entry]: 是否播放 rarity 背景的入场动画（从 lottery slot 飞出时为 true）
+func _create_fly_sprite(item, start_pos: Vector2, start_scale: Vector2, animate_rarity_entry: bool = false) -> Sprite2D:
 	if not vfx_layer:
 		push_error("[VfxQueueManager] vfx_layer 未设置")
 		return null
@@ -453,9 +455,21 @@ func _create_fly_sprite(item, start_pos: Vector2, start_scale: Vector2) -> Sprit
 		rarity_sprite.texture = rarity_texture
 		rarity_sprite.self_modulate = Constants.get_rarity_border_color(item.rarity)
 		rarity_sprite.global_position = start_pos
-		rarity_sprite.scale = start_scale
 		rarity_sprite.z_index = 99  # 在图标后面
+		
+		# 根据来源决定是否播放入场动画
+		if animate_rarity_entry:
+			rarity_sprite.scale = Vector2.ZERO  # 初始 scale 为 0
+		else:
+			rarity_sprite.scale = start_scale  # 直接显示
+		
 		vfx_layer.add_child(rarity_sprite)
+		
+		# 如果需要入场动画，播放 scale 从 0 到 1 的动画
+		if animate_rarity_entry:
+			var scale_tween = create_tween()
+			scale_tween.tween_property(rarity_sprite, "scale", start_scale, 0.05) \
+				.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		
 		# 开始旋转动画
 		var rotation_tween = create_tween()
@@ -465,8 +479,6 @@ func _create_fly_sprite(item, start_pos: Vector2, start_scale: Vector2) -> Sprit
 			.from(0.0) \
 			.set_trans(Tween.TRANS_LINEAR)
 		
-		# 将 rarity_sprite 作为 sprite 的子节点，这样删除 sprite 时会自动删除 rarity_sprite
-		# 但为了保持 z_index 正确，我们需要手动管理
 		# 使用 metadata 存储引用，以便在删除时一起清理
 		sprite.set_meta("rarity_sprite", rarity_sprite)
 		sprite.set_meta("rarity_tween", rotation_tween)
