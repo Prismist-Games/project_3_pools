@@ -227,6 +227,20 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 			elif GameManager.current_ui_mode != Constants.UIMode.NORMAL:
 				# Fallback
 				return
+			
+			# 检查是否有pending物品且当前slot有pending物品显示
+			var has_pending = not InventorySystem.pending_items.is_empty()
+			var slot = _get_slot_node(index) as LotterySlotUI
+			var is_pending_slot = has_pending and slot and slot.is_drawing and slot._top_item_id != &""
+			
+			# 如果hover在pending物品上，点击左键回收
+			if is_pending_slot:
+				# 记录当前点击的奖池索引
+				game_ui.last_clicked_pool_idx = index
+				game_ui.pending_source_pool_idx = index
+				# 触发回收
+				game_ui._handle_single_item_recycle(-1)
+				return
 				
 			if not game_ui.is_ui_locked() and not _is_animating_refresh and InventorySystem.pending_items.is_empty():
 				# 记录当前点击的奖池索引，用于后续 pending 物品的定位
@@ -241,7 +255,7 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 						await drawing_state.draw()
 
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			# 右键取消逻辑已移至 Game2DUI._input 全局处理
+			# 右键不再有任何作用（不再能直接回收lottery slot道具）
 			pass
 
 func _on_slot_hovered(pool_index: int, pool_item_type: int) -> void:
@@ -260,6 +274,14 @@ func _on_slot_unhovered(pool_index: int) -> void:
 	var slot = _get_slot_node(pool_index) as LotterySlotUI
 	if slot:
 		slot.set_hover_action_state(LotterySlotUI.HoverType.NONE)
+	
+	# 如果之前hover在pending物品所在的slot上，关闭recycle switch预览
+	var has_pending = not InventorySystem.pending_items.is_empty()
+	if has_pending and game_ui and pool_index == game_ui.pending_source_pool_idx:
+		if game_ui.switch_controller:
+			# 检查鼠标是否在recycle switch上，如果不在则关闭预览
+			if not game_ui.switch_controller.is_recycle_hovered():
+				game_ui.switch_controller.hide_recycle_preview()
 	
 	slot_unhovered.emit(pool_index)
 
@@ -284,6 +306,13 @@ func _update_slot_hover_action_state(pool_index: int) -> void:
 	if has_pending and slot.is_drawing and slot._top_item_id != &"":
 		# 在pending状态下hover lottery slot中的物品，显示可回收
 		hover_type = LotterySlotUI.HoverType.RECYCLABLE
+		
+		# 打开recycle switch并显示预览（和hover在recycle switch上表现一致）
+		if game_ui and game_ui.switch_controller:
+			var item = InventorySystem.pending_items[0]
+			if item:
+				var value = Constants.rarity_recycle_value(item.rarity)
+				game_ui.switch_controller.show_recycle_preview(value)
 	
 	slot.set_hover_action_state(hover_type)
 
