@@ -4,10 +4,10 @@ extends "res://scripts/ui/state/ui_state.gd"
 ##
 ## 流程:
 ## 1. 点击带有"有的放矢"词缀的奖池后进入
-## 2. "5 Choose 1" 面板从 y=4880 升起到 y=2384
+## 2. "5 Choose 1" 面板从右侧 (x=7500) 滑入到显示位置 (x=4414)
 ## 3. 显示该奖池主题的 5 种物品图标
-## 4. 玩家点击选择一种 -> 面板落下 -> 执行抽奖（物品种类锁定）
-## 5. 玩家右键取消 -> 面板落下 -> 返回 Idle，退还金币
+## 4. 玩家点击选择一种 -> 面板滑出 -> 执行抽奖（物品种类锁定）
+## 5. 玩家右键取消 -> 面板滑出 -> 返回 Idle，退还金币
 
 ## 主控制器引用
 var controller: Node = null
@@ -36,13 +36,28 @@ var _panel: Sprite2D = null
 ## 5 个图标节点引用
 var _icon_nodes: Array[Sprite2D] = []
 
+## 5 个背景节点引用
+var _background_nodes: Array[Sprite2D] = []
+
 ## 5 个输入区域引用
 var _input_areas: Array[Control] = []
 
-## 动画常量
-const PANEL_HIDDEN_Y: float = 4880.0
-const PANEL_VISIBLE_Y: float = 2384.0
+## 图标原始缩放（用于 press/release 动画）
+var _icon_original_scales: Array[Vector2] = []
+
+## 当前按下的图标索引（-1 表示无）
+var _pressed_icon_index: int = -1
+
+## 当前 hover 的图标索引（-1 表示无）
+var _hovered_icon_index: int = -1
+
+## 动画常量（从右侧进入/退出）
+const PANEL_VISIBLE_X: float = 4414.0
+const PANEL_HIDDEN_X: float = 7500.0
 const ANIMATION_DURATION: float = 0.4
+
+## Hover 变亮倍数
+const HOVER_BRIGHTNESS: float = 1.3
 
 func enter(payload: Dictionary = {}) -> void:
 	source_pool_index = payload.get("source_pool_index", -1)
@@ -216,10 +231,12 @@ func _cancel_selection() -> void:
 	# 返回 Idle
 	machine.transition_to(&"Idle")
 
-## 缓存图标节点引用
+## 缓存节点引用
 func _cache_icon_nodes() -> void:
 	_icon_nodes.clear()
+	_background_nodes.clear()
 	_input_areas.clear()
+	_icon_original_scales.clear()
 	
 	var grid = _panel.get_node_or_null("Item Choice Grid")
 	if not grid:
@@ -228,10 +245,21 @@ func _cache_icon_nodes() -> void:
 	for i in range(5):
 		var root = grid.get_node_or_null("Item Choice Root_" + str(i))
 		if root:
-			var icon = root.get_node_or_null("Item_icon") as Sprite2D
+			var background = root.get_node_or_null("Item_background") as Sprite2D
+			var icon: Sprite2D = null
+			if background:
+				icon = background.get_node_or_null("Item_icon") as Sprite2D
 			var input_area = root.get_node_or_null("Input Area") as Control
+			
+			_background_nodes.append(background)
 			_icon_nodes.append(icon)
 			_input_areas.append(input_area)
+			
+			# 记录图标原始缩放
+			if icon:
+				_icon_original_scales.append(icon.scale)
+			else:
+				_icon_original_scales.append(Vector2.ONE)
 
 ## 设置图标显示
 func _setup_icons() -> void:
@@ -277,51 +305,152 @@ func _disconnect_input_signals() -> void:
 			if input_area.mouse_exited.is_connected(_on_icon_mouse_exited):
 				input_area.mouse_exited.disconnect(_on_icon_mouse_exited.bind(i))
 
-## 图标输入处理
+## 图标输入处理（支持 press 缩小 / release 确认 + 复位效果）
 func _on_icon_input(event: InputEvent, index: int) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		select_item(index)
+	if not (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT):
+		return
+	
+	if event.pressed:
+		# 按下：icon 缩小
+		_pressed_icon_index = index
+		_play_icon_press(index)
+	else:
+		# 松开：确认选择 + icon 复位
+		if _pressed_icon_index == index:
+			_play_icon_release_and_confirm(index)
+		else:
+			# 如果松开位置不在同一个图标，仅复位之前按下的图标
+			_play_icon_release(_pressed_icon_index)
+		_pressed_icon_index = -1
 
-## 图标 hover 进入 (用于高亮订单图标)
+## 播放图标按下动画（缩小到 0.9 倍）
+func _play_icon_press(index: int) -> void:
+	if index < 0 or index >= _icon_nodes.size():
+		return
+	
+	var icon = _icon_nodes[index]
+	if not icon:
+		return
+	
+	var original_scale = _icon_original_scales[index] if index < _icon_original_scales.size() else Vector2.ONE
+	var tween = controller.create_tween()
+	tween.tween_property(icon, "scale", original_scale * 0.9, 0.1) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+## 播放图标松开复位动画（不触发选择）
+func _play_icon_release(index: int) -> void:
+	if index < 0 or index >= _icon_nodes.size():
+		return
+	
+	var icon = _icon_nodes[index]
+	if not icon:
+		return
+	
+	var original_scale = _icon_original_scales[index] if index < _icon_original_scales.size() else Vector2.ONE
+	var tween = controller.create_tween()
+	tween.tween_property(icon, "scale", original_scale * 1.05, 0.1) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(icon, "scale", original_scale, 0.1) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+## 播放图标松开复位动画并触发选择
+func _play_icon_release_and_confirm(index: int) -> void:
+	if index < 0 or index >= _icon_nodes.size():
+		return
+	
+	var icon = _icon_nodes[index]
+	if not icon:
+		select_item(index)
+		return
+	
+	var original_scale = _icon_original_scales[index] if index < _icon_original_scales.size() else Vector2.ONE
+	var tween = controller.create_tween()
+	tween.tween_property(icon, "scale", original_scale * 1.05, 0.1) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(icon, "scale", original_scale, 0.1) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_callback(func(): select_item(index))
+
+## 图标 hover 进入 (用于高亮订单图标 + background 变亮)
 func _on_icon_mouse_entered(index: int) -> void:
 	if index < 0 or index >= available_items.size():
 		return
 	
+	_hovered_icon_index = index
+	
+	# Background 变亮效果
+	if index < _background_nodes.size():
+		var bg = _background_nodes[index]
+		if bg:
+			var tween = controller.create_tween()
+			tween.tween_property(bg, "modulate", Color(HOVER_BRIGHTNESS, HOVER_BRIGHTNESS, HOVER_BRIGHTNESS, 1.0), 0.1)
+	
+	# 订单图标高亮
 	var item_data = available_items[index]
 	if controller and controller.quest_icon_highlighter:
 		controller.quest_icon_highlighter.highlight_by_item_id(item_data.id)
 
 ## 图标 hover 离开
-func _on_icon_mouse_exited(_index: int) -> void:
+func _on_icon_mouse_exited(index: int) -> void:
+	_hovered_icon_index = -1
+	
+	# Background 恢复原色
+	if index >= 0 and index < _background_nodes.size():
+		var bg = _background_nodes[index]
+		if bg:
+			var tween = controller.create_tween()
+			tween.tween_property(bg, "modulate", Color.WHITE, 0.1)
+	
+	# 清除订单图标高亮
 	if controller and controller.quest_icon_highlighter:
 		controller.quest_icon_highlighter.clear_all_highlights()
 
-## 播放面板升起动画
+## 播放面板从右侧进入动画
 func _play_panel_rise() -> void:
 	if not _panel:
 		return
 	
-	_panel.position.y = PANEL_HIDDEN_Y
+	# 只设置 x 值，保留 y 值不变
+	_panel.position = Vector2(PANEL_HIDDEN_X, _panel.position.y)
 	_panel.visible = true
 	
 	var tween = controller.create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_BACK)
-	tween.tween_property(_panel, "position:y", PANEL_VISIBLE_Y, ANIMATION_DURATION)
+	tween.tween_property(_panel, "position:x", PANEL_VISIBLE_X, ANIMATION_DURATION)
 	await tween.finished
 
-## 播放面板落下动画
+## 播放面板向右侧退出动画
 func _play_panel_fall() -> void:
 	if not _panel:
 		return
 	
+	# 重置所有 hover/press 状态
+	_reset_all_visual_states()
+	
 	var tween = controller.create_tween()
 	tween.set_ease(Tween.EASE_IN)
 	tween.set_trans(Tween.TRANS_BACK)
-	tween.tween_property(_panel, "position:y", PANEL_HIDDEN_Y, ANIMATION_DURATION)
+	tween.tween_property(_panel, "position:x", PANEL_HIDDEN_X, ANIMATION_DURATION)
 	await tween.finished
 	
 	_panel.visible = false
+
+## 重置所有视觉状态（hover、press 等）
+func _reset_all_visual_states() -> void:
+	_pressed_icon_index = -1
+	_hovered_icon_index = -1
+	
+	# 重置所有 background 的 modulate
+	for bg in _background_nodes:
+		if bg:
+			bg.modulate = Color.WHITE
+	
+	# 重置所有 icon 的 scale
+	for i in range(_icon_nodes.size()):
+		var icon = _icon_nodes[i]
+		if icon and i < _icon_original_scales.size():
+			icon.scale = _icon_original_scales[i]
 
 ## 辅助：获取 LotterySlot 节点
 func _get_lottery_slot(index: int) -> Control:

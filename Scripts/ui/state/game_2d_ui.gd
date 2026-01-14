@@ -285,11 +285,12 @@ func _refresh_all() -> void:
 	order_controller.update_orders_display(OrderSystem.current_orders)
 	_update_ui_mode_display()
 	
-	# 确保"有的放矢"面板初始隐藏
+	# 确保"有的放矢"面板初始隐藏（只设置 x 值，不触碰 y 值）
 	if targeted_panel:
 		var is_in_targeted = state_machine and state_machine.get_current_state_name() == &"TargetedSelection"
 		if not is_in_targeted:
-			targeted_panel.position.y = 4880.0
+			# 只设置 x 值到隐藏位置，保留 y 值不变
+			targeted_panel.position = Vector2(7500.0, targeted_panel.position.y)
 			targeted_panel.visible = false
 
 
