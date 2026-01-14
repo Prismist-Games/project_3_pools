@@ -7,12 +7,12 @@ extends Node
 @export_group("Animation System")
 @export var anim_tree: AnimationTree
 
-const STATE_RABBIT_IDLE = &"RabbitIdle"
-const STATE_RABBIT_SHOCKED = &"RabbitShocked"
-const STATE_RABBIT_IMPATIENT = &"RabbitImpatient"
-const STATE_RABBIT_NOSE_POKING = &"RabbitNosePoking"
-const STATE_RABBIT_DRAWING = &"RabbitDrawing"
-const STATE_RABBIT_RECYCLE_HIT = &"RabbitRecycleHit"
+const STATE_RABBIT_IDLE = &"rabbit_idle"
+const STATE_RABBIT_SHOCKED = &"rabbit_shocked"
+const STATE_RABBIT_IMPATIENT = &"rabbit_impatient"
+const STATE_RABBIT_NOSE_POKING = &"rabbit_nose_poking"
+const STATE_RABBIT_EYES_ROLLING = &"rabbit_eyes_rolling"
+const STATE_RABBIT_KNOCK_MACHINE = &"rabbit_knock_machine"
 
 # ==========================================
 # 全局眼部设置
@@ -37,7 +37,6 @@ const STATE_RABBIT_RECYCLE_HIT = &"RabbitRecycleHit"
 
 @export_group("Eye Interaction", "idle_eye_")
 @export var idle_eye_max_offset: float = 8.0
-@export var idle_eye_follow_speed: float = 10.0
 
 
 # ==========================================
@@ -46,25 +45,21 @@ const STATE_RABBIT_RECYCLE_HIT = &"RabbitRecycleHit"
 @export_category("Impatient Config")
 @export_group("Trigger", "impatient_")
 @export var impatient_gold_threshold: int = 10
-@export var test_deform_on_start: bool = false ## DEBUG: 启动时立即测试变形
+
 
 @export_group("Eye Style", "impatient_eye_")
-@export var impatient_eye_target_texture: Texture2D ## 眯眼时的眼眶形状纹理
-@export var impatient_eye_pupil_scale: float = 0.25 ## 眯眼时的瞳孔缩放
+@export var impatient_eye_target_texture: Texture2D = preload("res://assets/sprites/the_rabbit/eye_shape_1.png") ## 眯眼时的眼眶形状纹理
+
 @export var impatient_eye_pupil_offset: Vector2 = Vector2.ZERO ## 眯眼时的瞳孔基准偏移 (建议 -0.05 到 0.05)
 
 
 const EYE_PROCEDURAL_SHADER = preload("res://assets/shaders/eye_procedural.gdshader")
 
 var _rabbit_root: Node2D
-var _left_arm: Sprite2D
-var _left_ear: Sprite2D
-var _right_ear: Sprite2D
-var _mustache_left: Sprite2D
-var _mustache_right: Sprite2D
+
 var _left_eye_fill: Sprite2D
 var _right_eye_fill: Sprite2D
-var _left_foot: Sprite2D
+
 
 var _left_eye_mat: ShaderMaterial
 var _right_eye_mat: ShaderMaterial
@@ -77,41 +72,70 @@ var _is_test_override: bool = false
 var _current_lottery_hover_pos: Vector2 = Vector2.ZERO
 var _has_hovered_lottery: bool = false
 
-var _init_trans: Dictionary = {}
+# AnimationTree 条件变量（持续状态）
+var _cond_is_submitting: bool = false
+var _cond_is_low_gold: bool = false
+var _cond_is_high_gold: bool = true # 与 is_low_gold 相反
+
+# AnimationTree 触发器（一次性）
+var _trig_order_success: bool = false
+var _trig_exit_submitting: bool = false
+var _trig_pool_clicked: bool = false
+var _trig_recycle_lid_closed: bool = false
+
 
 func _ready() -> void:
 	_find_required_nodes()
 	_cache_initial_transforms()
 	_init_animation_tree()
+	
 	_connect_to_ui_state()
 	
 	if GameManager:
 		GameManager.gold_changed.connect(_on_gold_changed)
+		# 初始化金币状态
+		_on_gold_changed(GameManager.gold)
+	
+	EventBus.order_completed.connect(func(_ctx):
+		_trig_order_success = true
+		print("[RabbitAnimator] Trigger: order_success")
+	)
+	EventBus.draw_requested.connect(func(_ctx):
+		_trig_pool_clicked = true
+		print("[RabbitAnimator] Trigger: pool_clicked")
+	)
+	EventBus.item_recycled.connect(func(_idx, _item):
+		_trig_recycle_lid_closed = true
+		print("[RabbitAnimator] Trigger: recycle_lid_closed")
+	)
 	
 	add_to_group("debug_animator")
 
+	# 连接奖池悬停信号（通过 EventBus）
+	EventBus.game_event.connect(_on_bus_game_event)
+
 func _connect_to_ui_state() -> void:
-	# 尝试连接 UI 状态机
 	var ui_root = get_tree().get_first_node_in_group("game_2d_ui")
 	if ui_root:
 		var sm = ui_root.get_node_or_null("UIStateMachine")
 		if sm:
 			sm.state_changed.connect(_on_ui_state_changed)
 			print("[RabbitAnimator] UI 状态机连接成功")
-		else:
-			print("[RabbitAnimator] 未找到 UIStateMachine 节点")
-	
-	# 连接奖池悬停信号（通过 EventBus）
-	EventBus.game_event.connect(_on_bus_game_event)
 
 func _on_ui_state_changed(_from: StringName, to: StringName) -> void:
-	match to:
-		&"Idle": _transition_to_state(STATE_RABBIT_IDLE)
-		&"Drawing": _transition_to_state(STATE_RABBIT_DRAWING)
-		&"Submitting": _transition_to_state(STATE_RABBIT_NOSE_POKING)
-		&"Recycling": _transition_to_state(STATE_RABBIT_RECYCLE_HIT)
-		&"Replacing": _transition_to_state(STATE_RABBIT_IMPATIENT)
-		&"PreciseSelection", &"TargetedSelection": _transition_to_state(STATE_RABBIT_DRAWING)
+	# 更新状态条件
+	var was_submitting = _cond_is_submitting
+	_cond_is_submitting = (to == &"Submitting")
+	
+	# 检测退出提交状态
+	if was_submitting and not _cond_is_submitting:
+		_trig_exit_submitting = true
+		print("[RabbitAnimator] Trigger: exit_submitting")
+
+func _on_gold_changed(new_gold: int) -> void:
+	_cond_is_low_gold = (new_gold <= impatient_gold_threshold)
+	_cond_is_high_gold = (new_gold > impatient_gold_threshold)
+
 
 func _on_bus_game_event(event_id: StringName, payload: Variant) -> void:
 	if event_id == &"lottery_slot_hovered":
@@ -130,31 +154,20 @@ func _find_required_nodes() -> void:
 	_rabbit_root = p
 	print("[RabbitAnimator] Parent node: ", p.name if p else "NULL")
 	
-	_left_arm = p.find_child("TheRabbitLeftArm", true, false)
-	_left_ear = p.find_child("TheRabbitLeftEar", true, false)
-	_right_ear = p.find_child("TheRabbitRightEar", true, false)
-	_mustache_left = p.find_child("TheRabbitMustacheLeft", true, false)
-	_mustache_right = p.find_child("TheRabbitMustacheRight", true, false)
 	_left_eye_fill = p.find_child("TheRabbitLeftEyeFill", true, false)
 	_right_eye_fill = p.find_child("TheRabbitRightEyeFill", true, false)
-	_left_foot = p.find_child("TheRabbitLeftFoot", true, false)
+	
 	
 	print("[RabbitAnimator] Left Eye Fill found: ", _left_eye_fill != null)
 	print("[RabbitAnimator] Right Eye Fill found: ", _right_eye_fill != null)
 
 func _cache_initial_transforms() -> void:
-	var nodes = {
-		"arm_l": _left_arm, "ear_l": _left_ear, "ear_r": _right_ear,
-		"mus_l": _mustache_left, "mus_r": _mustache_right,
-		"foot_l": _left_foot
-	}
-	for key in nodes:
-		var node = nodes[key]
-		if node: _init_trans[key] = {"pos": node.position, "rot": node.rotation, "scale": node.scale}
-	
 	_init_eye_materials()
 
 func _init_eye_materials() -> void:
+	if not eye_socket_texture and _left_eye_fill:
+		eye_socket_texture = _left_eye_fill.texture
+
 	if _left_eye_fill:
 		_left_eye_mat = ShaderMaterial.new()
 		_left_eye_mat.shader = EYE_PROCEDURAL_SHADER
@@ -192,14 +205,6 @@ func _init_animation_tree() -> void:
 		anim_tree.active = true
 		_playback = anim_tree.get("parameters/playback")
 
-func _on_gold_changed(_new_gold: int) -> void:
-	pass
-
-func _transition_to_state(new_state: StringName) -> void:
-	if _current_state_name == new_state: return
-	_current_state_name = new_state
-	_enter_state(new_state)
-	if _playback: _playback.travel(new_state)
 
 func _enter_state(state: StringName) -> void:
 	match state:
@@ -232,10 +237,44 @@ func _process(delta: float) -> void:
 	if _playback:
 		var tree_state = _playback.get_current_node()
 		if tree_state != _current_state_name:
+			print("[RabbitAnimator] State Changed: %s -> %s" % [_current_state_name, tree_state])
 			_current_state_name = tree_state
 			_enter_state(tree_state)
 	
 	_update_eye_behavior(delta)
+	
+	# 同步条件到 AnimationTree
+	if anim_tree:
+		# 持续状态
+		anim_tree.set("parameters/conditions/is_submitting", _cond_is_submitting)
+		anim_tree.set("parameters/conditions/is_low_gold", _cond_is_low_gold)
+		anim_tree.set("parameters/conditions/is_high_gold", _cond_is_high_gold)
+		
+		# 处理 Trigger (单帧有效)
+		if _trig_order_success:
+			anim_tree.set("parameters/conditions/order_success", true)
+			_trig_order_success = false
+		else:
+			anim_tree.set("parameters/conditions/order_success", false)
+			
+		if _trig_exit_submitting:
+			anim_tree.set("parameters/conditions/exit_submitting", true)
+			_trig_exit_submitting = false
+		else:
+			anim_tree.set("parameters/conditions/exit_submitting", false)
+			
+		if _trig_pool_clicked:
+			anim_tree.set("parameters/conditions/pool_clicked", true)
+			_trig_pool_clicked = false
+		else:
+			anim_tree.set("parameters/conditions/pool_clicked", false)
+			
+		if _trig_recycle_lid_closed:
+			anim_tree.set("parameters/conditions/recycle_lid_closed", true)
+			_trig_recycle_lid_closed = false
+		else:
+			anim_tree.set("parameters/conditions/recycle_lid_closed", false)
+
 
 func _update_eye_behavior(_delta: float) -> void:
 	if _current_state_name == STATE_RABBIT_SHOCKED: return
@@ -243,7 +282,7 @@ func _update_eye_behavior(_delta: float) -> void:
 		_set_eye_pupil_offset(impatient_eye_pupil_offset)
 		return
 	
-	var target_pos = _current_lottery_hover_pos if (_current_state_name == STATE_RABBIT_DRAWING and _has_hovered_lottery) else _rabbit_root.get_global_mouse_position()
+	var target_pos = _current_lottery_hover_pos if (_current_state_name == STATE_RABBIT_EYES_ROLLING and _has_hovered_lottery) else _rabbit_root.get_global_mouse_position()
 	_apply_eye_look_at(target_pos)
 
 func _apply_eye_look_at(global_target: Vector2) -> void:
@@ -260,7 +299,7 @@ func _set_eye_pupil_offset(offset: Vector2) -> void:
 	if _right_eye_mat: _right_eye_mat.set_shader_parameter("pupil_offset", offset)
 
 func play_shocked_animation() -> void:
-	_transition_to_state(STATE_RABBIT_SHOCKED)
+	if _playback: _playback.travel(STATE_RABBIT_SHOCKED)
 
 func trigger_shock_impact() -> void:
 	pass
@@ -269,4 +308,9 @@ func _end_triggered_animation() -> void:
 	_on_gold_changed(GameManager.gold if GameManager else 100)
 
 func reset_to_idle() -> void:
-	_transition_to_state(STATE_RABBIT_IDLE)
+	if _playback: _playback.travel(STATE_RABBIT_IDLE)
+
+func debug_travel_to_state(state_name: StringName) -> void:
+	if _playback:
+		_playback.travel(state_name)
+		print("[RabbitAnimator] Debug travel to state: ", state_name)
