@@ -1,4 +1,4 @@
-[gd_scene load_steps=111 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=116 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
@@ -73,6 +73,7 @@
 [ext_resource type="Texture2D" uid="uid://c5i1aenksh4av" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear_inner.png" id="82_00smp"]
 [ext_resource type="Texture2D" uid="uid://cuq30wijqs4vm" path="res://assets/sprites/light_2.png" id="82_4tp6t"]
 [ext_resource type="Texture2D" uid="uid://cjvwo40l2innf" path="res://assets/sprites/the_rabbit/the_rabbit_right_eyeball_fill.png" id="83_jptrp"]
+[ext_resource type="Texture2D" uid="uid://h5k15o8ewu4i" path="res://assets/sprites/icons/item_rarity_glow.PNG" id="83_taegb"]
 [ext_resource type="Texture2D" uid="uid://c1v0nvxbrf6c" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_fill.png" id="85_q6adl"]
 [ext_resource type="Texture2D" uid="uid://ca5ud3ae3x378" path="res://assets/sprites/the_rabbit/the_rabbit_right_foot.png" id="87_fs1h7"]
 [ext_resource type="PackedScene" uid="uid://05ku7kwq0dxp" path="res://scenes/ui_module/quest_slot_root_1.tscn" id="87_n6ers"]
@@ -378,6 +379,38 @@ shader_parameter/pupil_scale = 0.50000002375
 shader_parameter/pupil_color = Color(0.1, 0.1, 0.1, 1)
 shader_parameter/pupil_outline_color = Color(0, 0, 0, 1)
 shader_parameter/pupil_outline_thickness = 0.10000000149012
+
+[sub_resource type="Shader" id="Shader_taegb"]
+code = "shader_type canvas_item;
+
+uniform float saturation;
+
+void fragment() {
+    vec4 tex_color = texture(TEXTURE, UV);
+
+    COLOR.rgb = mix(vec3(dot(tex_color.rgb, vec3(0.299, 0.587, 0.114))), tex_color.rgb, saturation);
+	COLOR.a = tex_color.a;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m40pb"]
+shader = SubResource("Shader_taegb")
+shader_parameter/saturation = 0.0
+
+[sub_resource type="Shader" id="Shader_jqdmi"]
+code = "shader_type canvas_item;
+
+uniform float saturation;
+
+void fragment() {
+    vec4 tex_color = texture(TEXTURE, UV);
+
+    COLOR.rgb = mix(vec3(dot(tex_color.rgb, vec3(0.299, 0.587, 0.114))), tex_color.rgb, saturation);
+	COLOR.a = tex_color.a;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_enqmm"]
+shader = SubResource("Shader_jqdmi")
+shader_parameter/saturation = 0.0
 
 [sub_resource type="Animation" id="Animation_8ocj1"]
 length = 0.001
@@ -1477,29 +1510,27 @@ alignment = 2
 layout_mode = 2
 
 [node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0"]
+material = SubResource("ShaderMaterial_m40pb")
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(55, 75, 450, 450)
 
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
+[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
 show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
+position = Vector2(16, -28.666672)
+scale = Vector2(2.75, 2.75)
 texture = ExtResource("81_6sdua")
 
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon/Item_rarity"]
+[node name="Item_requirement_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon/Item_requirement"]
 texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
 
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
+[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
-texture = ExtResource("25_ue141")
+show_behind_parent = true
+texture = ExtResource("83_taegb")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
 position = Vector2(128, -107.333336)
@@ -1509,29 +1540,27 @@ texture = ExtResource("87_u8s40")
 layout_mode = 2
 
 [node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1"]
+material = SubResource("ShaderMaterial_enqmm")
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(55, 75, 450, 450)
 
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
+[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
 show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
+position = Vector2(16, -28.666672)
+scale = Vector2(2.75, 2.75)
 texture = ExtResource("81_6sdua")
 
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon/Item_rarity"]
+[node name="Item_requirement_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon/Item_requirement"]
 texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
 
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
+[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
-texture = ExtResource("25_ue141")
+show_behind_parent = true
+texture = ExtResource("83_taegb")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
 position = Vector2(128, -107.333336)
