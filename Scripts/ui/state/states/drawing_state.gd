@@ -122,6 +122,10 @@ func draw() -> void:
 		slot.play_shake()
 		controller.last_clicked_pool_idx = -1
 		controller.unlock_ui("draw")
+		
+		# 关键：清除 pool_index，防止 exit() 刷新奖池
+		pool_index = -1
+		
 		mark_complete()
 		machine.transition_to(&"Idle")
 		return

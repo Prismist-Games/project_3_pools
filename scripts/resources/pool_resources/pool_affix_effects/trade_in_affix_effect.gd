@@ -19,14 +19,14 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if ctx == null:
 		return
 	
+	# 检查金币是否足够（在设置 skip_draw 之前）
+	if GameManager.gold < cost:
+		# 不设置 skip_draw，让 PoolSystem 正常检查金币并失败（触发抖动）
+		return
+	
 	# 标记跳过标准逻辑，且先不扣费（置换成功后再扣）
 	ctx.skip_draw = true
 	ctx.gold_cost = 0
-	
-	# 检查金币是否足够
-	if GameManager.gold < cost:
-		push_warning("Trade-in: Insufficient gold (%d < %d)" % [GameManager.gold, cost])
-		return
 	
 	# 从 meta 中获取 pool_index（由 PoolSystem 设置）
 	var pool_index: int = ctx.meta.get("pool_index", -1)
