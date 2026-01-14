@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://de8rpopawu4vc"
-path.s3tc="res://.godot/imported/stationary_folder.png-3a4e4f680f063d9602c91b92b0d349a9.s3tc.ctex"
-path.etc2="res://.godot/imported/stationary_folder.png-3a4e4f680f063d9602c91b92b0d349a9.etc2.ctex"
+path.s3tc="res://.godot/imported/stationary_folder.PNG-7c14917e71c3a0fb2bb77f18e0c841ac.s3tc.ctex"
+path.etc2="res://.godot/imported/stationary_folder.PNG-7c14917e71c3a0fb2bb77f18e0c841ac.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/stationary_folder.png"
-dest_files=["res://.godot/imported/stationary_folder.png-3a4e4f680f063d9602c91b92b0d349a9.s3tc.ctex", "res://.godot/imported/stationary_folder.png-3a4e4f680f063d9602c91b92b0d349a9.etc2.ctex"]
+source_file="res://assets/sprites/icons/items/stationary_folder.PNG"
+dest_files=["res://.godot/imported/stationary_folder.PNG-7c14917e71c3a0fb2bb77f18e0c841ac.s3tc.ctex", "res://.godot/imported/stationary_folder.PNG-7c14917e71c3a0fb2bb77f18e0c841ac.etc2.ctex"]
 
 [params]
 

@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cwtg2r4anpk68"
-path.s3tc="res://.godot/imported/antique_magatama.png-32789a8b64b89b9744b09f7b643db8d7.s3tc.ctex"
-path.etc2="res://.godot/imported/antique_magatama.png-32789a8b64b89b9744b09f7b643db8d7.etc2.ctex"
+path.s3tc="res://.godot/imported/antique_magatama.PNG-d3cce340d822552ecddad9487ebaf944.s3tc.ctex"
+path.etc2="res://.godot/imported/antique_magatama.PNG-d3cce340d822552ecddad9487ebaf944.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/antique_magatama.png"
-dest_files=["res://.godot/imported/antique_magatama.png-32789a8b64b89b9744b09f7b643db8d7.s3tc.ctex", "res://.godot/imported/antique_magatama.png-32789a8b64b89b9744b09f7b643db8d7.etc2.ctex"]
+source_file="res://assets/sprites/icons/items/antique_magatama.PNG"
+dest_files=["res://.godot/imported/antique_magatama.PNG-d3cce340d822552ecddad9487ebaf944.s3tc.ctex", "res://.godot/imported/antique_magatama.PNG-d3cce340d822552ecddad9487ebaf944.etc2.ctex"]
 
 [params]
 

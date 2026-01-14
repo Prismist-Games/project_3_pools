@@ -1,4 +1,4 @@
-[gd_scene load_steps=129 format=3]
+[gd_scene load_steps=128 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
@@ -556,8 +556,7 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_x7wb1")
 
-[node name="Background2" type="Node2D" parent="." instance=ExtResource("2_u8s40")]
-position = Vector2(3001, 1689.25)
+[node name="Background2" parent="." instance=ExtResource("2_u8s40")]
 
 [node name="Background" type="Node2D" parent="."]
 position = Vector2(3001, 1689.25)
@@ -768,8 +767,8 @@ offset_left = -147.75
 offset_top = -88.5
 offset_right = 36.25
 offset_bottom = 16.5
-theme_override_font_sizes/normal_font_size = 76
 theme_override_colors/default_color = Color(0.70380783, 0.70380783, 0.70380783, 1)
+theme_override_font_sizes/normal_font_size = 76
 text = "123"
 fit_content = true
 scroll_active = false
@@ -792,7 +791,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_item_root/Item_icon"]
 visible = false
@@ -818,8 +817,8 @@ offset_left = -88.0
 offset_top = 3.0
 offset_right = 96.0
 offset_bottom = 43.0
-theme_override_font_sizes/normal_font_size = 26
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 26
 text = "RECYCLE"
 fit_content = true
 scroll_active = false
@@ -899,8 +898,8 @@ offset_left = -88.0
 offset_top = -81.5
 offset_right = 96.0
 offset_bottom = 125.5
-theme_override_font_sizes/normal_font_size = 42
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 42
 bbcode_enabled = true
 text = "SWITCH_SUBMIT"
 fit_content = true
@@ -918,8 +917,8 @@ offset_left = -88.0
 offset_top = -134.5
 offset_right = 96.0
 offset_bottom = 72.5
-theme_override_font_sizes/normal_font_size = 42
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 42
 text = "SWITCH_CONFIRM"
 fit_content = true
 scroll_active = false
@@ -1062,8 +1061,8 @@ offset_top = -19.0
 offset_right = 363.0
 offset_bottom = 63.0
 mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 66
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 66
 text = "+ 10%"
 scroll_active = false
 vertical_alignment = 1
@@ -1084,8 +1083,8 @@ offset_top = -19.0
 offset_right = 363.0
 offset_bottom = 63.0
 mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 66
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 66
 text = "+ 20%"
 scroll_active = false
 vertical_alignment = 1
@@ -1106,8 +1105,8 @@ offset_top = -19.0
 offset_right = 363.0
 offset_bottom = 63.0
 mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 66
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 66
 text = "+ 40%"
 scroll_active = false
 vertical_alignment = 1
@@ -1128,8 +1127,8 @@ offset_top = -19.0
 offset_right = 363.0
 offset_bottom = 63.0
 mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 66
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 66
 text = "+ 100%"
 scroll_active = false
 vertical_alignment = 1
@@ -1150,8 +1149,8 @@ offset_top = -19.0
 offset_right = 363.0
 offset_bottom = 63.0
 mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 66
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 66
 text = "+ 150%"
 scroll_active = false
 vertical_alignment = 1
@@ -1215,7 +1214,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -1309,7 +1308,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -1403,7 +1402,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -1497,7 +1496,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -1591,7 +1590,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -1685,7 +1684,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -1779,7 +1778,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -1873,7 +1872,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -1967,7 +1966,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -2061,7 +2060,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -2112,17 +2111,14 @@ offset_right = 1456.25
 offset_bottom = -313.75
 theme_override_constants/separation = 894
 
-[node name="Lottery Slot_root_0" type="Control" parent="The Machine/Lottery Slots Grid" instance=ExtResource("44_jptrp")]
+[node name="Lottery Slot_root_0" parent="The Machine/Lottery Slots Grid" instance=ExtResource("44_jptrp")]
 layout_mode = 2
-script = ExtResource("48_017ef")
 
-[node name="Lottery Slot_root_1" type="Control" parent="The Machine/Lottery Slots Grid" instance=ExtResource("44_jptrp")]
+[node name="Lottery Slot_root_1" parent="The Machine/Lottery Slots Grid" instance=ExtResource("44_jptrp")]
 layout_mode = 2
-script = ExtResource("48_017ef")
 
-[node name="Lottery Slot_root_2" type="Control" parent="The Machine/Lottery Slots Grid" instance=ExtResource("44_jptrp")]
+[node name="Lottery Slot_root_2" parent="The Machine/Lottery Slots Grid" instance=ExtResource("44_jptrp")]
 layout_mode = 2
-script = ExtResource("48_017ef")
 
 [node name="The Rabbit" type="Node2D" parent="."]
 position = Vector2(1434, 1998)
@@ -2456,7 +2452,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -2488,7 +2484,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -2608,8 +2604,8 @@ offset_top = -97.0
 offset_right = 979.0
 offset_bottom = 96.0
 grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 141
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 141
 bbcode_enabled = true
 text = "33 [s]25[/s]"
 fit_content = true
@@ -2633,7 +2629,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -2666,7 +2662,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -2699,7 +2695,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -2732,7 +2728,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -2876,8 +2872,8 @@ offset_top = -97.0
 offset_right = 979.0
 offset_bottom = 96.0
 grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 141
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 141
 bbcode_enabled = true
 text = "33 [s]25[/s]"
 fit_content = true
@@ -2901,7 +2897,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -2934,7 +2930,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -2967,7 +2963,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3000,7 +2996,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3144,8 +3140,8 @@ offset_top = -97.0
 offset_right = 979.0
 offset_bottom = 96.0
 grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 141
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 141
 bbcode_enabled = true
 text = "33 [s]25[/s]"
 fit_content = true
@@ -3169,7 +3165,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3202,7 +3198,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3235,7 +3231,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3268,7 +3264,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3412,8 +3408,8 @@ offset_top = -97.0
 offset_right = 979.0
 offset_bottom = 96.0
 grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 141
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 141
 bbcode_enabled = true
 text = "33 [s]25[/s]"
 fit_content = true
@@ -3437,7 +3433,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3470,7 +3466,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3503,7 +3499,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3536,7 +3532,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3646,8 +3642,8 @@ offset_left = -194.0
 offset_top = 206.0
 offset_right = 2257.0
 offset_bottom = 731.0
-theme_override_font_sizes/normal_font_size = 125
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 125
 bbcode_enabled = true
 text = "asdofiasdflahjksd;lfj la;sdkfjlasdkjflkg lkfdgjdfklgd gdfjg klg dflgj dfg lkdfgj ldfkgj lkdf dflk jsdl jsdfl sdj fjweorjw woe rjeoir jweor  ioj weor oiwj e"
 scroll_active = false
@@ -3678,8 +3674,8 @@ offset_right = 2050.0
 offset_bottom = 360.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 125
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 125
 bbcode_enabled = true
 text = "asdofiasdflahjksd;lfj la;sdkfjlasdkjflkg lkfdgjdfklgd gdfjg klg dflgj dfg lkdfgj ldfkgj lkdf dflk jsdl jsdfl sdj fjweorjw woe rjeoir jweor  ioj weor oiwj e"
 scroll_active = false
@@ -3704,7 +3700,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("102_jdak2")
 offset = Vector2(-7, 19)
 region_enabled = true
-region_rect = Rect2(165, 174, 256, 290)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_0"]
 anchors_preset = 0
@@ -3723,7 +3719,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("102_jdak2")
 offset = Vector2(-7, 19)
 region_enabled = true
-region_rect = Rect2(165, 174, 256, 290)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_1"]
 anchors_preset = 0
@@ -3742,7 +3738,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("102_jdak2")
 offset = Vector2(-7, 19)
 region_enabled = true
-region_rect = Rect2(165, 174, 256, 290)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_2"]
 anchors_preset = 0
@@ -3761,7 +3757,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("102_jdak2")
 offset = Vector2(-7, 19)
 region_enabled = true
-region_rect = Rect2(165, 174, 256, 290)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_3"]
 anchors_preset = 0
@@ -3780,7 +3776,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("102_jdak2")
 offset = Vector2(-7, 19)
 region_enabled = true
-region_rect = Rect2(165, 174, 256, 290)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_4"]
 anchors_preset = 0

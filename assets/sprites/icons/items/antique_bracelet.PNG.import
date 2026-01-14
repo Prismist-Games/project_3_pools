@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://blc8hyuyi30dd"
-path.s3tc="res://.godot/imported/antique_bracelet.png-ed7696bc3ac225336ad0fabdfd56bf58.s3tc.ctex"
-path.etc2="res://.godot/imported/antique_bracelet.png-ed7696bc3ac225336ad0fabdfd56bf58.etc2.ctex"
+path.s3tc="res://.godot/imported/antique_bracelet.PNG-98da2875347165efa158150c3a040f10.s3tc.ctex"
+path.etc2="res://.godot/imported/antique_bracelet.PNG-98da2875347165efa158150c3a040f10.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/antique_bracelet.png"
-dest_files=["res://.godot/imported/antique_bracelet.png-ed7696bc3ac225336ad0fabdfd56bf58.s3tc.ctex", "res://.godot/imported/antique_bracelet.png-ed7696bc3ac225336ad0fabdfd56bf58.etc2.ctex"]
+source_file="res://assets/sprites/icons/items/antique_bracelet.PNG"
+dest_files=["res://.godot/imported/antique_bracelet.PNG-98da2875347165efa158150c3a040f10.s3tc.ctex", "res://.godot/imported/antique_bracelet.PNG-98da2875347165efa158150c3a040f10.etc2.ctex"]
 
 [params]
 

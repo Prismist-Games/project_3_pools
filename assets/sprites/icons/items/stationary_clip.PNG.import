@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bl83u6sqh1ma0"
-path.s3tc="res://.godot/imported/stationary_clip.png-f0a4a8226bc7b4e8f3b3487f4eac1336.s3tc.ctex"
-path.etc2="res://.godot/imported/stationary_clip.png-f0a4a8226bc7b4e8f3b3487f4eac1336.etc2.ctex"
+path.s3tc="res://.godot/imported/stationary_clip.PNG-11db8758ede59767add53dc10b5861ea.s3tc.ctex"
+path.etc2="res://.godot/imported/stationary_clip.PNG-11db8758ede59767add53dc10b5861ea.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/stationary_clip.png"
-dest_files=["res://.godot/imported/stationary_clip.png-f0a4a8226bc7b4e8f3b3487f4eac1336.s3tc.ctex", "res://.godot/imported/stationary_clip.png-f0a4a8226bc7b4e8f3b3487f4eac1336.etc2.ctex"]
+source_file="res://assets/sprites/icons/items/stationary_clip.PNG"
+dest_files=["res://.godot/imported/stationary_clip.PNG-11db8758ede59767add53dc10b5861ea.s3tc.ctex", "res://.godot/imported/stationary_clip.PNG-11db8758ede59767add53dc10b5861ea.etc2.ctex"]
 
 [params]
 

@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://r7gdoc6t0w76"
-path.s3tc="res://.godot/imported/medicine_pill.png-fb19cd3df9e29ca106c30f7df6230be3.s3tc.ctex"
-path.etc2="res://.godot/imported/medicine_pill.png-fb19cd3df9e29ca106c30f7df6230be3.etc2.ctex"
+path.s3tc="res://.godot/imported/medicine_pill.PNG-947290fa9073716208c683397126c039.s3tc.ctex"
+path.etc2="res://.godot/imported/medicine_pill.PNG-947290fa9073716208c683397126c039.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/medicine_pill.png"
-dest_files=["res://.godot/imported/medicine_pill.png-fb19cd3df9e29ca106c30f7df6230be3.s3tc.ctex", "res://.godot/imported/medicine_pill.png-fb19cd3df9e29ca106c30f7df6230be3.etc2.ctex"]
+source_file="res://assets/sprites/icons/items/medicine_pill.PNG"
+dest_files=["res://.godot/imported/medicine_pill.PNG-947290fa9073716208c683397126c039.s3tc.ctex", "res://.godot/imported/medicine_pill.PNG-947290fa9073716208c683397126c039.etc2.ctex"]
 
 [params]
 
