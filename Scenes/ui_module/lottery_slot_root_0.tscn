@@ -420,6 +420,14 @@ mouse_filter = 2
 texture = ExtResource("17_g23h7")
 expand_mode = 3
 
+[node name="ScreenEffectOverlay" type="ColorRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill"]
+material = ExtResource("23_crt00")
+offset_left = 307.0
+offset_top = -276.0
+offset_right = 523.0
+offset_bottom = 350.0
+mouse_filter = 2
+
 [node name="Lottery Slot_top_screen" type="Sprite2D" parent="."]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
 texture = ExtResource("18_yfao2")
@@ -494,10 +502,10 @@ texture = ExtResource("20_ihuts")
 
 [node name="ScreenEffectOverlay" type="ColorRect" parent="Lottery Slot_top_screen/Lottery Slot_top_screen_fill"]
 material = ExtResource("23_crt00")
-offset_left = -500.0
-offset_top = -500.0
-offset_right = 500.0
-offset_bottom = 500.0
+offset_left = -329.0
+offset_top = -507.0
+offset_right = 320.0
+offset_bottom = -314.0
 mouse_filter = 2
 
 [node name="Lottery Slot_description_screen" type="Sprite2D" parent="."]
@@ -524,6 +532,8 @@ theme_override_font_sizes/normal_font_size = 60
 bbcode_enabled = true
 text = "抽到 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 及以上品质物品时，所有订单获得 1 次刷新次数。"
 scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Description Label_psudo" type="RichTextLabel" parent="Lottery Slot_description_screen/Lottery Slot_description_screen_fill/Description Label"]
 layout_mode = 0
@@ -539,10 +549,10 @@ scroll_active = false
 
 [node name="ScreenEffectOverlay" type="ColorRect" parent="Lottery Slot_description_screen/Lottery Slot_description_screen_fill"]
 material = ExtResource("23_crt00")
-offset_left = -500.0
-offset_top = -500.0
-offset_right = 500.0
-offset_bottom = 500.0
+offset_left = -514.0
+offset_top = -315.75
+offset_right = 497.0
+offset_bottom = 336.25
 mouse_filter = 2
 
 [node name="Input Area" type="Control" parent="."]
