@@ -28,6 +28,8 @@ var _selection_tween: Tween = null
 var _is_selected: bool = false
 var _icon_original_position: Vector2 = Vector2.ZERO
 var _icon_original_scale: Vector2 = Vector2.ONE
+var _is_mouse_pressed: bool = false # 跟踪鼠标是否按下
+var _press_scale_tween: Tween = null # 按下缩放的tween
 
 func _ready() -> void:
 	super._ready()
@@ -174,10 +176,11 @@ func set_selected(selected: bool) -> void:
 			backgrounds.modulate = Color.WHITE
 
 func set_highlight(active: bool) -> void:
-	if active:
-		modulate = Color(1.2, 1.2, 1.2, 1.0)
-	else:
-		modulate = Color.WHITE
+	if backgrounds:
+		if active:
+			backgrounds.modulate = Color(1.2, 1.2, 1.2, 1.0)
+		else:
+			backgrounds.modulate = Color.WHITE
 
 func _animate_selection(active: bool) -> void:
 	if not icon_display: return
@@ -320,6 +323,50 @@ func on_mouse_exit() -> void:
 ## 检查当前是否被hover
 func is_hovered() -> bool:
 	return _is_hovered
+
+## 处理鼠标按下：icon缩小
+func handle_mouse_press() -> void:
+	# 即使slot被锁定，也允许缩放动画（视觉反馈）
+	# 但如果没有icon或texture，则不处理
+	if not icon_display or not icon_display.texture:
+		return
+	
+	_is_mouse_pressed = true
+	
+	# 如果正在选中状态，不处理缩放（选中状态有自己的动画）
+	if _is_selected:
+		return
+	
+	# 停止之前的缩放动画
+	if _press_scale_tween and _press_scale_tween.is_valid():
+		_press_scale_tween.kill()
+	
+	# icon缩小到0.9倍
+	_press_scale_tween = create_tween()
+	_press_scale_tween.tween_property(icon_display, "scale", _icon_original_scale * 0.9, 0.1) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+## 处理鼠标松开：icon恢复并放大
+func handle_mouse_release() -> void:
+	_is_mouse_pressed = false
+	
+	if not icon_display:
+		return
+	
+	# 如果正在选中状态，不处理缩放（选中状态有自己的动画）
+	if _is_selected:
+		return
+	
+	# 停止之前的缩放动画
+	if _press_scale_tween and _press_scale_tween.is_valid():
+		_press_scale_tween.kill()
+	
+	# icon恢复到原始大小并稍微放大（弹回效果）
+	_press_scale_tween = create_tween()
+	_press_scale_tween.tween_property(icon_display, "scale", _icon_original_scale * 1.05, 0.1) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_press_scale_tween.tween_property(icon_display, "scale", _icon_original_scale, 0.1) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 
 func _update_shelf_life_label(item: ItemInstance) -> void:

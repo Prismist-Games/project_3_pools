@@ -10,6 +10,9 @@ signal slot_unhovered(slot_index: int)
 ## 当前被hover的slot索引 (-1表示无)
 var _hovered_slot_index: int = -1
 
+## 当前被按下的slot索引 (-1表示无，用于处理鼠标移出后松开的情况)
+var _pressed_slot_index: int = -1
+
 var item_slots_grid: GridContainer
 var _slots: Array[Control] = []
 
@@ -159,16 +162,31 @@ func get_slot_global_scale(index: int) -> Vector2:
 # --- Input Handlers ---
 
 func _on_slot_input(event: InputEvent, index: int) -> void:
-	if event is InputEventMouseButton and event.pressed:
+	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			# Delegate to state machine via Game2DUI or access directly
-			if game_ui and game_ui.state_machine:
-				var current_state = game_ui.state_machine.get_current_state()
-				if current_state and current_state.has_method("select_slot"):
-					current_state.select_slot(index)
-					return
+			var slot = get_slot_node(index) as ItemSlotUI
+			
+			if event.pressed:
+				# 鼠标按下：icon缩小
+				_pressed_slot_index = index
+				if slot and slot.has_method("handle_mouse_press"):
+					slot.handle_mouse_press()
+			else:
+				# 鼠标松开：确认点击行为
+				# Delegate to state machine via Game2DUI or access directly
+				if game_ui and game_ui.state_machine:
+					var current_state = game_ui.state_machine.get_current_state()
+					if current_state and current_state.has_method("select_slot"):
+						current_state.select_slot(index)
+						_pressed_slot_index = -1
+						if slot and slot.has_method("handle_mouse_release"):
+							slot.handle_mouse_release()
+						return
 					
-			InventorySystem.handle_slot_click(index)
+				InventorySystem.handle_slot_click(index)
+				_pressed_slot_index = -1
+				if slot and slot.has_method("handle_mouse_release"):
+					slot.handle_mouse_release()
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			# 右键取消逻辑已移至 Game2DUI._input 全局处理
 			pass
@@ -266,3 +284,11 @@ func refresh_hovered_slot_state() -> void:
 ## 获取当前被hover的slot索引
 func get_hovered_slot_index() -> int:
 	return _hovered_slot_index
+
+## 处理全局鼠标松开事件（用于处理鼠标移出区域后松开的情况）
+func handle_global_mouse_release() -> void:
+	if _pressed_slot_index >= 0:
+		var slot = get_slot_node(_pressed_slot_index) as ItemSlotUI
+		if slot and slot.has_method("handle_mouse_release"):
+			slot.handle_mouse_release()
+		_pressed_slot_index = -1

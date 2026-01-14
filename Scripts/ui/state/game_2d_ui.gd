@@ -302,6 +302,14 @@ func _input(event: InputEvent) -> void:
 		
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 		_handle_cancel_input(event)
+		return
+	
+	# 处理lottery slot和item slot的全局鼠标松开事件（防止鼠标移出区域后松开无法触发）
+	if event is InputEventMouseButton and not event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if pool_controller and pool_controller.has_method("handle_global_mouse_release"):
+			pool_controller.handle_global_mouse_release()
+		if inventory_controller and inventory_controller.has_method("handle_global_mouse_release"):
+			inventory_controller.handle_global_mouse_release()
 
 
 func _handle_cancel_input(event: InputEvent) -> void:

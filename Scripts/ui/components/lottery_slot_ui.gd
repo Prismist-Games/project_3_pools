@@ -50,6 +50,9 @@ var _merge_hover_texture: Texture2D = preload("res://assets/sprites/icons/tick_g
 enum HoverType { NONE, RECYCLABLE, MERGEABLE }
 var _current_hover_type: HoverType = HoverType.NONE
 var _is_hovered: bool = false
+var _is_mouse_pressed: bool = false # 跟踪鼠标是否按下
+var _item_icon_press_scale_tween: Tween = null # item icon按下缩放的tween
+var _item_icon_original_scale: Vector2 = Vector2.ONE # item icon的原始缩放
 
 ## =====================================================================
 ## 状态变量
@@ -94,6 +97,12 @@ func _ready() -> void:
 	_initial_transforms[item_main] = {"pos": item_main.position, "scale": item_main.scale}
 	_initial_transforms[item_queue_1] = {"pos": item_queue_1.position, "scale": item_queue_1.scale}
 	_initial_transforms[item_queue_2] = {"pos": item_queue_2.position, "scale": item_queue_2.scale}
+	
+	# 记录item icon的原始缩放（使用_initial_transforms中的值，通常是Vector2.ONE）
+	if item_main and _initial_transforms.has(item_main):
+		_item_icon_original_scale = _initial_transforms[item_main]["scale"]
+	elif item_main:
+		_item_icon_original_scale = item_main.scale
 	
 	# 关键修复 2：将材质唯一化
 	if item_main and item_main.material:
@@ -168,6 +177,11 @@ func _on_mouse_exited() -> void:
 	unhovered.emit(pool_index)
 	
 	if is_locked or is_drawing: return
+	
+	# 如果鼠标按下后移出，lid应该保持复位状态（不恢复hover效果）
+	if _is_mouse_pressed:
+		return
+	
 	# 恢复原位 (如果没在播放打开动画)
 	if not anim_player.is_playing() or anim_player.current_animation != "lid_open":
 		create_tween().tween_property(lid_sprite, "position:y", 0, 0.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
@@ -386,6 +400,12 @@ func update_queue_display(items: Array) -> void:
 		item_main.visible = true
 		item_main_shadow.visible = true
 		item_main.z_index = 0
+		# 不在这里重置scale，让动画完全控制scale
+		# 只有在没有正在交互且没有正在运行的动画时才重置
+		if not _is_mouse_pressed and not (_item_icon_press_scale_tween and _item_icon_press_scale_tween.is_valid() and _item_icon_press_scale_tween.is_running()):
+			# 如果scale异常（接近0），才重置
+			if item_main.scale.length() < 0.1:
+				item_main.scale = _item_icon_original_scale
 	else:
 		_top_item_id = &""
 		item_main.texture = null
@@ -829,3 +849,67 @@ func _disable_hover_visuals() -> void:
 ## 检查当前是否被hover
 func is_hovered() -> bool:
 	return _is_hovered
+
+## 设置高亮效果（用于选择状态下的hover变亮）
+func set_highlight(active: bool) -> void:
+	if backgrounds:
+		if active:
+			backgrounds.modulate = Color(1.2, 1.2, 1.2, 1.0)
+		else:
+			backgrounds.modulate = Color.WHITE
+
+## 处理鼠标按下：让lid复位，item icon缩小
+func handle_mouse_press() -> void:
+	# 即使slot被锁定，也允许缩放动画（视觉反馈）
+	# 但lid复位只在非锁定且非drawing状态下执行
+	_is_mouse_pressed = true
+	
+	# lid复位到原位置（仅在非锁定且非drawing状态下，drawing状态下盖子已经打开）
+	if not is_locked and not is_drawing:
+		create_tween().tween_property(lid_sprite, "position:y", 0, 0.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
+	# item icon缩小（如果有显示，包括pending状态下的is_drawing）
+	if item_main and item_main.visible and item_main.texture:
+		# 停止之前的缩放动画
+		if _item_icon_press_scale_tween and _item_icon_press_scale_tween.is_valid():
+			_item_icon_press_scale_tween.kill()
+		
+		# 使用当前的scale作为基准（适应pending状态下可能不同的scale值）
+		var current_scale = item_main.scale
+		# 如果当前scale接近0或异常，使用原始scale
+		if current_scale.length() < 0.1:
+			current_scale = _item_icon_original_scale
+		
+		# 确保使用有效的scale值
+		if current_scale.length() < 0.1:
+			current_scale = Vector2.ONE
+		
+		# icon缩小到0.9倍
+		var target_scale = current_scale * 0.9
+		_item_icon_press_scale_tween = create_tween()
+		_item_icon_press_scale_tween.tween_property(item_main, "scale", target_scale, 0.1) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+## 处理鼠标松开：重置按下状态，item icon恢复并放大
+func handle_mouse_release() -> void:
+	_is_mouse_pressed = false
+	
+	# item icon恢复并放大（如果有显示）
+	if item_main and item_main.visible and item_main.texture:
+		# 停止之前的缩放动画
+		if _item_icon_press_scale_tween and _item_icon_press_scale_tween.is_valid():
+			_item_icon_press_scale_tween.kill()
+		
+		# 使用原始scale作为目标（pending状态下应该恢复到Vector2.ONE）
+		var target_scale = _item_icon_original_scale
+		
+		# icon恢复到原始大小并稍微放大（弹回效果）
+		_item_icon_press_scale_tween = create_tween()
+		_item_icon_press_scale_tween.tween_property(item_main, "scale", target_scale * 1.05, 0.1) \
+			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		_item_icon_press_scale_tween.tween_property(item_main, "scale", target_scale, 0.1) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
+	# 如果仍在hover状态，恢复hover效果
+	if _is_hovered and not is_locked and not is_drawing:
+		create_tween().tween_property(lid_sprite, "position:y", -20, 0.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)

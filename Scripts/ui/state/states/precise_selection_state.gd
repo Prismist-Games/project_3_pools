@@ -212,14 +212,22 @@ func _connect_slot_hover(slot_index: int, item_id: StringName) -> void:
 	if not input_area:
 		return
 	
-	# 创建闭包捕获 item_id
+	# 创建闭包捕获 item_id 和 slot
 	var on_entered = func():
+		# 高亮订单图标
 		if controller and controller.quest_icon_highlighter:
 			controller.quest_icon_highlighter.highlight_by_item_id(item_id)
+		# 变亮lottery slot（类似item slot的效果）
+		if slot and slot.has_method("set_highlight"):
+			slot.set_highlight(true)
 	
 	var on_exited = func():
+		# 清除订单图标高亮
 		if controller and controller.quest_icon_highlighter:
 			controller.quest_icon_highlighter.clear_all_highlights()
+		# 取消lottery slot变亮
+		if slot and slot.has_method("set_highlight"):
+			slot.set_highlight(false)
 	
 	# 连接信号
 	input_area.mouse_entered.connect(on_entered)

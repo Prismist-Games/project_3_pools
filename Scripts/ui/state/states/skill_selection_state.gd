@@ -296,7 +296,7 @@ func _clear_slot_hints(slot: Control) -> void:
 				icon_node.visible = false
 
 
-## 连接 lottery slot 的点击输入
+## 连接 lottery slot 的点击输入和hover效果
 func _connect_slot_input(slot: Control, index: int) -> void:
 	var input_area = slot.find_child("Input Area", true) as Control
 	if input_area:
@@ -305,9 +305,15 @@ func _connect_slot_input(slot: Control, index: int) -> void:
 			input_area.gui_input.disconnect(_on_lottery_slot_input)
 		
 		input_area.gui_input.connect(_on_lottery_slot_input.bind(index))
+		
+		# 连接hover信号以实现变亮效果
+		if not input_area.mouse_entered.is_connected(_on_slot_mouse_entered.bind(index)):
+			input_area.mouse_entered.connect(_on_slot_mouse_entered.bind(index))
+		if not input_area.mouse_exited.is_connected(_on_slot_mouse_exited.bind(index)):
+			input_area.mouse_exited.connect(_on_slot_mouse_exited.bind(index))
 
 
-## 断开 lottery slot 的点击输入
+## 断开 lottery slot 的点击输入和hover信号
 func _disconnect_all_slot_inputs() -> void:
 	for i in range(3):
 		var slot = _get_lottery_slot(i)
@@ -315,8 +321,17 @@ func _disconnect_all_slot_inputs() -> void:
 			continue
 		
 		var input_area = slot.find_child("Input Area", true) as Control
-		if input_area and input_area.gui_input.is_connected(_on_lottery_slot_input):
-			input_area.gui_input.disconnect(_on_lottery_slot_input)
+		if input_area:
+			if input_area.gui_input.is_connected(_on_lottery_slot_input):
+				input_area.gui_input.disconnect(_on_lottery_slot_input)
+			if input_area.mouse_entered.is_connected(_on_slot_mouse_entered.bind(i)):
+				input_area.mouse_entered.disconnect(_on_slot_mouse_entered.bind(i))
+			if input_area.mouse_exited.is_connected(_on_slot_mouse_exited.bind(i)):
+				input_area.mouse_exited.disconnect(_on_slot_mouse_exited.bind(i))
+		
+		# 确保取消高亮
+		if slot and slot.has_method("set_highlight"):
+			slot.set_highlight(false)
 
 
 ## Lottery slot 输入处理
@@ -326,6 +341,18 @@ func _on_lottery_slot_input(event: InputEvent, index: int) -> void:
 		if _in_replace_mode:
 			return
 		select_skill(index)
+
+## Lottery slot hover处理（变亮效果）
+func _on_slot_mouse_entered(index: int) -> void:
+	var slot = _get_lottery_slot(index)
+	if slot and slot.has_method("set_highlight"):
+		slot.set_highlight(true)
+
+## Lottery slot unhover处理（取消变亮）
+func _on_slot_mouse_exited(index: int) -> void:
+	var slot = _get_lottery_slot(index)
+	if slot and slot.has_method("set_highlight"):
+		slot.set_highlight(false)
 
 
 ## 关闭所有 lottery slot 并刷新奖池
