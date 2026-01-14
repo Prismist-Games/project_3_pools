@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://corrcx8qg8gyg"
-path.s3tc="res://.godot/imported/stationary_eraser.png-b890e0ecd71b85aee2aa125066ab8597.s3tc.ctex"
-path.etc2="res://.godot/imported/stationary_eraser.png-b890e0ecd71b85aee2aa125066ab8597.etc2.ctex"
+path.s3tc="res://.godot/imported/stationary_eraser.PNG-0285a0989f2e29a6a6a0c0a4ead7cde0.s3tc.ctex"
+path.etc2="res://.godot/imported/stationary_eraser.PNG-0285a0989f2e29a6a6a0c0a4ead7cde0.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/stationary_eraser.png"
-dest_files=["res://.godot/imported/stationary_eraser.png-b890e0ecd71b85aee2aa125066ab8597.s3tc.ctex", "res://.godot/imported/stationary_eraser.png-b890e0ecd71b85aee2aa125066ab8597.etc2.ctex"]
+source_file="res://assets/sprites/icons/items/stationary_eraser.PNG"
+dest_files=["res://.godot/imported/stationary_eraser.PNG-0285a0989f2e29a6a6a0c0a4ead7cde0.s3tc.ctex", "res://.godot/imported/stationary_eraser.PNG-0285a0989f2e29a6a6a0c0a4ead7cde0.etc2.ctex"]
 
 [params]
 

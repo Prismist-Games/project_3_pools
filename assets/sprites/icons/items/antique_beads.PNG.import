@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c6h0a3hvm2xty"
-path.s3tc="res://.godot/imported/antique_beads.png-dc48c3e1c2ed64367fa1bab0b0e5c862.s3tc.ctex"
-path.etc2="res://.godot/imported/antique_beads.png-dc48c3e1c2ed64367fa1bab0b0e5c862.etc2.ctex"
+path.s3tc="res://.godot/imported/antique_beads.PNG-59afeab64fb181f4279bf52d8469e16c.s3tc.ctex"
+path.etc2="res://.godot/imported/antique_beads.PNG-59afeab64fb181f4279bf52d8469e16c.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/antique_beads.png"
-dest_files=["res://.godot/imported/antique_beads.png-dc48c3e1c2ed64367fa1bab0b0e5c862.s3tc.ctex", "res://.godot/imported/antique_beads.png-dc48c3e1c2ed64367fa1bab0b0e5c862.etc2.ctex"]
+source_file="res://assets/sprites/icons/items/antique_beads.PNG"
+dest_files=["res://.godot/imported/antique_beads.PNG-59afeab64fb181f4279bf52d8469e16c.s3tc.ctex", "res://.godot/imported/antique_beads.PNG-59afeab64fb181f4279bf52d8469e16c.etc2.ctex"]
 
 [params]
 

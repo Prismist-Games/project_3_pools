@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c2jx70h40upg7"
-path.s3tc="res://.godot/imported/medicine_bottle.png-1a241550413ecff8a4e711b3fa0d3073.s3tc.ctex"
-path.etc2="res://.godot/imported/medicine_bottle.png-1a241550413ecff8a4e711b3fa0d3073.etc2.ctex"
+path.s3tc="res://.godot/imported/medicine_bottle.PNG-b045f4ead2d6823812507a5058f4425d.s3tc.ctex"
+path.etc2="res://.godot/imported/medicine_bottle.PNG-b045f4ead2d6823812507a5058f4425d.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/medicine_bottle.png"
-dest_files=["res://.godot/imported/medicine_bottle.png-1a241550413ecff8a4e711b3fa0d3073.s3tc.ctex", "res://.godot/imported/medicine_bottle.png-1a241550413ecff8a4e711b3fa0d3073.etc2.ctex"]
+source_file="res://assets/sprites/icons/items/medicine_bottle.PNG"
+dest_files=["res://.godot/imported/medicine_bottle.PNG-b045f4ead2d6823812507a5058f4425d.s3tc.ctex", "res://.godot/imported/medicine_bottle.PNG-b045f4ead2d6823812507a5058f4425d.etc2.ctex"]
 
 [params]
 

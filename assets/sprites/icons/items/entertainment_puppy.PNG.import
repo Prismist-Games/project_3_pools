@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://buge7qat5doty"
-path.s3tc="res://.godot/imported/entertainment_puppy.png-a7a82c39d23fb9e5e52439c2bda55259.s3tc.ctex"
-path.etc2="res://.godot/imported/entertainment_puppy.png-a7a82c39d23fb9e5e52439c2bda55259.etc2.ctex"
+path.s3tc="res://.godot/imported/entertainment_puppy.PNG-49589d3a51b7d43438c6cede66e8b48f.s3tc.ctex"
+path.etc2="res://.godot/imported/entertainment_puppy.PNG-49589d3a51b7d43438c6cede66e8b48f.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/entertainment_puppy.png"
-dest_files=["res://.godot/imported/entertainment_puppy.png-a7a82c39d23fb9e5e52439c2bda55259.s3tc.ctex", "res://.godot/imported/entertainment_puppy.png-a7a82c39d23fb9e5e52439c2bda55259.etc2.ctex"]
+source_file="res://assets/sprites/icons/items/entertainment_puppy.PNG"
+dest_files=["res://.godot/imported/entertainment_puppy.PNG-49589d3a51b7d43438c6cede66e8b48f.s3tc.ctex", "res://.godot/imported/entertainment_puppy.PNG-49589d3a51b7d43438c6cede66e8b48f.etc2.ctex"]
 
 [params]
 
