@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://basts7bbr2vav"]
+[gd_scene load_steps=29 format=3 uid="uid://basts7bbr2vav"]
 
 [ext_resource type="Script" uid="uid://c008hefncbbkm" path="res://scripts/ui/components/lottery_slot_ui.gd" id="1_1b0mf"]
 [ext_resource type="Texture2D" uid="uid://cpcef3r3dbaxq" path="res://assets/sprites/lottery_slots/基地-7.png" id="2_gntc1"]
@@ -19,9 +19,12 @@
 [ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="17_g23h7"]
 [ext_resource type="Texture2D" uid="uid://bh2rrdftruk78" path="res://assets/sprites/lottery_slots/基地-12.png" id="18_yfao2"]
 [ext_resource type="Texture2D" uid="uid://430ts7sfdtgx" path="res://assets/sprites/lottery_slots/基地-10.png" id="19_a03mu"]
+[ext_resource type="FontFile" uid="uid://km27dcqqdsfq" path="res://assets/fonts/ark-pixel-12px-monospaced-zh_cn.ttf" id="20_3gq3c"]
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="20_ihuts"]
 [ext_resource type="Texture2D" uid="uid://grqi0oqjnrae" path="res://assets/sprites/the_machine/the_machine_description_display_outline.png" id="21_4kg5p"]
 [ext_resource type="Texture2D" uid="uid://cyo0chqrqd6p7" path="res://assets/sprites/the_machine/the_machine_description_display_fill.png" id="22_dg1ni"]
+
+[sub_resource type="Theme" id="Theme_uwqtw"]
 
 [sub_resource type="Animation" id="Animation_jptrp"]
 length = 0.001
@@ -398,7 +401,8 @@ offset_right = 267.0
 offset_bottom = -348.0
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.2592937, 0.2592937, 0.2592937, 1)
-theme_override_font_sizes/normal_font_size = 70
+theme_override_fonts/normal_font = ExtResource("20_3gq3c")
+theme_override_font_sizes/normal_font_size = 72
 bbcode_enabled = true
 text = "AFFIX"
 scroll_active = false
@@ -427,7 +431,8 @@ offset_right = 175.0
 offset_bottom = -348.0
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.6052743, 0.6052743, 0.6052743, 1)
-theme_override_font_sizes/normal_font_size = 76
+theme_override_fonts/normal_font = ExtResource("20_3gq3c")
+theme_override_font_sizes/normal_font_size = 84
 bbcode_enabled = true
 text = "9"
 scroll_active = false
@@ -467,7 +472,9 @@ offset_top = -203.0
 offset_right = 368.0
 offset_bottom = 228.0
 mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 50
+theme = SubResource("Theme_uwqtw")
+theme_override_fonts/normal_font = ExtResource("20_3gq3c")
+theme_override_font_sizes/normal_font_size = 60
 bbcode_enabled = true
 text = "抽到[color=#A557F0] 史诗 [/color]及以上品质物品时，所有订单获得 1 次刷新次数。"
 scroll_active = false
