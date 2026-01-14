@@ -18,25 +18,15 @@ const STATE_RABBIT_KNOCK_MACHINE = &"rabbit_knock_machine"
 # 全局眼部设置
 # ==========================================
 @export_category("Eye Appearance (Global)")
-@export_group("Socket Shape", "eye_")
-@export var eye_socket_texture: Texture2D ## 眼眶形状纹理（留空=使用原节点纹理）
-@export var eye_socket_scale: float = 1.0 ## 眼眶缩放
+@export_group("Textures")
+@export var eye_socket_texture: Texture2D ## 基础眼眶纹理 (Sprite.texture)
+@export var eye_socket_scale: float = 1.0 ## 缩放比例 (Sprite.scale)
 
-@export_group("Outline", "eye_outline_")
-@export var eye_outline_color: Color = Color(1.0, 0.44, 0.35, 1.0) ## 描边颜色
-@export var eye_outline_thickness: float = 0.04 ## 描边粗细
-
-@export_group("Pupil", "eye_pupil_")
-@export var eye_pupil_texture: Texture2D ## 瞳孔形状纹理（留空=使用纯色圆形）
-@export var eye_pupil_initial_size: float = 1.0 ## 瞳孔初始大小
-@export var eye_pupil_initial_offset: Vector2 = Vector2.ZERO ## 瞳孔初始位置偏移 (Shader 坐标系)
-@export var eye_pupil_color: Color = Color.BLACK ## 瞳孔颜色（仅纯色模式）
-@export var eye_pupil_outline_color: Color = Color.BLACK ## 瞳孔描边颜色
-@export var eye_pupil_outline_thickness: float = 0.0 ## 瞳孔描边粗细
-
+@export_group("Pupil Dynamics")
+@export var eye_pupil_initial_offset: Vector2 = Vector2.ZERO ## 瞳孔基准偏移
 
 @export_group("Eye Interaction", "idle_eye_")
-@export var idle_eye_max_offset: float = 8.0
+@export var idle_eye_max_offset: float = 8.0 ## 眼球跟随最大范围
 
 
 # ==========================================
@@ -53,8 +43,6 @@ const STATE_RABBIT_KNOCK_MACHINE = &"rabbit_knock_machine"
 @export var impatient_eye_pupil_offset: Vector2 = Vector2.ZERO ## 眯眼时的瞳孔基准偏移 (建议 -0.05 到 0.05)
 
 
-const EYE_PROCEDURAL_SHADER = preload("res://assets/shaders/eye_procedural.gdshader")
-
 var _rabbit_root: Node2D
 
 var _left_eye_fill: Sprite2D
@@ -66,8 +54,6 @@ var _right_eye_mat: ShaderMaterial
 
 var _playback: AnimationNodeStateMachinePlayback
 var _current_state_name: StringName = STATE_RABBIT_IDLE
-var _is_in_triggered_animation: bool = false
-var _is_test_override: bool = false
 
 var _current_lottery_hover_pos: Vector2 = Vector2.ZERO
 var _has_hovered_lottery: bool = false
@@ -165,40 +151,32 @@ func _cache_initial_transforms() -> void:
 	_init_eye_materials()
 
 func _init_eye_materials() -> void:
-	if not eye_socket_texture and _left_eye_fill:
-		eye_socket_texture = _left_eye_fill.texture
-
+	# 直接使用 Sprite2D 上已配置的材质
+	# 确保材质实例独立 (Resource Local To Scene)，以便独立控制瞳孔
 	if _left_eye_fill:
-		_left_eye_mat = ShaderMaterial.new()
-		_left_eye_mat.shader = EYE_PROCEDURAL_SHADER
-		_update_shader_params(_left_eye_mat, true)
-		_left_eye_fill.material = _left_eye_mat
+		if _left_eye_fill.material is ShaderMaterial:
+			_left_eye_mat = _left_eye_fill.material.duplicate()
+			_left_eye_fill.material = _left_eye_mat
+			_update_shader_params(_left_eye_mat, true)
+		
+		# 依然支持纹理/缩放设置
 		_left_eye_fill.scale = Vector2(eye_socket_scale, eye_socket_scale)
 		if eye_socket_texture:
 			_left_eye_fill.texture = eye_socket_texture
 			
 	if _right_eye_fill:
-		_right_eye_mat = ShaderMaterial.new()
-		_right_eye_mat.shader = EYE_PROCEDURAL_SHADER
-		_update_shader_params(_right_eye_mat, false)
-		_right_eye_fill.material = _right_eye_mat
+		if _right_eye_fill.material is ShaderMaterial:
+			_right_eye_mat = _right_eye_fill.material.duplicate()
+			_right_eye_fill.material = _right_eye_mat
+			_update_shader_params(_right_eye_mat, false)
+			
 		_right_eye_fill.scale = Vector2(eye_socket_scale, eye_socket_scale)
 		if eye_socket_texture:
 			_right_eye_fill.texture = eye_socket_texture
 
 func _update_shader_params(mat: ShaderMaterial, _is_left: bool) -> void:
-	mat.set_shader_parameter("outline_thickness", eye_outline_thickness)
-	mat.set_shader_parameter("outline_color", eye_outline_color)
+	# 只设置必须由脚本实时计算/偏移的参数
 	mat.set_shader_parameter("pupil_offset", eye_pupil_initial_offset)
-	mat.set_shader_parameter("pupil_scale", eye_pupil_initial_size)
-	mat.set_shader_parameter("pupil_color", eye_pupil_color)
-	mat.set_shader_parameter("pupil_outline_color", eye_pupil_outline_color)
-	mat.set_shader_parameter("pupil_outline_thickness", eye_pupil_outline_thickness)
-	if eye_pupil_texture:
-		mat.set_shader_parameter("pupil_texture", eye_pupil_texture)
-		mat.set_shader_parameter("use_pupil_texture", true)
-	else:
-		mat.set_shader_parameter("use_pupil_texture", false)
 
 func _init_animation_tree() -> void:
 	if anim_tree:
@@ -301,11 +279,6 @@ func _set_eye_pupil_offset(offset: Vector2) -> void:
 func play_shocked_animation() -> void:
 	if _playback: _playback.travel(STATE_RABBIT_SHOCKED)
 
-func trigger_shock_impact() -> void:
-	pass
-
-func _end_triggered_animation() -> void:
-	_on_gold_changed(GameManager.gold if GameManager else 100)
 
 func reset_to_idle() -> void:
 	if _playback: _playback.travel(STATE_RABBIT_IDLE)
