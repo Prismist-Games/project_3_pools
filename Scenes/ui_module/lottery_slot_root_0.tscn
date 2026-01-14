@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://basts7bbr2vav"]
+[gd_scene load_steps=30 format=3 uid="uid://basts7bbr2vav"]
 
 [ext_resource type="Script" uid="uid://c008hefncbbkm" path="res://scripts/ui/components/lottery_slot_ui.gd" id="1_1b0mf"]
 [ext_resource type="Texture2D" uid="uid://cpcef3r3dbaxq" path="res://assets/sprites/lottery_slots/基地-7.png" id="2_gntc1"]
@@ -23,6 +23,7 @@
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="20_ihuts"]
 [ext_resource type="Texture2D" uid="uid://grqi0oqjnrae" path="res://assets/sprites/the_machine/the_machine_description_display_outline.png" id="21_4kg5p"]
 [ext_resource type="Texture2D" uid="uid://cyo0chqrqd6p7" path="res://assets/sprites/the_machine/the_machine_description_display_fill.png" id="22_dg1ni"]
+[ext_resource type="Material" path="res://assets/materials/ui_crt_overlay.tres" id="23_crt00"]
 
 [sub_resource type="Theme" id="Theme_uwqtw"]
 
@@ -455,6 +456,14 @@ vertical_alignment = 1
 position = Vector2(-234, -405.25)
 texture = ExtResource("20_ihuts")
 
+[node name="ScreenEffectOverlay" type="ColorRect" parent="Lottery Slot_top_screen/Lottery Slot_top_screen_fill"]
+material = ExtResource("23_crt00")
+offset_left = -500.0
+offset_top = -500.0
+offset_right = 500.0
+offset_bottom = 500.0
+mouse_filter = 2
+
 [node name="Lottery Slot_description_screen" type="Sprite2D" parent="."]
 position = Vector2(119, 605.75)
 texture = ExtResource("21_4kg5p")
@@ -489,6 +498,14 @@ theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
 text = "Description goes here"
 scroll_active = false
+
+[node name="ScreenEffectOverlay" type="ColorRect" parent="Lottery Slot_description_screen/Lottery Slot_description_screen_fill"]
+material = ExtResource("23_crt00")
+offset_left = -500.0
+offset_top = -500.0
+offset_right = 500.0
+offset_bottom = 500.0
+mouse_filter = 2
 
 [node name="Input Area" type="Control" parent="."]
 anchors_preset = 0
