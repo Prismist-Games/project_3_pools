@@ -16,6 +16,11 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if ctx == null:
 		return
 	
+	# 检查金币是否足够（在设置 skip_draw 之前）
+	if GameManager.gold < ctx.gold_cost:
+		# 不设置 skip_draw，让 PoolSystem 正常检查金币并失败（触发抖动）
+		return
+	
 	# 标记跳过标准抽奖逻辑
 	ctx.skip_draw = true
 	
@@ -34,6 +39,3 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 				return ItemInstance.new(selected_data, rarity)
 			return null
 	})
-
-
-
