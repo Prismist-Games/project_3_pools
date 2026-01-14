@@ -290,7 +290,7 @@ func _update_rarity_display() -> void:
 			_rarity_rotation_tween = create_tween()
 			_rarity_rotation_tween.set_loops()  # 无限循环
 			# 使用 from(0.0) 确保每次循环都从 0 开始
-			_rarity_rotation_tween.tween_property(rarity_display, "rotation", TAU, 2.0) \
+			_rarity_rotation_tween.tween_property(rarity_display, "rotation", TAU, 3.0) \
 				.from(0.0) \
 				.set_trans(Tween.TRANS_LINEAR)
 	else:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cr0uv8jj87n1f"]
+[gd_scene load_steps=24 format=3 uid="uid://cr0uv8jj87n1f"]
 
 [ext_resource type="Script" uid="uid://exqnykh1n5lj" path="res://scripts/ui/components/item_slot_ui.gd" id="1_ixbl1"]
 [ext_resource type="Texture2D" uid="uid://caieb4p7g0f64" path="res://assets/sprites/item_slots/基地-4.png" id="2_kitn1"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://h5k15o8ewu4i" path="res://assets/sprites/icons/item_rarity_glow.PNG" id="12_rs8t5"]
 [ext_resource type="Texture2D" uid="uid://7s7gx5sytssb" path="res://assets/sprites/item_slots/基地-6 2.png" id="13_6ggen"]
 [ext_resource type="Texture2D" uid="uid://cemheosuktfhj" path="res://assets/sprites/item_slots/基地-5.png" id="14_0lcdy"]
+[ext_resource type="Texture2D" uid="uid://ju74ng2iyhft" path="res://assets/sprites/item_slots/小杆子.png" id="14_rfv0q"]
 
 [sub_resource type="Shader" id="Shader_ixbl1"]
 code = "shader_type canvas_item;
@@ -173,8 +174,14 @@ show_behind_parent = true
 texture = ExtResource("12_rs8t5")
 
 [node name="Item_status" type="Sprite2D" parent="Item Slot_mask"]
-position = Vector2(87.5, 94.5)
+position = Vector2(87, 194)
 texture = ExtResource("11_emsc1")
+offset = Vector2(0.5, -110)
+
+[node name="pole" type="Sprite2D" parent="Item Slot_mask/Item_status"]
+show_behind_parent = true
+position = Vector2(0, -62.305)
+texture = ExtResource("14_rfv0q")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="Item Slot_mask"]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)

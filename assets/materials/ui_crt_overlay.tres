@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://ccpe7db5t4nua"]
 
-[ext_resource type="Shader" uid="uid://7u5kg0t6sb1v" path="res://assets/shaders/ui_crt_overlay.gdshader" id="1_crtsh"]
+[ext_resource type="Shader" path="res://assets/shaders/ui_crt_overlay.gdshader" id="1_crtsh"]
 
 [resource]
 shader = ExtResource("1_crtsh")
