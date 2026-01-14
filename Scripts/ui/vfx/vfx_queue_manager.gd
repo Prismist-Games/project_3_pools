@@ -197,12 +197,20 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 	var target_scale: Vector2 = task.get("target_scale", start_scale)
 	
 	# 执行飞行动画
+	var rarity_sprite = fly_sprite.get_meta("rarity_sprite", null)
 	var tween = create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(fly_sprite, "global_position", target_pos, 0.4) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(fly_sprite, "scale", target_scale, 0.4) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
+	# 同步 rarity 背景的动画
+	if rarity_sprite:
+		tween.tween_property(rarity_sprite, "global_position", target_pos, 0.4) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tween.tween_property(rarity_sprite, "scale", target_scale, 0.4) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	
 	await tween.finished
 	
@@ -221,7 +229,14 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 			if source_slot.has_method("update_pending_display") and InventorySystem:
 				source_slot.update_pending_display(InventorySystem.pending_items)
 	
-	# 清理
+	# 清理 rarity 相关资源
+	var rarity_tween = fly_sprite.get_meta("rarity_tween", null)
+	if rarity_tween:
+		rarity_tween.kill()
+	if rarity_sprite:
+		rarity_sprite.queue_free()
+	
+	# 清理主精灵
 	fly_sprite.queue_free()
 
 ## 执行飞入回收箱动画
@@ -259,12 +274,20 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 	# 飞向回收箱并适当缩小（不再缩小到 0，除非没有目标节点）
 	var target_scale = Vector2(0.6, 0.6) if recycle_icon_node else Vector2.ZERO
 	
+	var rarity_sprite = fly_sprite.get_meta("rarity_sprite", null)
 	var tween = create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(fly_sprite, "global_position", target_pos, 0.3) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	tween.tween_property(fly_sprite, "scale", target_scale, 0.3) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	
+	# 同步 rarity 背景的动画
+	if rarity_sprite:
+		tween.tween_property(rarity_sprite, "global_position", target_pos, 0.3) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		tween.tween_property(rarity_sprite, "scale", target_scale, 0.3) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	
 	await tween.finished
 	
@@ -274,6 +297,13 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 		recycle_icon_node.modulate.a = 1.0
 		# 让飞行的 Sprite 瞬间消失
 		fly_sprite.visible = false
+	
+	# 清理 rarity 相关资源
+	var rarity_tween = fly_sprite.get_meta("rarity_tween", null)
+	if rarity_tween:
+		rarity_tween.kill()
+	if rarity_sprite:
+		rarity_sprite.queue_free()
 	
 	fly_sprite.queue_free()
 	
@@ -313,11 +343,25 @@ func _execute_generic_fly(task: Dictionary) -> void:
 			target_node.hide_icon()
 		
 	var sprite = _create_fly_sprite(item, start_pos, start_scale)
+	var rarity_sprite = sprite.get_meta("rarity_sprite", null)
 	var tween = create_tween().set_parallel(true)
 	tween.tween_property(sprite, "global_position", end_pos, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(sprite, "scale", end_scale, duration)
 	
+	# 同步 rarity 背景的动画
+	if rarity_sprite:
+		tween.tween_property(rarity_sprite, "global_position", end_pos, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tween.tween_property(rarity_sprite, "scale", end_scale, duration)
+	
 	await tween.finished
+	
+	# 清理 rarity 相关资源
+	var rarity_tween = sprite.get_meta("rarity_tween", null)
+	if rarity_tween:
+		rarity_tween.kill()
+	if rarity_sprite:
+		rarity_sprite.queue_free()
+	
 	sprite.queue_free()
 	
 	if source_node:
@@ -349,13 +393,37 @@ func _execute_swap(task: Dictionary) -> void:
 	var sprite1 = _create_fly_sprite(item1, pos1, scale)
 	var sprite2 = _create_fly_sprite(item2, pos2, scale)
 	
+	var rarity_sprite1 = sprite1.get_meta("rarity_sprite", null)
+	var rarity_sprite2 = sprite2.get_meta("rarity_sprite", null)
+	
 	var tween = create_tween().set_parallel(true)
 	tween.tween_property(sprite1, "global_position", pos2, duration) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(sprite2, "global_position", pos1, duration) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	
+	# 同步 rarity 背景的动画
+	if rarity_sprite1:
+		tween.tween_property(rarity_sprite1, "global_position", pos2, duration) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	if rarity_sprite2:
+		tween.tween_property(rarity_sprite2, "global_position", pos1, duration) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	
 	await tween.finished
+	
+	# 清理 rarity 相关资源
+	var rarity_tween1 = sprite1.get_meta("rarity_tween", null)
+	var rarity_tween2 = sprite2.get_meta("rarity_tween", null)
+	if rarity_tween1:
+		rarity_tween1.kill()
+	if rarity_tween2:
+		rarity_tween2.kill()
+	if rarity_sprite1:
+		rarity_sprite1.queue_free()
+	if rarity_sprite2:
+		rarity_sprite2.queue_free()
+	
 	sprite1.queue_free()
 	sprite2.queue_free()
 	
@@ -370,12 +438,38 @@ func _create_fly_sprite(item, start_pos: Vector2, start_scale: Vector2) -> Sprit
 		push_error("[VfxQueueManager] vfx_layer 未设置")
 		return null
 	
+	# 创建主图标精灵
 	var sprite = Sprite2D.new()
 	sprite.texture = item.item_data.icon
 	sprite.global_position = start_pos
 	sprite.scale = start_scale
 	sprite.z_index = 100
 	vfx_layer.add_child(sprite)
+	
+	# 创建 rarity 背景（在图标后面）
+	var rarity_sprite = Sprite2D.new()
+	var rarity_texture = preload("res://assets/sprites/icons/item_rarity_glow.PNG")
+	if rarity_texture:
+		rarity_sprite.texture = rarity_texture
+		rarity_sprite.self_modulate = Constants.get_rarity_border_color(item.rarity)
+		rarity_sprite.global_position = start_pos
+		rarity_sprite.scale = start_scale
+		rarity_sprite.z_index = 99  # 在图标后面
+		vfx_layer.add_child(rarity_sprite)
+		
+		# 开始旋转动画
+		var rotation_tween = create_tween()
+		rotation_tween.set_loops()
+		# 使用 from(0.0) 确保每次循环都从 0 开始
+		rotation_tween.tween_property(rarity_sprite, "rotation", TAU, 2.0) \
+			.from(0.0) \
+			.set_trans(Tween.TRANS_LINEAR)
+		
+		# 将 rarity_sprite 作为 sprite 的子节点，这样删除 sprite 时会自动删除 rarity_sprite
+		# 但为了保持 z_index 正确，我们需要手动管理
+		# 使用 metadata 存储引用，以便在删除时一起清理
+		sprite.set_meta("rarity_sprite", rarity_sprite)
+		sprite.set_meta("rarity_tween", rotation_tween)
 	
 	return sprite
 

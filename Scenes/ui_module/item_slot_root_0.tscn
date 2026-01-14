@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cr0uv8jj87n1f"]
+[gd_scene load_steps=23 format=3 uid="uid://cr0uv8jj87n1f"]
 
 [ext_resource type="Script" uid="uid://exqnykh1n5lj" path="res://scripts/ui/components/item_slot_ui.gd" id="1_ixbl1"]
 [ext_resource type="Texture2D" uid="uid://caieb4p7g0f64" path="res://assets/sprites/item_slots/基地-4.png" id="2_kitn1"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="11_emsc1"]
 [ext_resource type="Texture2D" uid="uid://bclpcjghycqdb" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="11_kitn1"]
 [ext_resource type="Texture2D" uid="uid://dlywfo3j61bw8" path="res://assets/sprites/item_slots/基地-6.png" id="12_80j2g"]
+[ext_resource type="Texture2D" uid="uid://h5k15o8ewu4i" path="res://assets/sprites/icons/item_rarity_glow.PNG" id="12_rs8t5"]
 [ext_resource type="Texture2D" uid="uid://7s7gx5sytssb" path="res://assets/sprites/item_slots/基地-6 2.png" id="13_6ggen"]
 [ext_resource type="Texture2D" uid="uid://cemheosuktfhj" path="res://assets/sprites/item_slots/基地-5.png" id="14_0lcdy"]
 
@@ -164,6 +165,12 @@ texture = ExtResource("10_y5mjh")
 [node name="Item_hover_icon" type="Sprite2D" parent="Item Slot_mask/Item Slot_item_root/Item_icon"]
 visible = false
 texture = ExtResource("11_kitn1")
+
+[node name="Item_rarity" type="Sprite2D" parent="Item Slot_mask/Item Slot_item_root/Item_icon"]
+visible = false
+self_modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+show_behind_parent = true
+texture = ExtResource("12_rs8t5")
 
 [node name="Item_status" type="Sprite2D" parent="Item Slot_mask"]
 position = Vector2(87.5, 94.5)
