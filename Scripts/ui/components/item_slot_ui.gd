@@ -15,7 +15,7 @@ var shelf_life_label: Label = null
 
 ## Hover 图标素材（占位）
 var _recycle_hover_texture: Texture2D = preload("res://assets/sprites/the_machine_switch/Recycle_icon.png")
-var _merge_hover_texture: Texture2D = preload("res://assets/sprites/icons/tick_green.png")
+var _merge_hover_texture: Texture2D = preload("res://assets/sprites/icons/upgrade.png")
 
 ## Hover 状态类型
 enum HoverType { NONE, RECYCLABLE, MERGEABLE }
