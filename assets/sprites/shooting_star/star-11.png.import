@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b0wjt3bx2e4ey"
-path.s3tc="res://.godot/imported/白.png-9ceaf90f4b05a208cb61de8131813445.s3tc.ctex"
-path.etc2="res://.godot/imported/白.png-9ceaf90f4b05a208cb61de8131813445.etc2.ctex"
+uid="uid://dkvp2w8cjj61i"
+path.s3tc="res://.godot/imported/star-11.png-742f19394a3d4f3902c2f639e688d398.s3tc.ctex"
+path.etc2="res://.godot/imported/star-11.png-742f19394a3d4f3902c2f639e688d398.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/city_bg/白.png"
-dest_files=["res://.godot/imported/白.png-9ceaf90f4b05a208cb61de8131813445.s3tc.ctex", "res://.godot/imported/白.png-9ceaf90f4b05a208cb61de8131813445.etc2.ctex"]
+source_file="res://assets/sprites/shooting_star/star-11.png"
+dest_files=["res://.godot/imported/star-11.png-742f19394a3d4f3902c2f639e688d398.s3tc.ctex", "res://.godot/imported/star-11.png-742f19394a3d4f3902c2f639e688d398.etc2.ctex"]
 
 [params]
 
@@ -38,5 +38,5 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
-process/size_limit=2000
+process/size_limit=0
 detect_3d/compress_to=1

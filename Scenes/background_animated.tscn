@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://bf2agyjeyvvp6"]
+[gd_scene load_steps=61 format=3 uid="uid://dcrc7hmw85gqq"]
 
 [ext_resource type="Texture2D" uid="uid://bprtu4q6lify4" path="res://assets/sprites/city_bg/蓝蓝天.png" id="2_3agmw"]
 [ext_resource type="Texture2D" uid="uid://dc7coucih34ai" path="res://assets/sprites/city_bg/黑天.png" id="3_xvhlv"]
@@ -8,26 +8,26 @@
 [ext_resource type="Texture2D" uid="uid://cv32cj6ieg6h4" path="res://assets/sprites/background/背景-2.png" id="7_arxqr"]
 [ext_resource type="Texture2D" uid="uid://d5cfbyoxnec7" path="res://assets/sprites/background/背景-1.png" id="8_v0nl0"]
 [ext_resource type="Texture2D" uid="uid://yq4g7rr8qqwd" path="res://assets/sprites/background/背景-3.png" id="9_ic2l0"]
-[ext_resource type="Texture2D" uid="uid://cfqybxqdg26wt" path="res://assets/sprites/shooting_star/基地-1.png" id="10_30pou"]
-[ext_resource type="Texture2D" uid="uid://dyx7bj267u0ep" path="res://assets/sprites/shooting_star/基地-2.png" id="11_xai7a"]
-[ext_resource type="Texture2D" uid="uid://c3wrlcxob46ao" path="res://assets/sprites/shooting_star/基地-3.png" id="12_jac82"]
-[ext_resource type="Texture2D" uid="uid://xtt0q48gd5d4" path="res://assets/sprites/shooting_star/基地-4.png" id="13_w5e5t"]
-[ext_resource type="Texture2D" uid="uid://cmn0ck4rg1wif" path="res://assets/sprites/shooting_star/基地-5.png" id="14_1hri5"]
-[ext_resource type="Texture2D" uid="uid://dw2gp7dj5pk2h" path="res://assets/sprites/shooting_star/基地-6.png" id="15_ucmob"]
-[ext_resource type="Texture2D" uid="uid://q5hrw4p7c3sk" path="res://assets/sprites/shooting_star/基地-7.png" id="16_sdl56"]
-[ext_resource type="Texture2D" uid="uid://q3i5ao7illvp" path="res://assets/sprites/shooting_star/基地-8.png" id="17_6gykx"]
-[ext_resource type="Texture2D" uid="uid://dk35g4u4pmu24" path="res://assets/sprites/shooting_star/基地-9.png" id="18_m3ns4"]
-[ext_resource type="Texture2D" uid="uid://b8lpytbrdhxwl" path="res://assets/sprites/shooting_star/基地-10.png" id="19_c0mr1"]
-[ext_resource type="Texture2D" uid="uid://dkvp2w8cjj61i" path="res://assets/sprites/shooting_star/基地-11.png" id="20_mkb5g"]
-[ext_resource type="Texture2D" uid="uid://rsko1fp65yh2" path="res://assets/sprites/shooting_star/基地-12.png" id="21_w5b5x"]
-[ext_resource type="Texture2D" uid="uid://bcskst365iqgg" path="res://assets/sprites/shooting_star/基地-13.png" id="22_skpgy"]
-[ext_resource type="Texture2D" uid="uid://kx4gcqh1vsvk" path="res://assets/sprites/shooting_star/基地-14.png" id="23_6c5bw"]
-[ext_resource type="Texture2D" uid="uid://d2y80oe3yvfdp" path="res://assets/sprites/shooting_star/基地-15.png" id="24_am225"]
-[ext_resource type="Texture2D" uid="uid://bs6o45mabkert" path="res://assets/sprites/shooting_star/基地-16.png" id="25_46gh2"]
-[ext_resource type="Texture2D" uid="uid://bcfn05acf0l25" path="res://assets/sprites/shooting_star/基地-17.png" id="26_q5lop"]
-[ext_resource type="Texture2D" uid="uid://dqeh4ue34ils" path="res://assets/sprites/shooting_star/基地-18.png" id="27_vavsk"]
-[ext_resource type="Texture2D" uid="uid://ln16uqo4o83f" path="res://assets/sprites/shooting_star/基地-19.png" id="28_k2lye"]
-[ext_resource type="Texture2D" uid="uid://b2u12kgd0w3r8" path="res://assets/sprites/shooting_star/基地-20.png" id="29_5x2wx"]
+[ext_resource type="Texture2D" uid="uid://cfqybxqdg26wt" path="res://assets/sprites/shooting_star/star-1.png" id="10_30pou"]
+[ext_resource type="Texture2D" uid="uid://dyx7bj267u0ep" path="res://assets/sprites/shooting_star/star-2.png" id="11_xai7a"]
+[ext_resource type="Texture2D" uid="uid://c3wrlcxob46ao" path="res://assets/sprites/shooting_star/star-3.png" id="12_jac82"]
+[ext_resource type="Texture2D" uid="uid://xtt0q48gd5d4" path="res://assets/sprites/shooting_star/star-4.png" id="13_w5e5t"]
+[ext_resource type="Texture2D" uid="uid://cmn0ck4rg1wif" path="res://assets/sprites/shooting_star/star-5.png" id="14_1hri5"]
+[ext_resource type="Texture2D" uid="uid://dw2gp7dj5pk2h" path="res://assets/sprites/shooting_star/star-6.png" id="15_ucmob"]
+[ext_resource type="Texture2D" uid="uid://q5hrw4p7c3sk" path="res://assets/sprites/shooting_star/star-7.png" id="16_sdl56"]
+[ext_resource type="Texture2D" uid="uid://q3i5ao7illvp" path="res://assets/sprites/shooting_star/star-8.png" id="17_6gykx"]
+[ext_resource type="Texture2D" uid="uid://dk35g4u4pmu24" path="res://assets/sprites/shooting_star/star-9.png" id="18_m3ns4"]
+[ext_resource type="Texture2D" uid="uid://b8lpytbrdhxwl" path="res://assets/sprites/shooting_star/star-10.png" id="19_c0mr1"]
+[ext_resource type="Texture2D" uid="uid://dkvp2w8cjj61i" path="res://assets/sprites/shooting_star/star-11.png" id="20_mkb5g"]
+[ext_resource type="Texture2D" uid="uid://rsko1fp65yh2" path="res://assets/sprites/shooting_star/star-12.png" id="21_w5b5x"]
+[ext_resource type="Texture2D" uid="uid://bcskst365iqgg" path="res://assets/sprites/shooting_star/star-13.png" id="22_skpgy"]
+[ext_resource type="Texture2D" uid="uid://kx4gcqh1vsvk" path="res://assets/sprites/shooting_star/star-14.png" id="23_6c5bw"]
+[ext_resource type="Texture2D" uid="uid://d2y80oe3yvfdp" path="res://assets/sprites/shooting_star/star-15.png" id="24_am225"]
+[ext_resource type="Texture2D" uid="uid://bs6o45mabkert" path="res://assets/sprites/shooting_star/star-16.png" id="25_46gh2"]
+[ext_resource type="Texture2D" uid="uid://bcfn05acf0l25" path="res://assets/sprites/shooting_star/star-17.png" id="26_q5lop"]
+[ext_resource type="Texture2D" uid="uid://dqeh4ue34ils" path="res://assets/sprites/shooting_star/star-18.png" id="27_vavsk"]
+[ext_resource type="Texture2D" uid="uid://ln16uqo4o83f" path="res://assets/sprites/shooting_star/star-19.png" id="28_k2lye"]
+[ext_resource type="Texture2D" uid="uid://b2u12kgd0w3r8" path="res://assets/sprites/shooting_star/star-20.png" id="29_5x2wx"]
 [ext_resource type="Texture2D" uid="uid://c1bjkkms67x2p" path="res://assets/sprites/city_bg/黑.png" id="30_utpsi"]
 [ext_resource type="Texture2D" uid="uid://wrs1iey376d" path="res://assets/sprites/city_bg/灰.png" id="31_rbd3v"]
 [ext_resource type="Texture2D" uid="uid://b0wjt3bx2e4ey" path="res://assets/sprites/city_bg/白.png" id="32_b7jjn"]
@@ -474,15 +474,17 @@ position = Vector2(3001, 1689.25)
 
 [node name="蓝蓝天" type="Sprite2D" parent="."]
 position = Vector2(-1, -1.75)
+scale = Vector2(3, 3)
 texture = ExtResource("2_3agmw")
 
 [node name="黑天" type="Sprite2D" parent="."]
 position = Vector2(-1, -1.75)
+scale = Vector2(3, 3)
 texture = ExtResource("3_xvhlv")
 
 [node name="星星" type="Sprite2D" parent="."]
 position = Vector2(3000, -30)
-scale = Vector2(2, 2)
+scale = Vector2(6, 6)
 texture = ExtResource("4_eojs8")
 
 [node name="star" type="AnimationPlayer" parent="星星"]
@@ -493,6 +495,7 @@ autoplay = "new_animation"
 
 [node name="蓝天" type="Sprite2D" parent="."]
 position = Vector2(-1, -1.75)
+scale = Vector2(3, 3)
 texture = ExtResource("5_rk1d7")
 
 [node name="蓝天流星" type="AnimationPlayer" parent="蓝天"]
@@ -552,7 +555,7 @@ frame = 19
 
 [node name="黑" type="Sprite2D" parent="."]
 position = Vector2(3000, -30)
-scale = Vector2(2, 2)
+scale = Vector2(6, 6)
 texture = ExtResource("30_utpsi")
 
 [node name="黑" type="AnimationPlayer" parent="黑"]
@@ -563,7 +566,7 @@ autoplay = "黑"
 
 [node name="灰" type="Sprite2D" parent="."]
 position = Vector2(3000, -30)
-scale = Vector2(2, 2)
+scale = Vector2(6, 6)
 texture = ExtResource("31_rbd3v")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="灰"]
@@ -574,7 +577,7 @@ autoplay = "new_animation"
 
 [node name="白" type="Sprite2D" parent="."]
 position = Vector2(3000, -30)
-scale = Vector2(2, 2)
+scale = Vector2(6, 6)
 texture = ExtResource("32_b7jjn")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="白"]

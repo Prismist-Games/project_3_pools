@@ -1,9 +1,9 @@
-[gd_scene load_steps=130 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=128 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
-[ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
-[ext_resource type="PackedScene" uid="uid://bf2agyjeyvvp6" path="res://scenes/background_animated.tscn" id="2_u8s40"]
-[ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
+[ext_resource type="Script" uid="uid://rg8ahiwfwlxb" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
+[ext_resource type="PackedScene" uid="uid://dcrc7hmw85gqq" path="res://scenes/background_animated.tscn" id="2_u8s40"]
+[ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.png" id="2_vave4"]
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="3_4wmcb"]
 [ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="3_fiado"]
 [ext_resource type="Texture2D" uid="uid://b4qoptplb61wr" path="res://assets/sprites/the_machine/the_machine_display_outline.png" id="4_6b2j4"]
@@ -37,7 +37,7 @@
 [ext_resource type="Texture2D" uid="uid://lw48pfhb1slm" path="res://assets/sprites/the_machine_switch/Recycle_background_outline.png" id="18_u8s40"]
 [ext_resource type="Texture2D" uid="uid://tyc42trcd2xq" path="res://assets/sprites/the_machine_switch/基地-5.png" id="18_xqbja"]
 [ext_resource type="Texture2D" uid="uid://bb0jex82xogr2" path="res://assets/sprites/item_slots/基地-8.png" id="19_sojbq"]
-[ext_resource type="Script" uid="uid://cp4b85c6kcgdl" path="res://scripts/ui/utils/switch_background_follow.gd" id="19_ue141"]
+[ext_resource type="Script" uid="uid://ip5lr6ojc1cq" path="res://scripts/ui/utils/switch_background_follow.gd" id="19_ue141"]
 [ext_resource type="Texture2D" uid="uid://c1rw0mhgt1s1i" path="res://assets/sprites/the_machine/the_machine_display_fill.png" id="21_ue141"]
 [ext_resource type="Texture2D" uid="uid://bclpcjghycqdb" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="22_017ef"]
 [ext_resource type="Texture2D" uid="uid://d3xb6e3385m7k" path="res://assets/sprites/icons/coupon.png" id="25_ccvlu"]
@@ -53,8 +53,7 @@
 [ext_resource type="Texture2D" uid="uid://cyixck513ac1o" path="res://assets/sprites/quest_slots/基地-9.png" id="33_0ehwc"]
 [ext_resource type="Texture2D" uid="uid://ddymclsitprmc" path="res://assets/sprites/quest_slots/基地-8.png" id="34_oeaov"]
 [ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="37_50t6p"]
-[ext_resource type="PackedScene" uid="uid://basts7bbr2vav" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
-[ext_resource type="Texture2D" uid="uid://bgojvj4bx4ihm" path="res://assets/sprites/the_rabbit/eye_shape_1.png" id="50_50t6p"]
+[ext_resource type="PackedScene" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
 [ext_resource type="Texture2D" uid="uid://dj5be2vipyhi4" path="res://assets/sprites/the_rabbit/the_rabbit_head_left.png" id="62_enqmm"]
 [ext_resource type="Texture2D" uid="uid://b067gbir0lby" path="res://assets/sprites/the_rabbit/the_rabbit_head_mid.png" id="63_6sdua"]
@@ -64,7 +63,6 @@
 [ext_resource type="Texture2D" uid="uid://ciklekvdp5hak" path="res://assets/sprites/the_rabbit/the_rabbit_left_arm.png" id="65_p2bqf"]
 [ext_resource type="Texture2D" uid="uid://0fvod413bhf0" path="res://assets/sprites/the_rabbit/the_rabbit_left_ear.png" id="66_jufyi"]
 [ext_resource type="Texture2D" uid="uid://dy6qxp86y1vw3" path="res://assets/sprites/the_rabbit/the_rabbit_left_ear_inner.png" id="67_8ocj1"]
-[ext_resource type="Texture2D" uid="uid://b3bino57bjulh" path="res://assets/sprites/the_rabbit/the_rabbit_left_eyeball_fill.png" id="68_jdak2"]
 [ext_resource type="Texture2D" uid="uid://defnrkt223vrw" path="res://assets/sprites/the_rabbit/the_rabbit_left_eye_fill.png" id="70_u4yck"]
 [ext_resource type="Texture2D" uid="uid://dgwh6jt3m78qv" path="res://assets/sprites/the_rabbit/the_rabbit_left_fingers.png" id="72_017ef"]
 [ext_resource type="Texture2D" uid="uid://cgiluolu8nixl" path="res://assets/sprites/the_rabbit/the_rabbit_left_foot.png" id="73_u8s40"]
@@ -562,6 +560,7 @@ script = ExtResource("1_x7wb1")
 position = Vector2(3001, 1689.25)
 
 [node name="Background_floor" type="Sprite2D" parent="Background"]
+position = Vector2(0, 3.75)
 texture = ExtResource("2_vave4")
 offset = Vector2(0, 1272)
 region_enabled = true
@@ -790,7 +789,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_item_root/Item_icon"]
 visible = false
@@ -1213,7 +1212,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -1307,7 +1306,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -1401,7 +1400,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -1495,7 +1494,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -1589,7 +1588,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -1683,7 +1682,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -1777,7 +1776,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -1871,7 +1870,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -1965,7 +1964,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -2059,7 +2058,7 @@ scale = Vector2(0.65, 0.65)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_item_root/Item_example"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -2126,15 +2125,6 @@ position = Vector2(1434, 1998)
 
 [node name="TheRabbitAnimator" type="Node" parent="The Rabbit/MascotVisuals"]
 script = ExtResource("99_anim")
-eye_socket_texture = ExtResource("70_u4yck")
-eye_outline_color = Color(0, 0, 0, 1)
-eye_outline_thickness = 0.1
-eye_pupil_texture = ExtResource("68_jdak2")
-eye_pupil_initial_size = 0.5
-eye_pupil_initial_offset = Vector2(1, 0)
-eye_pupil_color = Color(0.36, 0.36, 0.36, 1)
-eye_pupil_outline_thickness = 0.1
-impatient_eye_target_texture = ExtResource("50_50t6p")
 
 [node name="AnimationTree" type="AnimationTree" parent="The Rabbit/MascotVisuals"]
 tree_root = SubResource("AnimationNodeStateMachine_otpb1")
@@ -2460,7 +2450,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -2492,7 +2482,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -2637,7 +2627,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -2670,7 +2660,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -2703,7 +2693,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -2736,7 +2726,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -2905,7 +2895,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -2938,7 +2928,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -2971,7 +2961,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3004,7 +2994,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3173,7 +3163,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3206,7 +3196,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3239,7 +3229,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3272,7 +3262,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3441,7 +3431,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3474,7 +3464,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3507,7 +3497,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3540,7 +3530,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
-region_rect = Rect2(131, 131, 356, 337)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
@@ -3708,7 +3698,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("102_jdak2")
 offset = Vector2(-7, 19)
 region_enabled = true
-region_rect = Rect2(165, 174, 256, 290)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_0"]
 anchors_preset = 0
@@ -3727,7 +3717,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("102_jdak2")
 offset = Vector2(-7, 19)
 region_enabled = true
-region_rect = Rect2(165, 174, 256, 290)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_1"]
 anchors_preset = 0
@@ -3746,7 +3736,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("102_jdak2")
 offset = Vector2(-7, 19)
 region_enabled = true
-region_rect = Rect2(165, 174, 256, 290)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_2"]
 anchors_preset = 0
@@ -3765,7 +3755,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("102_jdak2")
 offset = Vector2(-7, 19)
 region_enabled = true
-region_rect = Rect2(165, 174, 256, 290)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_3"]
 anchors_preset = 0
@@ -3784,7 +3774,7 @@ scale = Vector2(0.75, 0.75)
 texture = ExtResource("102_jdak2")
 offset = Vector2(-7, 19)
 region_enabled = true
-region_rect = Rect2(165, 174, 256, 290)
+region_rect = Rect2(55, 75, 450, 450)
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_4"]
 anchors_preset = 0
