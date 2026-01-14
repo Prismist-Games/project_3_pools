@@ -1368,6 +1368,7 @@ region_enabled = true
 region_rect = Rect2(237, 1770, 671, 635)
 
 [node name="TheRabbitRefreshAll" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
 self_modulate = Color(0.9411765, 0.36078432, 0.38039216, 1)
 position = Vector2(19.5, -307.5)
 texture = ExtResource("77_6kw3k")

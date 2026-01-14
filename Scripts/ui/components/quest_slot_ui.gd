@@ -11,6 +11,12 @@ var order_index: int = -1
 var is_submit_mode: bool = false
 var _current_order: OrderData = null
 
+## 突出动画相关
+const PROTRUDE_OFFSET: float = 100.0 # 向右突出的像素距离
+const PROTRUDE_DURATION: float = 0.2 # 动画时长
+var _protrude_tween: Tween = null
+var _original_position_x: float = 0.0
+
 func setup(index: int) -> void:
 	order_index = index
 	# 订单槽位初始状态是开启的
@@ -20,6 +26,9 @@ func setup(index: int) -> void:
 	var refresh_btn = find_child("Refresh Button", true)
 	if refresh_btn:
 		refresh_btn.pressed.connect(_on_refresh_button_pressed)
+	
+	# 记录原始 position.x（只记录 x 坐标，y 由 VBoxContainer 管理）
+	_original_position_x = position.x
 
 func get_order() -> OrderData:
 	return _current_order
@@ -39,6 +48,9 @@ func play_refresh_anim() -> void:
 
 func set_submit_mode(active: bool) -> void:
 	is_submit_mode = active
+	# 退出提交模式时复位突出状态
+	if not active:
+		_reset_protrude()
 
 func update_order_display(order_data: OrderData, req_states: Array = []) -> void:
 	_current_order = order_data
@@ -76,6 +88,13 @@ func update_order_display(order_data: OrderData, req_states: Array = []) -> void
 		refresh_btn.disabled = order_data.refresh_count <= 0
 	
 	_update_requirements(order_data.requirements, req_states)
+	
+	# 在提交模式下，检测订单是否被满足并设置突出状态
+	if is_submit_mode:
+		var is_satisfied = _check_order_satisfied(order_data, req_states)
+		_set_protrude(is_satisfied)
+	else:
+		_reset_protrude()
 
 func _update_requirements(reqs: Array[Dictionary], req_states: Array) -> void:
 	# 适配不同名字的 Grid (Quest Slot Items Grid 或 Main Quest Slot Items Grid)
@@ -145,3 +164,51 @@ func update_submission_status(status_array: Array) -> void:
 			# status_sprite.texture = ... (tick if status_array[i] else cross)
 		else:
 			status_sprite.visible = false
+
+## =====================================================================
+## 突出动画系统
+## =====================================================================
+
+## 检测订单是否被满足（所有需求都被选中）
+func _check_order_satisfied(order: OrderData, req_states: Array) -> bool:
+	if not order or req_states.is_empty():
+		return false
+	
+	# 检查所有需求是否都被选中
+	for i in range(order.requirements.size()):
+		if i >= req_states.size():
+			return false
+		var state = req_states[i]
+		if not state.get("is_selected", false):
+			return false
+	
+	return true
+
+## 设置突出状态（向右突出）
+func _set_protrude(protrude: bool) -> void:
+	# 停止之前的动画
+	if _protrude_tween and _protrude_tween.is_valid():
+		_protrude_tween.kill()
+		_protrude_tween = null
+	
+	var target_x: float
+	if protrude:
+		# 向右突出：在 x 方向上平移
+		target_x = _original_position_x + PROTRUDE_OFFSET
+	else:
+		# 复位到原始位置
+		target_x = _original_position_x
+	
+	# 如果已经在目标位置，不需要动画
+	if abs(position.x - target_x) < 0.1:
+		return
+	
+	# 创建动画（只修改 x 坐标，不影响 y）
+	_protrude_tween = create_tween()
+	_protrude_tween.set_trans(Tween.TRANS_QUAD)
+	_protrude_tween.set_ease(Tween.EASE_OUT)
+	_protrude_tween.tween_property(self, "position:x", target_x, PROTRUDE_DURATION)
+
+## 复位突出状态
+func _reset_protrude() -> void:
+	_set_protrude(false)
