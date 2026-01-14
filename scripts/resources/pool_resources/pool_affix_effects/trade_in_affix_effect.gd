@@ -23,6 +23,11 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	ctx.skip_draw = true
 	ctx.gold_cost = 0
 	
+	# 检查金币是否足够
+	if GameManager.gold < cost:
+		push_warning("Trade-in: Insufficient gold (%d < %d)" % [GameManager.gold, cost])
+		return
+	
 	# 从 meta 中获取 pool_index（由 PoolSystem 设置）
 	var pool_index: int = ctx.meta.get("pool_index", -1)
 	
@@ -36,8 +41,9 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 			if item_to_trade == null:
 				return
 				
-			# 1. 检查金币 (trade_in 消耗)
+			# 1. 检查金币 (不应该发生，因为点击奖池时已检查)
 			if not GameManager.spend_gold(cost):
+				push_warning("Trade-in: Insufficient gold (should be checked before)")
 				return
 				
 			# 2. 决定新物品品质 (5% 概率升级)
@@ -50,16 +56,17 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 			if pool_items.is_empty():
 				pool_items = GameManager.all_items
 			
-			# 过滤掉当前交换的物品
-			var filtered_items: Array = pool_items.filter(func(d): return d != item_to_trade.item_data)
+			# 过滤掉当前交换的物品 (按ID过滤,确保不会换出同种类物品)
+			var traded_item_id: StringName = item_to_trade.item_data.id
+			var filtered_items: Array = pool_items.filter(func(d: ItemData): return d.id != traded_item_id)
 			
-			# 如果过滤后为空（说明池子里只有这一个物品类型），尝试从全局普通物品中选取
+			# 如果过滤后为空（说明池子里只有这一个物品种类），尝试从全局普通物品中选取
 			if filtered_items.is_empty():
 				var all_normal: Array[ItemData] = GameManager.get_all_normal_items()
-				filtered_items = all_normal.filter(func(d): return d != item_to_trade.item_data)
+				filtered_items = all_normal.filter(func(d: ItemData): return d.id != traded_item_id)
 			
 			if filtered_items.is_empty():
-				push_error("Trade-in error: No items found to replace " + item_to_trade.item_data.item_name)
+				push_error("Trade-in error: No items found to replace " + str(item_to_trade.item_data.id))
 				return
 			
 			var new_item_data = filtered_items.pick_random()
