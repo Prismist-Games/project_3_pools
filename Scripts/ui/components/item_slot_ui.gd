@@ -11,6 +11,7 @@ signal hover_state_changed(slot_index: int, is_hovered: bool)
 @onready var status_icon: Sprite2D = find_child("Item_status", true)
 @onready var backgrounds: Node2D = find_child("Item Slot_backgrounds", true)
 @onready var hover_icon: Sprite2D = find_child("Item_hover_icon", true)
+@onready var rarity_display: Sprite2D = find_child("Item_rarity", true)
 var shelf_life_label: Label = null
 
 ## Hover 图标素材（占位）
@@ -30,6 +31,10 @@ var _icon_original_position: Vector2 = Vector2.ZERO
 var _icon_original_scale: Vector2 = Vector2.ONE
 var _is_mouse_pressed: bool = false # 跟踪鼠标是否按下
 var _press_scale_tween: Tween = null # 按下缩放的tween
+var _current_item: ItemInstance = null # 当前物品实例，用于获取 rarity
+var _rarity_rotation_tween: Tween = null # rarity 旋转动画
+var _rarity_scale_tween: Tween = null # rarity 缩放动画
+var _rarity_original_scale: Vector2 = Vector2.ONE # rarity 原始缩放
 
 func _ready() -> void:
 	super._ready()
@@ -47,6 +52,12 @@ func _ready() -> void:
 	if icon_display:
 		_icon_original_position = icon_display.position
 		_icon_original_scale = icon_display.scale
+	
+	# 初始化 rarity 显示为隐藏
+	if rarity_display:
+		rarity_display.visible = false
+		_rarity_original_scale = rarity_display.scale
+		rarity_display.scale = Vector2.ZERO  # 初始缩放为 0
 
 func setup(index: int) -> void:
 	slot_index = index
@@ -101,7 +112,11 @@ func update_display(item: ItemInstance) -> void:
 			# 如果物品没了，理应解除隐藏状态
 			_temp_hide_until_vfx = false
 	
+	# 记录是否是新物品进入（用于判断是否播放 rarity 入场动画）
+	var is_new_item_entering: bool = (item != null and _current_item != item)
+	
 	if not item:
+		_current_item = null
 		icon_display.texture = null
 		if item_shadow: item_shadow.visible = false
 		affix_display.visible = false
@@ -121,6 +136,7 @@ func update_display(item: ItemInstance) -> void:
 			set_selected(false)
 		return
 	
+	_current_item = item
 	icon_display.texture = item.item_data.icon
 	if item_shadow:
 		item_shadow.visible = not _is_selected # 选中时不显示阴影
@@ -149,6 +165,13 @@ func update_display(item: ItemInstance) -> void:
 	
 	# 确保图标显示（如果不在 VFX 隐藏中）
 	show_icon()
+	
+	# 如果当前是选中状态，更新 rarity 显示
+	if _is_selected:
+		_update_rarity_display()
+	elif is_new_item_entering:
+		# 只有新物品进入 slot 时，才播放 rarity 从 scale 1 缩小到 0 的动画（衔接 VFX）
+		_play_rarity_entry_animation()
 
 func _animate_background_color(target_color: Color) -> void:
 	if not backgrounds: return
@@ -170,6 +193,7 @@ func set_selected(selected: bool) -> void:
 	_is_selected = selected
 	
 	_animate_selection(selected)
+	_update_rarity_display()
 	
 	if not selected:
 		if backgrounds:
@@ -240,6 +264,78 @@ func _animate_selection(active: bool) -> void:
 		# 恢复阴影
 		if item_shadow:
 			item_shadow.visible = icon_display.texture != null
+
+## 更新 rarity 显示（选中时显示并旋转，非选中时隐藏）
+func _update_rarity_display() -> void:
+	if not rarity_display:
+		return
+	
+	if _is_selected and _current_item:
+		# 设置颜色
+		rarity_display.self_modulate = Constants.get_rarity_border_color(_current_item.rarity)
+		
+		# 显示并播放 scale 动画（从 0 到原始大小）
+		rarity_display.visible = true
+		if _rarity_scale_tween:
+			_rarity_scale_tween.kill()
+		_rarity_scale_tween = create_tween()
+		_rarity_scale_tween.tween_property(rarity_display, "scale", _rarity_original_scale, 0.2) \
+			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		
+		# 开始旋转动画（如果还没开始或已停止）
+		if not _rarity_rotation_tween or not _rarity_rotation_tween.is_valid() or not _rarity_rotation_tween.is_running():
+			# 停止旧的 tween
+			if _rarity_rotation_tween:
+				_rarity_rotation_tween.kill()
+			_rarity_rotation_tween = create_tween()
+			_rarity_rotation_tween.set_loops()  # 无限循环
+			# 使用 from(0.0) 确保每次循环都从 0 开始
+			_rarity_rotation_tween.tween_property(rarity_display, "rotation", TAU, 2.0) \
+				.from(0.0) \
+				.set_trans(Tween.TRANS_LINEAR)
+	else:
+		# 停止旋转
+		if _rarity_rotation_tween:
+			_rarity_rotation_tween.kill()
+			_rarity_rotation_tween = null
+		
+		# 播放 scale 动画（从当前到 0）然后隐藏
+		if _rarity_scale_tween:
+			_rarity_scale_tween.kill()
+		_rarity_scale_tween = create_tween()
+		_rarity_scale_tween.tween_property(rarity_display, "scale", Vector2.ZERO, 0.2) \
+			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+		_rarity_scale_tween.tween_callback(func():
+			rarity_display.visible = false
+			rarity_display.rotation = 0.0
+			_rarity_scale_tween = null
+		)
+
+## 播放物品进入 slot 时的 rarity 动画（从 scale 1 缩小到 0，衔接 VFX）
+func _play_rarity_entry_animation() -> void:
+	if not rarity_display or not _current_item:
+		return
+	
+	# 设置颜色
+	rarity_display.self_modulate = Constants.get_rarity_border_color(_current_item.rarity)
+	
+	# 显示并设置初始 scale 为 1（衔接 VFX 中的 scale）
+	rarity_display.visible = true
+	rarity_display.scale = _rarity_original_scale
+	
+	# 停止之前的动画
+	if _rarity_scale_tween:
+		_rarity_scale_tween.kill()
+	
+	# 播放缩小动画（从 1 到 0）
+	_rarity_scale_tween = create_tween()
+	_rarity_scale_tween.tween_property(rarity_display, "scale", Vector2.ZERO, 0.3) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	_rarity_scale_tween.tween_callback(func():
+		rarity_display.visible = false
+		rarity_display.rotation = 0.0
+		_rarity_scale_tween = null
+	)
 
 func update_status_badge(badge_state: int) -> void:
 	if is_vfx_target: return # 飞行中锁定状态图标，防止提前出现
