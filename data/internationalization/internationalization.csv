@@ -1,4 +1,4 @@
-﻿,en,zh
+,en,zh
 
 # =====================================================================
 # Item Types (物品类型)
@@ -72,13 +72,13 @@ AFFIX_TRADE_IN,Trade-in,以旧换新
 AFFIX_VOLATILE,Volatile,波动的
 
 # Pool Affix Descriptions (奖池词缀描述)
-AFFIX_FRAGMENTED_DESC,Produces 3 items but they are all [color=#98A3B7] Common [/color].,产出 3 个物品，但必定是[color=#98A3B7] 普通 [/color]。
+AFFIX_FRAGMENTED_DESC,Produces 3 items but they are all  [img=60]res://assets/sprites/icons/rarity_common.png[/img]  .,产出 3 个物品，但必定是 [img=60]res://assets/sprites/icons/rarity_common.png[/img] 。
 AFFIX_HARDENED_DESC,"Increased rarity probability, but items are Sterile (cannot be merged).",稀有度概率提升，但物品绝育 (不可合成)。
 AFFIX_PRECISE_DESC,Draw two items at once and choose one.,二选一交互。
-AFFIX_PURIFIED_DESC,Guaranteed [color=#56A5EC] Rare [/color] or above.,保底产出[color=#56A5EC] 稀有 [/color]及以上。
+AFFIX_PURIFIED_DESC,Guaranteed  [img=60]res://assets/sprites/icons/rarity_rare.png[/img]  or above.,保底产出 [img=60]res://assets/sprites/icons/rarity_rare.png[/img] 及以上。
 AFFIX_TARGETED_DESC,Choose item type before drawing.,指定类型交互。
 AFFIX_TRADE_IN_DESC,Consume 1 item from inventory to exchange for same rarity item.,消耗背包 1 个物品，随机置换同品质物品。
-AFFIX_VOLATILE_DESC,Only produces [color=#98A3B7] Common [/color] or [color=#EC9B29] Legendary [/color] (high [color=#EC9B29] Legendary [/color] chance).,仅产出[color=#98A3B7] 普通 [/color]或[color=#EC9B29] 传说 [/color] ([color=#EC9B29] 传说 [/color]概率极高)。
+AFFIX_VOLATILE_DESC,Only produces  [img=60]res://assets/sprites/icons/rarity_common.png[/img]  or  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  (high  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  chance).,仅产出 [img=60]res://assets/sprites/icons/rarity_common.png[/img] 或 [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  ( [img=60]res://assets/sprites/icons/rarity_legendary.png[/img] 概率极高)。
 
 # =====================================================================
 # Skill Names (技能名称)
@@ -99,16 +99,16 @@ SKILL_NAME_TIME_FREEZE,Time Freeze,时间冻结
 SKILL_NAME_VIP_DISCOUNT,VIP Discount,贵宾折扣
 
 # Skill Descriptions (技能描述)
-SKILL_DESC_ALCHEMY,"When recycling [color=#56A5EC] Rare [/color]+ items, 15% chance to gain 5 Tickets.",回收[color=#56A5EC] 稀有 [/color]及以上品质物品时，15% 概率获得 5 张奖券。
+SKILL_DESC_ALCHEMY,"When recycling  [img=60]res://assets/sprites/icons/rarity_rare.png[/img]  + items, 15% chance to gain 5 Tickets.",回收 [img=60]res://assets/sprites/icons/rarity_rare.png[/img] 及以上品质物品时，15% 概率获得 5 张奖券。
 SKILL_DESC_AUTO_RESTOCK,After completing any order the next draw gives +1 item.,完成任意订单后，下次抽奖额外获得 1 个物品。
 SKILL_DESC_BIG_ORDER_EXPERT,Gain 10 extra Tickets when completing orders requiring 4 items.,完成需求物品数为 4 的订单时，额外获得 10 张奖券。
-SKILL_DESC_CONSOLATION_PRIZE,After drawing 5 [color=#98A3B7] Common [/color] items in a row the next draw is guaranteed [color=#56A5EC] Rare [/color]+.,连续抽到 5 个[color=#98A3B7] 普通 [/color]品质物品后，下次抽奖必定[color=#56A5EC] 稀有 [/color]以上。
+SKILL_DESC_CONSOLATION_PRIZE,After drawing 5  [img=60]res://assets/sprites/icons/rarity_common.png[/img]  items in a row the next draw is guaranteed  [img=60]res://assets/sprites/icons/rarity_rare.png[/img]  +.,连续抽到 5 个 [img=60]res://assets/sprites/icons/rarity_common.png[/img] 品质物品后，下次抽奖必定 [img=60]res://assets/sprites/icons/rarity_rare.png[/img] 以上。
 SKILL_DESC_CORNERS_CUTTING,"When refreshing an order, 20% chance to reduce requirement by 1 (min 1).",刷新出新订单时，20% 概率使订单需求数量 -1（最低为 1）。
 SKILL_DESC_FRUGAL,When Gold < 10 draw cost -2 (min 1).,当前金币 < 10 时，抽奖金币消耗 -2（最低为 1）。
-SKILL_DESC_GOOD_LUCK_NEXT,After completing any order the next draw is guaranteed [color=#56A5EC] Rare [/color]+.,完成任意订单后，下次抽奖必定[color=#56A5EC] 稀有 [/color]以上。
-SKILL_DESC_HARD_ORDER_EXPERT,Gain 15 extra Tickets when completing orders requiring [color=#C85FE3] Epic [/color]+ items.,完成需要[color=#C85FE3] 史诗 [/color]以上品质物品的订单时，额外获得 15 张奖券。
-SKILL_DESC_LUCKY_7,"When Gold ends in 7, [color=#EC9B29] Legendary [/color] probability is doubled.",当前金币数量尾数为 7 时，抽到[color=#EC9B29] 传说 [/color]的概率翻倍。
-SKILL_DESC_NEGOTIATOR,When drawing [color=#C85FE3] Epic [/color]+ items all orders gain 1 refresh.,抽到[color=#C85FE3] 史诗 [/color]及以上品质物品时，所有订单获得 1 次刷新次数。
+SKILL_DESC_GOOD_LUCK_NEXT,After completing any order the next draw is guaranteed  [img=60]res://assets/sprites/icons/rarity_rare.png[/img]  +.,完成任意订单后，下次抽奖必定 [img=60]res://assets/sprites/icons/rarity_rare.png[/img] 以上。
+SKILL_DESC_HARD_ORDER_EXPERT,Gain 15 extra Tickets when completing orders requiring  [img=60]res://assets/sprites/icons/rarity_epic.png[/img]  + items.,完成需要 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 以上品质物品的订单时，额外获得 15 张奖券。
+SKILL_DESC_LUCKY_7,"When Gold ends in 7,  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  probability is doubled.",当前金币数量尾数为 7 时，抽到 [img=60]res://assets/sprites/icons/rarity_legendary.png[/img] 的概率翻倍。
+SKILL_DESC_NEGOTIATOR,When drawing  [img=60]res://assets/sprites/icons/rarity_epic.png[/img]  + items all orders gain 1 refresh.,抽到 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 及以上品质物品时，所有订单获得 1 次刷新次数。
 SKILL_DESC_OCD,"When submitting an order if all items are same type, reward is doubled.",提交订单时若所有物品同一类型，奖励翻倍。
 SKILL_DESC_POVERTY_RELIEF,"When Gold < 5, order Gold reward +10.",持有金币 < 5 时，完成订单的金币奖励额外 +10。
 SKILL_DESC_TIME_FREEZE,"When refreshing a single order, 20% chance to not consume refresh count.",刷新单个订单时，20% 概率不消耗该订单的剩余刷新次数。
