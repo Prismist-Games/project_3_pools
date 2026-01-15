@@ -2,22 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dhhlgv703k3u2"
-path.s3tc="res://.godot/imported/升级箭头.png-459c1096d1277d915c908e2fd852b28c.s3tc.ctex"
-path.etc2="res://.godot/imported/升级箭头.png-459c1096d1277d915c908e2fd852b28c.etc2.ctex"
+uid="uid://djd0iqblhln2k"
+path="res://.godot/imported/upgrade_icon.png-8ffcfd7f63624cb3413e2130c5a00d66.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/icons/升级箭头.png"
-dest_files=["res://.godot/imported/升级箭头.png-459c1096d1277d915c908e2fd852b28c.s3tc.ctex", "res://.godot/imported/升级箭头.png-459c1096d1277d915c908e2fd852b28c.etc2.ctex"]
+source_file="res://assets/sprites/icons/upgrade_icon.png"
+dest_files=["res://.godot/imported/upgrade_icon.png-8ffcfd7f63624cb3413e2130c5a00d66.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=3
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

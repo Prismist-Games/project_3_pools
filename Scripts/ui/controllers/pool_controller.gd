@@ -153,23 +153,45 @@ func _start_slot_refresh(slot: Control, pool_data: Variant, state: Dictionary) -
 	state.pending -= 1
 
 func _calculate_order_hints(pool_type: int) -> Dictionary:
-	# 1. 收集所有订单需求的物品 ID
-	var required_ids: Dictionary = {} # 使用字典去重
+	# 1. 收集所有订单需求的物品 ID 和对应的最低品质要求
+	# Dictionary[item_id: StringName] -> min_rarity: int (取所有订单中该物品的最低品质要求)
+	var required_items: Dictionary = {} # {item_id: min_rarity}
 	for order in OrderSystem.current_orders:
 		for req in order.requirements:
 			var id = req.get("item_id", &"")
+			var min_rarity = req.get("min_rarity", 0)
 			if id != &"":
-				required_ids[id] = true
+				# 如果该物品已存在，取更低的品质要求（更宽松）
+				if id in required_items:
+					required_items[id] = min(required_items[id], min_rarity)
+				else:
+					required_items[id] = min_rarity
 	
 	# 2. 获取该池子类型下的所有物品，并过滤出被订单要求的
 	var pool_items = GameManager.get_items_for_type(pool_type)
 	var display_items: Array[ItemData] = []
-	var satisfied_map: Dictionary = {}
+	var satisfied_map: Dictionary = {} # {item_id: status} status: 0=没有, 1=有但品质不够, 2=完全满足
 	
 	for item_data in pool_items:
-		if item_data.id in required_ids:
-			display_items.append(item_data)
-			satisfied_map[item_data.id] = InventorySystem.has_item_data(item_data)
+		if item_data.id in required_items:
+			var min_rarity = required_items[item_data.id]
+			var has_item = InventorySystem.has_item_data(item_data)
+			
+			if not has_item:
+				# 没有该物品
+				display_items.append(item_data)
+				satisfied_map[item_data.id] = 0
+			else:
+				# 有该物品，检查品质
+				var max_rarity = InventorySystem.get_max_rarity_for_item(item_data.id)
+				if max_rarity >= min_rarity:
+					# 品质满足，不显示（完全满足）
+					# 不添加到 display_items
+					pass
+				else:
+					# 有物品但品质不够，显示白色勾
+					display_items.append(item_data)
+					satisfied_map[item_data.id] = 1
 			
 	return {"display_items": display_items, "satisfied_map": satisfied_map}
 

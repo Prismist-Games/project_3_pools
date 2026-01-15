@@ -101,6 +101,10 @@ func get_active_slot_count() -> int:
 
 func update_all_slots(inventory: Array) -> void:
 	var slot_count = get_active_slot_count()
+	
+	# 先计算所有可合成的配对
+	var upgradeable_indices = _calculate_upgradeable_indices(inventory)
+	
 	for i in range(slot_count):
 		var slot = get_slot_node(i)
 		var item = inventory[i] if i < inventory.size() else null
@@ -110,6 +114,14 @@ func update_all_slots(inventory: Array) -> void:
 				var badge = _calculate_badge_state(item)
 				if slot.has_method("update_status_badge"):
 					slot.update_status_badge(badge)
+				
+				# 更新 upgradeable 角标
+				if slot.has_method("set_upgradeable_badge"):
+					slot.set_upgradeable_badge(i in upgradeable_indices)
+			else:
+				# 物品为空时，确保 upgradeable 角标隐藏
+				if slot.has_method("set_upgradeable_badge"):
+					slot.set_upgradeable_badge(false)
 
 func update_slot(index: int, item: ItemInstance) -> void:
 	var slot = get_slot_node(index)
@@ -119,6 +131,9 @@ func update_slot(index: int, item: ItemInstance) -> void:
 			var badge = _calculate_badge_state(item)
 			if slot.has_method("update_status_badge"):
 				slot.update_status_badge(badge)
+	
+	# 物品变化可能影响其他槽位的 upgradeable 状态，刷新全部
+	refresh_upgradeable_badges()
 
 func _calculate_badge_state(item: ItemInstance) -> int:
 	var badge_state = 0
@@ -133,6 +148,84 @@ func _calculate_badge_state(item: ItemInstance) -> int:
 					if badge_state < 1:
 						badge_state = 1
 	return badge_state
+
+
+## 计算背包中所有可合成的物品索引（配对）
+func _calculate_upgradeable_indices(inventory: Array) -> Array[int]:
+	var result: Array[int] = []
+	
+	# 检查合成功能是否解锁
+	if not UnlockManager.is_unlocked(UnlockManager.Feature.MERGE):
+		return result
+	
+	# 按 (item_id, rarity) 分组，记录每个组合的索引列表
+	var groups: Dictionary = {}
+	
+	for i in range(inventory.size()):
+		var item = inventory[i]
+		if item == null:
+			continue
+		
+		# 跳过绝育物品和已达到最高品质的物品
+		if item.sterile:
+			continue
+		if item.rarity >= Constants.Rarity.MYTHIC:
+			continue
+		if item.rarity >= UnlockManager.merge_limit:
+			continue
+		
+		var key = str(item.item_data.id) + "_" + str(item.rarity)
+		if not groups.has(key):
+			groups[key] = []
+		groups[key].append(i)
+	
+	# 找出有 2 个或更多物品的组，它们可以合成
+	for key in groups:
+		var indices = groups[key]
+		if indices.size() >= 2:
+			for idx in indices:
+				if idx not in result:
+					result.append(idx)
+	
+	return result
+
+
+## 计算 pending 物品与背包中可合成的物品索引
+func _calculate_pending_upgradeable_indices(pending_item: ItemInstance, inventory: Array) -> Array[int]:
+	var result: Array[int] = []
+	
+	if pending_item == null:
+		return result
+	
+	# 检查合成功能是否解锁
+	if not UnlockManager.is_unlocked(UnlockManager.Feature.MERGE):
+		return result
+	
+	# pending 物品本身不能合成
+	if pending_item.sterile:
+		return result
+	if pending_item.rarity >= Constants.Rarity.MYTHIC:
+		return result
+	if pending_item.rarity >= UnlockManager.merge_limit:
+		return result
+	
+	# 在背包中找同名同品质的物品
+	for i in range(inventory.size()):
+		var item = inventory[i]
+		if item == null:
+			continue
+		# 背包物品也需要检查是否可合成
+		if item.sterile:
+			continue
+		if item.rarity >= Constants.Rarity.MYTHIC:
+			continue
+		if item.rarity >= UnlockManager.merge_limit:
+			continue
+		# 匹配同名同品质
+		if item.item_data.id == pending_item.item_data.id and item.rarity == pending_item.rarity:
+			result.append(i)
+	
+	return result
 
 func update_selection(index: int) -> void:
 	var slot_count = get_active_slot_count()
@@ -192,6 +285,33 @@ func clear_highlights() -> void:
 	for slot in _slots:
 		if slot and slot.has_method("set_highlight"):
 			slot.set_highlight(false)
+
+
+## 刷新所有槽位的 upgradeable 角标（考虑 pending 状态）
+func refresh_upgradeable_badges() -> void:
+	var inventory = InventorySystem.inventory
+	var slot_count = get_active_slot_count()
+	
+	# 计算背包内部的可合成配对
+	var upgradeable_indices = _calculate_upgradeable_indices(inventory)
+	
+	# 如果有 pending 物品，计算与 pending 可合成的物品
+	var pending = InventorySystem.pending_item
+	if pending:
+		var pending_upgradeable = _calculate_pending_upgradeable_indices(pending, inventory)
+		for idx in pending_upgradeable:
+			if idx not in upgradeable_indices:
+				upgradeable_indices.append(idx)
+	
+	# 更新所有槽位的 upgradeable 角标
+	for i in range(slot_count):
+		var slot = get_slot_node(i)
+		if slot and slot.has_method("set_upgradeable_badge"):
+			var item = inventory[i] if i < inventory.size() else null
+			if item:
+				slot.set_upgradeable_badge(i in upgradeable_indices)
+			else:
+				slot.set_upgradeable_badge(false)
 
 # --- Helpers ---
 

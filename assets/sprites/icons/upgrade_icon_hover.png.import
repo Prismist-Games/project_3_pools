@@ -2,20 +2,22 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3068pbu2iyrw"
-path="res://.godot/imported/tick_white.png-d1984c424d55e68833ba562afbed5b3b.ctex"
+uid="uid://dhhlgv703k3u2"
+path.s3tc="res://.godot/imported/upgrade_icon_hover.png-6d75cd4c4e28ada0726d423bffe3e978.s3tc.ctex"
+path.etc2="res://.godot/imported/upgrade_icon_hover.png-6d75cd4c4e28ada0726d423bffe3e978.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://assets/sprites/icons/tick_white.png"
-dest_files=["res://.godot/imported/tick_white.png-d1984c424d55e68833ba562afbed5b3b.ctex"]
+source_file="res://assets/sprites/icons/upgrade_icon_hover.png"
+dest_files=["res://.godot/imported/upgrade_icon_hover.png-6d75cd4c4e28ada0726d423bffe3e978.s3tc.ctex", "res://.godot/imported/upgrade_icon_hover.png-6d75cd4c4e28ada0726d423bffe3e978.etc2.ctex"]
 
 [params]
 
-compress/mode=3
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

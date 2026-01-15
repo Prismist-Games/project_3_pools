@@ -257,14 +257,17 @@ func _update_grid_icons(grid: VBoxContainer, display_items: Array[ItemData], sat
 			var item_data = display_items[i]
 			icon_node.texture = item_data.icon
 			
-			# 更新满足状态图标 (仅显示勾，不显示叉)
+			# 更新满足状态图标
+			# status: 0=没有物品, 1=有但品质不够(白色勾), 2=完全满足(不显示)
 			var status_icon = icon_node.get_node_or_null("Item Icon_status")
 			if status_icon:
-				var is_satisfied = satisfied_map.get(item_data.id, false)
-				if is_satisfied:
-					status_icon.texture = preload("res://assets/sprites/icons/tick_green.png")
+				var status = satisfied_map.get(item_data.id, 0)
+				if status == 1:
+					# 有物品但品质不够，显示白色勾
+					status_icon.texture = preload("res://assets/sprites/icons/tick_white.png")
 					status_icon.visible = true
 				else:
+					# 状态0（没有）或状态2（完全满足），都不显示角标
 					status_icon.visible = false
 		else:
 			icon_node.visible = false

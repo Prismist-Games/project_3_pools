@@ -403,6 +403,10 @@ func _on_pending_queue_changed(items: Array[ItemInstance]) -> void:
 	
 	# 刷新当前hover的slot的状态
 	_refresh_all_hovered_slot_states()
+	
+	# 刷新 upgradeable 角标（pending 物品可能与背包物品配对）
+	if inventory_controller:
+		inventory_controller.refresh_upgradeable_badges()
 
 func _on_skills_changed(skills: Array) -> void:
 	if skill_slot_controller:

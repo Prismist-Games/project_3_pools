@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cr0uv8jj87n1f"]
+[gd_scene load_steps=26 format=3 uid="uid://cr0uv8jj87n1f"]
 
 [ext_resource type="Script" uid="uid://exqnykh1n5lj" path="res://scripts/ui/components/item_slot_ui.gd" id="1_ixbl1"]
 [ext_resource type="Texture2D" uid="uid://caieb4p7g0f64" path="res://assets/sprites/item_slots/基地-4.png" id="2_kitn1"]
@@ -17,6 +17,8 @@
 [ext_resource type="Texture2D" uid="uid://7s7gx5sytssb" path="res://assets/sprites/item_slots/基地-6 2.png" id="13_6ggen"]
 [ext_resource type="Texture2D" uid="uid://cemheosuktfhj" path="res://assets/sprites/item_slots/基地-5.png" id="14_0lcdy"]
 [ext_resource type="Texture2D" uid="uid://ju74ng2iyhft" path="res://assets/sprites/item_slots/小杆子.png" id="14_rfv0q"]
+[ext_resource type="Texture2D" uid="uid://djd0iqblhln2k" path="res://assets/sprites/icons/upgrade_icon.png" id="15_gnepb"]
+[ext_resource type="Texture2D" uid="uid://dy1hdjyjjaxab" path="res://assets/sprites/icons/tick_empty.png" id="16_idsbx"]
 
 [sub_resource type="Shader" id="Shader_ixbl1"]
 code = "shader_type canvas_item;
@@ -173,14 +175,48 @@ self_modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
 show_behind_parent = true
 texture = ExtResource("12_rs8t5")
 
-[node name="Item_status" type="Sprite2D" parent="Item Slot_mask"]
+[node name="Item_status_LR" type="Sprite2D" parent="Item Slot_mask"]
 position = Vector2(87, 194)
 texture = ExtResource("11_emsc1")
 offset = Vector2(0.5, -110)
 
-[node name="pole" type="Sprite2D" parent="Item Slot_mask/Item_status"]
+[node name="pole" type="Sprite2D" parent="Item Slot_mask/Item_status_LR"]
 show_behind_parent = true
 position = Vector2(0, -62.305)
+texture = ExtResource("14_rfv0q")
+
+[node name="Item_upgradeable_UR" type="Sprite2D" parent="Item Slot_mask"]
+position = Vector2(86, -234)
+texture = ExtResource("15_gnepb")
+offset = Vector2(-0.5, 152)
+
+[node name="pole" type="Sprite2D" parent="Item Slot_mask/Item_upgradeable_UR"]
+show_behind_parent = true
+position = Vector2(0, 102.99999)
+rotation = -3.1415927
+texture = ExtResource("14_rfv0q")
+
+[node name="Item_freshness_UL" type="Sprite2D" parent="Item Slot_mask"]
+position = Vector2(-84, -234)
+texture = ExtResource("16_idsbx")
+offset = Vector2(-0.5, 152)
+
+[node name="Item_freshness_label" type="RichTextLabel" parent="Item Slot_mask/Item_freshness_UL"]
+offset_left = -31.0
+offset_top = 122.0
+offset_right = 33.0
+offset_bottom = 182.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 50
+text = "99"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="pole" type="Sprite2D" parent="Item Slot_mask/Item_freshness_UL"]
+show_behind_parent = true
+position = Vector2(0, 102.99999)
+rotation = -3.1415927
 texture = ExtResource("14_rfv0q")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="Item Slot_mask"]

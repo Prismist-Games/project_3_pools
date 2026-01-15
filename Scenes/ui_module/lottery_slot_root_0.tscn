@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://basts7bbr2vav"]
+[gd_scene load_steps=35 format=3 uid="uid://basts7bbr2vav"]
 
 [ext_resource type="Script" uid="uid://c008hefncbbkm" path="res://scripts/ui/components/lottery_slot_ui.gd" id="1_1b0mf"]
 [ext_resource type="Texture2D" uid="uid://cpcef3r3dbaxq" path="res://assets/sprites/lottery_slots/基地-7.png" id="2_gntc1"]
@@ -15,8 +15,10 @@
 [ext_resource type="Texture2D" uid="uid://u8vv873f380j" path="res://assets/sprites/lottery_slots/lottery_slot_lid_outline.png" id="12_p4alg"]
 [ext_resource type="Texture2D" uid="uid://fnqmsybn8c5r" path="res://assets/sprites/lottery_slots/基地-6.png" id="13_r08pi"]
 [ext_resource type="Texture2D" uid="uid://dhd8bxltte0u1" path="res://assets/sprites/lottery_slots/基地-8.png" id="14_ktq0d"]
+[ext_resource type="Texture2D" uid="uid://ju74ng2iyhft" path="res://assets/sprites/item_slots/小杆子.png" id="15_7fxrg"]
 [ext_resource type="Texture2D" uid="uid://law2mtdijaeb" path="res://assets/sprites/lottery_slots/基地-11.png" id="15_do7yb"]
 [ext_resource type="Texture2D" uid="uid://c17ii0rmjfv1n" path="res://assets/sprites/lottery_slots/基地-13.png" id="16_l1p8v"]
+[ext_resource type="Texture2D" uid="uid://djd0iqblhln2k" path="res://assets/sprites/icons/upgrade_icon.png" id="16_yj02r"]
 [ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="17_g23h7"]
 [ext_resource type="Texture2D" uid="uid://bh2rrdftruk78" path="res://assets/sprites/lottery_slots/基地-12.png" id="18_yfao2"]
 [ext_resource type="Texture2D" uid="uid://430ts7sfdtgx" path="res://assets/sprites/lottery_slots/基地-10.png" id="19_a03mu"]
@@ -177,6 +179,27 @@ texture = ExtResource("9_arr72")
 [node name="Item_hover_icon" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root/Item_main"]
 visible = false
 texture = ExtResource("10_gntc1")
+
+[node name="Item_status_LR" type="Sprite2D" parent="Lottery Slot_mask"]
+position = Vector2(213, 345)
+texture = ExtResource("17_g23h7")
+offset = Vector2(0.5, -110)
+
+[node name="pole" type="Sprite2D" parent="Lottery Slot_mask/Item_status_LR"]
+show_behind_parent = true
+position = Vector2(0, -62.305)
+texture = ExtResource("15_7fxrg")
+
+[node name="Item_upgradeable_UR" type="Sprite2D" parent="Lottery Slot_mask"]
+position = Vector2(212, -335)
+texture = ExtResource("16_yj02r")
+offset = Vector2(-0.5, 152)
+
+[node name="pole" type="Sprite2D" parent="Lottery Slot_mask/Item_upgradeable_UR"]
+show_behind_parent = true
+position = Vector2(0, 102.99999)
+rotation = -3.1415927
+texture = ExtResource("15_7fxrg")
 
 [node name="Lottery Slot_lid" type="Sprite2D" parent="Lottery Slot_mask"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
