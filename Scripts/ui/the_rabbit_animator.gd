@@ -57,7 +57,6 @@ var _current_state_name: StringName = STATE_RABBIT_IDLE
 # AnimationTree 条件变量（持续状态）
 var _cond_is_submitting: bool = false
 var _cond_is_low_gold: bool = false
-var _cond_is_high_gold: bool = true # 与 is_low_gold 相反
 var _cond_is_pool_hovered: bool = false
 
 # AnimationTree 触发器（一次性）
@@ -141,13 +140,16 @@ func _on_ui_state_changed(_from: StringName, to: StringName) -> void:
 		print("[RabbitAnimator] Trigger: exit_submitting")
 
 func _on_gold_changed(new_gold: int) -> void:
+	var was_low = _cond_is_low_gold
 	_cond_is_low_gold = (new_gold <= impatient_gold_threshold)
-	_cond_is_high_gold = (new_gold > impatient_gold_threshold)
 	
 	# 立即更新 AnimationTree
 	if anim_tree:
 		anim_tree.set("parameters/conditions/is_low_gold", _cond_is_low_gold)
-		anim_tree.set("parameters/conditions/is_high_gold", _cond_is_high_gold)
+		
+		# 如果金币从低变高，且当前在不耐烦状态，则切回普通空闲
+		if was_low and not _cond_is_low_gold and _current_state_name == STATE_RABBIT_IMPATIENT:
+			reset_to_idle()
 
 func _on_game_event(event_id: StringName, _payload: Variant) -> void:
 	if event_id == &"recycle_lid_closed":

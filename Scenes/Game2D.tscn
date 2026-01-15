@@ -176,7 +176,6 @@ animation = &"rabbit_shocked"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_otpb1"]
 advance_mode = 2
-advance_condition = &"is_high_gold"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_017ef"]
 xfade_time = 0.5
@@ -203,6 +202,7 @@ advance_mode = 2
 advance_condition = &"is_submitting"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ivmbw"]
+priority = 0
 advance_mode = 2
 advance_condition = &"is_low_gold"
 
@@ -231,7 +231,7 @@ advance_condition = &"is_low_gold"
 xfade_time = 0.5
 switch_mode = 1
 advance_mode = 2
-advance_condition = &"is_high_gold"
+advance_expression = "is_low_gold == false"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jptrp"]
 xfade_time = 0.2
@@ -280,10 +280,9 @@ advance_condition = &"exit_submitting"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yytn1"]
 xfade_time = 0.2
-priority = 0
 switch_mode = 1
 advance_mode = 2
-advance_condition = &"exit_submitting"
+advance_condition = &"exit_submitting & is_low_gold"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_otpb1"]
 states/End/position = Vector2(1173, 35.5)
@@ -301,7 +300,7 @@ states/rabbit_nose_poking/position = Vector2(642.81976, 337.0531)
 states/rabbit_shocked/node = SubResource("AnimationNodeAnimation_50t6p")
 states/rabbit_shocked/position = Vector2(956.31976, 336.53778)
 transitions = ["Start", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_otpb1"), "rabbit_idle", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_017ef"), "rabbit_impatient", "rabbit_knock_machine", SubResource("AnimationNodeStateMachineTransition_u8s40"), "rabbit_impatient", "rabbit_eyes_rolling", SubResource("AnimationNodeStateMachineTransition_8y6ih"), "rabbit_impatient", "rabbit_nose_poking", SubResource("AnimationNodeStateMachineTransition_ccvlu"), "Start", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_ivmbw"), "rabbit_knock_machine", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_tiwwg"), "rabbit_shocked", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_caxmy"), "rabbit_eyes_rolling", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_65xho"), "rabbit_impatient", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_00smp"), "rabbit_idle", "rabbit_eyes_rolling", SubResource("AnimationNodeStateMachineTransition_jptrp"), "rabbit_eyes_rolling", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_7v8nc"), "rabbit_idle", "rabbit_knock_machine", SubResource("AnimationNodeStateMachineTransition_q6adl"), "rabbit_knock_machine", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_f3s7l"), "rabbit_idle", "rabbit_nose_poking", SubResource("AnimationNodeStateMachineTransition_fs1h7"), "rabbit_shocked", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_5v8qp"), "rabbit_nose_poking", "rabbit_shocked", SubResource("AnimationNodeStateMachineTransition_50t6p"), "rabbit_nose_poking", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_2a6p6"), "rabbit_nose_poking", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_yytn1")]
-graph_offset = Vector2(-165.96785, -233.01991)
+graph_offset = Vector2(43.11217, -164.93243)
 
 [sub_resource type="Animation" id="Animation_8y6ih"]
 length = 0.001
@@ -2917,7 +2916,7 @@ anim_tree = NodePath("../AnimationTree")
 tree_root = SubResource("AnimationNodeStateMachine_otpb1")
 anim_player = NodePath("../AnimationPlayer")
 parameters/conditions/exit_submitting = false
-parameters/conditions/is_high_gold = false
+"parameters/conditions/exit_submitting & is_low_gold" = false
 parameters/conditions/is_low_gold = false
 parameters/conditions/is_submitting = false
 parameters/conditions/order_success = false
