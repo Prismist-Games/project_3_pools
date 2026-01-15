@@ -1,4 +1,4 @@
-[gd_scene load_steps=119 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=123 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
@@ -44,6 +44,10 @@
 [ext_resource type="Texture2D" uid="uid://ddymclsitprmc" path="res://assets/sprites/quest_slots/基地-8.png" id="34_oeaov"]
 [ext_resource type="PackedScene" uid="uid://cr0uv8jj87n1f" path="res://scenes/ui_module/item_slot_root_0.tscn" id="36_6sdua"]
 [ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="37_50t6p"]
+[ext_resource type="Texture2D" uid="uid://ck7c3s60r0tf5" path="res://assets/sprites/the_machine_dlc/dlc_pole.png" id="39_6sdua"]
+[ext_resource type="Texture2D" uid="uid://c0cjgrstcb5on" path="res://assets/sprites/the_machine_dlc/dlc_panel.png" id="39_enqmm"]
+[ext_resource type="Texture2D" uid="uid://qlu81dcv2v71" path="res://assets/sprites/the_machine_dlc/dlc_screen_outline.png" id="41_4tp6t"]
+[ext_resource type="Texture2D" uid="uid://c5hf5dhl1twpv" path="res://assets/sprites/the_machine_dlc/dlc_screen_fill.png" id="42_p2bqf"]
 [ext_resource type="PackedScene" uid="uid://basts7bbr2vav" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
 [ext_resource type="Texture2D" uid="uid://dj5be2vipyhi4" path="res://assets/sprites/the_rabbit/the_rabbit_head_left.png" id="62_enqmm"]
@@ -75,7 +79,7 @@
 [ext_resource type="Texture2D" uid="uid://h5k15o8ewu4i" path="res://assets/sprites/icons/item_rarity_glow.PNG" id="83_taegb"]
 [ext_resource type="Texture2D" uid="uid://c1v0nvxbrf6c" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_fill.png" id="85_q6adl"]
 [ext_resource type="Texture2D" uid="uid://ca5ud3ae3x378" path="res://assets/sprites/the_rabbit/the_rabbit_right_foot.png" id="87_fs1h7"]
-[ext_resource type="PackedScene" uid="uid://05ku7kwq0dxp" path="res://Scenes/ui_module/quest_slot_root_1.tscn" id="87_n6ers"]
+[ext_resource type="PackedScene" uid="uid://05ku7kwq0dxp" path="res://scenes/ui_module/quest_slot_root_1.tscn" id="87_n6ers"]
 [ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="87_u8s40"]
 [ext_resource type="Texture2D" uid="uid://dokmgcwoitk6l" path="res://assets/sprites/the_rabbit/the_rabbit_right_hand.png" id="88_yytn1"]
 [ext_resource type="Texture2D" uid="uid://b0qmpkep8t4hu" path="res://assets/sprites/the_rabbit/the_rabbit_right_leg.png" id="89_g7jj0"]
@@ -709,7 +713,7 @@ region_enabled = true
 region_rect = Rect2(657, 514, 3142, 2633)
 
 [node name="TheMachineSwitch_Recycle" type="Node2D" parent="The Machine"]
-position = Vector2(1578.75, 1437.5)
+position = Vector2(1478, 1270)
 
 [node name="Switch_mask" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle"]
 clip_children = 1
@@ -855,7 +859,7 @@ mouse_default_cursor_shape = 2
 [node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/TheMachineSwitch_Recycle"]
 
 [node name="TheMachineSwitch_Submit" type="Node2D" parent="The Machine"]
-position = Vector2(1896.75, 1437.5)
+position = Vector2(1796, 1270)
 
 [node name="Switch_mask" type="Sprite2D" parent="The Machine/TheMachineSwitch_Submit"]
 clip_children = 1
@@ -946,7 +950,7 @@ mouse_default_cursor_shape = 2
 
 [node name="TheMachineDisplayFill" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.08235294, 0.53333336, 0.6313726, 1)
-position = Vector2(1739.75, 1020.5)
+position = Vector2(1652, 855)
 texture = ExtResource("21_ue141")
 
 [node name="TheMachineDisplayOutline" type="Sprite2D" parent="The Machine/TheMachineDisplayFill"]
@@ -954,9 +958,9 @@ texture = ExtResource("4_6b2j4")
 
 [node name="Money_label" type="RichTextLabel" parent="The Machine/TheMachineDisplayFill"]
 offset_left = -254.5
-offset_top = -168.5
+offset_top = -76.5
 offset_right = 253.5
-offset_bottom = -31.5
+offset_bottom = 60.5
 theme_override_font_sizes/normal_font_size = 100
 bbcode_enabled = true
 text = "123"
@@ -977,6 +981,7 @@ grow_vertical = 2
 texture = ExtResource("51_8y6ih")
 
 [node name="Coupon_label" type="RichTextLabel" parent="The Machine/TheMachineDisplayFill"]
+visible = false
 offset_left = -265.5
 offset_top = 8.5
 offset_right = 259.5
@@ -1001,7 +1006,7 @@ grow_vertical = 2
 texture = ExtResource("25_ccvlu")
 
 [node name="TheMachineLegacyFill" type="Sprite2D" parent="The Machine"]
-position = Vector2(518, 739)
+position = Vector2(514, 625)
 texture = ExtResource("5_0dgko")
 offset = Vector2(138.5, -26)
 
@@ -1131,10 +1136,10 @@ scroll_active = false
 vertical_alignment = 1
 
 [node name="Item Slots Grid" type="GridContainer" parent="The Machine"]
-offset_left = -468.25
-offset_top = 978.5
-offset_right = 1131.75
-offset_bottom = 1778.5
+offset_left = -494.0
+offset_top = 895.0
+offset_right = 1106.0
+offset_bottom = 1695.0
 theme_override_constants/h_separation = 400
 theme_override_constants/v_separation = 400
 columns = 5
@@ -1186,40 +1191,59 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="The Machine DLC" type="Node2D" parent="."]
-position = Vector2(4034, 3210)
+position = Vector2(3962, 3227)
 
-[node name="Additional Item Slots Grid" type="GridContainer" parent="The Machine DLC"]
-offset_left = -804.0
-offset_top = -5.0
-offset_right = 796.0
-offset_bottom = 795.0
+[node name="DLC Pole" type="Sprite2D" parent="The Machine DLC"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+position = Vector2(-1092, 49)
+texture = ExtResource("39_6sdua")
+
+[node name="DLC Panel" type="Sprite2D" parent="The Machine DLC"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+position = Vector2(417, -18)
+texture = ExtResource("39_enqmm")
+
+[node name="Additional Item Slots Grid" type="GridContainer" parent="The Machine DLC/DLC Panel"]
+offset_left = -1085.0
+offset_top = -36.5
+offset_right = 515.0
+offset_bottom = 763.5
 theme_override_constants/h_separation = 400
 theme_override_constants/v_separation = 400
 columns = 5
 
-[node name="Item Slot_root_0" parent="The Machine DLC/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
+[node name="Item Slot_root_0" parent="The Machine DLC/DLC Panel/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
 layout_mode = 2
 
-[node name="Item Slot_root_1" parent="The Machine DLC/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
+[node name="Item Slot_root_1" parent="The Machine DLC/DLC Panel/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
 layout_mode = 2
 
-[node name="Item Slot_root_2" parent="The Machine DLC/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
+[node name="Item Slot_root_2" parent="The Machine DLC/DLC Panel/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
 layout_mode = 2
 
-[node name="Item Slot_root_3" parent="The Machine DLC/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
+[node name="Item Slot_root_3" parent="The Machine DLC/DLC Panel/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
 layout_mode = 2
 
-[node name="Item Slot_root_4" parent="The Machine DLC/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
+[node name="Item Slot_root_4" parent="The Machine DLC/DLC Panel/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
 layout_mode = 2
 
-[node name="DLC Label" type="RichTextLabel" parent="The Machine DLC"]
-offset_left = 1030.0
-offset_top = -114.0
-offset_right = 1591.0
-offset_bottom = -37.0
-theme_override_font_sizes/normal_font_size = 45
+[node name="DLC Screen" type="Sprite2D" parent="The Machine DLC/DLC Panel"]
+position = Vector2(970, -32.5)
+texture = ExtResource("41_4tp6t")
+
+[node name="DLC Screen_fill" type="Sprite2D" parent="The Machine DLC/DLC Panel/DLC Screen"]
+self_modulate = Color(0, 0.627451, 0.9647059, 1)
+texture = ExtResource("42_p2bqf")
+
+[node name="DLC Label" type="RichTextLabel" parent="The Machine DLC/DLC Panel/DLC Screen/DLC Screen_fill"]
+offset_left = -221.0
+offset_top = -113.0
+offset_right = 202.0
+offset_bottom = 94.0
+theme_override_font_sizes/normal_font_size = 55
 text = "道具种类: 0 / 7"
 scroll_active = false
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="The Rabbit" type="Node2D" parent="."]
@@ -1606,7 +1630,7 @@ position = Vector2(128, -107.333336)
 texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask"]
-modulate = Color(0.84313726, 0.84313726, 0.84313726, 1)
+modulate = Color(1, 0.79607844, 0.03137255, 1)
 texture = ExtResource("30_iq50s")
 offset = Vector2(87, 4)
 region_enabled = true
@@ -1720,6 +1744,7 @@ text = "asdofiasdflahjksd;lfj la;sdkfjlasdkjflkg lkfdgjdfklgd gdfjg klg dflgj df
 scroll_active = false
 
 [node name="5 Choose 1" type="Sprite2D" parent="."]
+visible = false
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 position = Vector2(4414, 1797)
 texture = ExtResource("92_taegb")
