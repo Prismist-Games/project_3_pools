@@ -1,4 +1,4 @@
-[gd_scene load_steps=116 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=118 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
@@ -86,6 +86,7 @@
 [ext_resource type="Texture2D" uid="uid://ba8n4bffxpxgp" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_2.png" id="93_yhupc"]
 [ext_resource type="Texture2D" uid="uid://ctkkq7iwtmubj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_3.png" id="94_i65o3"]
 [ext_resource type="Texture2D" uid="uid://dq1iss2p4wdhw" path="res://assets/sprites/frames/框小.png" id="94_jqdmi"]
+[ext_resource type="Texture2D" uid="uid://nju4di4bai4r" path="res://assets/sprites/icons/items/item_shape_centered.png" id="94_m40pb"]
 [ext_resource type="Texture2D" uid="uid://dfn54hrs485jj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_4.png" id="95_bttk6"]
 [ext_resource type="Texture2D" uid="uid://da0ig7cexq40g" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_5.png" id="96_jf2x3"]
 [ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="99_anim"]
@@ -518,6 +519,10 @@ _data = {
 &"RESET": SubResource("Animation_017ef"),
 &"popup_in": SubResource("Animation_otpb1")
 }
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jqdmi"]
+atlas = ExtResource("94_m40pb")
+region = Rect2(1500, 1500, 500, 500)
 
 [node name="Game2D" type="Control"]
 layout_mode = 3
@@ -1737,11 +1742,8 @@ region_enabled = true
 region_rect = Rect2(20, 26, 351, 334)
 
 [node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_0/Item_background"]
-position = Vector2(0, -21)
 scale = Vector2(0.75, 0.75)
-offset = Vector2(-7, 19)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
+texture = SubResource("AtlasTexture_jqdmi")
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_0"]
 anchors_preset = 0
@@ -1761,11 +1763,8 @@ region_enabled = true
 region_rect = Rect2(20, 26, 351, 334)
 
 [node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_1/Item_background"]
-position = Vector2(0, -21)
 scale = Vector2(0.75, 0.75)
-offset = Vector2(-7, 19)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
+texture = SubResource("AtlasTexture_jqdmi")
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_1"]
 anchors_preset = 0
@@ -1785,11 +1784,8 @@ region_enabled = true
 region_rect = Rect2(20, 26, 351, 334)
 
 [node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_2/Item_background"]
-position = Vector2(0, -21)
 scale = Vector2(0.75, 0.75)
-offset = Vector2(-7, 19)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
+texture = SubResource("AtlasTexture_jqdmi")
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_2"]
 anchors_preset = 0
@@ -1809,11 +1805,8 @@ region_enabled = true
 region_rect = Rect2(20, 26, 351, 334)
 
 [node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_3/Item_background"]
-position = Vector2(0, -21)
 scale = Vector2(0.75, 0.75)
-offset = Vector2(-7, 19)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
+texture = SubResource("AtlasTexture_jqdmi")
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_3"]
 anchors_preset = 0
@@ -1833,11 +1826,8 @@ region_enabled = true
 region_rect = Rect2(20, 26, 351, 334)
 
 [node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_4/Item_background"]
-position = Vector2(0, -21)
 scale = Vector2(0.75, 0.75)
-offset = Vector2(-7, 19)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
+texture = SubResource("AtlasTexture_jqdmi")
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_4"]
 anchors_preset = 0
