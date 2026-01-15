@@ -1,4 +1,4 @@
-[gd_scene load_steps=151 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=152 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://rg8ahiwfwlxb" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
@@ -80,6 +80,7 @@
 [ext_resource type="Texture2D" uid="uid://du7f02gcpaycx" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear.png" id="81_65xho"]
 [ext_resource type="Texture2D" uid="uid://c5i1aenksh4av" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear_inner.png" id="82_00smp"]
 [ext_resource type="Texture2D" uid="uid://cuq30wijqs4vm" path="res://assets/sprites/light_2.png" id="82_4tp6t"]
+[ext_resource type="Texture2D" uid="uid://ct11t7mhbuf40" path="res://assets/sprites/the_rabbit/the_rabbit_nose_wrinkle.png" id="82_otpb1"]
 [ext_resource type="Texture2D" uid="uid://c1v0nvxbrf6c" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_fill.png" id="85_q6adl"]
 [ext_resource type="Texture2D" uid="uid://btfsaxb523m4l" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_idle.png" id="86_8ocj1"]
 [ext_resource type="Texture2D" uid="uid://ca5ud3ae3x378" path="res://assets/sprites/the_rabbit/the_rabbit_right_foot.png" id="87_fs1h7"]
@@ -178,6 +179,8 @@ advance_mode = 2
 advance_condition = &"is_high_gold"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_017ef"]
+xfade_time = 0.5
+switch_mode = 1
 advance_mode = 2
 advance_condition = &"is_low_gold"
 
@@ -190,6 +193,7 @@ advance_mode = 2
 advance_condition = &"pool_clicked"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ccvlu"]
+xfade_time = 0.2
 advance_mode = 2
 advance_condition = &"is_submitting"
 
@@ -204,6 +208,7 @@ advance_mode = 2
 advance_condition = &"is_low_gold"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_caxmy"]
+xfade_time = 0.5
 priority = 0
 switch_mode = 2
 advance_mode = 2
@@ -216,6 +221,8 @@ advance_mode = 2
 advance_condition = &"is_low_gold"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_00smp"]
+xfade_time = 0.5
+switch_mode = 1
 advance_mode = 2
 advance_condition = &"is_high_gold"
 
@@ -236,18 +243,25 @@ switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fs1h7"]
+xfade_time = 0.2
+switch_mode = 1
 advance_mode = 2
 advance_condition = &"is_submitting"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5v8qp"]
+xfade_time = 0.5
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_50t6p"]
+xfade_time = 0.1
+switch_mode = 1
 advance_mode = 2
 advance_condition = &"order_success"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2a6p6"]
+xfade_time = 0.2
+switch_mode = 1
 advance_mode = 2
 advance_condition = &"exit_submitting"
 
@@ -272,7 +286,7 @@ states/rabbit_nose_poking/position = Vector2(642.81976, 337.0531)
 states/rabbit_shocked/node = SubResource("AnimationNodeAnimation_50t6p")
 states/rabbit_shocked/position = Vector2(956.31976, 336.53778)
 transitions = ["Start", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_otpb1"), "rabbit_idle", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_017ef"), "rabbit_impatient", "rabbit_knock_machine", SubResource("AnimationNodeStateMachineTransition_u8s40"), "rabbit_impatient", "rabbit_eyes_rolling", SubResource("AnimationNodeStateMachineTransition_8y6ih"), "rabbit_impatient", "rabbit_nose_poking", SubResource("AnimationNodeStateMachineTransition_ccvlu"), "Start", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_ivmbw"), "rabbit_knock_machine", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_tiwwg"), "rabbit_shocked", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_caxmy"), "rabbit_eyes_rolling", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_65xho"), "rabbit_impatient", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_00smp"), "rabbit_idle", "rabbit_eyes_rolling", SubResource("AnimationNodeStateMachineTransition_jptrp"), "rabbit_eyes_rolling", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_7v8nc"), "rabbit_idle", "rabbit_knock_machine", SubResource("AnimationNodeStateMachineTransition_q6adl"), "rabbit_knock_machine", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_f3s7l"), "rabbit_idle", "rabbit_nose_poking", SubResource("AnimationNodeStateMachineTransition_fs1h7"), "rabbit_shocked", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_5v8qp"), "rabbit_nose_poking", "rabbit_shocked", SubResource("AnimationNodeStateMachineTransition_50t6p"), "rabbit_nose_poking", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_2a6p6"), "rabbit_nose_poking", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_yytn1")]
-graph_offset = Vector2(116.87974, -125.810234)
+graph_offset = Vector2(11.932084, 50.9873)
 
 [sub_resource type="Animation" id="Animation_8y6ih"]
 length = 0.001
@@ -338,7 +352,7 @@ tracks/4/keys = {
 }
 tracks/5/type = "value"
 tracks/5/imported = false
-tracks/5/enabled = false
+tracks/5/enabled = true
 tracks/5/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
@@ -350,7 +364,7 @@ tracks/5/keys = {
 }
 tracks/6/type = "value"
 tracks/6/imported = false
-tracks/6/enabled = false
+tracks/6/enabled = true
 tracks/6/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_scale")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
@@ -371,6 +385,162 @@ tracks/7/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("TheRabbitNose:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19.5, -307.5)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("TheRabbitNoseWrinkle:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("TheRabbitNoseWrinkle:rotation")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0061147586]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("TheRabbitNoseWrinkle:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-76, -478)]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("TheRabbitLeftEar:position")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19.5, -307.5)]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("TheRabbitRightEar:position")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19.5, -307.5)]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 0)]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 0)]
+}
+tracks/16/type = "value"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("TheRabbitLeftArm:position")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19.5, -307.5)]
+}
+tracks/17/type = "value"
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_color")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.1882353, 0.1882353, 0.1882353, 1)]
+}
+tracks/18/type = "value"
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_color")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.18, 0.18, 0.18, 1)]
+}
+tracks/19/type = "value"
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_outline_color")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+tracks/20/type = "value"
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_outline_color")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_tiwwg"]
@@ -446,7 +616,7 @@ resource_name = "rabbit_impatient"
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
-tracks/0/enabled = true
+tracks/0/enabled = false
 tracks/0/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_scale")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
@@ -458,7 +628,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_scale")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
@@ -506,15 +676,246 @@ tracks/4/keys = {
 "update": 0,
 "values": [-0.33276048, 0.0]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.2, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.2, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_2a6p6"]
 resource_name = "rabbit_knock_machine"
 
 [sub_resource type="Animation" id="Animation_ivmbw"]
 resource_name = "rabbit_nose_poking"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TheRabbitNose:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19.5, -273.99)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TheRabbitNoseWrinkle:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TheRabbitNoseWrinkle:rotation")
+tracks/2/interp = 4
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.006114755, 0.17278759]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TheRabbitNoseWrinkle:position")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 0.43527552),
+"update": 0,
+"values": [Vector2(-96, -524), Vector2(-94, -500)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TheRabbitLeftEar:position")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.4352752, 1),
+"update": 0,
+"values": [Vector2(19.5, -307.5), Vector2(7, -283)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("TheRabbitRightEar:position")
+tracks/5/interp = 2
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.43527517, 1),
+"update": 0,
+"values": [Vector2(19.5, -307.5), Vector2(44, -282.21)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 1), Vector2(0, 1.2)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
+tracks/7/interp = 2
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 1), Vector2(0, 1.2)]
+}
+tracks/8/type = "method"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("TheRabbitAnimator")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"blink_to_normal"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_50t6p"]
 resource_name = "rabbit_shocked"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TheRabbitLeftArm:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.75),
+"transitions": PackedFloat32Array(1, 1.9999996, 0.2679433),
+"update": 0,
+"values": [Vector2(19.5, -307.5), Vector2(32, -630), Vector2(10, -91)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TheRabbitLeftArm:rotation")
+tracks/1/interp = 4
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.75),
+"transitions": PackedFloat32Array(1, 2.6390157, 0.17677678),
+"update": 0,
+"values": [0.06981317007977318, -0.29147, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.95, 0.95, 0.95, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_color")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.95, 0.95, 0.95, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_outline_color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.79, 0.79, 0.79, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_outline_color")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.79, 0.79, 0.79, 1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.16666667, 0.33333334, 0.5, 0.6666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0.1, 0.1), Vector2(-0.07, -0.04), Vector2(0.06, -0.1), Vector2(-0.06, 0.08)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
+tracks/7/interp = 2
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.3, 0.46666667, 0.6666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0.1, 0.1), Vector2(-0.07, -0.04), Vector2(0.06, -0.1), Vector2(-0.06, 0.08)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_8y6ih"]
 _data = {
@@ -530,12 +931,12 @@ _data = {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u4yck"]
 shader = ExtResource("81_017ef")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_thickness = 0.10000000475000001
+shader_parameter/outline_thickness = 0.10000000475
 shader_parameter/pupil_texture = ExtResource("85_q6adl")
 shader_parameter/use_pupil_texture = true
 shader_parameter/pupil_offset = Vector2(1, 0)
 shader_parameter/pupil_scale = 0.5
-shader_parameter/pupil_color = Color(0.14901961, 0.14901961, 0.14901961, 1)
+shader_parameter/pupil_color = Color(0.18, 0.18, 0.18, 1)
 shader_parameter/pupil_outline_color = Color(0, 0, 0, 1)
 shader_parameter/pupil_outline_thickness = 0.10000000149012
 
@@ -652,9 +1053,13 @@ anchors_preset = 0
 script = ExtResource("1_x7wb1")
 
 [node name="Background2" parent="." instance=ExtResource("2_u8s40")]
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
 
 [node name="Background" type="Node2D" parent="."]
 position = Vector2(3001, 1689.25)
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
 
 [node name="Background_floor" type="Sprite2D" parent="Background"]
 position = Vector2(0, 3.75)
@@ -666,6 +1071,8 @@ region_rect = Rect2(0, 2544, 6000, 831)
 [node name="The Machine" type="Node2D" parent="."]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 position = Vector2(3750, 1488)
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
 
 [node name="TheMachineTopBehind" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
@@ -2217,14 +2624,13 @@ layout_mode = 2
 
 [node name="The Rabbit" type="Node2D" parent="."]
 position = Vector2(1434, 1998)
+metadata/_edit_lock_ = true
 
 [node name="MascotVisuals" type="Node2D" parent="The Rabbit"]
 
 [node name="TheRabbitAnimator" type="Node" parent="The Rabbit/MascotVisuals" node_paths=PackedStringArray("anim_tree")]
 script = ExtResource("99_anim")
 anim_tree = NodePath("../AnimationTree")
-eye_pupil_initial_offset = Vector2(1, 0)
-idle_eye_max_offset = 100.0
 impatient_eye_pupil_offset = Vector2(1, 0)
 
 [node name="AnimationTree" type="AnimationTree" parent="The Rabbit/MascotVisuals"]
@@ -2489,7 +2895,16 @@ offset = Vector2(-107.5, -227)
 region_enabled = true
 region_rect = Rect2(1291, 1397, 128, 127)
 
+[node name="TheRabbitNoseWrinkle" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
+position = Vector2(-76, -478)
+rotation = 0.0061147586
+texture = ExtResource("82_otpb1")
+offset = Vector2(7.6047363, -126.03711)
+
 [node name="QuestSystem" type="Node2D" parent="The Rabbit"]
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
 
 [node name="Main Quest Slot_root" type="Control" parent="The Rabbit/QuestSystem"]
 z_index = 3
@@ -3788,9 +4203,10 @@ text = "asdofiasdflahjksd;lfj la;sdkfjlasdkjflkg lkfdgjdfklgd gdfjg klg dflgj df
 scroll_active = false
 
 [node name="5 Choose 1" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(4379, 2384)
 texture = ExtResource("101_8ocj1")
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
 
 [node name="Item Choice Grid" type="HBoxContainer" parent="5 Choose 1"]
 offset_left = -1111.0
@@ -3895,20 +4311,23 @@ offset_bottom = 306.0
 mouse_default_cursor_shape = 2
 
 [node name="Camera2D" type="Camera2D" parent="."]
-visible = false
 position = Vector2(2998, 1689)
 zoom = Vector2(0.32, 0.32)
 editor_draw_limits = true
 editor_draw_drag_margin = true
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
 
 [node name="VfxLayer" type="Node2D" parent="."]
-visible = false
 z_index = 999
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
 
 [node name="Language Switch" type="Button" parent="."]
-visible = false
 layout_mode = 0
 offset_right = 132.0
 offset_bottom = 153.0
 theme_override_font_sizes/font_size = 32
 text = "EN/ZH"
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true

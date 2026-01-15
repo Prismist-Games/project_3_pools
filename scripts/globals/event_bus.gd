@@ -11,7 +11,7 @@ signal draw_requested(context: RefCounted)
 signal draw_finished(context: RefCounted)
 
 signal item_obtained(item: RefCounted)
-signal item_recycled(slot_index: int, item: RefCounted) # 用于批量回收时触发单独的回收动画
+signal item_recycled(slot_index: int, item: RefCounted) # 用于回收时触发回收动画
 
 signal pools_refreshed(pools: Array)
 signal orders_updated(orders: Array)
