@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://fb6h3kogm80w" path="res://assets/sprites/quest_slots/基地-4.png" id="6_cpuw7"]
 [ext_resource type="Texture2D" uid="uid://w7eym4f1436o" path="res://assets/sprites/quest_slots/基地-1.png" id="7_2pth6"]
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="8_uawe1"]
-[ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="9_yv8nx"]
+[ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/Legacy/entertainment_top.png" id="9_yv8nx"]
 [ext_resource type="Texture2D" uid="uid://djo0fcuw1ico0" path="res://assets/sprites/light_1.png" id="10_4304g"]
 [ext_resource type="Texture2D" uid="uid://cuq30wijqs4vm" path="res://assets/sprites/light_2.png" id="11_ywy2p"]
 [ext_resource type="Texture2D" uid="uid://h5k15o8ewu4i" path="res://assets/sprites/icons/item_rarity_glow.PNG" id="12_xy8au"]

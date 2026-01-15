@@ -17,11 +17,11 @@ enum Rarity {
 
 enum ItemType {
 	NONE,
-	ANTIQUE,
-	MEDICINE,
-	STATIONERY,
-	CONVENIENCE,
-	ENTERTAINMENT,
+	TRIANGLE,
+	RECTANGLE,
+	CIRCLE,
+	STAR,
+	TRAPEZOID
 }
 
 const SKILL_SLOTS: int = 3
@@ -29,11 +29,11 @@ const SKILL_SLOTS: int = 3
 ## 获取所有普通物品类型
 func get_normal_item_types() -> Array[ItemType]:
 	return [
-		ItemType.ANTIQUE,
-		ItemType.MEDICINE,
-		ItemType.STATIONERY,
-		ItemType.CONVENIENCE,
-		ItemType.ENTERTAINMENT
+		ItemType.TRIANGLE,
+		ItemType.RECTANGLE,
+		ItemType.CIRCLE,
+		ItemType.STAR,
+		ItemType.TRAPEZOID
 	]
 
 func is_normal_type(type: ItemType) -> bool:
@@ -41,29 +41,29 @@ func is_normal_type(type: ItemType) -> bool:
 
 func type_to_string(type: ItemType) -> StringName:
 	match type:
-		ItemType.ANTIQUE: return &"Antique"
-		ItemType.MEDICINE: return &"Medicine"
-		ItemType.STATIONERY: return &"Stationery"
-		ItemType.CONVENIENCE: return &"Convenience"
-		ItemType.ENTERTAINMENT: return &"Entertainment"
+		ItemType.TRIANGLE: return &"Triangle"
+		ItemType.RECTANGLE: return &"Rectangle"
+		ItemType.CIRCLE: return &"Circle"
+		ItemType.STAR: return &"Star"
+		ItemType.TRAPEZOID: return &"Trapezoid"
 		_: return &"None"
 
 func type_to_display_name(type: ItemType) -> String:
 	match type:
-		ItemType.ANTIQUE: return "TYPE_ANTIQUE"
-		ItemType.MEDICINE: return "TYPE_MEDICINE"
-		ItemType.STATIONERY: return "TYPE_STATIONERY"
-		ItemType.CONVENIENCE: return "TYPE_CONVENIENCE"
-		ItemType.ENTERTAINMENT: return "TYPE_ENTERTAINMENT"
+		ItemType.TRIANGLE: return "TYPE_TRIANGLE"
+		ItemType.RECTANGLE: return "TYPE_RECTANGLE"
+		ItemType.CIRCLE: return "TYPE_CIRCLE"
+		ItemType.STAR: return "TYPE_STAR"
+		ItemType.TRAPEZOID: return "TYPE_TRAPEZOID"
 		_: return "TYPE_NONE"
 
 func type_to_icon(type: ItemType) -> Texture2D:
 	match type:
-		ItemType.ANTIQUE: return preload("res://assets/sprites/icons/category_antique.png")
-		ItemType.MEDICINE: return preload("res://assets/sprites/icons/category_medicine.png")
-		ItemType.STATIONERY: return preload("res://assets/sprites/icons/category_office.png")
-		ItemType.CONVENIENCE: return preload("res://assets/sprites/icons/category_convenience.png")
-		ItemType.ENTERTAINMENT: return preload("res://assets/sprites/icons/category_entertainment.png")
+		ItemType.TRIANGLE: return preload("res://assets/sprites/icons/category_antique.png")
+		ItemType.RECTANGLE: return preload("res://assets/sprites/icons/category_medicine.png")
+		ItemType.CIRCLE: return preload("res://assets/sprites/icons/category_office.png")
+		ItemType.STAR: return preload("res://assets/sprites/icons/category_convenience.png")
+		ItemType.TRAPEZOID: return preload("res://assets/sprites/icons/category_entertainment.png")
 		_: return null
 
 

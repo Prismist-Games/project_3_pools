@@ -1,11 +1,10 @@
-[gd_scene load_steps=118 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=116 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
-[ext_resource type="PackedScene" uid="uid://dcrc7hmw85gqq" path="res://Scenes/background_animated.tscn" id="2_u8s40"]
+[ext_resource type="PackedScene" uid="uid://dcrc7hmw85gqq" path="res://scenes/background_animated.tscn" id="2_u8s40"]
 [ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="3_4wmcb"]
-[ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="3_fiado"]
 [ext_resource type="Texture2D" uid="uid://b4qoptplb61wr" path="res://assets/sprites/the_machine/the_machine_display_outline.png" id="4_6b2j4"]
 [ext_resource type="Texture2D" uid="uid://c4wpgax5wfhpa" path="res://assets/sprites/the_machine/the_machine_legacy_fill.png" id="5_0dgko"]
 [ext_resource type="Texture2D" uid="uid://usox228a20t7" path="res://assets/sprites/the_machine/the_machine_legacy_outline.png" id="6_2v31b"]
@@ -13,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://dp2k5ss5oefjc" path="res://assets/sprites/the_machine/the_machine_slot_outline.png" id="8_xqbja"]
 [ext_resource type="Texture2D" uid="uid://b6xu5iewxjacd" path="res://assets/sprites/icons/skills/偷工減料.png" id="9_8hb1a"]
 [ext_resource type="Texture2D" uid="uid://2sp6p7grlidd" path="res://assets/sprites/the_machine/the_machine_slot_outline_front.png" id="9_fvhsr"]
-[ext_resource type="Script" path="res://scripts/ui/utils/custom_tooltip.gd" id="10_4tp6t"]
+[ext_resource type="Script" uid="uid://bwywox4emx4y5" path="res://scripts/ui/utils/custom_tooltip.gd" id="10_4tp6t"]
 [ext_resource type="Texture2D" uid="uid://b5gnskrlq8d81" path="res://assets/sprites/the_machine/the_machine_top.png" id="11_h0822"]
 [ext_resource type="Texture2D" uid="uid://balbu2vdssbb4" path="res://assets/sprites/the_machine/the_machine_top_outline_behind.png" id="12_lql4v"]
 [ext_resource type="Texture2D" uid="uid://x0x66srb2i00" path="res://assets/sprites/the_machine/the_machine_slot_outline_behind.png" id="13_7bc83"]
@@ -43,9 +42,9 @@
 [ext_resource type="Texture2D" uid="uid://bkthx68vhcd00" path="res://assets/sprites/quest_slots/基地-10.png" id="30_iq50s"]
 [ext_resource type="Texture2D" uid="uid://cyixck513ac1o" path="res://assets/sprites/quest_slots/基地-9.png" id="33_0ehwc"]
 [ext_resource type="Texture2D" uid="uid://ddymclsitprmc" path="res://assets/sprites/quest_slots/基地-8.png" id="34_oeaov"]
-[ext_resource type="PackedScene" path="res://scenes/ui_module/item_slot_root_0.tscn" id="36_6sdua"]
+[ext_resource type="PackedScene" uid="uid://cr0uv8jj87n1f" path="res://scenes/ui_module/item_slot_root_0.tscn" id="36_6sdua"]
 [ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="37_50t6p"]
-[ext_resource type="PackedScene" uid="uid://basts7bbr2vav" path="res://Scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
+[ext_resource type="PackedScene" uid="uid://basts7bbr2vav" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
 [ext_resource type="Texture2D" uid="uid://dj5be2vipyhi4" path="res://assets/sprites/the_rabbit/the_rabbit_head_left.png" id="62_enqmm"]
 [ext_resource type="Texture2D" uid="uid://b067gbir0lby" path="res://assets/sprites/the_rabbit/the_rabbit_head_mid.png" id="63_6sdua"]
@@ -76,7 +75,7 @@
 [ext_resource type="Texture2D" uid="uid://h5k15o8ewu4i" path="res://assets/sprites/icons/item_rarity_glow.PNG" id="83_taegb"]
 [ext_resource type="Texture2D" uid="uid://c1v0nvxbrf6c" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_fill.png" id="85_q6adl"]
 [ext_resource type="Texture2D" uid="uid://ca5ud3ae3x378" path="res://assets/sprites/the_rabbit/the_rabbit_right_foot.png" id="87_fs1h7"]
-[ext_resource type="PackedScene" path="res://scenes/ui_module/quest_slot_root_1.tscn" id="87_n6ers"]
+[ext_resource type="PackedScene" uid="uid://05ku7kwq0dxp" path="res://scenes/ui_module/quest_slot_root_1.tscn" id="87_n6ers"]
 [ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="87_u8s40"]
 [ext_resource type="Texture2D" uid="uid://dokmgcwoitk6l" path="res://assets/sprites/the_rabbit/the_rabbit_right_hand.png" id="88_yytn1"]
 [ext_resource type="Texture2D" uid="uid://b0qmpkep8t4hu" path="res://assets/sprites/the_rabbit/the_rabbit_right_leg.png" id="89_g7jj0"]
@@ -91,7 +90,6 @@
 [ext_resource type="Texture2D" uid="uid://da0ig7cexq40g" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_5.png" id="96_jf2x3"]
 [ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="99_anim"]
 [ext_resource type="Texture2D" uid="uid://wu4k3jwrgfaj" path="res://assets/sprites/frames/dialog.png" id="101_6kw3k"]
-[ext_resource type="Texture2D" uid="uid://51nvb4xvrn1c" path="res://assets/sprites/icons/items/antique_cup.PNG" id="102_jdak2"]
 [ext_resource type="Texture2D" uid="uid://ue7e5frhr0kh" path="res://assets/sprites/frames/mini.png" id="102_u4yck"]
 [ext_resource type="Texture2D" uid="uid://djaip0chmnewr" path="res://assets/sprites/frames/popup.png" id="103_otpb1"]
 [ext_resource type="Script" uid="uid://con7nyakgbhan" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
@@ -761,7 +759,6 @@ position = Vector2(-24.75, 31.5)
 scale = Vector2(0.65, 0.65)
 
 [node name="Item_icon" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_item_root"]
-texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(55, 75, 450, 450)
@@ -1551,7 +1548,6 @@ layout_mode = 2
 [node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0"]
 material = SubResource("ShaderMaterial_m40pb")
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(55, 75, 450, 450)
@@ -1581,7 +1577,6 @@ layout_mode = 2
 [node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1"]
 material = SubResource("ShaderMaterial_enqmm")
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(55, 75, 450, 450)
@@ -1747,7 +1742,6 @@ region_rect = Rect2(20, 26, 351, 334)
 [node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_0/Item_background"]
 position = Vector2(0, -21)
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("102_jdak2")
 offset = Vector2(-7, 19)
 region_enabled = true
 region_rect = Rect2(55, 75, 450, 450)
@@ -1772,7 +1766,6 @@ region_rect = Rect2(20, 26, 351, 334)
 [node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_1/Item_background"]
 position = Vector2(0, -21)
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("102_jdak2")
 offset = Vector2(-7, 19)
 region_enabled = true
 region_rect = Rect2(55, 75, 450, 450)
@@ -1797,7 +1790,6 @@ region_rect = Rect2(20, 26, 351, 334)
 [node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_2/Item_background"]
 position = Vector2(0, -21)
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("102_jdak2")
 offset = Vector2(-7, 19)
 region_enabled = true
 region_rect = Rect2(55, 75, 450, 450)
@@ -1822,7 +1814,6 @@ region_rect = Rect2(20, 26, 351, 334)
 [node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_3/Item_background"]
 position = Vector2(0, -21)
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("102_jdak2")
 offset = Vector2(-7, 19)
 region_enabled = true
 region_rect = Rect2(55, 75, 450, 450)
@@ -1847,7 +1838,6 @@ region_rect = Rect2(20, 26, 351, 334)
 [node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_4/Item_background"]
 position = Vector2(0, -21)
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("102_jdak2")
 offset = Vector2(-7, 19)
 region_enabled = true
 region_rect = Rect2(55, 75, 450, 450)

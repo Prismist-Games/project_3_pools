@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://basts7bbr2vav"]
+[gd_scene load_steps=39 format=3 uid="uid://basts7bbr2vav"]
 
 [ext_resource type="Script" uid="uid://c008hefncbbkm" path="res://scripts/ui/components/lottery_slot_ui.gd" id="1_1b0mf"]
 [ext_resource type="Texture2D" uid="uid://cpcef3r3dbaxq" path="res://assets/sprites/lottery_slots/基地-7.png" id="2_gntc1"]
@@ -7,11 +7,13 @@
 [ext_resource type="Texture2D" uid="uid://dpnahy8wmkeso" path="res://assets/sprites/lottery_slots/基地-2.png" id="5_drypt"]
 [ext_resource type="Texture2D" uid="uid://fjhknpwtlo4g" path="res://assets/sprites/lottery_slots/基地-3.png" id="6_7fxrg"]
 [ext_resource type="Texture2D" uid="uid://cyuji8mwm0rx8" path="res://assets/sprites/lottery_slots/基地-4.png" id="7_yj02r"]
-[ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="8_o6rv1"]
+[ext_resource type="Texture2D" uid="uid://nju4di4bai4r" path="res://assets/sprites/icons/items/item_shape_centered.png" id="8_arr72"]
+[ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/Legacy/entertainment_top.png" id="8_o6rv1"]
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="9_arr72"]
 [ext_resource type="Texture2D" uid="uid://b4cuujipxrcyu" path="res://assets/sprites/lottery_slots/lottery_slot_lid_fill.png" id="10_4aaut"]
 [ext_resource type="Texture2D" uid="uid://bclpcjghycqdb" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="10_gntc1"]
 [ext_resource type="Shader" uid="uid://bekyeolq5u2hf" path="res://assets/shaders/silhouette.gdshader" id="10_yj02r"]
+[ext_resource type="Texture2D" uid="uid://bv1rbyc0706kq" path="res://assets/sprites/icons/items/items_icon_centered.png" id="11_o6rv1"]
 [ext_resource type="Texture2D" uid="uid://cskvmcwmdj5ew" path="res://assets/sprites/icons/category_entertainment.png" id="11_of7x7"]
 [ext_resource type="Texture2D" uid="uid://u8vv873f380j" path="res://assets/sprites/lottery_slots/lottery_slot_lid_outline.png" id="12_p4alg"]
 [ext_resource type="Texture2D" uid="uid://fnqmsybn8c5r" path="res://assets/sprites/lottery_slots/基地-6.png" id="13_r08pi"]
@@ -29,10 +31,18 @@
 [ext_resource type="Texture2D" uid="uid://cyo0chqrqd6p7" path="res://assets/sprites/the_machine/the_machine_description_display_fill.png" id="22_dg1ni"]
 [ext_resource type="Material" uid="uid://ccpe7db5t4nua" path="res://assets/materials/ui_crt_overlay.tres" id="23_crt00"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_o6rv1"]
+atlas = ExtResource("8_arr72")
+region = Rect2(1500, 1500, 500, 500)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gntc1"]
 shader = ExtResource("10_yj02r")
 shader_parameter/silhouette_color = Color(0.5, 0.5, 0.5, 1)
 shader_parameter/is_enabled = false
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_arr72"]
+atlas = ExtResource("11_o6rv1")
+region = Rect2(1000, 2000, 500, 500)
 
 [sub_resource type="Theme" id="Theme_uwqtw"]
 
@@ -120,7 +130,7 @@ position = Vector2(-23, 61.75)
 [node name="Item_queue_2" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root"]
 position = Vector2(-207, -19)
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("8_o6rv1")
+texture = SubResource("AtlasTexture_o6rv1")
 
 [node name="Item_shadow" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root/Item_queue_2"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -132,7 +142,7 @@ texture = ExtResource("9_arr72")
 [node name="Item_queue_1" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root"]
 position = Vector2(-116, 7)
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("8_o6rv1")
+texture = SubResource("AtlasTexture_o6rv1")
 
 [node name="Item_shadow" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root/Item_queue_1"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -143,7 +153,7 @@ texture = ExtResource("9_arr72")
 
 [node name="Item_main" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root"]
 material = SubResource("ShaderMaterial_gntc1")
-texture = ExtResource("8_o6rv1")
+texture = SubResource("AtlasTexture_arr72")
 
 [node name="Item_shadow" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root/Item_main"]
 self_modulate = Color(0, 0, 0, 0.39215687)

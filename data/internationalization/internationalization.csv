@@ -3,11 +3,11 @@
 # =====================================================================
 # Item Types (物品类型)
 # =====================================================================
-TYPE_ANTIQUE,Antique,古董
-TYPE_MEDICINE,Medicine,药品
-TYPE_STATIONERY,Stationery,文具
-TYPE_CONVENIENCE,Convenience,便利
-TYPE_ENTERTAINMENT,Entertainment,娱乐
+TYPE_TRIANGLE,Triangle,三角形
+TYPE_RECTANGLE,Rectangle,矩形
+TYPE_CIRCLE,Circle,圆形
+TYPE_STAR,Star,星形
+TYPE_TRAPEZOID,Trapezoid,梯形
 TYPE_NONE,Other,其他
 
 # Pool name suffix

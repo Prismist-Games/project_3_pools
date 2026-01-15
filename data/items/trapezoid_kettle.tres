@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://7ud2aybiksaj"]
+
+[ext_resource type="Texture2D" uid="uid://bv1rbyc0706kq" path="res://assets/sprites/icons/items/items_icon_centered.png" id="1_m75uj"]
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="1_ov4qs"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aprst"]
+atlas = ExtResource("1_m75uj")
+region = Rect2(500, 0, 500, 500)
+
+[resource]
+script = ExtResource("1_ov4qs")
+id = &"trapezoid_kettle"
+name = "TRAPEZOID_KETTLE"
+item_type = 5
+icon = SubResource("AtlasTexture_aprst")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cr0uv8jj87n1f"]
+[gd_scene load_steps=27 format=3 uid="uid://cr0uv8jj87n1f"]
 
 [ext_resource type="Script" uid="uid://exqnykh1n5lj" path="res://scripts/ui/components/item_slot_ui.gd" id="1_ixbl1"]
 [ext_resource type="Texture2D" uid="uid://caieb4p7g0f64" path="res://assets/sprites/item_slots/基地-4.png" id="2_kitn1"]
@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://coaai2i4vi1sh" path="res://assets/sprites/item_slots/基地-3.png" id="6_idsbx"]
 [ext_resource type="Texture2D" uid="uid://bb0jex82xogr2" path="res://assets/sprites/item_slots/基地-8.png" id="7_731lk"]
 [ext_resource type="Shader" uid="uid://bekyeolq5u2hf" path="res://assets/shaders/silhouette.gdshader" id="8_731lk"]
-[ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="8_tc38w"]
+[ext_resource type="Texture2D" uid="uid://nju4di4bai4r" path="res://assets/sprites/icons/items/item_shape_centered.png" id="9_731lk"]
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="9_nc6kv"]
 [ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="10_y5mjh"]
 [ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="11_emsc1"]
@@ -25,6 +25,10 @@
 shader = ExtResource("8_731lk")
 shader_parameter/silhouette_color = Color(0.5, 0.5, 0.5, 1)
 shader_parameter/is_enabled = false
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_731lk"]
+atlas = ExtResource("9_731lk")
+region = Rect2(1000, 2000, 500, 500)
 
 [sub_resource type="Animation" id="Animation_ovo1l"]
 length = 0.001
@@ -125,9 +129,7 @@ scale = Vector2(0.65, 0.65)
 
 [node name="Item_icon" type="Sprite2D" parent="Item Slot_mask/Item Slot_item_root"]
 material = SubResource("ShaderMaterial_ixbl1")
-texture = ExtResource("8_tc38w")
-offset = Vector2(9, -0.5)
-region_enabled = true
+texture = SubResource("AtlasTexture_731lk")
 region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="Item Slot_mask/Item Slot_item_root/Item_icon"]
