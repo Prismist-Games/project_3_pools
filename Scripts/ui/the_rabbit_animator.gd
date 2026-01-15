@@ -66,6 +66,8 @@ var _trig_exit_submitting: bool = false
 var _trig_pool_clicked: bool = false
 var _trig_recycle_lid_closed: bool = false
 
+var _has_recycled_items: bool = false # 追踪回收周期内是否有物品成功回收
+
 # ... existing code ...
 
 func _ready() -> void:
@@ -74,7 +76,7 @@ func _ready() -> void:
 	_init_animation_tree()
 	
 	_connect_to_ui_state()
-	
+
 	if GameManager:
 		GameManager.gold_changed.connect(_on_gold_changed)
 		# 初始化金币状态
@@ -91,6 +93,9 @@ func _ready() -> void:
 		if anim_tree:
 			anim_tree.set("parameters/conditions/pool_clicked", true)
 		print("[RabbitAnimator] Trigger: pool_clicked")
+	)
+	EventBus.item_recycled.connect(func(_idx, _item):
+		_has_recycled_items = true
 	)
 	EventBus.game_event.connect(_on_game_event)
 	
@@ -134,10 +139,17 @@ func _on_gold_changed(new_gold: int) -> void:
 
 func _on_game_event(event_id: StringName, _payload: Variant) -> void:
 	if event_id == &"recycle_lid_closed":
-		_trig_recycle_lid_closed = true
-		if anim_tree:
-			anim_tree.set("parameters/conditions/recycle_lid_closed", true)
-		print("[RabbitAnimator] Trigger: recycle_lid_closed (via UI event)")
+		# 只有在本次回收周期中有物品由于操作被成功回收（发出 item_recycled 信号）时，才触发“敲击机器”动画
+		if _has_recycled_items:
+			_trig_recycle_lid_closed = true
+			if anim_tree:
+				anim_tree.set("parameters/conditions/recycle_lid_closed", true)
+			print("[RabbitAnimator] Trigger: knock machine")
+		else:
+			print("[RabbitAnimator] Lid closed ignored: No items recycled")
+		
+		# 周期结束重置
+		_has_recycled_items = false
 
 
 func _find_required_nodes() -> void:

@@ -185,6 +185,8 @@ advance_mode = 2
 advance_condition = &"is_low_gold"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u8s40"]
+xfade_time = 0.2
+switch_mode = 1
 advance_mode = 2
 advance_condition = &"recycle_lid_closed"
 
@@ -202,6 +204,7 @@ advance_mode = 2
 advance_condition = &"is_low_gold"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tiwwg"]
+xfade_time = 0.2
 priority = 0
 switch_mode = 2
 advance_mode = 2
@@ -235,10 +238,13 @@ switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q6adl"]
+xfade_time = 0.2
+switch_mode = 1
 advance_mode = 2
 advance_condition = &"recycle_lid_closed"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_f3s7l"]
+xfade_time = 0.2
 switch_mode = 2
 advance_mode = 2
 
@@ -286,7 +292,7 @@ states/rabbit_nose_poking/position = Vector2(642.81976, 337.0531)
 states/rabbit_shocked/node = SubResource("AnimationNodeAnimation_50t6p")
 states/rabbit_shocked/position = Vector2(956.31976, 336.53778)
 transitions = ["Start", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_otpb1"), "rabbit_idle", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_017ef"), "rabbit_impatient", "rabbit_knock_machine", SubResource("AnimationNodeStateMachineTransition_u8s40"), "rabbit_impatient", "rabbit_eyes_rolling", SubResource("AnimationNodeStateMachineTransition_8y6ih"), "rabbit_impatient", "rabbit_nose_poking", SubResource("AnimationNodeStateMachineTransition_ccvlu"), "Start", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_ivmbw"), "rabbit_knock_machine", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_tiwwg"), "rabbit_shocked", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_caxmy"), "rabbit_eyes_rolling", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_65xho"), "rabbit_impatient", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_00smp"), "rabbit_idle", "rabbit_eyes_rolling", SubResource("AnimationNodeStateMachineTransition_jptrp"), "rabbit_eyes_rolling", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_7v8nc"), "rabbit_idle", "rabbit_knock_machine", SubResource("AnimationNodeStateMachineTransition_q6adl"), "rabbit_knock_machine", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_f3s7l"), "rabbit_idle", "rabbit_nose_poking", SubResource("AnimationNodeStateMachineTransition_fs1h7"), "rabbit_shocked", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_5v8qp"), "rabbit_nose_poking", "rabbit_shocked", SubResource("AnimationNodeStateMachineTransition_50t6p"), "rabbit_nose_poking", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_2a6p6"), "rabbit_nose_poking", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_yytn1")]
-graph_offset = Vector2(99.98201, 72.04735)
+graph_offset = Vector2(-50.01799, 18.047348)
 
 [sub_resource type="Animation" id="Animation_8y6ih"]
 length = 0.001
@@ -556,6 +562,30 @@ tracks/21/keys = {
 "method": &"restore_eyes"
 }]
 }
+tracks/22/type = "value"
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/path = NodePath("../../The Machine:position")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(3750, 1488)]
+}
+tracks/23/type = "value"
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/path = NodePath(".:position")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_tiwwg"]
 resource_name = "rabbit_eyes_rolling"
@@ -717,6 +747,91 @@ tracks/6/keys = {
 
 [sub_resource type="Animation" id="Animation_2a6p6"]
 resource_name = "rabbit_knock_machine"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TheRabbitLeftArm:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.45, 0.55, 0.65, 0.8),
+"transitions": PackedFloat32Array(1, 0.5, 2, 1, 0.5, 2, 1, 1),
+"update": 0,
+"values": [0.0, -0.9, 0.2, 0.0, -0.9, 0.3, 0.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../The Machine:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.25, 0.3, 0.55, 0.6, 0.65, 1),
+"transitions": PackedFloat32Array(1, 0.2, 1, 1, 0.2, 1, 1, 1),
+"update": 0,
+"values": [Vector2(3750, 1488), Vector2(3750, 1488), Vector2(3750, 1515), Vector2(3750, 1488), Vector2(3750, 1488), Vector2(3750, 1520), Vector2(3750, 1488), Vector2(3750, 1488)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.25, 0.3, 0.55, 0.6, 0.65, 1),
+"transitions": PackedFloat32Array(1, 0.5, 1, 1, 0.5, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, 15), Vector2(0, -8), Vector2(0, 0), Vector2(0, 20), Vector2(0, 0), Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TheRabbitLeftEar:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.55, 0.65, 0.75),
+"transitions": PackedFloat32Array(1, 0.5, 1, 1, 0.5, 1, 1),
+"update": 0,
+"values": [0.031002952, 0.031, -0.1, 0.031, 0.031, -0.15, 0.031]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TheRabbitRightEar:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.55, 0.65, 0.75),
+"transitions": PackedFloat32Array(1, 0.5, 1, 1, 0.5, 1, 1),
+"update": 0,
+"values": [0.031703457, 0.032, 0.08, 0.032, 0.032, 0.1, 0.032]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("TheRabbitMustacheLeft:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.35, 0.55, 0.7),
+"transitions": PackedFloat32Array(1, 0.5, 1, 0.5, 1),
+"update": 0,
+"values": [-0.08134746, -0.15, -0.081, -0.18, -0.081]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("TheRabbitMustacheRight:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.35, 0.55, 0.7),
+"transitions": PackedFloat32Array(1, 0.5, 1, 0.5, 1),
+"update": 0,
+"values": [0.06733266, 0.15, 0.067, 0.18, 0.067]
+}
 
 [sub_resource type="Animation" id="Animation_ivmbw"]
 resource_name = "rabbit_nose_poking"
