@@ -47,6 +47,10 @@ func _init_slots() -> void:
 				slot.unhovered.connect(_on_slot_unhovered)
 			if slot.has_signal("item_hovered") and not slot.item_hovered.is_connected(_on_slot_item_hovered):
 				slot.item_hovered.connect(_on_slot_item_hovered)
+			
+			# 连接角标刷新信号 (用于 Fragmented 队列前进后的自动刷新)
+			if slot.has_signal("badge_refresh_requested") and not slot.badge_refresh_requested.is_connected(_on_badge_refresh_requested):
+				slot.badge_refresh_requested.connect(_on_badge_refresh_requested)
 
 func update_pools_display(pools: Array) -> void:
 	# 如果正在播放刷新动画，跳过此次更新（由动画函数负责）
@@ -207,6 +211,24 @@ func update_pending_display(items: Array[ItemInstance], source_pool_idx: int) ->
 		var slot = _get_slot_node(source_pool_idx)
 		if slot.has_method("update_pending_display"):
 			slot.update_pending_display(items)
+			
+			# 更新角标
+			if not items.is_empty():
+				var top_item = items[0]
+				if top_item is ItemInstance:
+					var badge = _calculate_badge_state(top_item)
+					if slot.has_method("update_status_badge"):
+						slot.update_status_badge(badge)
+					
+					var is_upgradeable = _calculate_upgradeable_state(top_item)
+					if slot.has_method("set_upgradeable_badge"):
+						slot.set_upgradeable_badge(is_upgradeable)
+				else:
+					# 如果是基础奖池数据（非 ItemInstance），则隐藏角标
+					if slot.has_method("update_status_badge"):
+						slot.update_status_badge(0)
+					if slot.has_method("set_upgradeable_badge"):
+						slot.set_upgradeable_badge(false)
 
 func set_slots_locked(locked: bool) -> void:
 	for i in range(3):
@@ -228,6 +250,53 @@ func get_slot_snapshot(index: int) -> Dictionary:
 func _get_slot_node(index: int) -> Control:
 	if index < 0 or index >= _slots.size(): return null
 	return _slots[index]
+
+func _calculate_badge_state(item: ItemInstance) -> int:
+	var badge_state = 0
+	# 与 InventoryController 保持一致的逻辑
+	if not OrderSystem: return 0
+	
+	for order in OrderSystem.current_orders:
+		for req in order.requirements:
+			if req.get("item_id", &"") == item.item_data.id:
+				if item.rarity >= req.get("min_rarity", 0):
+					badge_state = 2
+					return 2 # 最高优先级
+				else:
+					if badge_state < 1:
+						badge_state = 1
+	return badge_state
+
+func _calculate_upgradeable_state(item: ItemInstance) -> bool:
+	if not item or not InventorySystem: return false
+	
+	# 检查合成功能是否解锁
+	if not UnlockManager.is_unlocked(UnlockManager.Feature.MERGE):
+		return false
+	
+	# 跳过绝育物品和已达到最高品质的物品
+	if item.sterile:
+		return false
+	if item.rarity >= Constants.Rarity.MYTHIC:
+		return false
+	if item.rarity >= UnlockManager.merge_limit:
+		return false
+	
+	# 在背包中找同名同品质的物品
+	for inv_item in InventorySystem.inventory:
+		if inv_item == null:
+			continue
+		if inv_item.sterile:
+			continue
+		if inv_item.rarity >= Constants.Rarity.MYTHIC:
+			continue
+		if inv_item.rarity >= UnlockManager.merge_limit:
+			continue
+		# 匹配同名同品质
+		if inv_item.item_data.id == item.item_data.id and inv_item.rarity == item.rarity:
+			return true
+	
+	return false
 
 # --- Input Handlers ---
 
@@ -338,6 +407,34 @@ func _on_slot_unhovered(pool_index: int) -> void:
 
 func _on_slot_item_hovered(item_id: StringName) -> void:
 	slot_item_hovered.emit(item_id)
+
+
+func _on_badge_refresh_requested(index: int, item: ItemInstance) -> void:
+	var slot = _get_slot_node(index)
+	if not slot: return
+	
+	# 如果没有传入具体物品，尝试从逻辑中获取（通常是 pending_items[0]）
+	var target_item = item
+	if not target_item and InventorySystem and not InventorySystem.pending_items.is_empty():
+		# 只有当来源索引匹配时，才更新对应 slot
+		if index == game_ui.pending_source_pool_idx:
+			target_item = InventorySystem.pending_items[0]
+	
+	if target_item and target_item is ItemInstance:
+		# 更新角标
+		var badge = _calculate_badge_state(target_item)
+		if slot.has_method("update_status_badge"):
+			slot.update_status_badge(badge)
+		
+		var is_upgradeable = _calculate_upgradeable_state(target_item)
+		if slot.has_method("set_upgradeable_badge"):
+			slot.set_upgradeable_badge(is_upgradeable)
+	else:
+		# 没物品了，隐藏
+		if slot.has_method("update_status_badge"):
+			slot.update_status_badge(0)
+		if slot.has_method("set_upgradeable_badge"):
+			slot.set_upgradeable_badge(false)
 
 
 ## 更新指定lottery slot的hover可操作状态

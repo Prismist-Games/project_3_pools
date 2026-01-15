@@ -99,11 +99,26 @@ func get_active_slot_count() -> int:
 	return BASE_SLOT_COUNT
 
 
-func update_all_slots(inventory: Array) -> void:
+func update_all_slots(inventory: Array, external_candidates: Array = []) -> void:
 	var slot_count = get_active_slot_count()
 	
 	# 先计算所有可合成的配对
 	var upgradeable_indices = _calculate_upgradeable_indices(inventory)
+	
+	# 如果有 pending 物品，也考虑与 pending 可合成的背包物品
+	if InventorySystem and InventorySystem.pending_item:
+		var pending_upgradeable = _calculate_pending_upgradeable_indices(InventorySystem.pending_item, inventory)
+		for idx in pending_upgradeable:
+			if idx not in upgradeable_indices:
+				upgradeable_indices.append(idx)
+	
+	# 如果有外部候选物品（如 PreciseSelection 的选项），也考虑它们
+	for candidate in external_candidates:
+		if candidate is ItemInstance:
+			var candidate_upgradeable = _calculate_pending_upgradeable_indices(candidate, inventory)
+			for idx in candidate_upgradeable:
+				if idx not in upgradeable_indices:
+					upgradeable_indices.append(idx)
 	
 	for i in range(slot_count):
 		var slot = get_slot_node(i)
@@ -288,7 +303,7 @@ func clear_highlights() -> void:
 
 
 ## 刷新所有槽位的 upgradeable 角标（考虑 pending 状态）
-func refresh_upgradeable_badges() -> void:
+func refresh_upgradeable_badges(external_candidates: Array = []) -> void:
 	var inventory = InventorySystem.inventory
 	var slot_count = get_active_slot_count()
 	
@@ -302,6 +317,14 @@ func refresh_upgradeable_badges() -> void:
 		for idx in pending_upgradeable:
 			if idx not in upgradeable_indices:
 				upgradeable_indices.append(idx)
+	
+	# 如果有外部候选物品，也考虑它们
+	for candidate in external_candidates:
+		if candidate is ItemInstance:
+			var candidate_upgradeable = _calculate_pending_upgradeable_indices(candidate, inventory)
+			for idx in candidate_upgradeable:
+				if idx not in upgradeable_indices:
+					upgradeable_indices.append(idx)
 	
 	# 更新所有槽位的 upgradeable 角标
 	for i in range(slot_count):
