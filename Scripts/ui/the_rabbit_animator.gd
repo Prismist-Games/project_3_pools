@@ -38,10 +38,10 @@ var _blink_timer: float = 0.0
 @export var impatient_gold_threshold: int = 10
 
 
-@export_group("Eye Style", "impatient_eye_")
-@export var impatient_eye_target_texture: Texture2D = preload("res://assets/sprites/the_rabbit/eye_shape_1.png") ## 眯眼时的眼眶形状纹理
+@export_group("Eye Style", "squint_")
+@export var squint_eye_texture: Texture2D = preload("res://assets/sprites/the_rabbit/eye_shape_1.png") ## 眯眼时的眼眶形状纹理
 
-@export var impatient_eye_pupil_offset: Vector2 = Vector2.ZERO ## 眯眼时的瞳孔基准偏移 (建议 -0.05 到 0.05)
+@export var squint_pupil_offset: Vector2 = Vector2.ZERO ## 眯眼时的瞳孔基准偏移 (建议 -0.05 到 0.05)
 
 
 var _left_eye_fill: Sprite2D
@@ -178,9 +178,11 @@ func _enter_state(state: StringName) -> void:
 	# 状态特定逻辑
 	match state:
 		STATE_RABBIT_IMPATIENT:
-			blink_to_impatient()
+			squint_eyes()
 		STATE_RABBIT_IDLE:
-			blink_to_normal()
+			restore_eyes()
+		STATE_RABBIT_SHOCKED:
+			restore_eyes()
 
 ## 重置所有 Trigger (在状态切换时调用)
 func _reset_all_triggers() -> void:
@@ -207,13 +209,13 @@ func blink_once() -> void:
 	_run_blink_sequence(Callable())
 
 ## 供 AnimationPlayer 调用：切换到不耐烦眯眯眼
-func blink_to_impatient() -> void:
+func squint_eyes() -> void:
 	# 眯眼逻辑：通过眨眼动作切换到眯眼纹理
-	var target_tex = impatient_eye_target_texture if impatient_eye_target_texture else _default_eye_texture
+	var target_tex = squint_eye_texture if squint_eye_texture else _default_eye_texture
 	_run_blink_sequence(func(): _set_eyes_texture(target_tex))
 
 ## 供 AnimationPlayer 调用：恢复正常眼眶
-func blink_to_normal() -> void:
+func restore_eyes() -> void:
 	# 恢复逻辑：通过眨眼动作切换回默认纹理
 	_run_blink_sequence(func(): _set_eyes_texture(_default_eye_texture))
 
