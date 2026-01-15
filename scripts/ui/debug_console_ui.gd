@@ -18,6 +18,8 @@ extends PanelContainer
 @onready var generate_button: Button = %GenerateButton
 @onready var generate_batch_button: Button = %GenerateBatchButton
 @onready var skill_select_button: Button = %SkillSelectButton
+@onready var skill_selector_option: OptionButton = %SkillSelectorOption
+@onready var add_skill_button: Button = %AddSkillButton
 
 @onready var item_type_option: OptionButton = %ItemTypeOption
 @onready var item_selector_option: OptionButton = %ItemSelectorOption
@@ -77,6 +79,7 @@ func _setup_ui() -> void:
 
 	_setup_affix_toggles()
 	_setup_generation_ui()
+	_setup_skill_list()
 
 
 func _setup_generation_ui() -> void:
@@ -145,6 +148,7 @@ func _connect_signals() -> void:
 	
 	# 连接技能选择测试按钮
 	skill_select_button.pressed.connect(_on_skill_select_pressed)
+	add_skill_button.pressed.connect(_on_add_skill_pressed)
 	
 	# 监听金币变化
 	GameManager.gold_changed.connect(_on_game_manager_gold_changed)
@@ -456,3 +460,32 @@ func _on_skill_select_pressed() -> void:
 	"""点击测试技能选择按钮"""
 	EventBus.modal_requested.emit(&"skill_select", null)
 	print("[DebugConsole] 已触发技能三选一流程")
+
+
+func _setup_skill_list() -> void:
+	"""初始化技能下拉列表"""
+	skill_selector_option.clear()
+	var skills = GameManager.all_skills
+	for skill in skills:
+		skill_selector_option.add_item(skill.name)
+		skill_selector_option.set_item_metadata(skill_selector_option.get_item_count() - 1, skill)
+
+
+func _on_add_skill_pressed() -> void:
+	"""点击添加技能按钮"""
+	if skill_selector_option.get_item_count() == 0:
+		return
+		
+	var selected_skill = skill_selector_option.get_selected_metadata() as SkillData
+	if not selected_skill:
+		return
+
+	if SkillSystem.has_skill(selected_skill.id):
+		print("[DebugConsole] 玩家已拥有技能: %s" % selected_skill.name)
+		return
+		
+	var success = SkillSystem.add_skill(selected_skill)
+	if success:
+		print("[DebugConsole] 已添加技能: %s" % selected_skill.name)
+	else:
+		print("[DebugConsole] 添加技能失败 (可能已满): %s" % selected_skill.name)
