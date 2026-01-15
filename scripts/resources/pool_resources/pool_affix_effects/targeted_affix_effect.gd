@@ -26,6 +26,7 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	
 	# 捕获当前上下文数据（供闭包使用）
 	var rarity_weights = ctx.rarity_weights.duplicate()
+	var min_rarity = ctx.min_rarity # 捕获最低稀有度（如时来运转设置的）
 	var pool_index: int = ctx.meta.get("pool_index", -1)
 	var item_type = ctx.item_type
 	
@@ -36,6 +37,8 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 		"callback": func(selected_data: ItemData):
 			if selected_data != null:
 				var rarity = Constants.pick_weighted_index(rarity_weights, GameManager.rng)
+				# 应用最低稀有度限制
+				rarity = maxi(rarity, min_rarity)
 				return ItemInstance.new(selected_data, rarity)
 			return null
 	})

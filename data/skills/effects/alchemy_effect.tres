@@ -4,5 +4,3 @@
 
 [resource]
 script = ExtResource("1")
-chance = 0.25
-bonus_gold = 5

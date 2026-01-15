@@ -5,7 +5,7 @@ class_name HardOrderExpertSkillEffect
 ## 完成需要史诗以上品质物品的订单时，额外获得 60 金币。
 
 @export var rarity_threshold: int = Constants.Rarity.EPIC
-@export var bonus_gold: int = 60
+@export var bonus_gold: int = 10
 
 
 func on_event(event_id: StringName, context: RefCounted) -> void:
