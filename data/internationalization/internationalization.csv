@@ -27,35 +27,35 @@ RARITY_UNKNOWN,Unknown,未知
 # =====================================================================
 # Item Names (物品名称) - Keys must match resource file names exactly
 # =====================================================================
-ANTIQUE_BEADS,Antique Beads,古董珠子
-ANTIQUE_BRACELET,Antique Bracelet,古董手镯
-ANTIQUE_CUP,Antique Cup,古董杯子
-ANTIQUE_MAGATAMA,Antique Magatama,古董勾玉
-ANTIQUE_VASE,Antique Vase,古董花瓶
+TRIANGLE_CONE,Triangle Cone,三角锥
+TRIANGLE_FLASK,Triangle Flask,锥形瓶
+TRIANGLE_HAT,Triangle Hat,派对帽
+TRIANGLE_PERFUME,Triangle Perfume,香水瓶
+TRIANGLE_SANDWICH,Triangle Sandwich,三明治
 
-CONVENIENCE_MEAT,Meat,便利肉
-CONVENIENCE_ODEN,Oden,关东煮
-CONVENIENCE_RAMEN,Ramen,拉面
-CONVENIENCE_SODA,Soda,汽水
-CONVENIENCE_STRAW,Straw,吸管
+RECTANGLE_BUCKET,Rectangle Bucket,水桶
+RECTANGLE_CANDLE,Rectangle Candle,蜡烛
+RECTANGLE_COMPUTER,Rectangle Computer,电脑
+RECTANGLE_LIMEJUICE,Rectangle Lime Juice,酸橙汁
+RECTANGLE_NOTEBOOK,Rectangle Notebook,笔记本
 
-ENTERTAINMENT_KENDAMA,Kendama,剑玉
-ENTERTAINMENT_PONY,Pony,小马
-ENTERTAINMENT_PUPPY,Puppy,小狗
-ENTERTAINMENT_ROOSTER,Rooster,公鸡
-ENTERTAINMENT_TOP,Top,陀螺
+CIRCLE_BALLOON,Circle Balloon,气球
+CIRCLE_BASKETBALL,Circle Basketball,篮球
+CIRCLE_BUTTON,Circle Button,按钮
+CIRCLE_COMPASS,Circle Compass,指南针
+CIRCLE_GLOBE,Circle Globe,地球仪
 
-MEDICINE_AMPOULE,Ampoule,安瓿瓶
-MEDICINE_BOTTLE,Medicine Bottle,药瓶
-MEDICINE_IVBAG,IV Bag,输液袋
-MEDICINE_PILL,Pill,药丸
-MEDICINE_SYRINGE,Syringe,注射器
+STAR_BETHLEHEM,Star of Bethlehem,圣诞星
+STAR_FLOWER,Star Flower,牵牛花
+STAR_FOLIAGE,Star Foliage,枫叶
+STAR_LOLLIPOP,Star Lollipop,棒棒糖
+STAR_STARFISH,Starfish,海星
 
-STATIONARY_CLIP,Paper Clip,回形针
-STATIONARY_ERASER,Eraser,橡皮
-STATIONARY_FOLDER,Folder,文件夹
-STATIONARY_NOTEBOOK,Notebook,笔记本
-STATIONERY_STAPLER,Stapler,订书机
+TRAPEZOID_HANDBAG,Trapezoid Handbag,手提包
+TRAPEZOID_KETTLE,Trapezoid Kettle,水壶
+TRAPEZOID_LAMP,Trapezoid Lamp,台灯
+TRAPEZOID_PUDDING,Trapezoid Pudding,布丁
+TRAPEZOID_TENT,Trapezoid Tent,帐篷
 
 # Unknown item fallback
 ITEM_UNKNOWN,Unknown Item,未知物品

@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://qhvccpyccaqc"
-path.s3tc="res://.godot/imported/category_hollow.png-8053f5c0b1a93f2065c0ecfd80017596.s3tc.ctex"
-path.etc2="res://.godot/imported/category_hollow.png-8053f5c0b1a93f2065c0ecfd80017596.etc2.ctex"
+uid="uid://cvippngwe8h8x"
+path.s3tc="res://.godot/imported/category_circle.png-fc01e6c5eb8dcda2c43b8765025e83c4.s3tc.ctex"
+path.etc2="res://.godot/imported/category_circle.png-fc01e6c5eb8dcda2c43b8765025e83c4.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/category_hollow.png"
-dest_files=["res://.godot/imported/category_hollow.png-8053f5c0b1a93f2065c0ecfd80017596.s3tc.ctex", "res://.godot/imported/category_hollow.png-8053f5c0b1a93f2065c0ecfd80017596.etc2.ctex"]
+source_file="res://assets/sprites/icons/category_circle.png"
+dest_files=["res://.godot/imported/category_circle.png-fc01e6c5eb8dcda2c43b8765025e83c4.s3tc.ctex", "res://.godot/imported/category_circle.png-fc01e6c5eb8dcda2c43b8765025e83c4.etc2.ctex"]
 
 [params]
 

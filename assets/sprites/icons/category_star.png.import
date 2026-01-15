@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3v3f4usoqaw"
-path.s3tc="res://.godot/imported/category_fill.png-fee1380bcd2aa566d364c341a749a0f2.s3tc.ctex"
-path.etc2="res://.godot/imported/category_fill.png-fee1380bcd2aa566d364c341a749a0f2.etc2.ctex"
+uid="uid://dqa5t5klstpel"
+path.s3tc="res://.godot/imported/category_star.png-ef5d1ffa50d66ce18e83db35bad25e90.s3tc.ctex"
+path.etc2="res://.godot/imported/category_star.png-ef5d1ffa50d66ce18e83db35bad25e90.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/category_fill.png"
-dest_files=["res://.godot/imported/category_fill.png-fee1380bcd2aa566d364c341a749a0f2.s3tc.ctex", "res://.godot/imported/category_fill.png-fee1380bcd2aa566d364c341a749a0f2.etc2.ctex"]
+source_file="res://assets/sprites/icons/category_star.png"
+dest_files=["res://.godot/imported/category_star.png-ef5d1ffa50d66ce18e83db35bad25e90.s3tc.ctex", "res://.godot/imported/category_star.png-ef5d1ffa50d66ce18e83db35bad25e90.etc2.ctex"]
 
 [params]
 

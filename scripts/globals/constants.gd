@@ -59,11 +59,11 @@ func type_to_display_name(type: ItemType) -> String:
 
 func type_to_icon(type: ItemType) -> Texture2D:
 	match type:
-		ItemType.TRIANGLE: return preload("res://assets/sprites/icons/category_antique.png")
-		ItemType.RECTANGLE: return preload("res://assets/sprites/icons/category_medicine.png")
-		ItemType.CIRCLE: return preload("res://assets/sprites/icons/category_office.png")
-		ItemType.STAR: return preload("res://assets/sprites/icons/category_convenience.png")
-		ItemType.TRAPEZOID: return preload("res://assets/sprites/icons/category_entertainment.png")
+		ItemType.TRIANGLE: return preload("res://assets/sprites/icons/category_triangle.png")
+		ItemType.RECTANGLE: return preload("res://assets/sprites/icons/category_rectangle.png")
+		ItemType.CIRCLE: return preload("res://assets/sprites/icons/category_circle.png")
+		ItemType.STAR: return preload("res://assets/sprites/icons/category_star.png")
+		ItemType.TRAPEZOID: return preload("res://assets/sprites/icons/category_trapezoid.png")
 		_: return null
 
 
