@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="9_arr72"]
 [ext_resource type="Texture2D" uid="uid://b4cuujipxrcyu" path="res://assets/sprites/lottery_slots/lottery_slot_lid_fill.png" id="10_4aaut"]
 [ext_resource type="Texture2D" uid="uid://bclpcjghycqdb" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="10_gntc1"]
+[ext_resource type="Shader" uid="uid://bekyeolq5u2hf" path="res://assets/shaders/silhouette.gdshader" id="10_yj02r"]
 [ext_resource type="Texture2D" uid="uid://cskvmcwmdj5ew" path="res://assets/sprites/icons/category_entertainment.png" id="11_of7x7"]
 [ext_resource type="Texture2D" uid="uid://u8vv873f380j" path="res://assets/sprites/lottery_slots/lottery_slot_lid_outline.png" id="12_p4alg"]
 [ext_resource type="Texture2D" uid="uid://fnqmsybn8c5r" path="res://assets/sprites/lottery_slots/基地-6.png" id="13_r08pi"]
@@ -28,33 +29,8 @@
 [ext_resource type="Texture2D" uid="uid://cyo0chqrqd6p7" path="res://assets/sprites/the_machine/the_machine_description_display_fill.png" id="22_dg1ni"]
 [ext_resource type="Material" uid="uid://ccpe7db5t4nua" path="res://assets/materials/ui_crt_overlay.tres" id="23_crt00"]
 
-[sub_resource type="Shader" id="Shader_1b0mf"]
-code = "shader_type canvas_item;
-
-// 剪影颜色
-uniform vec4 silhouette_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
-// 是否开启剪影效果
-uniform bool is_enabled = false;
-
-void fragment() {
-    // 获取原始贴图颜色
-    vec4 texture_color = texture(TEXTURE, UV);
-    
-    if (is_enabled) {
-        // 【纯色剪影】完全用指定颜色替换，只保留贴图的形状 (Alpha)
-        // 不与 COLOR 相乘，确保 ffffff 会渲染成纯白色
-        // 但保留节点的整体透明度调制
-        float alpha = texture_color.a * COLOR.a;
-        COLOR = vec4(silhouette_color.rgb, alpha);
-    } else {
-        // 正常渲染
-        COLOR = texture_color * COLOR;
-    }
-}
-"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gntc1"]
-shader = SubResource("Shader_1b0mf")
+shader = ExtResource("10_yj02r")
 shader_parameter/silhouette_color = Color(0.5, 0.5, 0.5, 1)
 shader_parameter/is_enabled = false
 

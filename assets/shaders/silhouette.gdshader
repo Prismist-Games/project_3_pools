@@ -17,6 +17,6 @@ void fragment() {
         COLOR = vec4(silhouette_color.rgb, alpha);
     } else {
         // 正常渲染
-        COLOR = texture_color * COLOR;
+        
     }
 }
