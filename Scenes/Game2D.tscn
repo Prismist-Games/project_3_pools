@@ -1993,20 +1993,20 @@ region_rect = Rect2(144, 116, 375, 406)
 position = Vector2(-0.5, 1.5)
 scale = Vector2(0.65, 0.65)
 
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_item_root"]
+[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(85, 75, 450, 450)
 
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_item_root/Item_icon"]
 self_modulate = Color(0, 0, 0, 0.39215687)
 show_behind_parent = true
 position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_item_root/Item_icon"]
 position = Vector2(139, -127)
 texture = ExtResource("37_50t6p")
 
@@ -2087,20 +2087,20 @@ region_rect = Rect2(144, 116, 375, 406)
 position = Vector2(-0.5, 1.5)
 scale = Vector2(0.65, 0.65)
 
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_item_root"]
+[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(85, 75, 450, 450)
 
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_item_root/Item_icon"]
 self_modulate = Color(0, 0, 0, 0.39215687)
 show_behind_parent = true
 position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_item_root/Item_icon"]
 position = Vector2(139, -127)
 texture = ExtResource("37_50t6p")
 
@@ -2181,20 +2181,20 @@ region_rect = Rect2(144, 116, 375, 406)
 position = Vector2(-0.5, 1.5)
 scale = Vector2(0.65, 0.65)
 
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_item_root"]
+[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(85, 75, 450, 450)
 
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_item_root/Item_icon"]
 self_modulate = Color(0, 0, 0, 0.39215687)
 show_behind_parent = true
 position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_item_root/Item_icon"]
 position = Vector2(139, -127)
 texture = ExtResource("37_50t6p")
 
@@ -2275,20 +2275,20 @@ region_rect = Rect2(144, 116, 375, 406)
 position = Vector2(-0.5, 1.5)
 scale = Vector2(0.65, 0.65)
 
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_item_root"]
+[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(85, 75, 450, 450)
 
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_item_root/Item_icon"]
 self_modulate = Color(0, 0, 0, 0.39215687)
 show_behind_parent = true
 position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_item_root/Item_icon"]
 position = Vector2(139, -127)
 texture = ExtResource("37_50t6p")
 
@@ -2369,20 +2369,20 @@ region_rect = Rect2(144, 116, 375, 406)
 position = Vector2(-0.5, 1.5)
 scale = Vector2(0.65, 0.65)
 
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_item_root"]
+[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(85, 75, 450, 450)
 
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_item_root/Item_icon"]
 self_modulate = Color(0, 0, 0, 0.39215687)
 show_behind_parent = true
 position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_item_root/Item_icon"]
 position = Vector2(139, -127)
 texture = ExtResource("37_50t6p")
 
@@ -2463,20 +2463,20 @@ region_rect = Rect2(144, 116, 375, 406)
 position = Vector2(-0.5, 1.5)
 scale = Vector2(0.65, 0.65)
 
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_item_root"]
+[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(85, 75, 450, 450)
 
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_item_root/Item_icon"]
 self_modulate = Color(0, 0, 0, 0.39215687)
 show_behind_parent = true
 position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_item_root/Item_icon"]
 position = Vector2(139, -127)
 texture = ExtResource("37_50t6p")
 
@@ -2557,20 +2557,20 @@ region_rect = Rect2(144, 116, 375, 406)
 position = Vector2(-0.5, 1.5)
 scale = Vector2(0.65, 0.65)
 
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_item_root"]
+[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(85, 75, 450, 450)
 
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_item_root/Item_icon"]
 self_modulate = Color(0, 0, 0, 0.39215687)
 show_behind_parent = true
 position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_item_root/Item_icon"]
 position = Vector2(139, -127)
 texture = ExtResource("37_50t6p")
 
@@ -2651,20 +2651,20 @@ region_rect = Rect2(144, 116, 375, 406)
 position = Vector2(-0.5, 1.5)
 scale = Vector2(0.65, 0.65)
 
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_item_root"]
+[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(85, 75, 450, 450)
 
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_item_root/Item_icon"]
 self_modulate = Color(0, 0, 0, 0.39215687)
 show_behind_parent = true
 position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_item_root/Item_icon"]
 position = Vector2(139, -127)
 texture = ExtResource("37_50t6p")
 
@@ -2745,20 +2745,20 @@ region_rect = Rect2(144, 116, 375, 406)
 position = Vector2(-0.5, 1.5)
 scale = Vector2(0.65, 0.65)
 
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_item_root"]
+[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(85, 75, 450, 450)
 
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_item_root/Item_icon"]
 self_modulate = Color(0, 0, 0, 0.39215687)
 show_behind_parent = true
 position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_item_root/Item_icon"]
 position = Vector2(139, -127)
 texture = ExtResource("37_50t6p")
 
@@ -2839,20 +2839,20 @@ region_rect = Rect2(144, 116, 375, 406)
 position = Vector2(-0.5, 1.5)
 scale = Vector2(0.65, 0.65)
 
-[node name="Item_example" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_item_root"]
+[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_item_root"]
 texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(85, 75, 450, 450)
 
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_item_root/Item_icon"]
 self_modulate = Color(0, 0, 0, 0.39215687)
 show_behind_parent = true
 position = Vector2(6.000001, 156)
 scale = Vector2(0.6, 0.1)
 texture = ExtResource("3_4wmcb")
 
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_item_root/Item_example"]
+[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_item_root/Item_icon"]
 position = Vector2(139, -127)
 texture = ExtResource("37_50t6p")
 
