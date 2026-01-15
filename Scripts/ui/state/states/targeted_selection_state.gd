@@ -184,6 +184,9 @@ func select_item(index: int) -> void:
 	# 这保证了物品只被添加一次，且能正常触发技能等系统
 	EventBus.item_obtained.emit(item_instance)
 	
+	# ERA_4: 抽奖后递减保质期
+	ShelfLifeEffect.trigger_shelf_life_decrement()
+	
 	# 5. 恢复 VFX 队列让物品飞出来
 	if controller.vfx_manager:
 		controller.vfx_manager.resume_process()

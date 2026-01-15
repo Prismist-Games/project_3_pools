@@ -124,6 +124,8 @@ func select_option(index: int) -> void:
 			other_slot.close_lid()
 		
 		InventorySystem.pending_item = item_instance
+		# ERA_4: 抽奖后递减保质期
+		ShelfLifeEffect.trigger_shelf_life_decrement()
 		machine.transition_to(&"Replacing", {"source_pool_index": index})
 		return
 	
@@ -141,12 +143,16 @@ func select_option(index: int) -> void:
 		# 2. 将选中的物品加入 pending 队列（它会显示在当前选中的 slot 里）
 		InventorySystem.pending_item = item_instance
 		
+		# ERA_4: 抽奖后递减保质期
+		ShelfLifeEffect.trigger_shelf_life_decrement()
+		
 		# 3. 转换到 Replacing 状态
 		machine.transition_to(&"Replacing", {"source_pool_index": index})
 	else:
 		# 添加成功，VFX 会自动触发飞行 (通过 item_added 信号)
 		# 等待飞行完成后再关盖刷新 - 由 _on_vfx_queue_finished 处理
-		pass
+		# ERA_4: 抽奖后递减保质期
+		ShelfLifeEffect.trigger_shelf_life_decrement()
 
 func handle_input(event: InputEvent) -> bool:
 	# 拦截右键，阻止取消 (精准选择强制必须选一个)

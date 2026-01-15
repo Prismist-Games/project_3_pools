@@ -4,4 +4,4 @@
 
 [resource]
 script = ExtResource("1")
-default_shelf_life = 2
+default_shelf_life = 20
