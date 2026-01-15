@@ -39,8 +39,31 @@ func _ready() -> void:
 	_connect_signals()
 	_sync_from_unlock_manager()
 	
+	# 连接动画测试按钮 (手动添加的节点)
+	var anim_shock_btn = find_child("TestShockAnimButton", true, false)
+	if anim_shock_btn:
+		anim_shock_btn.pressed.connect(func():
+			get_tree().call_group("debug_animator", "test_shock")
+			print("[DebugConsole] 已触发震惊动画测试")
+		)
+	
+	var anim_impatient_btn = find_child("TestImpatientAnimButton", true, false)
+	if anim_impatient_btn:
+		anim_impatient_btn.pressed.connect(func():
+			get_tree().call_group("debug_animator", "test_impatient")
+			print("[DebugConsole] 已触发不耐烦动画测试")
+		)
+	
+
+	var anim_reset_btn = find_child("ResetAnimButton", true, false)
+	if anim_reset_btn:
+		anim_reset_btn.pressed.connect(func():
+			# 强制回到 IDLE
+			get_tree().call_group("debug_animator", "_transition_to_state", &"Idle")
+			print("[DebugConsole] 已重置动画到 Idle")
+		)
+	
 	_setup_performance_monitor()
-	_setup_rabbit_debug_ui()
 
 
 func _process(delta: float) -> void:
@@ -341,54 +364,9 @@ func _update_performance_stats() -> void:
 	var objects = Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
 	_perf_labels["Objects"].text = str(objects)
 	
+	# Orphan Nodes
 	var orphans = Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)
 	_perf_labels["Orphans"].text = str(orphans)
-
-
-func _setup_rabbit_debug_ui() -> void:
-	var main_vbox = $MarginContainer/ScrollContainer/VBoxContainer
-	if not main_vbox: return
-	
-	var container = VBoxContainer.new()
-	container.name = "RabbitDebug"
-	
-	# Header
-	var header = Label.new()
-	header.text = "🐰 兔子动画测试"
-	header.add_theme_font_size_override("font_size", 14)
-	container.add_child(header)
-	
-	# Grid for buttons
-	var grid = HFlowContainer.new()
-	grid.name = "AnimButtons"
-	container.add_child(grid)
-	
-	# States definition
-	var states = [
-		{"name": "Idle", "state": &"rabbit_idle"},
-		{"name": "Shocked", "state": &"rabbit_shocked"},
-		{"name": "Impatient", "state": &"rabbit_impatient"},
-		{"name": "Nose Poking", "state": &"rabbit_nose_poking"},
-		{"name": "Eyes Rolling", "state": &"rabbit_eyes_rolling"},
-		{"name": "Knock Machine", "state": &"rabbit_knock_machine"}
-	]
-	
-	for s in states:
-		var btn = Button.new()
-		btn.text = s.name
-		btn.pressed.connect(func():
-			get_tree().call_group("debug_animator", "debug_travel_to_state", s.state)
-			print("[DebugConsole] Set Rabbit State -> ", s.name)
-		)
-		grid.add_child(btn)
-		
-	# Separator
-	var sep = HSeparator.new()
-	container.add_child(sep)
-	
-	# Add to main layout (after perf monitor)
-	main_vbox.add_child(container)
-	main_vbox.move_child(container, 3)
 
 
 ## 物品生成逻辑

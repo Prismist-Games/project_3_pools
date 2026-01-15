@@ -84,14 +84,10 @@ func update_recycle_visuals(is_on: bool) -> void:
 	
 	if not is_on:
 		if tween:
-			tween.finished.connect(func():
-				# 只有当开关确实处于关闭状态时才重置 label 和图标
-				var handle = recycle_switch.get_node_or_null("Switch_handle")
-				if handle and abs(handle.position.y - SWITCH_OFF_Y) < 0.1:
+			tween.finished.connect(func(): 
+				if not _recycle_is_on:
 					update_recycle_label(0)
 					clear_recycle_icon()
-					# 发出视觉上的盖子关闭事件
-					EventBus.game_event.emit(&"recycle_lid_closed", null)
 			)
 		else:
 			update_recycle_label(0)
@@ -128,12 +124,9 @@ func hide_recycle_preview() -> void:
 	var tween = _recycle_tween
 	if tween:
 		# 使用弱引用或在 tween 开始前记录状态，防止竞争
-		tween.finished.connect(func():
-			var handle = recycle_switch.get_node_or_null("Switch_handle")
-			if handle and abs(handle.position.y - SWITCH_OFF_Y) < 0.1:
+		tween.finished.connect(func(): 
+			if not _recycle_is_on:
 				update_recycle_label(0)
-				# 预览隐藏也等同于关盖
-				EventBus.game_event.emit(&"recycle_lid_closed", null)
 		)
 	else:
 		update_recycle_label(0)
