@@ -14,6 +14,12 @@ var _slots: Array[Control] = []
 ## 是否正在播放刷新动画（此时应跳过 update_pools_display）
 var _is_animating_refresh: bool = false
 
+## 当前被hover的slot索引 (-1表示无)
+var _hovered_slot_index: int = -1
+
+## 当前被按下的slot索引 (-1表示无，用于处理鼠标移出后松开的情况)
+var _pressed_slot_index: int = -1
+
 func setup(grid: HBoxContainer) -> void:
 	lottery_slots_grid = grid
 	_init_slots()
@@ -204,44 +210,155 @@ func _get_slot_node(index: int) -> Control:
 # --- Input Handlers ---
 
 func _on_slot_input(event: InputEvent, index: int) -> void:
-	if event is InputEventMouseButton and event.pressed:
+	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			# Check logic via game_ui state machine
-			if game_ui and game_ui.state_machine:
-				var state_name = game_ui.state_machine.get_current_state_name()
-				
-				# If in specialized selection states
-				if state_name == &"PreciseSelection" or state_name == &"Modal":
-					var current_state = game_ui.state_machine.get_current_state()
-					if current_state and current_state.has_method("select_option"):
-						current_state.select_option(index)
+			var slot = _get_slot_node(index) as LotterySlotUI
+			
+			if event.pressed:
+				# 鼠标按下：让lid复位
+				_pressed_slot_index = index
+				if slot and slot.has_method("handle_mouse_press"):
+					slot.handle_mouse_press()
+			else:
+				# 鼠标松开：确认抽奖行为
+				# Check logic via game_ui state machine
+				if game_ui and game_ui.state_machine:
+					var state_name = game_ui.state_machine.get_current_state_name()
+					
+					# If in specialized selection states
+					if state_name == &"PreciseSelection" or state_name == &"Modal":
+						var current_state = game_ui.state_machine.get_current_state()
+						if current_state and current_state.has_method("select_option"):
+							current_state.select_option(index)
+							_pressed_slot_index = -1
+							if slot and slot.has_method("handle_mouse_release"):
+								slot.handle_mouse_release()
+							return
+					
+					# Check UI mode via UIStateMachine
+					if game_ui.state_machine.get_ui_mode() != Constants.UIMode.NORMAL:
+						_pressed_slot_index = -1
+						if slot and slot.has_method("handle_mouse_release"):
+							slot.handle_mouse_release()
 						return
-				
-				# Check UI mode via UIStateMachine
-				if game_ui.state_machine.get_ui_mode() != Constants.UIMode.NORMAL:
+					
+				elif GameManager.current_ui_mode != Constants.UIMode.NORMAL:
+					# Fallback
+					_pressed_slot_index = -1
+					if slot and slot.has_method("handle_mouse_release"):
+						slot.handle_mouse_release()
 					return
 				
-			elif GameManager.current_ui_mode != Constants.UIMode.NORMAL:
-				# Fallback
-				return
+				# 检查是否有pending物品且当前slot有pending物品显示
+				var has_pending = not InventorySystem.pending_items.is_empty()
+				var is_pending_slot = has_pending and slot and slot.is_drawing and slot._top_item_id != &""
 				
-			if not game_ui.is_ui_locked() and not _is_animating_refresh and InventorySystem.pending_items.is_empty():
-				# Draw logic
-				if game_ui.state_machine:
-					game_ui.state_machine.transition_to(&"Drawing", {"pool_index": index})
-					var drawing_state = game_ui.state_machine.get_state(&"Drawing")
-					if drawing_state and drawing_state.has_method("draw"):
-						await drawing_state.draw()
+				# 如果hover在pending物品上，松开左键回收
+				if is_pending_slot:
+					# 记录当前点击的奖池索引
+					game_ui.last_clicked_pool_idx = index
+					game_ui.pending_source_pool_idx = index
+					# 触发回收
+					game_ui._handle_single_item_recycle(-1)
+					_pressed_slot_index = -1
+					if slot and slot.has_method("handle_mouse_release"):
+						slot.handle_mouse_release()
+					return
+					
+				if not game_ui.is_ui_locked() and not _is_animating_refresh and InventorySystem.pending_items.is_empty():
+					# 记录当前点击的奖池索引，用于后续 pending 物品的定位
+					game_ui.last_clicked_pool_idx = index
+					game_ui.pending_source_pool_idx = index
+					
+					# Draw logic
+					if game_ui.state_machine:
+						game_ui.state_machine.transition_to(&"Drawing", {"pool_index": index})
+						var drawing_state = game_ui.state_machine.get_state(&"Drawing")
+						if drawing_state and drawing_state.has_method("draw"):
+							await drawing_state.draw()
+				
+				# 松开后重置按下状态
+				_pressed_slot_index = -1
+				if slot and slot.has_method("handle_mouse_release"):
+					slot.handle_mouse_release()
 
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			# 右键取消逻辑已移至 Game2DUI._input 全局处理
+			# 右键不再有任何作用（不再能直接回收lottery slot道具）
 			pass
 
 func _on_slot_hovered(pool_index: int, pool_item_type: int) -> void:
+	_hovered_slot_index = pool_index
+	
+	# 更新hover可操作状态
+	_update_slot_hover_action_state(pool_index)
+	
 	slot_hovered.emit(pool_index, pool_item_type)
 
+
 func _on_slot_unhovered(pool_index: int) -> void:
+	_hovered_slot_index = -1
+	
+	# 清除hover视觉效果
+	var slot = _get_slot_node(pool_index) as LotterySlotUI
+	if slot:
+		slot.set_hover_action_state(LotterySlotUI.HoverType.NONE)
+	
+	# 如果之前hover在pending物品所在的slot上，关闭recycle switch预览
+	var has_pending = not InventorySystem.pending_items.is_empty()
+	if has_pending and game_ui and pool_index == game_ui.pending_source_pool_idx:
+		if game_ui.switch_controller:
+			# 检查鼠标是否在recycle switch上，如果不在则关闭预览
+			if not game_ui.switch_controller.is_recycle_hovered():
+				game_ui.switch_controller.hide_recycle_preview()
+	
 	slot_unhovered.emit(pool_index)
+
 
 func _on_slot_item_hovered(item_id: StringName) -> void:
 	slot_item_hovered.emit(item_id)
+
+
+## 更新指定lottery slot的hover可操作状态
+func _update_slot_hover_action_state(pool_index: int) -> void:
+	var slot = _get_slot_node(pool_index) as LotterySlotUI
+	if not slot:
+		return
+	
+	var has_pending = not InventorySystem.pending_items.is_empty()
+	
+	# 默认无状态
+	var hover_type = LotterySlotUI.HoverType.NONE
+	
+	# pending时 hover 在已抽出物品（is_drawing）的 lottery slot -> 可回收
+	# 这里判断slot是否有物品显示（is_drawing 且有 _top_item_id）
+	if has_pending and slot.is_drawing and slot._top_item_id != &"":
+		# 在pending状态下hover lottery slot中的物品，显示可回收
+		hover_type = LotterySlotUI.HoverType.RECYCLABLE
+		
+		# 打开recycle switch并显示预览（和hover在recycle switch上表现一致）
+		if game_ui and game_ui.switch_controller:
+			var item = InventorySystem.pending_items[0]
+			if item:
+				var value = Constants.rarity_recycle_value(item.rarity)
+				game_ui.switch_controller.show_recycle_preview(value)
+	
+	slot.set_hover_action_state(hover_type)
+
+
+## 刷新当前被hover的slot的状态（当游戏状态变化时调用）
+func refresh_hovered_slot_state() -> void:
+	if _hovered_slot_index >= 0:
+		_update_slot_hover_action_state(_hovered_slot_index)
+
+
+## 获取当前被hover的slot索引
+func get_hovered_slot_index() -> int:
+	return _hovered_slot_index
+
+## 处理全局鼠标松开事件（用于处理鼠标移出区域后松开的情况）
+func handle_global_mouse_release() -> void:
+	if _pressed_slot_index >= 0:
+		var slot = _get_slot_node(_pressed_slot_index) as LotterySlotUI
+		if slot and slot.has_method("handle_mouse_release"):
+			slot.handle_mouse_release()
+		_pressed_slot_index = -1

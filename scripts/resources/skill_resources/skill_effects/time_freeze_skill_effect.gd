@@ -8,10 +8,11 @@ class_name TimeFreezeSkillEffect
 
 
 func on_event(event_id: StringName, context: RefCounted) -> void:
-	if event_id != &"order_refresh_requested":
+	if event_id != &"order_refresh_logic_check":
 		return
 		
-	if context == null: return
+	var ctx = context as ContextProxy
+	if ctx == null: return
 	
 	if randf() < chance:
-		context.get("data")["consume_refresh"] = false
+		ctx.set_value("consume_refresh", false)

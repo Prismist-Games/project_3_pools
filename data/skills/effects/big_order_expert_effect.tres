@@ -1,8 +1,6 @@
-[gd_resource type="Resource" script_class="BigOrderExpertSkillEffect" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="BigOrderExpertSkillEffect" load_steps=2 format=3 uid="uid://btewir24ty3jt"]
 
-[ext_resource type="Script" path="res://scripts/resources/skill_resources/skill_effects/big_order_expert_skill_effect.gd" id="1"]
+[ext_resource type="Script" uid="uid://dg34sfqsagbtw" path="res://scripts/resources/skill_resources/skill_effects/big_order_expert_skill_effect.gd" id="1"]
 
 [resource]
 script = ExtResource("1")
-count_threshold = 4
-bonus_tickets = 10

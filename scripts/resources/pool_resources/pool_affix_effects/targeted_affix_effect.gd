@@ -16,11 +16,17 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if ctx == null:
 		return
 	
+	# 检查金币是否足够（在设置 skip_draw 之前）
+	if GameManager.gold < ctx.gold_cost:
+		# 不设置 skip_draw，让 PoolSystem 正常检查金币并失败（触发抖动）
+		return
+	
 	# 标记跳过标准抽奖逻辑
 	ctx.skip_draw = true
 	
 	# 捕获当前上下文数据（供闭包使用）
 	var rarity_weights = ctx.rarity_weights.duplicate()
+	var min_rarity = ctx.min_rarity # 捕获最低稀有度（如时来运转设置的）
 	var pool_index: int = ctx.meta.get("pool_index", -1)
 	var item_type = ctx.item_type
 	
@@ -31,9 +37,8 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 		"callback": func(selected_data: ItemData):
 			if selected_data != null:
 				var rarity = Constants.pick_weighted_index(rarity_weights, GameManager.rng)
+				# 应用最低稀有度限制
+				rarity = maxi(rarity, min_rarity)
 				return ItemInstance.new(selected_data, rarity)
 			return null
 	})
-
-
-

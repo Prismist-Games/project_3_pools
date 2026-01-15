@@ -14,22 +14,16 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if ctx == null:
 		return
 	
-	# 修改消耗
-	ctx.gold_cost = 2
+	# 价格由 .tres 配置的 base_gold_cost 控制，不再在此处覆盖
 	
 	# 强制绝育
 	ctx.force_sterile = true
 	
-	# 概率提升：移除普通和优秀，提升稀有及以上
-	ctx.ensure_default_rarity_weights()
-	ctx.rarity_weights[Constants.Rarity.COMMON] = 0.0
-	ctx.rarity_weights[Constants.Rarity.UNCOMMON] = 0.0
-	
-	# 如果所有权重都为0（虽然不太可能，但防御性编程），设置一个默认权重
-	var total_weight: float = 0.0
-	for w: float in ctx.rarity_weights:
-		total_weight += w
-	if total_weight <= 0.0:
-		ctx.rarity_weights[Constants.Rarity.RARE] = 1.0
-
-
+	# 概率提升：固定为 稀有67%, 史诗30%, 传说3%
+	ctx.rarity_weights = PackedFloat32Array([
+		0.0, # COMMON
+		0.0, # UNCOMMON
+		0.67, # RARE
+		0.30, # EPIC
+		0.03 # LEGENDARY
+	])

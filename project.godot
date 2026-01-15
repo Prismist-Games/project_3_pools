@@ -54,6 +54,7 @@ enabled=PackedStringArray("res://addons/resources_spreadsheet_view/plugin.cfg")
 [gui]
 
 timers/tooltip_delay_sec=0.1
+theme/custom="res://assets/global_theme.tres"
 
 [importer_defaults]
 

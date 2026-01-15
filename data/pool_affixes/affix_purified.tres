@@ -9,5 +9,5 @@ script = ExtResource("1")
 id = &"purified"
 name = "AFFIX_PURIFIED"
 description = "AFFIX_PURIFIED_DESC"
-base_gold_cost = 6
+base_gold_cost = 3
 effects = Array[ExtResource("1_v0gia")]([ExtResource("2")])

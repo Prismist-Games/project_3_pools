@@ -15,9 +15,8 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if ctx == null:
 		return
 	
-	# 修改消耗
-	ctx.gold_cost = 1
+	# 价格由 .tres 配置的 base_gold_cost 控制，不再在此处覆盖
 	
-	# 修改权重
+	# 修改权重：只出普通或传说
 	var r: float = clampf(legendary_rate, 0.0, 1.0)
 	ctx.rarity_weights = PackedFloat32Array([1.0 - r, 0.0, 0.0, 0.0, r])

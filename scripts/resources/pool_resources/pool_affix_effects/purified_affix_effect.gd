@@ -14,20 +14,13 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if ctx == null:
 		return
 	
-	# 修改消耗
-	ctx.gold_cost = 3
+	# 价格由 .tres 配置的 base_gold_cost 控制，不再在此处覆盖
 	
-	# 修改权重
+	# 修改权重：固定为 稀有67%, 史诗30%, 传说3%
 	ctx.rarity_weights = PackedFloat32Array([
-		0.0,  # COMMON
-		0.0,  # UNCOMMON
+		0.0, # COMMON
+		0.0, # UNCOMMON
 		0.67, # RARE
 		0.30, # EPIC
-		0.03  # LEGENDARY
+		0.03 # LEGENDARY
 	])
-
-
-
-
-
-

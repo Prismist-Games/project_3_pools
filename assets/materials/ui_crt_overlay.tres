@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://ccpe7db5t4nua"]
+
+[ext_resource type="Shader" path="res://assets/shaders/ui_crt_overlay.gdshader" id="1_crtsh"]
+
+[resource]
+shader = ExtResource("1_crtsh")
+shader_parameter/scanline_count = 120.0
+shader_parameter/scanline_alpha = 0.15
+shader_parameter/scanline_speed = 2.0
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/screen_curvature = 0.05
+shader_parameter/jitter_intensity = 0.002
+shader_parameter/noise_intensity = 0.05

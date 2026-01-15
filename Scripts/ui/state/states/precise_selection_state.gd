@@ -124,6 +124,8 @@ func select_option(index: int) -> void:
 			other_slot.close_lid()
 		
 		InventorySystem.pending_item = item_instance
+		# ERA_4: 抽奖后递减保质期
+		ShelfLifeEffect.trigger_shelf_life_decrement()
 		machine.transition_to(&"Replacing", {"source_pool_index": index})
 		return
 	
@@ -141,12 +143,16 @@ func select_option(index: int) -> void:
 		# 2. 将选中的物品加入 pending 队列（它会显示在当前选中的 slot 里）
 		InventorySystem.pending_item = item_instance
 		
+		# ERA_4: 抽奖后递减保质期
+		ShelfLifeEffect.trigger_shelf_life_decrement()
+		
 		# 3. 转换到 Replacing 状态
 		machine.transition_to(&"Replacing", {"source_pool_index": index})
 	else:
 		# 添加成功，VFX 会自动触发飞行 (通过 item_added 信号)
 		# 等待飞行完成后再关盖刷新 - 由 _on_vfx_queue_finished 处理
-		pass
+		# ERA_4: 抽奖后递减保质期
+		ShelfLifeEffect.trigger_shelf_life_decrement()
 
 func handle_input(event: InputEvent) -> bool:
 	# 拦截右键，阻止取消 (精准选择强制必须选一个)
@@ -212,14 +218,22 @@ func _connect_slot_hover(slot_index: int, item_id: StringName) -> void:
 	if not input_area:
 		return
 	
-	# 创建闭包捕获 item_id
+	# 创建闭包捕获 item_id 和 slot
 	var on_entered = func():
+		# 高亮订单图标
 		if controller and controller.quest_icon_highlighter:
 			controller.quest_icon_highlighter.highlight_by_item_id(item_id)
+		# 变亮lottery slot（类似item slot的效果）
+		if slot and slot.has_method("set_highlight"):
+			slot.set_highlight(true)
 	
 	var on_exited = func():
+		# 清除订单图标高亮
 		if controller and controller.quest_icon_highlighter:
 			controller.quest_icon_highlighter.clear_all_highlights()
+		# 取消lottery slot变亮
+		if slot and slot.has_method("set_highlight"):
+			slot.set_highlight(false)
 	
 	# 连接信号
 	input_area.mouse_entered.connect(on_entered)

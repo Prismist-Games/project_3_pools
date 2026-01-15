@@ -95,6 +95,10 @@ func select_slot(index: int) -> void:
 	if item == null:
 		return
 	
+	# 已损坏的物品不能参与以旧换新，只能回收
+	if item.is_expired:
+		return
+	
 	_is_selecting = true
 	_is_animating = true
 	
@@ -165,6 +169,9 @@ func _execute_trade_in_sequence(slot_index: int, item: ItemInstance) -> void:
 	if on_trade_callback.is_valid():
 		on_trade_callback.call(item)
 	EventBus.item_obtained.disconnect(capture_fn)
+	
+	# ERA_4: 抽奖后递减保质期
+	ShelfLifeEffect.trigger_shelf_life_decrement()
 	
 	# 5. --- 复用标准揭示序列 ---
 	# 震动结束，现在开始像正常抽奖一样“开门出货”

@@ -59,22 +59,27 @@ func submit_order() -> void:
 			
 			# 通过 OrderController 查找对应的 UI 槽位
 			if controller.order_controller:
-				for child in controller.order_controller.quest_slots_grid.get_children():
-					if child.has_method("get_order") and child.get_order() == order:
-						slot = child
-						break
-				
-				# 如果还没找到，尝试备选方案
-				if not slot:
-					for ui_idx in range(1, 5):
-						var ui_slot = controller.quest_slots_grid.get_node_or_null("Quest Slot_root_" + str(ui_idx))
-						if ui_slot:
-							# 这里假设顺序匹配，虽然不够严谨但作为保底
-							var displayed_order_idx = ui_idx - 1
-							if displayed_order_idx < OrderSystem.current_orders.size():
-								if OrderSystem.current_orders[displayed_order_idx] == order:
-									slot = ui_slot
-									break
+				# 检查是否是主线任务
+				if order.is_mainline:
+					slot = controller.order_controller.main_quest_slot
+				else:
+					# 普通订单：在 quest_slots_grid 中查找
+					for child in controller.order_controller.quest_slots_grid.get_children():
+						if child.has_method("get_order") and child.get_order() == order:
+							slot = child
+							break
+					
+					# 如果还没找到，尝试备选方案
+					if not slot:
+						for ui_idx in range(1, 5):
+							var ui_slot = controller.order_controller.quest_slots_grid.get_node_or_null("Quest Slot_root_" + str(ui_idx))
+							if ui_slot:
+								# 这里假设顺序匹配，虽然不够严谨但作为保底
+								var displayed_order_idx = ui_idx - 1
+								if displayed_order_idx < OrderSystem.current_orders.size():
+									if OrderSystem.current_orders[displayed_order_idx] == order:
+										slot = ui_slot
+										break
 			
 			if slot:
 				satisfying_slots.append(slot)

@@ -9,5 +9,5 @@ script = ExtResource("1")
 id = &"volatile"
 name = "AFFIX_VOLATILE"
 description = "AFFIX_VOLATILE_DESC"
-base_gold_cost = 8
+base_gold_cost = 1
 effects = Array[ExtResource("1_v0gia")]([ExtResource("2")])

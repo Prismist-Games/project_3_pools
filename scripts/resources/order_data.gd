@@ -109,7 +109,7 @@ func calculate_preview_rewards(selected_items: Array) -> Dictionary:
 	var validation = validate_selection(selected_items)
 	if validation.valid:
 		res.is_satisfied = true
-		res.gold = roundi(reward_gold * (1.0 + validation.total_overflow_bonus))
+		res.gold = roundi(reward_gold * (1.0 + validation.total_submitted_bonus))
 	
 	return res
 
@@ -118,7 +118,7 @@ func calculate_preview_rewards(selected_items: Array) -> Dictionary:
 func validate_selection(selected_items: Array) -> Dictionary:
 	var result = {
 		"valid": false,
-		"total_overflow_bonus": 0.0,
+		"total_submitted_bonus": 0.0, # 提交物品的总品质加成
 		"consumed_items": selected_items
 	}
 	
@@ -147,10 +147,10 @@ func validate_selection(selected_items: Array) -> Dictionary:
 		if best_match == null:
 			return result # 任何一个需求没满足，整个订单就不合法
 		
-		# 计算该需求槽位的加成
-		var overflow = Constants.rarity_bonus(best_match.rarity) - Constants.rarity_bonus(min_rarity)
-		total_bonus += maxf(overflow, 0.0)
+		# 计算该槽位提交物品的品质加成（基于实际提交品质，而非溢出差值）
+		# 例如：提交一个 Epic 物品，加成 = 0.4
+		total_bonus += Constants.rarity_bonus(best_match.rarity)
 			
 	result.valid = true
-	result.total_overflow_bonus = total_bonus
+	result.total_submitted_bonus = total_bonus
 	return result
