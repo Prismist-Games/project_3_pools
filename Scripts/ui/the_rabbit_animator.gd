@@ -50,10 +50,6 @@ var _right_eye_fill: Sprite2D
 var _default_eye_texture: Texture2D
 var _default_eye_scale: Vector2 = Vector2.ONE
 
-var _left_eye_tween: Tween
-var _right_eye_tween: Tween
-
-
 var _playback: AnimationNodeStateMachinePlayback
 var _current_state_name: StringName = STATE_RABBIT_IDLE
 
@@ -251,30 +247,16 @@ func restore_eyes() -> void:
 
 ## 核心眨眼序列动画
 func _run_blink_sequence(on_closed_callback: Callable) -> void:
-	# Left Eye
-	if _left_eye_fill:
-		if _left_eye_tween and _left_eye_tween.is_valid():
-			_left_eye_tween.kill()
-		_left_eye_tween = create_tween()
-		_setup_eye_blink_tween(_left_eye_tween, _left_eye_fill, on_closed_callback)
-
-	# Right Eye
-	if _right_eye_fill:
-		if _right_eye_tween and _right_eye_tween.is_valid():
-			_right_eye_tween.kill()
-		_right_eye_tween = create_tween()
-		_setup_eye_blink_tween(_right_eye_tween, _right_eye_fill, on_closed_callback)
-
-func _setup_eye_blink_tween(tween: Tween, eye: Sprite2D, callback: Callable) -> void:
-	# 闭眼
-	tween.tween_property(eye, "scale:y", 0.0, blink_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-	# 闭合时的回调 (用于切换贴图等)
-	if callback.is_valid():
-		# 注意：因为有两个 Tween 同时运行，callback 会被调用两次
-		# 对于 texture 设置等幂等操作是安全的
-		tween.tween_callback(callback)
-	# 睁眼
-	tween.tween_property(eye, "scale:y", _default_eye_scale.y, blink_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	for eye in [_left_eye_fill, _right_eye_fill]:
+		if not eye: continue
+		var tween = create_tween()
+		# 闭眼
+		tween.tween_property(eye, "scale:y", 0.0, blink_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		# 闭合时的回调 (用于切换贴图等)
+		if on_closed_callback.is_valid():
+			tween.tween_callback(on_closed_callback)
+		# 睁眼
+		tween.tween_property(eye, "scale:y", _default_eye_scale.y, blink_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 func _set_eyes_texture(tex: Texture2D) -> void:
 	if _left_eye_fill: _left_eye_fill.texture = tex
@@ -317,24 +299,25 @@ func debug_travel_to_state(state_name: StringName) -> void:
 
 # --- 奖池悬浮交互 ---
 
-## 奖池悬浮时：让兔子眼睛直视前方
+# 奖池悬浮时：让兔子眼睛直视前方
 func _on_pool_hovered(_idx: int, _type: int) -> void:
-	_cond_is_pool_hovered = true
-	if anim_tree:
-		anim_tree.set("parameters/conditions/is_pool_hovered", true)
+# 	_cond_is_pool_hovered = true
+# 	if anim_tree:
+# 		anim_tree.set("parameters/conditions/is_pool_hovered", true)
 	# _tween_eye_offset(Vector2.ZERO, 0.15)
+	pass
 
 ## 鼠标离开奖池：恢复默认状态
 func _on_pool_unhovered(_idx: int) -> void:
-	_cond_is_pool_hovered = false
-	if anim_tree:
-		anim_tree.set("parameters/conditions/is_pool_hovered", false)
-		print(anim_tree.get("parameters/conditions/is_pool_hovered"))
+	# _cond_is_pool_hovered = false
+	# if anim_tree:
+	# 	anim_tree.set("parameters/conditions/is_pool_hovered", false)
 	# _tween_eye_offset(Vector2.ZERO, 0.2)
+	pass
 
-# ## 平滑调整瞳孔偏移
-# func _tween_eye_offset(target: Vector2, duration: float) -> void:
-# 	for eye in [_left_eye_fill, _right_eye_fill]:
-# 		if eye and eye.material:
-# 			var tween = create_tween()
-# 			tween.tween_property(eye.material, "shader_parameter/pupil_offset", target, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+## 平滑调整瞳孔偏移
+func _tween_eye_offset(target: Vector2, duration: float) -> void:
+	for eye in [_left_eye_fill, _right_eye_fill]:
+		if eye and eye.material:
+			var tween = create_tween()
+			tween.tween_property(eye.material, "shader_parameter/pupil_offset", target, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)

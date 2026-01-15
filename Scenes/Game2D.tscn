@@ -557,48 +557,46 @@ tracks/20/keys = {
 "update": 0,
 "values": [Color(0, 0, 0, 1)]
 }
-tracks/21/type = "method"
+tracks/21/type = "value"
 tracks/21/imported = false
-tracks/21/enabled = false
-tracks/21/path = NodePath("TheRabbitAnimator")
+tracks/21/enabled = true
+tracks/21/path = NodePath("../../The Machine:position")
 tracks/21/interp = 1
 tracks/21/loop_wrap = true
 tracks/21/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"restore_eyes"
-}]
+"update": 0,
+"values": [Vector2(3750, 1488)]
 }
 tracks/22/type = "value"
 tracks/22/imported = false
 tracks/22/enabled = true
-tracks/22/path = NodePath("../../The Machine:position")
+tracks/22/path = NodePath(".:position")
 tracks/22/interp = 1
 tracks/22/loop_wrap = true
 tracks/22/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(3750, 1488)]
+"values": [Vector2(0, 0)]
 }
 tracks/23/type = "value"
 tracks/23/imported = false
 tracks/23/enabled = true
-tracks/23/path = NodePath(".:position")
+tracks/23/path = NodePath("TheRabbitHeadLeft:position")
 tracks/23/interp = 1
 tracks/23/loop_wrap = true
 tracks/23/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, 0)]
+"values": [Vector2(19.5, -307.5)]
 }
 tracks/24/type = "value"
 tracks/24/imported = false
 tracks/24/enabled = true
-tracks/24/path = NodePath("TheRabbitHeadLeft:position")
+tracks/24/path = NodePath("TheRabbitHeadMid:position")
 tracks/24/interp = 1
 tracks/24/loop_wrap = true
 tracks/24/keys = {
@@ -610,22 +608,10 @@ tracks/24/keys = {
 tracks/25/type = "value"
 tracks/25/imported = false
 tracks/25/enabled = true
-tracks/25/path = NodePath("TheRabbitHeadMid:position")
+tracks/25/path = NodePath("TheRabbitHeadRight:position")
 tracks/25/interp = 1
 tracks/25/loop_wrap = true
 tracks/25/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(19.5, -307.5)]
-}
-tracks/26/type = "value"
-tracks/26/imported = false
-tracks/26/enabled = true
-tracks/26/path = NodePath("TheRabbitHeadRight:position")
-tracks/26/interp = 1
-tracks/26/loop_wrap = true
-tracks/26/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -763,51 +749,37 @@ tracks/2/keys = {
 "update": 0,
 "values": [-0.17453292, -0.2617994, -0.17453292]
 }
-tracks/3/type = "method"
+tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("TheRabbitAnimator")
-tracks/3/interp = 1
-tracks/3/loop_wrap = false
+tracks/3/path = NodePath("TheRabbitLeftFoot:rotation")
+tracks/3/interp = 4
+tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"squint_eyes"
-}]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("TheRabbitLeftFoot:rotation")
-tracks/4/interp = 4
-tracks/4/loop_wrap = true
-tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(2.0000007, 0.6155723),
 "update": 0,
 "values": [-0.33276048, 0.0]
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(1.2, 0)]
 }
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -1001,51 +973,37 @@ tracks/7/keys = {
 "update": 0,
 "values": [Vector2(0, 1), Vector2(0, 1.2)]
 }
-tracks/8/type = "method"
+tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("TheRabbitAnimator")
-tracks/8/interp = 1
+tracks/8/path = NodePath("TheRabbitHeadLeft:position")
+tracks/8/interp = 2
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"restore_eyes"
-}]
+"update": 0,
+"values": [Vector2(20, -360)]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("TheRabbitHeadLeft:position")
+tracks/9/path = NodePath("TheRabbitHeadMid:position")
 tracks/9/interp = 2
 tracks/9/loop_wrap = true
 tracks/9/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(20, -360)]
+"values": [Vector2(19, -399)]
 }
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("TheRabbitHeadMid:position")
+tracks/10/path = NodePath("TheRabbitHeadRight:position")
 tracks/10/interp = 2
 tracks/10/loop_wrap = true
 tracks/10/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(19, -399)]
-}
-tracks/11/type = "value"
-tracks/11/imported = false
-tracks/11/enabled = true
-tracks/11/path = NodePath("TheRabbitHeadRight:position")
-tracks/11/interp = 2
-tracks/11/loop_wrap = true
-tracks/11/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
