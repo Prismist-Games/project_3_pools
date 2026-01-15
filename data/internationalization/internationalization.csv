@@ -182,3 +182,8 @@ SWITCH_SUBMIT,Submit,提交
 SWITCH_RECYCLE,Recycle,回收
 SWITCH_CONFIRM,Confirm,确认
 LEGACY_TOOLTIP,Quest Reward Boost,订单收益加成
+
+# =====================================================================
+# ERA_3 DLC Panel (第三时代 DLC 面板)
+# =====================================================================
+DLC_TYPE_COUNT,Item Types: %d / %d,道具种类: %d / %d

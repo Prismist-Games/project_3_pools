@@ -13,44 +13,95 @@ var _hovered_slot_index: int = -1
 ## 当前被按下的slot索引 (-1表示无，用于处理鼠标移出后松开的情况)
 var _pressed_slot_index: int = -1
 
+## 基础格子数量（The Machine 主面板）
+const BASE_SLOT_COUNT: int = 10
+## DLC 额外格子数量
+const DLC_SLOT_COUNT: int = 5
+
 var item_slots_grid: GridContainer
+var _dlc_slots_grid: GridContainer = null
 var _slots: Array[Control] = []
+var _dlc_enabled: bool = false
 
 func setup(grid: GridContainer) -> void:
 	item_slots_grid = grid
 	_init_slots()
 	_connect_signals()
 
+
+## 设置 DLC 额外槽位的 Grid 引用（由 Game2DUI 调用）
+func setup_dlc_grid(dlc_grid: GridContainer) -> void:
+	_dlc_slots_grid = dlc_grid
+	_init_dlc_slots()
+
+
 func _init_slots() -> void:
 	_slots.clear()
-	_slots.resize(10)
+	_slots.resize(BASE_SLOT_COUNT)
 	
-	for i in range(10):
+	for i in range(BASE_SLOT_COUNT):
 		var slot = item_slots_grid.get_node_or_null("Item Slot_root_" + str(i))
 		_slots[i] = slot
-		
-		if slot and slot.has_method("setup"):
-			slot.setup(i)
-			var input_area = slot.get_node("Input Area")
-			if input_area:
-				# Disconnect first to avoid duplicates if re-initializing
-				if input_area.gui_input.is_connected(_on_slot_input):
-					input_area.gui_input.disconnect(_on_slot_input)
-				if input_area.mouse_entered.is_connected(_on_slot_mouse_entered):
-					input_area.mouse_entered.disconnect(_on_slot_mouse_entered)
-				if input_area.mouse_exited.is_connected(_on_slot_mouse_exited):
-					input_area.mouse_exited.disconnect(_on_slot_mouse_exited)
-					
-				input_area.gui_input.connect(_on_slot_input.bind(i))
-				input_area.mouse_entered.connect(_on_slot_mouse_entered.bind(i))
-				input_area.mouse_exited.connect(_on_slot_mouse_exited.bind(i))
+		_setup_slot(slot, i)
+
+
+## 初始化 DLC 额外槽位
+func _init_dlc_slots() -> void:
+	if not _dlc_slots_grid:
+		return
+	
+	# 扩展 _slots 数组以容纳 DLC 槽位
+	_slots.resize(BASE_SLOT_COUNT + DLC_SLOT_COUNT)
+	
+	for i in range(DLC_SLOT_COUNT):
+		var slot = _dlc_slots_grid.get_node_or_null("Item Slot_root_" + str(i))
+		var global_index = BASE_SLOT_COUNT + i
+		_slots[global_index] = slot
+		_setup_slot(slot, global_index)
+
+
+## 通用槽位设置逻辑
+func _setup_slot(slot: Control, index: int) -> void:
+	if not slot:
+		return
+	
+	if slot.has_method("setup"):
+		slot.setup(index)
+	
+	var input_area = slot.get_node_or_null("Input Area")
+	if input_area:
+		# Disconnect first to avoid duplicates if re-initializing
+		if input_area.gui_input.is_connected(_on_slot_input):
+			input_area.gui_input.disconnect(_on_slot_input)
+		if input_area.mouse_entered.is_connected(_on_slot_mouse_entered):
+			input_area.mouse_entered.disconnect(_on_slot_mouse_entered)
+		if input_area.mouse_exited.is_connected(_on_slot_mouse_exited):
+			input_area.mouse_exited.disconnect(_on_slot_mouse_exited)
+			
+		input_area.gui_input.connect(_on_slot_input.bind(index))
+		input_area.mouse_entered.connect(_on_slot_mouse_entered.bind(index))
+		input_area.mouse_exited.connect(_on_slot_mouse_exited.bind(index))
 
 func _connect_signals() -> void:
 	# Inventory signals are mainly handled by Game2DUI routing for now
 	pass
 
+
+## 启用/禁用 DLC 额外槽位
+func set_dlc_slots_enabled(enabled: bool) -> void:
+	_dlc_enabled = enabled
+
+
+## 获取当前有效的槽位数量
+func get_active_slot_count() -> int:
+	if _dlc_enabled:
+		return BASE_SLOT_COUNT + DLC_SLOT_COUNT
+	return BASE_SLOT_COUNT
+
+
 func update_all_slots(inventory: Array) -> void:
-	for i in range(10):
+	var slot_count = get_active_slot_count()
+	for i in range(slot_count):
 		var slot = get_slot_node(i)
 		var item = inventory[i] if i < inventory.size() else null
 		if slot:
@@ -84,7 +135,8 @@ func _calculate_badge_state(item: ItemInstance) -> int:
 	return badge_state
 
 func update_selection(index: int) -> void:
-	for i in range(10):
+	var slot_count = get_active_slot_count()
+	for i in range(slot_count):
 		var slot = get_slot_node(i)
 		var should_be_selected = (i == index)
 		if slot and slot._is_selected != should_be_selected:
@@ -98,7 +150,8 @@ func update_selection(index: int) -> void:
 						slot.update_status_badge(badge)
 
 func update_multi_selection(indices: Array[int]) -> void:
-	for i in range(10):
+	var slot_count = get_active_slot_count()
+	for i in range(slot_count):
 		var slot = get_slot_node(i)
 		if slot:
 			if i in indices:
@@ -115,13 +168,15 @@ func update_multi_selection(indices: Array[int]) -> void:
 								slot.update_status_badge(badge)
 
 func set_slots_locked(locked: bool) -> void:
-	for i in range(10):
+	var slot_count = get_active_slot_count()
+	for i in range(slot_count):
 		var slot = get_slot_node(i)
 		if slot:
 			slot.is_locked = locked
 
 func highlight_items_by_id(item_id: StringName) -> void:
-	for i in range(10):
+	var slot_count = get_active_slot_count()
+	for i in range(slot_count):
 		var slot = get_slot_node(i)
 		if not slot: continue
 		

@@ -1183,6 +1183,43 @@ layout_mode = 2
 [node name="Lottery Slot_root_2" parent="The Machine/Lottery Slots Grid" instance=ExtResource("44_jptrp")]
 layout_mode = 2
 
+[node name="The Machine DLC" type="Node2D" parent="."]
+position = Vector2(4034, 3210)
+
+[node name="Additional Item Slots Grid" type="GridContainer" parent="The Machine DLC"]
+offset_left = -804.0
+offset_top = -5.0
+offset_right = 796.0
+offset_bottom = 795.0
+theme_override_constants/h_separation = 400
+theme_override_constants/v_separation = 400
+columns = 5
+
+[node name="Item Slot_root_0" parent="The Machine DLC/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
+layout_mode = 2
+
+[node name="Item Slot_root_1" parent="The Machine DLC/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
+layout_mode = 2
+
+[node name="Item Slot_root_2" parent="The Machine DLC/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
+layout_mode = 2
+
+[node name="Item Slot_root_3" parent="The Machine DLC/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
+layout_mode = 2
+
+[node name="Item Slot_root_4" parent="The Machine DLC/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
+layout_mode = 2
+
+[node name="DLC Label" type="RichTextLabel" parent="The Machine DLC"]
+offset_left = 1030.0
+offset_top = -114.0
+offset_right = 1591.0
+offset_bottom = -37.0
+theme_override_font_sizes/normal_font_size = 45
+text = "道具种类: 0 / 7"
+scroll_active = false
+vertical_alignment = 1
+
 [node name="The Rabbit" type="Node2D" parent="."]
 position = Vector2(1434, 1998)
 
