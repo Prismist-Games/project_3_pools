@@ -17,6 +17,7 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 
 func _handle_order_completed() -> void:
 	SkillSystem.skill_state.next_draw_guaranteed_rare = true
+	triggered.emit(TRIGGER_PENDING)
 
 
 func _handle_draw_requested(ctx: DrawContext) -> void:
@@ -34,6 +35,7 @@ func _handle_item_obtained(item: ItemInstance) -> void:
 	
 	if SkillSystem.skill_state.next_draw_guaranteed_rare:
 		SkillSystem.skill_state.next_draw_guaranteed_rare = false
+		triggered.emit(TRIGGER_ACTIVATE)
 		# 如果品质低于稀有，升级到稀有
 		if item.rarity < Constants.Rarity.RARE:
 			item.rarity = Constants.Rarity.RARE

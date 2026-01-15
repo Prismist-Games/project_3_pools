@@ -96,8 +96,19 @@ func get_selectable_skills(count: int = 3) -> Array[SkillData]:
 	return available.slice(0, count)
 
 
+var _effect_subscriptions: Dictionary = {} # Mapping: SkillEffect -> Callable
+
 func _rebuild_effects(skills: Array) -> void:
+	# Clean up old connections
+	for eff: SkillEffect in _active_effects:
+		if eff in _effect_subscriptions:
+			if eff.triggered.is_connected(_effect_subscriptions[eff]):
+				eff.triggered.disconnect(_effect_subscriptions[eff])
+			_effect_subscriptions.erase(eff)
+	
 	_active_effects.clear()
+	
+	# Build new list and connections
 	for s: Variant in skills:
 		var skill_data: SkillData = s as SkillData
 		if skill_data == null:
@@ -106,6 +117,12 @@ func _rebuild_effects(skills: Array) -> void:
 			if eff == null:
 				continue
 			_active_effects.append(eff)
+			
+			# Connect signal with skill_id bound
+			var callback = _on_effect_triggered.bind(skill_data.id)
+			if not eff.triggered.is_connected(callback):
+				eff.triggered.connect(callback)
+				_effect_subscriptions[eff] = callback
 
 
 func _dispatch(event_id: StringName, context: RefCounted) -> void:
@@ -131,5 +148,22 @@ func _on_item_obtained(item: RefCounted) -> void:
 	_dispatch(&"item_obtained", item)
 
 
+func _on_effect_triggered(type: String, skill_id: String) -> void:
+	# Dispatch generic game event for UI to pick up
+	# Wrap in RefCounted to satisfy signal signature
+	var ctx = SkillFeedbackContext.new()
+	ctx.skill_id = skill_id
+	ctx.type = type
+	
+	EventBus.game_event.emit(&"skill_visual_feedback", ctx)
+
+
 func _on_game_event(event_id: StringName, context: RefCounted) -> void:
 	_dispatch(event_id, context)
+
+
+# Helper class for wrapping feedback data
+class SkillFeedbackContext extends RefCounted:
+	var skill_id: String = ""
+
+	var type: String = ""

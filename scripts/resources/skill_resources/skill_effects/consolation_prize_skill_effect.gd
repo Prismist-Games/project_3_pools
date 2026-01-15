@@ -34,7 +34,14 @@ func _handle_item_obtained(item: ItemInstance) -> void:
 	if state.next_draw_guaranteed_rare:
 		state.next_draw_guaranteed_rare = false
 		if item.rarity < Constants.Rarity.RARE:
+			triggered.emit(TRIGGER_ACTIVATE)
 			item.rarity = Constants.Rarity.RARE
+		else:
+			# Even if naturally rare or better, we consider the skill "effect" consumed and active contextually
+			# But strictly speaking if it didn't change anything, maybe we don't flash? 
+			# Let's flash to show "Protection Used" or just "Skill Active".
+			triggered.emit(TRIGGER_ACTIVATE)
+			
 		# 当触发安慰奖后重置计数
 		state.consecutive_commons = 0
 		return
@@ -45,6 +52,7 @@ func _handle_item_obtained(item: ItemInstance) -> void:
 		# 检查是否达到阈值
 		if state.consecutive_commons >= threshold:
 			state.next_draw_guaranteed_rare = true
+			triggered.emit(TRIGGER_PENDING)
 			state.consecutive_commons = 0
 	else:
 		# 非普通物品重置计数

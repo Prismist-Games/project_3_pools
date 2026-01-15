@@ -28,6 +28,8 @@ func _on_item_added(item: ItemInstance, _index: int) -> void:
 
 func _handle_order_completed() -> void:
 	SkillSystem.skill_state.next_draw_extra_item = true
+	triggered.emit(TRIGGER_PENDING)
+	
 	_last_cloned_item = null
 	
 	# 确保连接了 item_added 信号
@@ -46,6 +48,8 @@ func _handle_item_for_clone(item: ItemInstance) -> void:
 			
 		state.next_draw_extra_item = false
 		_last_cloned_item = item
+		
+		triggered.emit(TRIGGER_ACTIVATE)
 		
 		# 立即创建克隆物品（捕获当前品质）
 		var cloned_item = ItemInstance.new(item.item_data, item.rarity, item.sterile, item.shelf_life)

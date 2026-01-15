@@ -22,4 +22,5 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 				consistent = false
 				break
 		if consistent:
+			triggered.emit(TRIGGER_INSTANT)
 			ctx.reward_gold *= multiplier

@@ -19,4 +19,5 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if randf() < chance:
 		var current_count = ctx.get_value("requirement_count", 1)
 		if current_count > 1:
+			triggered.emit(TRIGGER_INSTANT)
 			ctx.set_value("requirement_count", maxi(1, current_count - reduction))

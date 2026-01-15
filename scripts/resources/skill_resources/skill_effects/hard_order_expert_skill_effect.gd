@@ -21,4 +21,5 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 			has_hard = true
 			break
 	if has_hard:
+		triggered.emit(TRIGGER_INSTANT)
 		ctx.reward_gold += bonus_gold

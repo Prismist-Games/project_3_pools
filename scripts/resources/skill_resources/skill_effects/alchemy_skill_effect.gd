@@ -18,4 +18,5 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	
 	if ctx.item.rarity >= rarity_threshold:
 		if randf() < chance:
+			triggered.emit(TRIGGER_INSTANT)
 			ctx.reward_gold += bonus_gold

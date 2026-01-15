@@ -16,4 +16,5 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if ctx == null: return
 	
 	if ctx.submitted_items.size() >= count_threshold:
+		triggered.emit(TRIGGER_INSTANT)
 		ctx.reward_gold += bonus_gold

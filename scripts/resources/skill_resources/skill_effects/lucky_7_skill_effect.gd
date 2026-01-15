@@ -14,6 +14,11 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	var ctx: DrawContext = context as DrawContext
 	if ctx == null:
 		return
+
 	if GameManager.gold % 10 != last_digit:
 		return
+		
+	# 触发视觉特效
+	triggered.emit(TRIGGER_INSTANT)
+	
 	ctx.multiply_rarity_weight(Constants.Rarity.LEGENDARY, legendary_multiplier)
