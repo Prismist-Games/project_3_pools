@@ -180,8 +180,10 @@ func _enter_state(state: StringName) -> void:
 		STATE_RABBIT_IMPATIENT:
 			squint_eyes()
 		STATE_RABBIT_IDLE:
+			set_auto_blink(true)
 			restore_eyes()
 		STATE_RABBIT_SHOCKED:
+			set_auto_blink(false)
 			restore_eyes()
 
 ## 重置所有 Trigger (在状态切换时调用)
