@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="PovertyReliefSkillEffect" load_steps=2 format=3 uid="uid://05d6oguy0c7r"]
 
-[ext_resource type="Script" uid="uid://ffgd162t2a6h" path="res://scripts/resources/skill_resources/skill_effects/poverty_relief_skill_effect.gd" id="1"]
+[ext_resource type="Script" uid="uid://cks2e8hf8vxf" path="res://scripts/resources/skill_resources/skill_effects/poverty_relief_skill_effect.gd" id="1"]
 
 [resource]
 script = ExtResource("1")

@@ -379,6 +379,10 @@ func play_draw_anim() -> void:
 
 func update_pending_display(pending_list: Array) -> void:
 	if pending_list.is_empty():
+		# 如果当前正在飞行（作为起始点），不要立即清空，否则会导致图标瞬间消失
+		if is_vfx_source:
+			return
+			
 		is_drawing = false
 		_top_item_id = &""
 		
