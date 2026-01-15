@@ -993,23 +993,20 @@ grow_vertical = 2
 texture = ExtResource("25_ccvlu")
 
 [node name="TheMachineLegacyFill" type="Sprite2D" parent="The Machine"]
-position = Vector2(447.25, 710)
+position = Vector2(518, 739)
 texture = ExtResource("5_0dgko")
 offset = Vector2(138.5, -26)
-region_enabled = true
-region_rect = Rect2(827, 1606, 2422, 111)
 
 [node name="TheMachineLegacyOutline" type="Sprite2D" parent="The Machine/TheMachineLegacyFill"]
+position = Vector2(-5.25, -6)
 texture = ExtResource("6_2v31b")
 offset = Vector2(142.5, -22.5)
-region_enabled = true
-region_rect = Rect2(824, 1600, 2436, 130)
 
 [node name="Legacy Grid" type="HBoxContainer" parent="The Machine/TheMachineLegacyFill"]
-offset_left = -1003.25
-offset_top = -57.0
-offset_right = 1321.75
-offset_bottom = 17.0
+offset_left = -1005.25
+offset_top = -62.0
+offset_right = 1319.75
+offset_bottom = 12.0
 tooltip_text = "LEGACY_TOOLTIP"
 mouse_filter = 0
 mouse_default_cursor_shape = 16

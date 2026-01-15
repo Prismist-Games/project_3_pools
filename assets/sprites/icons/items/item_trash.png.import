@@ -3,8 +3,8 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://crj81lyoxc1f"
-path.s3tc="res://.godot/imported/trash.png-e0390085d79693ea42f76caca00719cc.s3tc.ctex"
-path.etc2="res://.godot/imported/trash.png-e0390085d79693ea42f76caca00719cc.etc2.ctex"
+path.s3tc="res://.godot/imported/item_trash.png-f339803c36889c0a924e39007741bfae.s3tc.ctex"
+path.etc2="res://.godot/imported/item_trash.png-f339803c36889c0a924e39007741bfae.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/icons/items/trash.png"
-dest_files=["res://.godot/imported/trash.png-e0390085d79693ea42f76caca00719cc.s3tc.ctex", "res://.godot/imported/trash.png-e0390085d79693ea42f76caca00719cc.etc2.ctex"]
+source_file="res://assets/sprites/icons/items/item_trash.png"
+dest_files=["res://.godot/imported/item_trash.png-f339803c36889c0a924e39007741bfae.s3tc.ctex", "res://.godot/imported/item_trash.png-f339803c36889c0a924e39007741bfae.etc2.ctex"]
 
 [params]
 
@@ -38,5 +38,5 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
-process/size_limit=0
+process/size_limit=500
 detect_3d/compress_to=1

@@ -442,7 +442,10 @@ func _create_fly_sprite(item, start_pos: Vector2, start_scale: Vector2, animate_
 	
 	# 创建主图标精灵
 	var sprite = Sprite2D.new()
-	sprite.texture = item.item_data.icon
+	if item.is_expired:
+		sprite.texture = preload("res://assets/sprites/icons/items/item_trash.png")
+	else:
+		sprite.texture = item.item_data.icon
 	sprite.global_position = start_pos
 	sprite.scale = start_scale
 	sprite.z_index = 100
@@ -455,13 +458,13 @@ func _create_fly_sprite(item, start_pos: Vector2, start_scale: Vector2, animate_
 		rarity_sprite.texture = rarity_texture
 		rarity_sprite.self_modulate = Constants.get_rarity_border_color(item.rarity)
 		rarity_sprite.global_position = start_pos
-		rarity_sprite.z_index = 99  # 在图标后面
+		rarity_sprite.z_index = 99 # 在图标后面
 		
 		# 根据来源决定是否播放入场动画
 		if animate_rarity_entry:
-			rarity_sprite.scale = Vector2.ZERO  # 初始 scale 为 0
+			rarity_sprite.scale = Vector2.ZERO # 初始 scale 为 0
 		else:
-			rarity_sprite.scale = start_scale  # 直接显示
+			rarity_sprite.scale = start_scale # 直接显示
 		
 		vfx_layer.add_child(rarity_sprite)
 		

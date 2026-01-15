@@ -38,6 +38,7 @@ const BADGE_ANIMATION_DURATION: float = 1.0
 ## Hover 图标素材
 var _recycle_hover_texture: Texture2D = preload("res://assets/sprites/the_machine_switch/Recycle_icon.png")
 var _merge_hover_texture: Texture2D = preload("res://assets/sprites/icons/upgrade_icon_hover.png")
+var _trash_texture: Texture2D = preload("res://assets/sprites/icons/items/item_trash.png")
 
 ## Hover 状态类型
 enum HoverType {NONE, RECYCLABLE, MERGEABLE}
@@ -162,7 +163,7 @@ func update_display(item: ItemInstance) -> void:
 		return
 	
 	_current_item = item
-	icon_display.texture = item.item_data.icon
+	
 	if item_shadow:
 		item_shadow.visible = not _is_selected # 选中时不显示阴影
 	
@@ -171,15 +172,17 @@ func update_display(item: ItemInstance) -> void:
 	
 	# ERA_4: 过期物品视觉标识
 	if item.is_expired:
-		# 降低亮度和饱和度，显示过期状态
-		if icon_display:
-			icon_display.modulate = Color(0.5, 0.5, 0.5, 1.0) # 暗灰色调
-		# 可选：在 status_icon 上显示过期标记
-		# （暂时不显示，因为 update_status_badge 会覆盖）
-	else:
-		# 正常显示
-		if icon_display:
+		# 仅当纹理从“普通物品”变为“垃圾”时播放动画
+		# 如果之前是 null (空格子) 或已经是垃圾，则直接设置
+		if icon_display.texture != _trash_texture and icon_display.texture != null:
+			_play_trash_transformation_animation(_trash_texture)
+		else:
+			icon_display.texture = _trash_texture
 			icon_display.modulate = Color.WHITE
+	else:
+		# 正常物品
+		icon_display.texture = item.item_data.icon
+		icon_display.modulate = Color.WHITE
 	
 	
 	# 更新 freshness 角标
@@ -606,3 +609,28 @@ func handle_mouse_release() -> void:
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	_press_scale_tween.tween_property(icon_display, "scale", _icon_original_scale, 0.1) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+## 播放变成垃圾的动画
+func _play_trash_transformation_animation(new_texture: Texture2D) -> void:
+	if not icon_display: return
+	
+	# 停止可能存在的缩放动画
+	if _press_scale_tween and _press_scale_tween.is_valid():
+		_press_scale_tween.kill()
+	
+	var t = create_tween()
+	# 1. 缩小到 0
+	t.tween_property(icon_display, "scale", Vector2.ZERO, 0.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	# 2. 换图
+	t.tween_callback(func():
+		icon_display.texture = new_texture
+		icon_display.modulate = Color.WHITE
+		if item_shadow:
+			item_shadow.visible = false # 垃圾图可能不需要阴影，或者之后再显示
+	)
+	# 3. 弹回原始大小 (elastic)
+	t.tween_property(icon_display, "scale", _icon_original_scale, 0.6).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	t.tween_callback(func():
+		if item_shadow:
+			item_shadow.visible = not _is_selected
+	)
