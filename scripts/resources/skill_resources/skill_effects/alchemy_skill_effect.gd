@@ -5,8 +5,8 @@ class_name AlchemySkillEffect
 ## 回收稀有及以上品质物品时，15% 概率获得 20 金币。
 
 @export var rarity_threshold: int = Constants.Rarity.RARE
-@export var chance: float = 0.15
-@export var bonus_gold: int = 20
+@export var chance: float = 0.25
+@export var bonus_gold: int = 5
 
 
 func on_event(event_id: StringName, context: RefCounted) -> void:

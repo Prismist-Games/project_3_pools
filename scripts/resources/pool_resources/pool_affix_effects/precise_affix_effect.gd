@@ -50,6 +50,8 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 			
 	for i in range(2):
 		var rarity = Constants.pick_weighted_index(ctx.rarity_weights, GameManager.rng)
+		# 应用最低稀有度限制（如时来运转设置的 min_rarity）
+		rarity = maxi(rarity, ctx.min_rarity)
 		var item_data = selected_data[i]
 		items.append(ItemInstance.new(item_data, rarity))
 	

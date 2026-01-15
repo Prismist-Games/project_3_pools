@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="VipDiscountSkillEffect" load_steps=2 format=3]
-
-[ext_resource type="Script" path="res://scripts/resources/skill_resources/skill_effects/vip_discount_skill_effect.gd" id="1"]
-
-[resource]
-script = ExtResource("1")
-discount_amount = 1

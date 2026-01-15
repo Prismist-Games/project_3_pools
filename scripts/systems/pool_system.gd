@@ -56,11 +56,11 @@ func draw_from_pool(index: int) -> bool:
 	else:
 		ctx.ensure_default_rarity_weights()
 	
-	# 1. 词缀预处理
-	pool.dispatch_affix_event(&"draw_requested", ctx)
-	
-	# 2. 技能预处理
+	# 1. 技能预处理（先于词缀，让技能如时来运转能设置 min_rarity）
 	EventBus.draw_requested.emit(ctx)
+	
+	# 2. 词缀预处理（后于技能，能使用技能设置的参数）
+	pool.dispatch_affix_event(&"draw_requested", ctx)
 	
 	# 检查资源
 	if ctx.gold_cost > 0:
@@ -90,8 +90,10 @@ func _do_normal_draw(ctx: DrawContext) -> void:
 		var rarity = ctx.force_rarity
 		if rarity == -1:
 			rarity = Constants.pick_weighted_index(ctx.rarity_weights, GameManager.rng)
-			
-		rarity = maxi(rarity, ctx.min_rarity)
+		
+		# min_rarity 只对第一个物品生效（用于时来运转+稀碎场景）
+		if i == 0:
+			rarity = maxi(rarity, ctx.min_rarity)
 		
 		var items = GameManager.get_items_for_type(ctx.item_type)
 		if items.is_empty():
