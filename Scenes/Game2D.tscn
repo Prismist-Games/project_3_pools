@@ -589,6 +589,31 @@ tracks/23/keys = {
 
 [sub_resource type="Animation" id="Animation_tiwwg"]
 resource_name = "rabbit_eyes_rolling"
+length = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35, 0.3501, 0.6, 0.8, 1.0),
+"transitions": PackedFloat32Array(1, 1, 0.4, 2.5, 0.5, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -6), Vector2(0, 6), Vector2(0, -1.5), Vector2(0, 0.4), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.35, 0.3501, 0.6, 0.8, 1.0),
+"transitions": PackedFloat32Array(1, 1, 0.4, 2.5, 0.5, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -6), Vector2(0, 6), Vector2(0, -1.5), Vector2(0, 0.4), Vector2(0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_u8s40"]
 resource_name = "rabbit_idle"
@@ -846,7 +871,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(19.5, -273.99)]
+"values": [Vector2(21, -295)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -2019,7 +2044,7 @@ texture = ExtResource("87_u8s40")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask"]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -346.25)
+position = Vector2(0, -337.5)
 texture = ExtResource("18_ivepa")
 
 [node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_lid"]
@@ -2113,7 +2138,7 @@ texture = ExtResource("87_u8s40")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask"]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -346.25)
+position = Vector2(0, -337.5)
 texture = ExtResource("18_ivepa")
 
 [node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_lid"]
