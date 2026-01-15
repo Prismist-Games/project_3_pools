@@ -7,37 +7,27 @@ extends Node
 @export_group("Animation System")
 @export var anim_tree: AnimationTree
 
-const STATE_RABBIT_IDLE = &"RabbitIdle"
-const STATE_RABBIT_SHOCKED = &"RabbitShocked"
-const STATE_RABBIT_IMPATIENT = &"RabbitImpatient"
-const STATE_RABBIT_NOSE_POKING = &"RabbitNosePoking"
-const STATE_RABBIT_DRAWING = &"RabbitDrawing"
-const STATE_RABBIT_RECYCLE_HIT = &"RabbitRecycleHit"
+const STATE_RABBIT_IDLE = &"rabbit_idle"
+const STATE_RABBIT_SHOCKED = &"rabbit_shocked"
+const STATE_RABBIT_IMPATIENT = &"rabbit_impatient"
+const STATE_RABBIT_NOSE_POKING = &"rabbit_nose_poking"
+const STATE_RABBIT_EYES_ROLLING = &"rabbit_eyes_rolling"
+const STATE_RABBIT_KNOCK_MACHINE = &"rabbit_knock_machine"
 
 # ==========================================
 # 全局眼部设置
 # ==========================================
 @export_category("Eye Appearance (Global)")
-@export_group("Socket Shape", "eye_")
-@export var eye_socket_texture: Texture2D ## 眼眶形状纹理（留空=使用原节点纹理）
-@export var eye_socket_scale: float = 1.0 ## 眼眶缩放
-
-@export_group("Outline", "eye_outline_")
-@export var eye_outline_color: Color = Color(1.0, 0.44, 0.35, 1.0) ## 描边颜色
-@export var eye_outline_thickness: float = 0.04 ## 描边粗细
-
-@export_group("Pupil", "eye_pupil_")
-@export var eye_pupil_texture: Texture2D ## 瞳孔形状纹理（留空=使用纯色圆形）
-@export var eye_pupil_initial_size: float = 1.0 ## 瞳孔初始大小
-@export var eye_pupil_initial_offset: Vector2 = Vector2.ZERO ## 瞳孔初始位置偏移 (Shader 坐标系)
-@export var eye_pupil_color: Color = Color.BLACK ## 瞳孔颜色（仅纯色模式）
-@export var eye_pupil_outline_color: Color = Color.BLACK ## 瞳孔描边颜色
-@export var eye_pupil_outline_thickness: float = 0.0 ## 瞳孔描边粗细
 
 
-@export_group("Eye Interaction", "idle_eye_")
-@export var idle_eye_max_offset: float = 8.0
-@export var idle_eye_follow_speed: float = 10.0
+@export_group("Blink Settings", "blink_")
+@export var blink_interval_min: float = 2.0 ## 自动眨眼最小间隔 (秒)
+@export var blink_interval_max: float = 5.0 ## 自动眨眼最大间隔 (秒)
+@export var blink_duration: float = 0.1 ## 单次眨眼闭合时间
+@export var auto_blink_enabled: bool = true ## 是否默认开启自动眨眼
+
+
+var _blink_timer: float = 0.0
 
 
 # ==========================================
@@ -46,52 +36,82 @@ const STATE_RABBIT_RECYCLE_HIT = &"RabbitRecycleHit"
 @export_category("Impatient Config")
 @export_group("Trigger", "impatient_")
 @export var impatient_gold_threshold: int = 10
-@export var test_deform_on_start: bool = false ## DEBUG: 启动时立即测试变形
-
-@export_group("Eye Style", "impatient_eye_")
-@export var impatient_eye_target_texture: Texture2D ## 眯眼时的眼眶形状纹理
-@export var impatient_eye_pupil_scale: float = 0.25 ## 眯眼时的瞳孔缩放
-@export var impatient_eye_pupil_offset: Vector2 = Vector2.ZERO ## 眯眼时的瞳孔基准偏移 (建议 -0.05 到 0.05)
 
 
-const EYE_PROCEDURAL_SHADER = preload("res://assets/shaders/eye_procedural.gdshader")
+@export_group("Eye Style", "squint_")
+@export var squint_eye_texture: Texture2D = preload("res://assets/sprites/the_rabbit/eye_shape_1.png") ## 眯眼时的眼眶形状纹理
 
-var _rabbit_root: Node2D
-var _left_arm: Sprite2D
-var _left_ear: Sprite2D
-var _right_ear: Sprite2D
-var _mustache_left: Sprite2D
-var _mustache_right: Sprite2D
+@export var squint_pupil_offset: Vector2 = Vector2.ZERO ## 眯眼时的瞳孔基准偏移 (建议 -0.05 到 0.05)
+
+
 var _left_eye_fill: Sprite2D
 var _right_eye_fill: Sprite2D
-var _left_foot: Sprite2D
 
-var _left_eye_mat: ShaderMaterial
-var _right_eye_mat: ShaderMaterial
+var _default_eye_texture: Texture2D
+var _default_eye_scale: Vector2 = Vector2.ONE
+
+var _left_eye_tween: Tween
+var _right_eye_tween: Tween
+
 
 var _playback: AnimationNodeStateMachinePlayback
 var _current_state_name: StringName = STATE_RABBIT_IDLE
-var _is_in_triggered_animation: bool = false
-var _is_test_override: bool = false
 
-var _current_lottery_hover_pos: Vector2 = Vector2.ZERO
-var _has_hovered_lottery: bool = false
 
-var _init_trans: Dictionary = {}
+# AnimationTree 条件变量（持续状态）
+var _cond_is_submitting: bool = false
+var _cond_is_low_gold: bool = false
+var _cond_is_high_gold: bool = true # 与 is_low_gold 相反
+var _cond_is_pool_hovered: bool = false
+
+# AnimationTree 触发器（一次性）
+var _trig_order_success: bool = false
+var _trig_exit_submitting: bool = false
+var _trig_pool_clicked: bool = false
+var _trig_recycle_lid_closed: bool = false
+
+var _has_recycled_items: bool = false # 追踪回收周期内是否有物品成功回收
+
+# ... existing code ...
 
 func _ready() -> void:
 	_find_required_nodes()
 	_cache_initial_transforms()
 	_init_animation_tree()
-	_connect_to_ui_state()
 	
+	_connect_to_ui_state()
+
 	if GameManager:
 		GameManager.gold_changed.connect(_on_gold_changed)
+		# 初始化金币状态
+		_on_gold_changed(GameManager.gold)
+	
+	EventBus.order_completed.connect(func(_ctx):
+		_trig_order_success = true
+		if anim_tree:
+			anim_tree.set("parameters/conditions/order_success", true)
+		print("[RabbitAnimator] Trigger: order_success")
+	)
+	EventBus.draw_requested.connect(func(_ctx):
+		_trig_pool_clicked = true
+		if anim_tree:
+			anim_tree.set("parameters/conditions/pool_clicked", true)
+		print("[RabbitAnimator] Trigger: pool_clicked")
+	)
+	EventBus.item_recycled.connect(func(_idx, _item):
+		_has_recycled_items = true
+	)
+	EventBus.game_event.connect(_on_game_event)
 	
 	add_to_group("debug_animator")
 
+
+	_reset_blink_timer()
+
 func _connect_to_ui_state() -> void:
-	# 尝试连接 UI 状态机
+	# 等待一帧，确保 Game2DUI._init_state_machine() 完成 UIStateMachine 的添加
+	await get_tree().process_frame
+	
 	var ui_root = get_tree().get_first_node_in_group("game_2d_ui")
 	if ui_root:
 		var sm = ui_root.get_node_or_null("UIStateMachine")
@@ -99,174 +119,222 @@ func _connect_to_ui_state() -> void:
 			sm.state_changed.connect(_on_ui_state_changed)
 			print("[RabbitAnimator] UI 状态机连接成功")
 		else:
-			print("[RabbitAnimator] 未找到 UIStateMachine 节点")
-	
-	# 连接奖池悬停信号（通过 EventBus）
-	EventBus.game_event.connect(_on_bus_game_event)
+			push_warning("[RabbitAnimator] UIStateMachine 未找到，Submitting 状态将无法触发动画")
+		
+		# 连接 PoolController 的 hover 信号
+		var pc = ui_root.get("pool_controller")
+		if pc:
+			pc.slot_hovered.connect(_on_pool_hovered)
+			pc.slot_unhovered.connect(_on_pool_unhovered)
+			print("[RabbitAnimator] PoolController 信号连接成功")
 
 func _on_ui_state_changed(_from: StringName, to: StringName) -> void:
-	match to:
-		&"Idle": _transition_to_state(STATE_RABBIT_IDLE)
-		&"Drawing": _transition_to_state(STATE_RABBIT_DRAWING)
-		&"Submitting": _transition_to_state(STATE_RABBIT_NOSE_POKING)
-		&"Recycling": _transition_to_state(STATE_RABBIT_RECYCLE_HIT)
-		&"Replacing": _transition_to_state(STATE_RABBIT_IMPATIENT)
-		&"PreciseSelection", &"TargetedSelection": _transition_to_state(STATE_RABBIT_DRAWING)
+	# 更新状态条件
+	var was_submitting = _cond_is_submitting
+	_cond_is_submitting = (to == &"Submitting")
+	
+	# 立即更新 AnimationTree
+	if anim_tree:
+		anim_tree.set("parameters/conditions/is_submitting", _cond_is_submitting)
+	
+	# 检测退出提交状态
+	if was_submitting and not _cond_is_submitting:
+		_trig_exit_submitting = true
+		if anim_tree:
+			anim_tree.set("parameters/conditions/exit_submitting", true)
+		print("[RabbitAnimator] Trigger: exit_submitting")
 
-func _on_bus_game_event(event_id: StringName, payload: Variant) -> void:
-	if event_id == &"lottery_slot_hovered":
-		_has_hovered_lottery = true
-		if payload is RefCounted:
-			var ctx = payload as RefCounted
-			if "get_value" in ctx:
-				_current_lottery_hover_pos = ctx.get_value(&"global_position", Vector2.ZERO)
+func _on_gold_changed(new_gold: int) -> void:
+	_cond_is_low_gold = (new_gold <= impatient_gold_threshold)
+	_cond_is_high_gold = (new_gold > impatient_gold_threshold)
+	
+	# 立即更新 AnimationTree
+	if anim_tree:
+		anim_tree.set("parameters/conditions/is_low_gold", _cond_is_low_gold)
+		anim_tree.set("parameters/conditions/is_high_gold", _cond_is_high_gold)
+
+func _on_game_event(event_id: StringName, _payload: Variant) -> void:
+	if event_id == &"recycle_lid_closed":
+		# 只有在本次回收周期中有物品由于操作被成功回收（发出 item_recycled 信号）时，才触发“敲击机器”动画
+		if _has_recycled_items:
+			_trig_recycle_lid_closed = true
+			if anim_tree:
+				anim_tree.set("parameters/conditions/recycle_lid_closed", true)
+			print("[RabbitAnimator] Trigger: knock machine")
 		else:
-			_current_lottery_hover_pos = Vector2.ZERO
-	elif event_id == &"lottery_slot_unhovered":
-		_has_hovered_lottery = false
+			print("[RabbitAnimator] Lid closed ignored: No items recycled")
+		
+		# 周期结束重置
+		_has_recycled_items = false
+
 
 func _find_required_nodes() -> void:
 	var p = get_parent()
-	_rabbit_root = p
-	print("[RabbitAnimator] Parent node: ", p.name if p else "NULL")
 	
-	_left_arm = p.find_child("TheRabbitLeftArm", true, false)
-	_left_ear = p.find_child("TheRabbitLeftEar", true, false)
-	_right_ear = p.find_child("TheRabbitRightEar", true, false)
-	_mustache_left = p.find_child("TheRabbitMustacheLeft", true, false)
-	_mustache_right = p.find_child("TheRabbitMustacheRight", true, false)
 	_left_eye_fill = p.find_child("TheRabbitLeftEyeFill", true, false)
 	_right_eye_fill = p.find_child("TheRabbitRightEyeFill", true, false)
-	_left_foot = p.find_child("TheRabbitLeftFoot", true, false)
+	
 	
 	print("[RabbitAnimator] Left Eye Fill found: ", _left_eye_fill != null)
 	print("[RabbitAnimator] Right Eye Fill found: ", _right_eye_fill != null)
 
 func _cache_initial_transforms() -> void:
-	var nodes = {
-		"arm_l": _left_arm, "ear_l": _left_ear, "ear_r": _right_ear,
-		"mus_l": _mustache_left, "mus_r": _mustache_right,
-		"foot_l": _left_foot
-	}
-	for key in nodes:
-		var node = nodes[key]
-		if node: _init_trans[key] = {"pos": node.position, "rot": node.rotation, "scale": node.scale}
-	
 	_init_eye_materials()
 
 func _init_eye_materials() -> void:
+	# 捕获初始状态作为默认动画目标
 	if _left_eye_fill:
-		_left_eye_mat = ShaderMaterial.new()
-		_left_eye_mat.shader = EYE_PROCEDURAL_SHADER
-		_update_shader_params(_left_eye_mat, true)
-		_left_eye_fill.material = _left_eye_mat
-		_left_eye_fill.scale = Vector2(eye_socket_scale, eye_socket_scale)
-		if eye_socket_texture:
-			_left_eye_fill.texture = eye_socket_texture
-			
-	if _right_eye_fill:
-		_right_eye_mat = ShaderMaterial.new()
-		_right_eye_mat.shader = EYE_PROCEDURAL_SHADER
-		_update_shader_params(_right_eye_mat, false)
-		_right_eye_fill.material = _right_eye_mat
-		_right_eye_fill.scale = Vector2(eye_socket_scale, eye_socket_scale)
-		if eye_socket_texture:
-			_right_eye_fill.texture = eye_socket_texture
+		_default_eye_texture = _left_eye_fill.texture
+		_default_eye_scale = _left_eye_fill.scale
 
-func _update_shader_params(mat: ShaderMaterial, _is_left: bool) -> void:
-	mat.set_shader_parameter("outline_thickness", eye_outline_thickness)
-	mat.set_shader_parameter("outline_color", eye_outline_color)
-	mat.set_shader_parameter("pupil_offset", eye_pupil_initial_offset)
-	mat.set_shader_parameter("pupil_scale", eye_pupil_initial_size)
-	mat.set_shader_parameter("pupil_color", eye_pupil_color)
-	mat.set_shader_parameter("pupil_outline_color", eye_pupil_outline_color)
-	mat.set_shader_parameter("pupil_outline_thickness", eye_pupil_outline_thickness)
-	if eye_pupil_texture:
-		mat.set_shader_parameter("pupil_texture", eye_pupil_texture)
-		mat.set_shader_parameter("use_pupil_texture", true)
-	else:
-		mat.set_shader_parameter("use_pupil_texture", false)
+	# 确保材质实例独立 (Resource Local To Scene)
+	if _left_eye_fill and _left_eye_fill.material:
+		_left_eye_fill.material = _left_eye_fill.material.duplicate()
+	if _right_eye_fill and _right_eye_fill.material:
+		_right_eye_fill.material = _right_eye_fill.material.duplicate()
+
 
 func _init_animation_tree() -> void:
 	if anim_tree:
 		anim_tree.active = true
 		_playback = anim_tree.get("parameters/playback")
 
-func _on_gold_changed(_new_gold: int) -> void:
-	pass
-
-func _transition_to_state(new_state: StringName) -> void:
-	if _current_state_name == new_state: return
-	_current_state_name = new_state
-	_enter_state(new_state)
-	if _playback: _playback.travel(new_state)
-
 func _enter_state(state: StringName) -> void:
+	# 重置所有 Trigger (状态切换完成,单次触发已消费)
+	_reset_all_triggers()
+	
+	# 状态特定逻辑
 	match state:
 		STATE_RABBIT_IMPATIENT:
-			blink_to_impatient()
+			squint_eyes()
 		STATE_RABBIT_IDLE:
-			blink_to_normal()
+			set_auto_blink(true)
+			restore_eyes()
+		STATE_RABBIT_SHOCKED:
+			set_auto_blink(false)
+			restore_eyes()
+
+## 重置所有 Trigger (在状态切换时调用)
+func _reset_all_triggers() -> void:
+	_trig_order_success = false
+	_trig_exit_submitting = false
+	_trig_pool_clicked = false
+	_trig_recycle_lid_closed = false
+	
+	if anim_tree:
+		anim_tree.set("parameters/conditions/order_success", false)
+		anim_tree.set("parameters/conditions/exit_submitting", false)
+		anim_tree.set("parameters/conditions/pool_clicked", false)
+		anim_tree.set("parameters/conditions/recycle_lid_closed", false)
+
+
+## 开启/停止自动眨眼
+func set_auto_blink(enabled: bool) -> void:
+	auto_blink_enabled = enabled
+	if enabled:
+		_reset_blink_timer()
+
+## 执行一次纯粹的眨眼 (不改变形状)
+func blink_once() -> void:
+	_run_blink_sequence(Callable())
 
 ## 供 AnimationPlayer 调用：切换到不耐烦眯眯眼
-func blink_to_impatient() -> void:
-	_animate_eye_shape_transition(true)
+func squint_eyes() -> void:
+	# 眯眼逻辑：通过眨眼动作切换到眯眼纹理
+	var target_tex = squint_eye_texture if squint_eye_texture else _default_eye_texture
+	_run_blink_sequence(func(): _set_eyes_texture(target_tex))
 
 ## 供 AnimationPlayer 调用：恢复正常眼眶
-func blink_to_normal() -> void:
-	_animate_eye_shape_transition(false)
+func restore_eyes() -> void:
+	# 恢复逻辑：通过眨眼动作切换回默认纹理
+	_run_blink_sequence(func(): _set_eyes_texture(_default_eye_texture))
 
-func _animate_eye_shape_transition(to_impatient: bool) -> void:
-	var target_texture = impatient_eye_target_texture if to_impatient and impatient_eye_target_texture else eye_socket_texture
-	if not target_texture: return
-	
-	for eye in [_left_eye_fill, _right_eye_fill]:
-		if not eye: continue
-		var tween = create_tween()
-		tween.tween_property(eye, "scale:y", 0.0, 0.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-		tween.tween_callback(func(): eye.texture = target_texture)
-		tween.tween_property(eye, "scale:y", eye_socket_scale, 0.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+## 核心眨眼序列动画
+func _run_blink_sequence(on_closed_callback: Callable) -> void:
+	# Left Eye
+	if _left_eye_fill:
+		if _left_eye_tween and _left_eye_tween.is_valid():
+			_left_eye_tween.kill()
+		_left_eye_tween = create_tween()
+		_setup_eye_blink_tween(_left_eye_tween, _left_eye_fill, on_closed_callback)
+
+	# Right Eye
+	if _right_eye_fill:
+		if _right_eye_tween and _right_eye_tween.is_valid():
+			_right_eye_tween.kill()
+		_right_eye_tween = create_tween()
+		_setup_eye_blink_tween(_right_eye_tween, _right_eye_fill, on_closed_callback)
+
+func _setup_eye_blink_tween(tween: Tween, eye: Sprite2D, callback: Callable) -> void:
+	# 闭眼
+	tween.tween_property(eye, "scale:y", 0.0, blink_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	# 闭合时的回调 (用于切换贴图等)
+	if callback.is_valid():
+		# 注意：因为有两个 Tween 同时运行，callback 会被调用两次
+		# 对于 texture 设置等幂等操作是安全的
+		tween.tween_callback(callback)
+	# 睁眼
+	tween.tween_property(eye, "scale:y", _default_eye_scale.y, blink_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+func _set_eyes_texture(tex: Texture2D) -> void:
+	if _left_eye_fill: _left_eye_fill.texture = tex
+	if _right_eye_fill: _right_eye_fill.texture = tex
+
+func _reset_blink_timer() -> void:
+	_blink_timer = randf_range(blink_interval_min, blink_interval_max)
 
 
 func _process(delta: float) -> void:
+	# 自动眨眼逻辑
+	if auto_blink_enabled:
+		_blink_timer -= delta
+		if _blink_timer <= 0:
+			blink_once()
+			_reset_blink_timer()
+
 	if _playback:
 		var tree_state = _playback.get_current_node()
 		if tree_state != _current_state_name:
+			print("[RabbitAnimator] State Changed: %s -> %s" % [_current_state_name, tree_state])
 			_current_state_name = tree_state
 			_enter_state(tree_state)
 	
-	_update_eye_behavior(delta)
 
-func _update_eye_behavior(_delta: float) -> void:
-	if _current_state_name == STATE_RABBIT_SHOCKED: return
-	if _current_state_name == STATE_RABBIT_IMPATIENT:
-		_set_eye_pupil_offset(impatient_eye_pupil_offset)
-		return
-	
-	var target_pos = _current_lottery_hover_pos if (_current_state_name == STATE_RABBIT_DRAWING and _has_hovered_lottery) else _rabbit_root.get_global_mouse_position()
-	_apply_eye_look_at(target_pos)
+	# AnimationTree 参数更新已完全信号驱动,_process 中不再需要同步
 
-func _apply_eye_look_at(global_target: Vector2) -> void:
-	for mat in [_left_eye_mat, _right_eye_mat]:
-		if not mat: continue
-		var eye_fill = _left_eye_fill if mat == _left_eye_mat else _right_eye_fill
-		var dir = (global_target - eye_fill.global_position).normalized()
-		var dist_factor = min((global_target - eye_fill.global_position).length() / 500.0, 1.0)
-		var offset = dir * dist_factor * idle_eye_max_offset * 0.01
-		mat.set_shader_parameter("pupil_offset", eye_pupil_initial_offset + offset)
-
-func _set_eye_pupil_offset(offset: Vector2) -> void:
-	if _left_eye_mat: _left_eye_mat.set_shader_parameter("pupil_offset", offset)
-	if _right_eye_mat: _right_eye_mat.set_shader_parameter("pupil_offset", offset)
 
 func play_shocked_animation() -> void:
-	_transition_to_state(STATE_RABBIT_SHOCKED)
+	if _playback: _playback.travel(STATE_RABBIT_SHOCKED)
 
-func trigger_shock_impact() -> void:
-	pass
-
-func _end_triggered_animation() -> void:
-	_on_gold_changed(GameManager.gold if GameManager else 100)
 
 func reset_to_idle() -> void:
-	_transition_to_state(STATE_RABBIT_IDLE)
+	if _playback: _playback.travel(STATE_RABBIT_IDLE)
+
+func debug_travel_to_state(state_name: StringName) -> void:
+	if _playback:
+		_playback.travel(state_name)
+		print("[RabbitAnimator] Debug travel to state: ", state_name)
+
+# --- 奖池悬浮交互 ---
+
+## 奖池悬浮时：让兔子眼睛直视前方
+func _on_pool_hovered(_idx: int, _type: int) -> void:
+	_cond_is_pool_hovered = true
+	if anim_tree:
+		anim_tree.set("parameters/conditions/is_pool_hovered", true)
+	# _tween_eye_offset(Vector2.ZERO, 0.15)
+
+## 鼠标离开奖池：恢复默认状态
+func _on_pool_unhovered(_idx: int) -> void:
+	_cond_is_pool_hovered = false
+	if anim_tree:
+		anim_tree.set("parameters/conditions/is_pool_hovered", false)
+		print(anim_tree.get("parameters/conditions/is_pool_hovered"))
+	# _tween_eye_offset(Vector2.ZERO, 0.2)
+
+# ## 平滑调整瞳孔偏移
+# func _tween_eye_offset(target: Vector2, duration: float) -> void:
+# 	for eye in [_left_eye_fill, _right_eye_fill]:
+# 		if eye and eye.material:
+# 			var tween = create_tween()
+# 			tween.tween_property(eye.material, "shader_parameter/pupil_offset", target, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
