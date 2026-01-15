@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://05ku7kwq0dxp"]
+[gd_scene load_steps=32 format=3 uid="uid://05ku7kwq0dxp"]
 
 [ext_resource type="Script" uid="uid://con7nyakgbhan" path="res://scripts/ui/components/quest_slot_ui.gd" id="1_cf02l"]
 [ext_resource type="Texture2D" uid="uid://bk6w30hxghp51" path="res://assets/sprites/quest_slots/基地-7.png" id="2_5cnt1"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://fb6h3kogm80w" path="res://assets/sprites/quest_slots/基地-4.png" id="6_cpuw7"]
 [ext_resource type="Texture2D" uid="uid://w7eym4f1436o" path="res://assets/sprites/quest_slots/基地-1.png" id="7_2pth6"]
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="8_uawe1"]
+[ext_resource type="FontFile" uid="uid://bpg3iakb3o07a" path="res://assets/fonts/51282.otf" id="9_x1b4l"]
 [ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="9_yv8nx"]
 [ext_resource type="Texture2D" uid="uid://djo0fcuw1ico0" path="res://assets/sprites/light_1.png" id="10_4304g"]
 [ext_resource type="Texture2D" uid="uid://cuq30wijqs4vm" path="res://assets/sprites/light_2.png" id="11_ywy2p"]
@@ -152,6 +153,7 @@ offset_right = 979.0
 offset_bottom = 96.0
 grow_vertical = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("9_x1b4l")
 theme_override_font_sizes/normal_font_size = 141
 bbcode_enabled = true
 text = "33 [s]25[/s]"
@@ -277,6 +279,7 @@ position = Vector2(128, -107.333336)
 texture = ExtResource("13_n0e4s")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="Quest Slot_mask"]
+visible = false
 self_modulate = Color(1, 0.79607844, 0.03137255, 1)
 texture = ExtResource("14_tqhba")
 
@@ -288,6 +291,7 @@ texture = ExtResource("15_vvcjj")
 texture = ExtResource("16_6ixpp")
 
 [node name="Input Area" type="Control" parent="."]
+visible = false
 anchors_preset = 0
 offset_left = -461.0
 offset_top = -127.0

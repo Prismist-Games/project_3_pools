@@ -239,7 +239,7 @@ self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
 texture = ExtResource("16_l1p8v")
 
 [node name="Lottery Slot_right_screen_fill" type="Sprite2D" parent="Lottery Slot_right_screen"]
-modulate = Color(0.44896722, 0.3860733, 0.9252106, 1)
+modulate = Color(0.61960787, 0.9137255, 0.40392157, 1)
 show_behind_parent = true
 clip_children = 2
 texture = ExtResource("15_do7yb")
