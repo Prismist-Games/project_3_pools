@@ -36,6 +36,11 @@ var era_label: Control = null
 
 @onready var language_switch: Button = get_node_or_null("Language Switch")
 
+# --- ERA_3 DLC 面板节点引用 ---
+@onready var dlc_panel: Node2D = find_child("The Machine DLC", true)
+@onready var dlc_item_slots_grid: GridContainer = find_child("Additional Item Slots Grid", true)
+@onready var dlc_label: RichTextLabel = find_child("DLC Label", true)
+
 # --- 子控制器 ---
 const QuestIconHighlighterScript = preload("res://scripts/ui/controllers/quest_icon_highlighter.gd")
 
@@ -101,8 +106,14 @@ func _ready() -> void:
 	EventBus.game_event.connect(_on_game_event)
 	EventBus.item_recycled.connect(_on_item_recycled)
 	
+	# ERA_3: 监听时代切换，控制 DLC 面板显示
+	EraManager.era_changed.connect(_on_era_changed)
+	
 	# 4. 初始刷新
 	_refresh_all()
+	
+	# 5. 初始化 DLC 面板状态（根据当前时代）
+	_update_dlc_panel_visibility()
 	
 	if language_switch:
 		language_switch.pressed.connect(_on_language_switch_pressed)
@@ -135,6 +146,10 @@ func _init_controllers() -> void:
 	inventory_controller.game_ui = self
 	add_child(inventory_controller)
 	inventory_controller.setup(item_slots_grid)
+	
+	# ERA_3: 设置 DLC 额外槽位
+	if dlc_item_slots_grid:
+		inventory_controller.setup_dlc_grid(dlc_item_slots_grid)
 	
 	pool_controller = PoolController.new()
 	pool_controller.name = "PoolController"
@@ -285,11 +300,12 @@ func _refresh_all() -> void:
 	order_controller.update_orders_display(OrderSystem.current_orders)
 	_update_ui_mode_display()
 	
-	# 确保"有的放矢"面板初始隐藏
+	# 确保"有的放矢"面板初始隐藏（只设置 x 值，不触碰 y 值）
 	if targeted_panel:
 		var is_in_targeted = state_machine and state_machine.get_current_state_name() == &"TargetedSelection"
 		if not is_in_targeted:
-			targeted_panel.position.y = 4880.0
+			# 只设置 x 值到隐藏位置，保留 y 值不变
+			targeted_panel.position = Vector2(7500.0, targeted_panel.position.y)
 			targeted_panel.visible = false
 
 
@@ -375,6 +391,7 @@ func _on_gold_changed(val: int) -> void:
 
 func _on_inventory_changed(inventory: Array) -> void:
 	inventory_controller.update_all_slots(inventory)
+	_update_dlc_label() # ERA_3: 背包变化时更新种类计数
 
 func _on_pending_queue_changed(items: Array[ItemInstance]) -> void:
 	if items.is_empty():
@@ -816,12 +833,58 @@ func _on_item_recycled(slot_index: int, item: ItemInstance) -> void:
 	var recycle_icon_node = switch_controller.get_recycle_icon_node()
 	
 	vfx_manager.enqueue({
-"type": "fly_to_recycle",
-"item": item,
-"start_pos": start_pos,
-"start_scale": start_scale,
-"target_pos": recycle_pos,
-"source_slot_node": slot_node,
-"recycle_icon_node": recycle_icon_node,
-"on_complete": func(): pass
+		"type": "fly_to_recycle",
+		"item": item,
+		"start_pos": start_pos,
+		"start_scale": start_scale,
+		"target_pos": recycle_pos,
+		"source_slot_node": slot_node,
+		"recycle_icon_node": recycle_icon_node,
+		"on_complete": func(): pass
 	})
+
+
+# --- ERA_3: DLC 面板管理 ---
+
+func _on_era_changed(_era_index: int) -> void:
+	_update_dlc_panel_visibility()
+	_update_dlc_label()
+
+
+## 根据当前时代更新 DLC 面板的可见性
+func _update_dlc_panel_visibility() -> void:
+	if not dlc_panel:
+		return
+	
+	var cfg = EraManager.current_config if EraManager else null
+	var has_type_limit = cfg and cfg.has_item_type_limit()
+	
+	# 第三时代（有种类限制效果）时显示 DLC 面板
+	dlc_panel.visible = has_type_limit
+	
+	# 同步更新 InventoryController 的额外槽位
+	if inventory_controller:
+		inventory_controller.set_dlc_slots_enabled(has_type_limit)
+	
+	# 更新 DLC Label
+	if has_type_limit:
+		_update_dlc_label()
+
+
+## 更新 DLC Label 显示当前种类数量
+func _update_dlc_label() -> void:
+	if not dlc_label:
+		return
+	
+	var cfg = EraManager.current_config if EraManager else null
+	if not cfg:
+		return
+	
+	var type_limit_effect = cfg.get_effect_of_type("ItemTypeLimitEffect")
+	if not type_limit_effect:
+		return
+	
+	var current_types = InventorySystem.get_unique_item_names().size()
+	var max_types = type_limit_effect.max_item_types
+	
+	dlc_label.text = tr("DLC_TYPE_COUNT") % [current_types, max_types]
