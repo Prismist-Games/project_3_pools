@@ -10,7 +10,7 @@ signal badge_refresh_requested(slot_index: int, item: ItemInstance) # NEW: 请�
 ## =====================================================================
 ## True Nodes (当前显示内容)
 ## =====================================================================
-@onready var pool_name_label: RichTextLabel = find_child("Lottery Pool Name_label", true)
+# @onready var pool_name_label: RichTextLabel = find_child("Lottery Pool Name_label", true)
 @onready var lid_icon: Sprite2D = find_child("Lottery Slot_lid_icon", true)
 @onready var lid_sprite: Sprite2D = find_child("Lottery Slot_lid", true)
 @onready var price_label: RichTextLabel = find_child("Price Label", true)
@@ -24,7 +24,7 @@ signal badge_refresh_requested(slot_index: int, item: ItemInstance) # NEW: 请�
 ## =====================================================================
 @onready var lid_pseudo: Sprite2D = $"Lottery Slot_mask/Lottery Slot_lid/Lottery Slot_lid_psudo"
 @onready var lid_icon_pseudo: Sprite2D = lid_pseudo.get_node("Lottery Slot_lid_icon") if lid_pseudo else null
-@onready var pool_name_label_pseudo: RichTextLabel = lid_pseudo.get_node("Lottery Pool Name_label") if lid_pseudo else null
+# @onready var pool_name_label_pseudo: RichTextLabel = lid_pseudo.get_node("Lottery Pool Name_label") if lid_pseudo else null
 @onready var affix_label_pseudo: RichTextLabel = $"Lottery Slot_top_screen/Lottery Slot_top_screen_fill/Affix Label/Affix Label_psudo"
 @onready var price_label_pseudo: RichTextLabel = $"Lottery Slot_top_screen/Lottery Slot_top_screen_fill/Price Label/Price Label_psudo"
 @onready var items_grid_pseudo: VBoxContainer = $"Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"
@@ -653,7 +653,7 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 	# 选择目标节点
 	var target_lid_sprite: Sprite2D = lid_pseudo if target_pseudo else lid_sprite
 	var target_lid_icon: Sprite2D = lid_icon_pseudo if target_pseudo else lid_icon
-	var target_pool_name: RichTextLabel = pool_name_label_pseudo if target_pseudo else pool_name_label
+	# var target_pool_name: RichTextLabel = pool_name_label_pseudo if target_pseudo else pool_name_label
 	var target_affix: RichTextLabel = affix_label_pseudo if target_pseudo else affix_label
 	var target_price: RichTextLabel = price_label_pseudo if target_pseudo else price_label
 	var target_desc: RichTextLabel = description_label_pseudo if target_pseudo else description_label
@@ -677,10 +677,10 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 			target_lid_icon.self_modulate = theme_color
 	
 	# 更新奖池名称
-	if target_pool_name and has_item_type:
-		var item_type = pool.item_type if "item_type" in pool else pool.get("item_type")
-		target_pool_name.text = tr(Constants.type_to_display_name(item_type)) + " " + tr("POOL_SUFFIX")
-		target_pool_name.visible = true
+	# if target_pool_name and has_item_type:
+	# 	var item_type = pool.item_type if "item_type" in pool else pool.get("item_type")
+	# 	target_pool_name.text = tr(Constants.type_to_display_name(item_type)) + " " + tr("POOL_SUFFIX")
+	# 	target_pool_name.visible = true
 	
 	# 更新价格 (始终保持可见)
 	if target_price:
