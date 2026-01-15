@@ -112,9 +112,6 @@ func select_option(index: int) -> void:
 	controller.last_clicked_pool_idx = index
 	controller.pending_source_pool_idx = index
 	
-	# 发出 item_obtained 信号（让技能如自动补货能检测到）
-	EventBus.item_obtained.emit(item_instance)
-	
 	# ERA_3: 检查种类限制
 	var would_exceed = InventorySystem.would_exceed_type_limit(item_instance)
 	

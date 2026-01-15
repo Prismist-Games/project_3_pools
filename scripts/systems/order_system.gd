@@ -288,21 +288,21 @@ func _generate_mainline_order() -> OrderData:
 
 	# 主线需求：2个随机史诗品质的物品，必须来自不同种类且名称不同
 	
-	# 按种类分组
-	var items_by_category: Dictionary = {} # category_id -> Array[ItemData]
+	# 按种类 (item_type) 分组
+	var items_by_type: Dictionary = {} # item_type -> Array[ItemData]
 	for item in normal_items:
-		var cat_id = item.category.id if item.category else &"unknown"
-		if not items_by_category.has(cat_id):
-			items_by_category[cat_id] = []
-		items_by_category[cat_id].append(item)
+		var type_key = item.item_type
+		if not items_by_type.has(type_key):
+			items_by_type[type_key] = []
+		items_by_type[type_key].append(item)
 	
 	# 获取所有有物品的种类
-	var available_categories = items_by_category.keys()
-	available_categories.shuffle()
+	var available_types = items_by_type.keys()
+	available_types.shuffle()
 	
 	# 确保至少有2个不同种类
-	if available_categories.size() < 2:
-		push_error("OrderSystem: Not enough categories for mainline order (need 2, have %d)" % available_categories.size())
+	if available_types.size() < 2:
+		push_error("OrderSystem: Not enough item types for mainline order (need 2, have %d)" % available_types.size())
 		# Fallback: 从现有物品中随机选2个不同名称的
 		var shuffled_items = normal_items.duplicate()
 		shuffled_items.shuffle()
@@ -324,12 +324,12 @@ func _generate_mainline_order() -> OrderData:
 	# 从前2个种类中各选1个物品
 	var used_item_ids: Array[StringName] = []
 	for i in range(2):
-		var cat_id = available_categories[i]
-		var items_in_cat: Array = items_by_category[cat_id]
+		var type_key = available_types[i]
+		var items_in_type: Array = items_by_type[type_key]
 		
 		# 从该种类中随机选一个（避免重复名称，虽然跨种类应该不会有同名）
 		var valid_items: Array = []
-		for item in items_in_cat:
+		for item in items_in_type:
 			if item.id not in used_item_ids:
 				valid_items.append(item)
 		
@@ -344,6 +344,7 @@ func _generate_mainline_order() -> OrderData:
 			"min_rarity": Constants.Rarity.EPIC,
 			"count": 1
 		})
+
 	
 	# 主线奖励：高额金币 (例如 100)
 	order.reward_gold = 100
