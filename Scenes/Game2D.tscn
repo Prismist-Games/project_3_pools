@@ -76,7 +76,7 @@
 [ext_resource type="Texture2D" uid="uid://h5k15o8ewu4i" path="res://assets/sprites/icons/item_rarity_glow.PNG" id="83_taegb"]
 [ext_resource type="Texture2D" uid="uid://c1v0nvxbrf6c" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_fill.png" id="85_q6adl"]
 [ext_resource type="Texture2D" uid="uid://ca5ud3ae3x378" path="res://assets/sprites/the_rabbit/the_rabbit_right_foot.png" id="87_fs1h7"]
-[ext_resource type="PackedScene" path="res://scenes/ui_module/quest_slot_root_1.tscn" id="87_n6ers"]
+[ext_resource type="PackedScene" uid="uid://05ku7kwq0dxp" path="res://scenes/ui_module/quest_slot_root_1.tscn" id="87_n6ers"]
 [ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="87_u8s40"]
 [ext_resource type="Texture2D" uid="uid://dokmgcwoitk6l" path="res://assets/sprites/the_rabbit/the_rabbit_right_hand.png" id="88_yytn1"]
 [ext_resource type="Texture2D" uid="uid://b0qmpkep8t4hu" path="res://assets/sprites/the_rabbit/the_rabbit_right_leg.png" id="89_g7jj0"]
@@ -1613,6 +1613,7 @@ region_enabled = true
 region_rect = Rect2(349, 446, 1221, 269)
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root"]
+self_modulate = Color(0.99607843, 0.90588236, 0.2901961, 1)
 texture = ExtResource("33_0ehwc")
 offset = Vector2(26, -32.5)
 region_enabled = true
