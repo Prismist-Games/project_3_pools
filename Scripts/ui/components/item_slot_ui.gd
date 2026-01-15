@@ -172,9 +172,9 @@ func update_display(item: ItemInstance) -> void:
 	
 	# ERA_4: 过期物品视觉标识
 	if item.is_expired:
-		# 仅当纹理从“普通物品”变为“垃圾”时播放动画
-		# 如果之前是 null (空格子) 或已经是垃圾，则直接设置
-		if icon_display.texture != _trash_texture and icon_display.texture != null:
+		# 仅当它是“原本就在这里的物品”且刚变成垃圾时，播放变化动画
+		# 如果是新进来的（交换、移动、购买），或者是正在通过 VFX 飞行落地的，直接设置
+		if not is_new_item_entering and icon_display.texture != _trash_texture and icon_display.texture != null:
 			_play_trash_transformation_animation(_trash_texture)
 		else:
 			icon_display.texture = _trash_texture
