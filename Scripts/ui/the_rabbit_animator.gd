@@ -50,6 +50,9 @@ var _right_eye_fill: Sprite2D
 var _default_eye_texture: Texture2D
 var _default_eye_scale: Vector2 = Vector2.ONE
 
+var _left_eye_tween: Tween
+var _right_eye_tween: Tween
+
 
 var _playback: AnimationNodeStateMachinePlayback
 var _current_state_name: StringName = STATE_RABBIT_IDLE
@@ -59,6 +62,7 @@ var _current_state_name: StringName = STATE_RABBIT_IDLE
 var _cond_is_submitting: bool = false
 var _cond_is_low_gold: bool = false
 var _cond_is_high_gold: bool = true # 与 is_low_gold 相反
+var _cond_is_pool_hovered: bool = false
 
 # AnimationTree 触发器（一次性）
 var _trig_order_success: bool = false
@@ -105,12 +109,24 @@ func _ready() -> void:
 	_reset_blink_timer()
 
 func _connect_to_ui_state() -> void:
+	# 等待一帧，确保 Game2DUI._init_state_machine() 完成 UIStateMachine 的添加
+	await get_tree().process_frame
+	
 	var ui_root = get_tree().get_first_node_in_group("game_2d_ui")
 	if ui_root:
 		var sm = ui_root.get_node_or_null("UIStateMachine")
 		if sm:
 			sm.state_changed.connect(_on_ui_state_changed)
 			print("[RabbitAnimator] UI 状态机连接成功")
+		else:
+			push_warning("[RabbitAnimator] UIStateMachine 未找到，Submitting 状态将无法触发动画")
+		
+		# 连接 PoolController 的 hover 信号
+		var pc = ui_root.get("pool_controller")
+		if pc:
+			pc.slot_hovered.connect(_on_pool_hovered)
+			pc.slot_unhovered.connect(_on_pool_unhovered)
+			print("[RabbitAnimator] PoolController 信号连接成功")
 
 func _on_ui_state_changed(_from: StringName, to: StringName) -> void:
 	# 更新状态条件
@@ -235,16 +251,30 @@ func restore_eyes() -> void:
 
 ## 核心眨眼序列动画
 func _run_blink_sequence(on_closed_callback: Callable) -> void:
-	for eye in [_left_eye_fill, _right_eye_fill]:
-		if not eye: continue
-		var tween = create_tween()
-		# 闭眼
-		tween.tween_property(eye, "scale:y", 0.0, blink_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-		# 闭合时的回调 (用于切换贴图等)
-		if on_closed_callback.is_valid():
-			tween.tween_callback(on_closed_callback)
-		# 睁眼
-		tween.tween_property(eye, "scale:y", _default_eye_scale.y, blink_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	# Left Eye
+	if _left_eye_fill:
+		if _left_eye_tween and _left_eye_tween.is_valid():
+			_left_eye_tween.kill()
+		_left_eye_tween = create_tween()
+		_setup_eye_blink_tween(_left_eye_tween, _left_eye_fill, on_closed_callback)
+
+	# Right Eye
+	if _right_eye_fill:
+		if _right_eye_tween and _right_eye_tween.is_valid():
+			_right_eye_tween.kill()
+		_right_eye_tween = create_tween()
+		_setup_eye_blink_tween(_right_eye_tween, _right_eye_fill, on_closed_callback)
+
+func _setup_eye_blink_tween(tween: Tween, eye: Sprite2D, callback: Callable) -> void:
+	# 闭眼
+	tween.tween_property(eye, "scale:y", 0.0, blink_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	# 闭合时的回调 (用于切换贴图等)
+	if callback.is_valid():
+		# 注意：因为有两个 Tween 同时运行，callback 会被调用两次
+		# 对于 texture 设置等幂等操作是安全的
+		tween.tween_callback(callback)
+	# 睁眼
+	tween.tween_property(eye, "scale:y", _default_eye_scale.y, blink_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 func _set_eyes_texture(tex: Texture2D) -> void:
 	if _left_eye_fill: _left_eye_fill.texture = tex
@@ -284,3 +314,27 @@ func debug_travel_to_state(state_name: StringName) -> void:
 	if _playback:
 		_playback.travel(state_name)
 		print("[RabbitAnimator] Debug travel to state: ", state_name)
+
+# --- 奖池悬浮交互 ---
+
+## 奖池悬浮时：让兔子眼睛直视前方
+func _on_pool_hovered(_idx: int, _type: int) -> void:
+	_cond_is_pool_hovered = true
+	if anim_tree:
+		anim_tree.set("parameters/conditions/is_pool_hovered", true)
+	# _tween_eye_offset(Vector2.ZERO, 0.15)
+
+## 鼠标离开奖池：恢复默认状态
+func _on_pool_unhovered(_idx: int) -> void:
+	_cond_is_pool_hovered = false
+	if anim_tree:
+		anim_tree.set("parameters/conditions/is_pool_hovered", false)
+		print(anim_tree.get("parameters/conditions/is_pool_hovered"))
+	# _tween_eye_offset(Vector2.ZERO, 0.2)
+
+# ## 平滑调整瞳孔偏移
+# func _tween_eye_offset(target: Vector2, duration: float) -> void:
+# 	for eye in [_left_eye_fill, _right_eye_fill]:
+# 		if eye and eye.material:
+# 			var tween = create_tween()
+# 			tween.tween_property(eye.material, "shader_parameter/pupil_offset", target, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
