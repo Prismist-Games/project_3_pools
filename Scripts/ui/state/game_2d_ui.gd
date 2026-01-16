@@ -282,6 +282,12 @@ func _handle_rabbit_dialog(from_state: StringName, to_state: StringName) -> void
 	# 如果进入对话状态，显示对话框
 	elif is_dialog_state:
 		var dialog_type = RabbitDialogController.state_to_dialog_type(to_state)
+		
+		# ERA_3: 如果是 Replacing 状态且是因为种类超出限制，则显示专用对话
+		if to_state == &"Replacing" and InventorySystem.pending_item != null:
+			if InventorySystem.would_exceed_type_limit(InventorySystem.pending_item):
+				dialog_type = RabbitDialogController.DialogType.ERA3_TYPE_FULL
+				
 		rabbit_dialog_controller.show_dialog(dialog_type)
 
 ## VFX 队列开始回调
