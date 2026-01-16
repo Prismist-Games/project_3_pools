@@ -1,4 +1,4 @@
-[gd_scene load_steps=127 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=129 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
@@ -99,6 +99,110 @@
 [ext_resource type="Texture2D" uid="uid://ue7e5frhr0kh" path="res://assets/sprites/frames/mini.png" id="102_u4yck"]
 [ext_resource type="Texture2D" uid="uid://djaip0chmnewr" path="res://assets/sprites/frames/popup.png" id="103_otpb1"]
 [ext_resource type="Script" uid="uid://con7nyakgbhan" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
+
+[sub_resource type="Shader" id="Shader_pwukw"]
+code = "shader_type canvas_item;
+
+uniform float scanline_count : hint_range(0, 1800) = 50.0;
+uniform float scanline_alpha : hint_range(0, 1) = 0.5;
+uniform float scanline_speed : hint_range(-10.0, 10.0) = 1.0;  // New: Speed of scanline movement
+
+uniform float vignette_intensity : hint_range(0, 5) = 0.4;
+uniform float screen_curvature : hint_range(0, 0.1) = 0.05;
+
+uniform float jitter_intensity : hint_range(0, 0.1) = 0.0; // New: Jitter amount
+uniform float noise_intensity : hint_range(0, 1) = 0.0;     // New: Static noise amount
+
+// Helper function for pseudo-random numbers
+float random(vec2 uv) {
+    return fract(sin(dot(uv.xy, vec2(12.9898,78.233))) * 43758.5453123);
+}
+
+void fragment() {
+	vec2 uv = UV;
+	
+	// 1. Screen Curvature / Warp
+	// Distort UVs from center
+	vec2 center = vec2(0.5, 0.5);
+	vec2 offset = uv - center;
+	float dist_sq = dot(offset, offset);
+	// Basic barrel distortion
+	vec2 warped_uv = uv + offset * (dist_sq * screen_curvature);
+	
+	// If warped UV is outside [0,1], discard or mask (optional, but for overlay we might just want to let it vignette)
+	
+	// 2. Jitter
+	// Offset warped_uv slightly based on time
+	float time_step = floor(TIME * 60.0); // Jitter at 60fps intervals
+	vec2 jitter_offset = vec2(
+		random(vec2(time_step, 1.0)) - 0.5,
+		random(vec2(time_step, 2.0)) - 0.5
+	) * jitter_intensity;
+	
+	// Apply jitter to the texture look-up UVs (if we were warping the underlying texture)
+	// But since we are an OVERLAY, we aren't distorting the underlying texture directly unless we use SCREEN_TEXTURE.
+	// However, this shader is applied to a ColorRect on TOP of content.
+	// Standard approach for overlay is to just draw effects over the top.
+	// IF we want to distort the underlying text, we would need to use a BackBufferCopy or Screen reading shader.
+	// Given the instructions (\"add visual effects... to these screens\"), and previous setup involving ColorRect overlay:
+	// Let's stick to generating effects *on top* that simulate imperfections, 
+	// rather than warping the actual game text (which is safer for readability).
+	// BUT, \"Curvature\" usually implies geometric distortion.
+	// Since we are just a ColorRect overlay, we can use the curvature to curve the SCANLINES and VIGNETTE.
+	
+	// Use warped_uv for generating scanlines/vignette to match the curved look
+	
+	// 3. Scanlines with Roll
+	// Use warped_uv.y + TIME for movement
+	float scanline = sin((warped_uv.y + TIME * scanline_speed * 0.01) * scanline_count * 3.14159 * 2.0);
+	scanline = (scanline + 1.0) * 0.5;
+	
+	// 4. White Noise
+	float noise_val = random(warped_uv + vec2(TIME, TIME));
+	
+	// 5. Vignette (using warped coords)
+	float vig_dist = length(warped_uv - center);
+	float vig = smoothstep(0.4, 0.4 + 0.3, vig_dist) * vignette_intensity;
+
+	// Compose Color
+	// Start with black
+	vec3 dark_color = vec3(0.0);
+	
+	// Scanlines darken the screen
+	float sl_alpha = scanline * scanline_alpha;
+	
+	// Jitter effect on overlay: random flashes or horizontal offsets?
+	// Let's do a horizontal \"tearing\" scanline occasionall?
+	// Or just keep it simple: Jitter shifts the scanlines slightly.
+	
+	// Update alpha
+	float final_alpha = sl_alpha + vig;
+	
+	// Add noise (whitening)
+	vec3 noise_color = vec3(noise_val);
+	// Noise adds to color, doesn't just alpha blend black
+	
+	// Output
+	// We mix black overlay (scanlines/vignette) with white noise.
+	// This is an overlay, so COLOR.a determines how much we darken/lighten.
+	// Darkening: (0,0,0, alpha)
+	// Lightening: (1,1,1, alpha)
+	// We want mostly darkening, but noise adds light.
+	
+	COLOR.rgb = noise_color * noise_intensity;
+	COLOR.a = clamp(final_alpha + (noise_val * noise_intensity * 0.1), 0.0, 1.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_036e7"]
+shader = SubResource("Shader_pwukw")
+shader_parameter/scanline_count = 120.0000057
+shader_parameter/scanline_alpha = 0.15
+shader_parameter/scanline_speed = 2.0
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/screen_curvature = 0.05
+shader_parameter/jitter_intensity = 0.002
+shader_parameter/noise_intensity = 0.05
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_otpb1"]
 animation = &"rabbit_idle"
@@ -663,6 +767,7 @@ anchors_preset = 0
 script = ExtResource("1_x7wb1")
 
 [node name="Background2" parent="." instance=ExtResource("2_u8s40")]
+metadata/_edit_lock_ = true
 
 [node name="Background" type="Node2D" parent="."]
 position = Vector2(3001, 1689.25)
@@ -1133,17 +1238,20 @@ offset_bottom = 33.0
 grow_vertical = 2
 texture = ExtResource("25_ccvlu")
 
-[node name="TheMachineLegacyFill" type="Sprite2D" parent="The Machine"]
-position = Vector2(514, 625)
-texture = ExtResource("5_0dgko")
-offset = Vector2(138.5, -26)
-
-[node name="TheMachineLegacyOutline" type="Sprite2D" parent="The Machine/TheMachineLegacyFill"]
-position = Vector2(-5.25, -6)
+[node name="TheMachineLegend" type="Sprite2D" parent="The Machine"]
+position = Vector2(512.75, 662)
 texture = ExtResource("6_2v31b")
 offset = Vector2(142.5, -22.5)
 
-[node name="Legacy Grid" type="HBoxContainer" parent="The Machine/TheMachineLegacyFill"]
+[node name="TheMachineLegendFill" type="Sprite2D" parent="The Machine/TheMachineLegend"]
+self_modulate = Color(0.61960787, 0.9137255, 0.40392157, 1)
+show_behind_parent = true
+clip_children = 2
+position = Vector2(5.25, 6)
+texture = ExtResource("5_0dgko")
+offset = Vector2(138.5, -26)
+
+[node name="Legend Grid" type="HBoxContainer" parent="The Machine/TheMachineLegend/TheMachineLegendFill"]
 offset_left = -1005.25
 offset_top = -62.0
 offset_right = 1319.75
@@ -1153,16 +1261,16 @@ mouse_filter = 0
 mouse_default_cursor_shape = 16
 theme_override_constants/separation = 489
 
-[node name="Star Legacy Root_0" type="Control" parent="The Machine/TheMachineLegacyFill/Legacy Grid"]
+[node name="Star Legend Root_0" type="Control" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid"]
 layout_mode = 2
 
-[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_0"]
+[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_0"]
 self_modulate = Color(0.38431373, 0.7294118, 0.15686275, 1)
 position = Vector2(40, 23)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("25_ue141")
 
-[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_0"]
+[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_0"]
 layout_mode = 0
 offset_left = 99.0
 offset_top = -19.0
@@ -1175,16 +1283,16 @@ text = "+ 10%"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="Star Legacy Root_1" type="Control" parent="The Machine/TheMachineLegacyFill/Legacy Grid"]
+[node name="Star Legend Root_1" type="Control" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid"]
 layout_mode = 2
 
-[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_1"]
+[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_1"]
 self_modulate = Color(0.3372549, 0.64705884, 0.9254902, 1)
 position = Vector2(40, 23)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("25_ue141")
 
-[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_1"]
+[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_1"]
 layout_mode = 0
 offset_left = 99.0
 offset_top = -19.0
@@ -1197,16 +1305,16 @@ text = "+ 20%"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="Star Legacy Root_2" type="Control" parent="The Machine/TheMachineLegacyFill/Legacy Grid"]
+[node name="Star Legend Root_2" type="Control" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid"]
 layout_mode = 2
 
-[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_2"]
+[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_2"]
 self_modulate = Color(0.78431374, 0.37254903, 0.8901961, 1)
 position = Vector2(40, 23)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("25_ue141")
 
-[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_2"]
+[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_2"]
 layout_mode = 0
 offset_left = 99.0
 offset_top = -19.0
@@ -1219,16 +1327,16 @@ text = "+ 40%"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="Star Legacy Root_3" type="Control" parent="The Machine/TheMachineLegacyFill/Legacy Grid"]
+[node name="Star Legend Root_3" type="Control" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid"]
 layout_mode = 2
 
-[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_3"]
+[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_3"]
 self_modulate = Color(0.9254902, 0.60784316, 0.16078432, 1)
 position = Vector2(40, 23)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("25_ue141")
 
-[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_3"]
+[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_3"]
 layout_mode = 0
 offset_left = 99.0
 offset_top = -19.0
@@ -1241,16 +1349,16 @@ text = "+ 100%"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="Star Legacy Root_4" type="Control" parent="The Machine/TheMachineLegacyFill/Legacy Grid"]
+[node name="Star Legend Root_4" type="Control" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid"]
 layout_mode = 2
 
-[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_4"]
+[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_4"]
 self_modulate = Color(0.8980392, 0.31764707, 0.2509804, 1)
 position = Vector2(40, 23)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("25_ue141")
 
-[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_4"]
+[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_4"]
 layout_mode = 0
 offset_left = 99.0
 offset_top = -19.0
@@ -1262,6 +1370,14 @@ theme_override_font_sizes/normal_font_size = 66
 text = "+ 150%"
 scroll_active = false
 vertical_alignment = 1
+
+[node name="ScreenEffectOverlay" type="ColorRect" parent="The Machine/TheMachineLegend/TheMachineLegendFill"]
+material = SubResource("ShaderMaterial_036e7")
+offset_left = -1085.0
+offset_top = -100.0
+offset_right = 1356.0
+offset_bottom = 35.0
+mouse_filter = 2
 
 [node name="Item Slots Grid" type="GridContainer" parent="The Machine"]
 offset_left = -494.0

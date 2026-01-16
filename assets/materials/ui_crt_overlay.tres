@@ -4,9 +4,9 @@
 
 [resource]
 shader = ExtResource("1_crtsh")
-shader_parameter/scanline_count = 120.0
+shader_parameter/scanline_count = 100.00000475
 shader_parameter/scanline_alpha = 0.15
-shader_parameter/scanline_speed = 2.0
+shader_parameter/scanline_speed = 4.000000665
 shader_parameter/vignette_intensity = 0.4
 shader_parameter/screen_curvature = 0.05
 shader_parameter/jitter_intensity = 0.002
