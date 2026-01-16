@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://basts7bbr2vav"]
+[gd_scene load_steps=43 format=3 uid="uid://basts7bbr2vav"]
 
 [ext_resource type="Script" uid="uid://c008hefncbbkm" path="res://scripts/ui/components/lottery_slot_ui.gd" id="1_1b0mf"]
 [ext_resource type="Texture2D" uid="uid://cpcef3r3dbaxq" path="res://assets/sprites/lottery_slots/基地-7.png" id="2_gntc1"]
@@ -7,16 +7,20 @@
 [ext_resource type="Texture2D" uid="uid://dpnahy8wmkeso" path="res://assets/sprites/lottery_slots/基地-2.png" id="5_drypt"]
 [ext_resource type="Texture2D" uid="uid://fjhknpwtlo4g" path="res://assets/sprites/lottery_slots/基地-3.png" id="6_7fxrg"]
 [ext_resource type="Texture2D" uid="uid://cyuji8mwm0rx8" path="res://assets/sprites/lottery_slots/基地-4.png" id="7_yj02r"]
-[ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="8_o6rv1"]
+[ext_resource type="Texture2D" uid="uid://nju4di4bai4r" path="res://assets/sprites/icons/items/item_shape_centered.png" id="8_arr72"]
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="9_arr72"]
 [ext_resource type="Texture2D" uid="uid://b4cuujipxrcyu" path="res://assets/sprites/lottery_slots/lottery_slot_lid_fill.png" id="10_4aaut"]
 [ext_resource type="Texture2D" uid="uid://bclpcjghycqdb" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="10_gntc1"]
-[ext_resource type="Texture2D" uid="uid://cskvmcwmdj5ew" path="res://assets/sprites/icons/category_entertainment.png" id="11_of7x7"]
+[ext_resource type="Shader" path="res://assets/shaders/silhouette.gdshader" id="10_yj02r"]
+[ext_resource type="Texture2D" uid="uid://bv1rbyc0706kq" path="res://assets/sprites/icons/items/items_icon_centered.png" id="11_o6rv1"]
 [ext_resource type="Texture2D" uid="uid://u8vv873f380j" path="res://assets/sprites/lottery_slots/lottery_slot_lid_outline.png" id="12_p4alg"]
 [ext_resource type="Texture2D" uid="uid://fnqmsybn8c5r" path="res://assets/sprites/lottery_slots/基地-6.png" id="13_r08pi"]
 [ext_resource type="Texture2D" uid="uid://dhd8bxltte0u1" path="res://assets/sprites/lottery_slots/基地-8.png" id="14_ktq0d"]
+[ext_resource type="Texture2D" uid="uid://ju74ng2iyhft" path="res://assets/sprites/item_slots/小杆子.png" id="15_7fxrg"]
 [ext_resource type="Texture2D" uid="uid://law2mtdijaeb" path="res://assets/sprites/lottery_slots/基地-11.png" id="15_do7yb"]
 [ext_resource type="Texture2D" uid="uid://c17ii0rmjfv1n" path="res://assets/sprites/lottery_slots/基地-13.png" id="16_l1p8v"]
+[ext_resource type="Texture2D" uid="uid://djd0iqblhln2k" path="res://assets/sprites/icons/upgrade_icon.png" id="16_yj02r"]
+[ext_resource type="Texture2D" uid="uid://cvippngwe8h8x" path="res://assets/sprites/icons/category_circle.png" id="17_4aaut"]
 [ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="17_g23h7"]
 [ext_resource type="Texture2D" uid="uid://bh2rrdftruk78" path="res://assets/sprites/lottery_slots/基地-12.png" id="18_yfao2"]
 [ext_resource type="Texture2D" uid="uid://430ts7sfdtgx" path="res://assets/sprites/lottery_slots/基地-10.png" id="19_a03mu"]
@@ -26,37 +30,232 @@
 [ext_resource type="Texture2D" uid="uid://cyo0chqrqd6p7" path="res://assets/sprites/the_machine/the_machine_description_display_fill.png" id="22_dg1ni"]
 [ext_resource type="Material" uid="uid://ccpe7db5t4nua" path="res://assets/materials/ui_crt_overlay.tres" id="23_crt00"]
 
-[sub_resource type="Shader" id="Shader_1b0mf"]
-code = "shader_type canvas_item;
-
-// 剪影颜色
-uniform vec4 silhouette_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
-// 是否开启剪影效果
-uniform bool is_enabled = false;
-
-void fragment() {
-    // 获取原始贴图颜色
-    vec4 texture_color = texture(TEXTURE, UV);
-    
-    if (is_enabled) {
-        // 【纯色剪影】完全用指定颜色替换，只保留贴图的形状 (Alpha)
-        // 不与 COLOR 相乘，确保 ffffff 会渲染成纯白色
-        // 但保留节点的整体透明度调制
-        float alpha = texture_color.a * COLOR.a;
-        COLOR = vec4(silhouette_color.rgb, alpha);
-    } else {
-        // 正常渲染
-        COLOR = texture_color * COLOR;
-    }
-}
-"
+[sub_resource type="AtlasTexture" id="AtlasTexture_o6rv1"]
+atlas = ExtResource("8_arr72")
+region = Rect2(1500, 1500, 500, 500)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gntc1"]
-shader = SubResource("Shader_1b0mf")
+shader = ExtResource("10_yj02r")
 shader_parameter/silhouette_color = Color(0.5, 0.5, 0.5, 1)
 shader_parameter/is_enabled = false
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_arr72"]
+atlas = ExtResource("11_o6rv1")
+region = Rect2(1000, 2000, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4aaut"]
+atlas = ExtResource("8_arr72")
+region = Rect2(1500, 1500, 500, 500)
+
+[sub_resource type="Shader" id="Shader_rqxoj"]
+code = "shader_type canvas_item;
+
+uniform float scanline_count : hint_range(0, 1800) = 50.0;
+uniform float scanline_alpha : hint_range(0, 1) = 0.5;
+uniform float scanline_speed : hint_range(-10.0, 10.0) = 1.0;  // New: Speed of scanline movement
+
+uniform float vignette_intensity : hint_range(0, 5) = 0.4;
+uniform float screen_curvature : hint_range(0, 0.1) = 0.05;
+
+uniform float jitter_intensity : hint_range(0, 0.1) = 0.0; // New: Jitter amount
+uniform float noise_intensity : hint_range(0, 1) = 0.0;     // New: Static noise amount
+
+// Helper function for pseudo-random numbers
+float random(vec2 uv) {
+    return fract(sin(dot(uv.xy, vec2(12.9898,78.233))) * 43758.5453123);
+}
+
+void fragment() {
+	vec2 uv = UV;
+	
+	// 1. Screen Curvature / Warp
+	// Distort UVs from center
+	vec2 center = vec2(0.5, 0.5);
+	vec2 offset = uv - center;
+	float dist_sq = dot(offset, offset);
+	// Basic barrel distortion
+	vec2 warped_uv = uv + offset * (dist_sq * screen_curvature);
+	
+	// If warped UV is outside [0,1], discard or mask (optional, but for overlay we might just want to let it vignette)
+	
+	// 2. Jitter
+	// Offset warped_uv slightly based on time
+	float time_step = floor(TIME * 60.0); // Jitter at 60fps intervals
+	vec2 jitter_offset = vec2(
+		random(vec2(time_step, 1.0)) - 0.5,
+		random(vec2(time_step, 2.0)) - 0.5
+	) * jitter_intensity;
+	
+	// Apply jitter to the texture look-up UVs (if we were warping the underlying texture)
+	// But since we are an OVERLAY, we aren't distorting the underlying texture directly unless we use SCREEN_TEXTURE.
+	// However, this shader is applied to a ColorRect on TOP of content.
+	// Standard approach for overlay is to just draw effects over the top.
+	// IF we want to distort the underlying text, we would need to use a BackBufferCopy or Screen reading shader.
+	// Given the instructions (\"add visual effects... to these screens\"), and previous setup involving ColorRect overlay:
+	// Let's stick to generating effects *on top* that simulate imperfections, 
+	// rather than warping the actual game text (which is safer for readability).
+	// BUT, \"Curvature\" usually implies geometric distortion.
+	// Since we are just a ColorRect overlay, we can use the curvature to curve the SCANLINES and VIGNETTE.
+	
+	// Use warped_uv for generating scanlines/vignette to match the curved look
+	
+	// 3. Scanlines with Roll
+	// Use warped_uv.y + TIME for movement
+	float scanline = sin((warped_uv.y + TIME * scanline_speed * 0.01) * scanline_count * 3.14159 * 2.0);
+	scanline = (scanline + 1.0) * 0.5;
+	
+	// 4. White Noise
+	float noise_val = random(warped_uv + vec2(TIME, TIME));
+	
+	// 5. Vignette (using warped coords)
+	float vig_dist = length(warped_uv - center);
+	float vig = smoothstep(0.4, 0.4 + 0.3, vig_dist) * vignette_intensity;
+
+	// Compose Color
+	// Start with black
+	vec3 dark_color = vec3(0.0);
+	
+	// Scanlines darken the screen
+	float sl_alpha = scanline * scanline_alpha;
+	
+	// Jitter effect on overlay: random flashes or horizontal offsets?
+	// Let's do a horizontal \"tearing\" scanline occasionall?
+	// Or just keep it simple: Jitter shifts the scanlines slightly.
+	
+	// Update alpha
+	float final_alpha = sl_alpha + vig;
+	
+	// Add noise (whitening)
+	vec3 noise_color = vec3(noise_val);
+	// Noise adds to color, doesn't just alpha blend black
+	
+	// Output
+	// We mix black overlay (scanlines/vignette) with white noise.
+	// This is an overlay, so COLOR.a determines how much we darken/lighten.
+	// Darkening: (0,0,0, alpha)
+	// Lightening: (1,1,1, alpha)
+	// We want mostly darkening, but noise adds light.
+	
+	COLOR.rgb = noise_color * noise_intensity;
+	COLOR.a = clamp(final_alpha + (noise_val * noise_intensity * 0.1), 0.0, 1.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d80ls"]
+shader = SubResource("Shader_rqxoj")
+shader_parameter/scanline_count = 10.000000475
+shader_parameter/scanline_alpha = 0.15
+shader_parameter/scanline_speed = 10.0
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/screen_curvature = 0.05
+shader_parameter/jitter_intensity = 0.002
+shader_parameter/noise_intensity = 0.05
+
 [sub_resource type="Theme" id="Theme_uwqtw"]
+
+[sub_resource type="Shader" id="Shader_d80ls"]
+code = "shader_type canvas_item;
+
+uniform float scanline_count : hint_range(0, 1800) = 50.0;
+uniform float scanline_alpha : hint_range(0, 1) = 0.5;
+uniform float scanline_speed : hint_range(-10.0, 10.0) = 1.0;  // New: Speed of scanline movement
+
+uniform float vignette_intensity : hint_range(0, 5) = 0.4;
+uniform float screen_curvature : hint_range(0, 0.1) = 0.05;
+
+uniform float jitter_intensity : hint_range(0, 0.1) = 0.0; // New: Jitter amount
+uniform float noise_intensity : hint_range(0, 1) = 0.0;     // New: Static noise amount
+
+// Helper function for pseudo-random numbers
+float random(vec2 uv) {
+    return fract(sin(dot(uv.xy, vec2(12.9898,78.233))) * 43758.5453123);
+}
+
+void fragment() {
+	vec2 uv = UV;
+	
+	// 1. Screen Curvature / Warp
+	// Distort UVs from center
+	vec2 center = vec2(0.5, 0.5);
+	vec2 offset = uv - center;
+	float dist_sq = dot(offset, offset);
+	// Basic barrel distortion
+	vec2 warped_uv = uv + offset * (dist_sq * screen_curvature);
+	
+	// If warped UV is outside [0,1], discard or mask (optional, but for overlay we might just want to let it vignette)
+	
+	// 2. Jitter
+	// Offset warped_uv slightly based on time
+	float time_step = floor(TIME * 60.0); // Jitter at 60fps intervals
+	vec2 jitter_offset = vec2(
+		random(vec2(time_step, 1.0)) - 0.5,
+		random(vec2(time_step, 2.0)) - 0.5
+	) * jitter_intensity;
+	
+	// Apply jitter to the texture look-up UVs (if we were warping the underlying texture)
+	// But since we are an OVERLAY, we aren't distorting the underlying texture directly unless we use SCREEN_TEXTURE.
+	// However, this shader is applied to a ColorRect on TOP of content.
+	// Standard approach for overlay is to just draw effects over the top.
+	// IF we want to distort the underlying text, we would need to use a BackBufferCopy or Screen reading shader.
+	// Given the instructions (\"add visual effects... to these screens\"), and previous setup involving ColorRect overlay:
+	// Let's stick to generating effects *on top* that simulate imperfections, 
+	// rather than warping the actual game text (which is safer for readability).
+	// BUT, \"Curvature\" usually implies geometric distortion.
+	// Since we are just a ColorRect overlay, we can use the curvature to curve the SCANLINES and VIGNETTE.
+	
+	// Use warped_uv for generating scanlines/vignette to match the curved look
+	
+	// 3. Scanlines with Roll
+	// Use warped_uv.y + TIME for movement
+	float scanline = sin((warped_uv.y + TIME * scanline_speed * 0.01) * scanline_count * 3.14159 * 2.0);
+	scanline = (scanline + 1.0) * 0.5;
+	
+	// 4. White Noise
+	float noise_val = random(warped_uv + vec2(TIME, TIME));
+	
+	// 5. Vignette (using warped coords)
+	float vig_dist = length(warped_uv - center);
+	float vig = smoothstep(0.4, 0.4 + 0.3, vig_dist) * vignette_intensity;
+
+	// Compose Color
+	// Start with black
+	vec3 dark_color = vec3(0.0);
+	
+	// Scanlines darken the screen
+	float sl_alpha = scanline * scanline_alpha;
+	
+	// Jitter effect on overlay: random flashes or horizontal offsets?
+	// Let's do a horizontal \"tearing\" scanline occasionall?
+	// Or just keep it simple: Jitter shifts the scanlines slightly.
+	
+	// Update alpha
+	float final_alpha = sl_alpha + vig;
+	
+	// Add noise (whitening)
+	vec3 noise_color = vec3(noise_val);
+	// Noise adds to color, doesn't just alpha blend black
+	
+	// Output
+	// We mix black overlay (scanlines/vignette) with white noise.
+	// This is an overlay, so COLOR.a determines how much we darken/lighten.
+	// Darkening: (0,0,0, alpha)
+	// Lightening: (1,1,1, alpha)
+	// We want mostly darkening, but noise adds light.
+	
+	COLOR.rgb = noise_color * noise_intensity;
+	COLOR.a = clamp(final_alpha + (noise_val * noise_intensity * 0.1), 0.0, 1.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7jhwx"]
+shader = SubResource("Shader_d80ls")
+shader_parameter/scanline_count = 100.00000475
+shader_parameter/scanline_alpha = 0.15
+shader_parameter/scanline_speed = 4.000000665
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/screen_curvature = 0.05
+shader_parameter/jitter_intensity = 0.002
+shader_parameter/noise_intensity = 0.05
 
 [sub_resource type="Animation" id="Animation_jptrp"]
 length = 0.001
@@ -142,7 +341,7 @@ position = Vector2(-23, 61.75)
 [node name="Item_queue_2" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root"]
 position = Vector2(-207, -19)
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("8_o6rv1")
+texture = SubResource("AtlasTexture_o6rv1")
 
 [node name="Item_shadow" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root/Item_queue_2"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -154,7 +353,7 @@ texture = ExtResource("9_arr72")
 [node name="Item_queue_1" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root"]
 position = Vector2(-116, 7)
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("8_o6rv1")
+texture = SubResource("AtlasTexture_o6rv1")
 
 [node name="Item_shadow" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root/Item_queue_1"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -165,7 +364,7 @@ texture = ExtResource("9_arr72")
 
 [node name="Item_main" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root"]
 material = SubResource("ShaderMaterial_gntc1")
-texture = ExtResource("8_o6rv1")
+texture = SubResource("AtlasTexture_arr72")
 
 [node name="Item_shadow" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_item_root/Item_main"]
 self_modulate = Color(0, 0, 0, 0.39215687)
@@ -178,15 +377,39 @@ texture = ExtResource("9_arr72")
 visible = false
 texture = ExtResource("10_gntc1")
 
+[node name="Item_status_LR" type="Sprite2D" parent="Lottery Slot_mask"]
+position = Vector2(213, 345)
+texture = ExtResource("17_g23h7")
+offset = Vector2(0.5, -110)
+
+[node name="pole" type="Sprite2D" parent="Lottery Slot_mask/Item_status_LR"]
+show_behind_parent = true
+position = Vector2(0, -62.305)
+texture = ExtResource("15_7fxrg")
+
+[node name="Item_upgradeable_UR" type="Sprite2D" parent="Lottery Slot_mask"]
+position = Vector2(212, -335)
+texture = ExtResource("16_yj02r")
+offset = Vector2(-0.5, 152)
+
+[node name="pole" type="Sprite2D" parent="Lottery Slot_mask/Item_upgradeable_UR"]
+show_behind_parent = true
+position = Vector2(0, 102.99999)
+rotation = -3.1415927
+texture = ExtResource("15_7fxrg")
+
 [node name="Lottery Slot_lid" type="Sprite2D" parent="Lottery Slot_mask"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 texture = ExtResource("10_4aaut")
 
 [node name="Lottery Slot_lid_icon" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_lid"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-texture = ExtResource("11_of7x7")
+position = Vector2(-11, -0.99999976)
+scale = Vector2(0.675, 0.675)
+texture = ExtResource("17_4aaut")
 
 [node name="Lottery Pool Name_label" type="RichTextLabel" parent="Lottery Slot_mask/Lottery Slot_lid"]
+visible = false
 offset_left = -281.0
 offset_top = -228.0
 offset_right = 256.0
@@ -209,9 +432,12 @@ texture = ExtResource("10_4aaut")
 
 [node name="Lottery Slot_lid_icon" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_lid/Lottery Slot_lid_psudo"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-texture = ExtResource("11_of7x7")
+position = Vector2(-11, -1)
+scale = Vector2(0.675, 0.675)
+texture = ExtResource("17_4aaut")
 
 [node name="Lottery Pool Name_label" type="RichTextLabel" parent="Lottery Slot_mask/Lottery Slot_lid/Lottery Slot_lid_psudo"]
+visible = false
 offset_left = -281.0
 offset_top = -228.0
 offset_right = 256.0
@@ -239,7 +465,7 @@ self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
 texture = ExtResource("16_l1p8v")
 
 [node name="Lottery Slot_right_screen_fill" type="Sprite2D" parent="Lottery Slot_right_screen"]
-modulate = Color(0.44896722, 0.3860733, 0.9252106, 1)
+modulate = Color(0.61960787, 0.9137255, 0.40392157, 1)
 show_behind_parent = true
 clip_children = 2
 texture = ExtResource("15_do7yb")
@@ -255,7 +481,7 @@ theme_override_constants/separation = -46
 [node name="Item Icon_0" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid"]
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("8_o6rv1")
+texture = SubResource("AtlasTexture_4aaut")
 expand_mode = 5
 
 [node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid/Item Icon_0"]
@@ -271,7 +497,7 @@ expand_mode = 3
 [node name="Item Icon_1" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid"]
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("8_o6rv1")
+texture = SubResource("AtlasTexture_4aaut")
 expand_mode = 5
 
 [node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid/Item Icon_1"]
@@ -287,7 +513,7 @@ expand_mode = 3
 [node name="Item Icon_2" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid"]
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("8_o6rv1")
+texture = SubResource("AtlasTexture_4aaut")
 expand_mode = 5
 
 [node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid/Item Icon_2"]
@@ -303,7 +529,7 @@ expand_mode = 3
 [node name="Item Icon_3" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid"]
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("8_o6rv1")
+texture = SubResource("AtlasTexture_4aaut")
 expand_mode = 5
 
 [node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid/Item Icon_3"]
@@ -319,7 +545,7 @@ expand_mode = 3
 [node name="Item Icon_4" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid"]
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("8_o6rv1")
+texture = SubResource("AtlasTexture_4aaut")
 expand_mode = 5
 
 [node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid/Item Icon_4"]
@@ -343,7 +569,7 @@ theme_override_constants/separation = -46
 [node name="Item Icon_0" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"]
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("8_o6rv1")
+texture = SubResource("AtlasTexture_4aaut")
 expand_mode = 5
 
 [node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo/Item Icon_0"]
@@ -359,7 +585,7 @@ expand_mode = 3
 [node name="Item Icon_1" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"]
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("8_o6rv1")
+texture = SubResource("AtlasTexture_4aaut")
 expand_mode = 5
 
 [node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo/Item Icon_1"]
@@ -375,7 +601,7 @@ expand_mode = 3
 [node name="Item Icon_2" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"]
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("8_o6rv1")
+texture = SubResource("AtlasTexture_4aaut")
 expand_mode = 5
 
 [node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo/Item Icon_2"]
@@ -391,7 +617,7 @@ expand_mode = 3
 [node name="Item Icon_3" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"]
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("8_o6rv1")
+texture = SubResource("AtlasTexture_4aaut")
 expand_mode = 5
 
 [node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo/Item Icon_3"]
@@ -407,7 +633,7 @@ expand_mode = 3
 [node name="Item Icon_4" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"]
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("8_o6rv1")
+texture = SubResource("AtlasTexture_4aaut")
 expand_mode = 5
 
 [node name="Item Icon_status" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo/Item Icon_4"]
@@ -501,7 +727,7 @@ position = Vector2(-234, -405.25)
 texture = ExtResource("20_ihuts")
 
 [node name="ScreenEffectOverlay" type="ColorRect" parent="Lottery Slot_top_screen/Lottery Slot_top_screen_fill"]
-material = ExtResource("23_crt00")
+material = SubResource("ShaderMaterial_d80ls")
 offset_left = -329.0
 offset_top = -507.0
 offset_right = 320.0
@@ -550,7 +776,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ScreenEffectOverlay" type="ColorRect" parent="Lottery Slot_description_screen/Lottery Slot_description_screen_fill"]
-material = ExtResource("23_crt00")
+material = SubResource("ShaderMaterial_7jhwx")
 offset_left = -514.0
 offset_top = -315.75
 offset_right = 497.0

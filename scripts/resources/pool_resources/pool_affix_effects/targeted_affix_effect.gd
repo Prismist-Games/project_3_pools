@@ -29,11 +29,16 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	var min_rarity = ctx.min_rarity # 捕获最低稀有度（如时来运转设置的）
 	var pool_index: int = ctx.meta.get("pool_index", -1)
 	var item_type = ctx.item_type
+	var gold_cost: int = ctx.gold_cost # 捕获金币消耗，稍后手动扣除
+	
+	# 设置 ctx.gold_cost = 0，防止 PoolSystem 自动扣除
+	ctx.gold_cost = 0
 	
 	# 发出信号显示选择弹窗（使用 "5 Choose 1" 面板）
 	EventBus.modal_requested.emit(&"targeted_selection", {
 		"source_pool_index": pool_index,
 		"pool_item_type": item_type,
+		"gold_cost": gold_cost,
 		"callback": func(selected_data: ItemData):
 			if selected_data != null:
 				var rarity = Constants.pick_weighted_index(rarity_weights, GameManager.rng)

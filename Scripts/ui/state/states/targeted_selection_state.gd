@@ -24,6 +24,9 @@ var available_items: Array[ItemData] = []
 ## 选择结果回调
 var on_select_callback: Callable = Callable()
 
+## 抽奖消耗（从 payload 获取）
+var gold_cost: int = 0
+
 ## 是否已经操作（用于拦截重复输入）
 var _has_acted: bool = false
 
@@ -63,6 +66,7 @@ func enter(payload: Dictionary = {}) -> void:
 	source_pool_index = payload.get("source_pool_index", -1)
 	pool_item_type = payload.get("pool_item_type", -1)
 	on_select_callback = payload.get("callback", Callable())
+	gold_cost = payload.get("gold_cost", 0)
 	_has_acted = false
 	_is_selection_confirmed = false
 	
@@ -173,10 +177,17 @@ func select_item(index: int) -> void:
 	if controller.vfx_manager:
 		controller.vfx_manager.is_paused = true
 	
-	# 1. 播放弹窗落下动画
+	# 1. 扣除金币 (仅在确认选择时)
+	if gold_cost > 0:
+		if not GameManager.spend_gold(gold_cost):
+			# 理论上 enter 时已经检查过且期间没有花费，不应失败，但还是安全检查一下
+			_cancel_selection()
+			return
+	
+	# 2. 播放弹窗落下动画
 	await _play_panel_fall()
 	
-	# 2. 执行回调生成物品实例
+	# 3. 执行回调生成物品实例
 	var item_instance: ItemInstance = null
 	if on_select_callback.is_valid():
 		item_instance = on_select_callback.call(selected_data)
@@ -222,11 +233,6 @@ func _cancel_selection() -> void:
 	
 	_has_acted = true
 	_is_selection_confirmed = false # 明确标记为未确认，不触发刷新
-	
-	# 退还金币（通过词缀的 base_gold_cost）
-	var pool = PoolSystem.current_pools[source_pool_index] if source_pool_index >= 0 and source_pool_index < PoolSystem.current_pools.size() else null
-	if pool and pool.affix:
-		GameManager.add_gold(pool.affix.base_gold_cost)
 	
 	# 播放落下动画
 	await _play_panel_fall()

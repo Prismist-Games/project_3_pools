@@ -8,18 +8,40 @@ signal hover_state_changed(slot_index: int, is_hovered: bool)
 @onready var item_shadow: Sprite2D = find_child("Item_shadow", true)
 @onready var affix_display: Sprite2D = find_child("Item_affix", true)
 @onready var led_display: Sprite2D = find_child("Slot_led", true)
-@onready var status_icon: Sprite2D = find_child("Item_status", true)
 @onready var backgrounds: Node2D = find_child("Item Slot_backgrounds", true)
 @onready var hover_icon: Sprite2D = find_child("Item_hover_icon", true)
 @onready var rarity_display: Sprite2D = find_child("Item_rarity", true)
-var shelf_life_label: Label = null
 
-## Hover 图标素材（占位）
+## 角标节点引用 (LR=Lower Right, UR=Upper Right, LL=Lower Left/Upper Left)
+@onready var status_badge: Sprite2D = find_child("Item_status_LR", true)
+@onready var upgradeable_badge: Sprite2D = find_child("Item_upgradeable_UR", true)
+@onready var freshness_badge: Sprite2D = find_child("Item_freshness_UL", true)
+@onready var freshness_label: RichTextLabel = null
+
+
+## 角标动画 Tween 引用
+var _status_badge_tween: Tween = null
+var _upgradeable_badge_tween: Tween = null
+var _freshness_badge_tween: Tween = null
+
+## 角标当前状态 (用于避免重复动画)
+var _status_badge_visible: bool = false
+var _upgradeable_badge_visible: bool = false
+var _freshness_badge_visible: bool = false
+
+## 角标动画配置
+const BADGE_SHOW_ROTATION: float = 0.0
+const BADGE_HIDE_ROTATION_RIGHT: float = deg_to_rad(90.0) # 右侧角标隐藏位 90°
+const BADGE_HIDE_ROTATION_LEFT: float = deg_to_rad(-90.0) # 左侧角标隐藏位 -90°
+const BADGE_ANIMATION_DURATION: float = 1.0
+
+## Hover 图标素材
 var _recycle_hover_texture: Texture2D = preload("res://assets/sprites/the_machine_switch/Recycle_icon.png")
-var _merge_hover_texture: Texture2D = preload("res://assets/sprites/icons/upgrade.png")
+var _merge_hover_texture: Texture2D = preload("res://assets/sprites/icons/upgrade_icon_hover.png")
+var _trash_texture: Texture2D = preload("res://assets/sprites/icons/items/item_trash.png")
 
 ## Hover 状态类型
-enum HoverType { NONE, RECYCLABLE, MERGEABLE }
+enum HoverType {NONE, RECYCLABLE, MERGEABLE}
 var _current_hover_type: HoverType = HoverType.NONE
 var _is_hovered: bool = false
 
@@ -39,10 +61,10 @@ var _rarity_original_scale: Vector2 = Vector2.ONE # rarity 原始缩放
 func _ready() -> void:
 	super._ready()
 	
-	# 自动查找或创建保质期标签
-	shelf_life_label = find_child("ShelfLifeLabel", true)
-	if not shelf_life_label:
-		_create_shelf_life_label()
+	
+	# 查找 freshness 角标内的 label
+	if freshness_badge:
+		freshness_label = freshness_badge.find_child("Item_freshness_label", true)
 		
 	# 关键修复 2：将材质唯一化，防止多个 Slot 共享同一个 Shader 实例
 	if icon_display and icon_display.material:
@@ -57,7 +79,10 @@ func _ready() -> void:
 	if rarity_display:
 		rarity_display.visible = false
 		_rarity_original_scale = rarity_display.scale
-		rarity_display.scale = Vector2.ZERO  # 初始缩放为 0
+		rarity_display.scale = Vector2.ZERO # 初始缩放为 0
+	
+	# 初始化角标为隐藏状态（旋转到隐藏位置）
+	_init_badges()
 
 func setup(index: int) -> void:
 	slot_index = index
@@ -79,7 +104,7 @@ func get_icon_global_scale() -> Vector2:
 func hide_icon() -> void:
 	icon_display.visible = false
 	if item_shadow: item_shadow.visible = false
-	if status_icon: status_icon.visible = false
+	# 注意：角标的显示/隐藏由旋转动画控制，不在这里直接设置 visible
 
 func show_icon() -> void:
 	icon_display.visible = true
@@ -120,8 +145,6 @@ func update_display(item: ItemInstance) -> void:
 		icon_display.texture = null
 		if item_shadow: item_shadow.visible = false
 		affix_display.visible = false
-		status_icon.visible = false
-		if shelf_life_label: shelf_life_label.visible = false
 		led_display.modulate = Color(0.5, 0.5, 0.5, 0.5) # Grayed out
 		
 		# 背景颜色渐变到空槽颜色
@@ -131,13 +154,16 @@ func update_display(item: ItemInstance) -> void:
 		# 确保图标彻底隐藏
 		hide_icon()
 		
+		# 隐藏所有角标
+		_hide_all_badges()
+		
 		# 强制清理选中视觉，因为物品没了
 		if _is_selected:
 			set_selected(false)
 		return
 	
 	_current_item = item
-	icon_display.texture = item.item_data.icon
+	
 	if item_shadow:
 		item_shadow.visible = not _is_selected # 选中时不显示阴影
 	
@@ -146,18 +172,21 @@ func update_display(item: ItemInstance) -> void:
 	
 	# ERA_4: 过期物品视觉标识
 	if item.is_expired:
-		# 降低亮度和饱和度，显示过期状态
-		if icon_display:
-			icon_display.modulate = Color(0.5, 0.5, 0.5, 1.0) # 暗灰色调
-		# 可选：在 status_icon 上显示过期标记
-		# （暂时不显示，因为 update_status_badge 会覆盖）
-	else:
-		# 正常显示
-		if icon_display:
+		# 仅当它是“原本就在这里的物品”且刚变成垃圾时，播放变化动画
+		# 如果是新进来的（交换、移动、购买），或者是正在通过 VFX 飞行落地的，直接设置
+		if not is_new_item_entering and icon_display.texture != _trash_texture and icon_display.texture != null:
+			_play_trash_transformation_animation(_trash_texture)
+		else:
+			icon_display.texture = _trash_texture
 			icon_display.modulate = Color.WHITE
+	else:
+		# 正常物品
+		icon_display.texture = item.item_data.icon
+		icon_display.modulate = Color.WHITE
 	
-	# ERA_4: 保质期数值显示
-	_update_shelf_life_label(item)
+	
+	# 更新 freshness 角标
+	update_freshness_badge(item.shelf_life)
 	
 	# 背景颜色渐变到稀有度颜色
 	if backgrounds:
@@ -288,7 +317,7 @@ func _update_rarity_display() -> void:
 			if _rarity_rotation_tween:
 				_rarity_rotation_tween.kill()
 			_rarity_rotation_tween = create_tween()
-			_rarity_rotation_tween.set_loops()  # 无限循环
+			_rarity_rotation_tween.set_loops() # 无限循环
 			# 使用 from(0.0) 确保每次循环都从 0 开始
 			_rarity_rotation_tween.tween_property(rarity_display, "rotation", TAU, 3.0) \
 				.from(0.0) \
@@ -337,19 +366,136 @@ func _play_rarity_entry_animation() -> void:
 		_rarity_scale_tween = null
 	)
 
+## =====================================================================
+## 角标动画系统
+## =====================================================================
+
+## 初始化所有角标到隐藏状态
+## 旋转方向规则：LR 和 UL 隐藏位 90°，UR 和 LL 隐藏位 -90°
+func _init_badges() -> void:
+	# Status 角标 (LR - Lower Right，隐藏位 90°)
+	if status_badge:
+		status_badge.rotation = BADGE_HIDE_ROTATION_RIGHT
+		_status_badge_visible = false
+	
+	# Upgradeable 角标 (UR - Upper Right，隐藏位 -90°)
+	if upgradeable_badge:
+		upgradeable_badge.rotation = BADGE_HIDE_ROTATION_LEFT
+		_upgradeable_badge_visible = false
+	
+	# Freshness 角标 (UL - Upper Left，隐藏位 90°)
+	if freshness_badge:
+		freshness_badge.rotation = BADGE_HIDE_ROTATION_RIGHT
+		_freshness_badge_visible = false
+
+
+## 播放右侧角标动画（status, upgradeable）
+func _animate_badge_right(badge: Sprite2D, should_show: bool, tween_ref: Tween) -> Tween:
+	if not badge:
+		return null
+	
+	# 杀掉之前的动画
+	if tween_ref and tween_ref.is_valid():
+		tween_ref.kill()
+	
+	var target_rotation = BADGE_SHOW_ROTATION if should_show else BADGE_HIDE_ROTATION_RIGHT
+	var new_tween = create_tween()
+	new_tween.tween_property(badge, "rotation", target_rotation, BADGE_ANIMATION_DURATION) \
+		.set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	
+	return new_tween
+
+
+## 播放左侧角标动画（freshness）
+func _animate_badge_left(badge: Sprite2D, should_show: bool, tween_ref: Tween) -> Tween:
+	if not badge:
+		return null
+	
+	# 杀掉之前的动画
+	if tween_ref and tween_ref.is_valid():
+		tween_ref.kill()
+	
+	var target_rotation = BADGE_SHOW_ROTATION if should_show else BADGE_HIDE_ROTATION_LEFT
+	var new_tween = create_tween()
+	new_tween.tween_property(badge, "rotation", target_rotation, BADGE_ANIMATION_DURATION) \
+		.set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	
+	return new_tween
+
+
+## 更新 status 角标（订单满足状态）
+## badge_state: 0=隐藏, 1=白色勾(拥有但不满足品质), 2=绿色勾(满足)
 func update_status_badge(badge_state: int) -> void:
 	if is_vfx_target: return # 飞行中锁定状态图标，防止提前出现
-	if not status_icon: return
+	if not status_badge: return
 	
-	match badge_state:
-		0:
-			status_icon.visible = false
-		1:
-			status_icon.visible = true
-			status_icon.texture = preload("res://assets/sprites/icons/tick_white.png")
-		2:
-			status_icon.visible = true
-			status_icon.texture = preload("res://assets/sprites/icons/tick_green.png")
+	var should_show = badge_state > 0
+	
+	# 更新纹理（不需要动画）
+	if should_show:
+		match badge_state:
+			1:
+				status_badge.texture = preload("res://assets/sprites/icons/tick_white.png")
+			2:
+				status_badge.texture = preload("res://assets/sprites/icons/tick_green.png")
+	
+	# 只在状态变化时播放动画
+	if should_show != _status_badge_visible:
+		_status_badge_visible = should_show
+		_status_badge_tween = _animate_badge_right(status_badge, should_show, _status_badge_tween)
+
+
+## 更新 upgradeable 角标（可合成提示）
+## UR - Upper Right，隐藏位 -90°
+func set_upgradeable_badge(should_show: bool) -> void:
+	if is_vfx_target: return
+	if not upgradeable_badge: return
+	
+	# 只在状态变化时播放动画
+	if should_show != _upgradeable_badge_visible:
+		_upgradeable_badge_visible = should_show
+		_upgradeable_badge_tween = _animate_badge_left(upgradeable_badge, should_show, _upgradeable_badge_tween)
+
+
+## 更新 freshness 角标（新鲜度/保质期）
+## UL - Upper Left，隐藏位 90°
+## shelf_life: -1=不显示，>=0=显示数值
+func update_freshness_badge(shelf_life: int) -> void:
+	if is_vfx_target: return
+	if not freshness_badge: return
+	
+	# 检查当前时代是否应该显示保质期角标（第三时代 index=2 开始）
+	var should_show = false
+	var cfg = EraManager.current_config if EraManager else null
+	if cfg and cfg.has_shelf_life() and shelf_life > 0:
+		should_show = true
+	
+	# 更新标签内容
+	if freshness_label and should_show:
+		freshness_label.text = str(shelf_life)
+	
+	# 只在状态变化时播放动画
+	if should_show != _freshness_badge_visible:
+		_freshness_badge_visible = should_show
+		_freshness_badge_tween = _animate_badge_right(freshness_badge, should_show, _freshness_badge_tween)
+
+
+## 隐藏所有角标（用于物品清空时）
+func _hide_all_badges() -> void:
+	# Status (LR) 隐藏位 90°
+	if _status_badge_visible:
+		_status_badge_visible = false
+		_status_badge_tween = _animate_badge_right(status_badge, false, _status_badge_tween)
+	
+	# Upgradeable (UR) 隐藏位 -90°
+	if _upgradeable_badge_visible:
+		_upgradeable_badge_visible = false
+		_upgradeable_badge_tween = _animate_badge_left(upgradeable_badge, false, _upgradeable_badge_tween)
+	
+	# Freshness (UL) 隐藏位 90°
+	if _freshness_badge_visible:
+		_freshness_badge_visible = false
+		_freshness_badge_tween = _animate_badge_right(freshness_badge, false, _freshness_badge_tween)
 
 
 ## =====================================================================
@@ -464,54 +610,27 @@ func handle_mouse_release() -> void:
 	_press_scale_tween.tween_property(icon_display, "scale", _icon_original_scale, 0.1) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
-
-func _update_shelf_life_label(item: ItemInstance) -> void:
-	if not shelf_life_label:
-		return
+## 播放变成垃圾的动画
+func _play_trash_transformation_animation(new_texture: Texture2D) -> void:
+	if not icon_display: return
 	
-	# 检查当前时代是否有保质期效果
-	var cfg = EraManager.current_config if EraManager else null
-	if not cfg or not cfg.has_shelf_life():
-		shelf_life_label.visible = false
-		return
+	# 停止可能存在的缩放动画
+	if _press_scale_tween and _press_scale_tween.is_valid():
+		_press_scale_tween.kill()
 	
-	# 显示保质期
-	if item.shelf_life >= 0:
-		shelf_life_label.visible = true
-		shelf_life_label.text = str(item.shelf_life)
-		
-		# 根据保质期剩余量改变颜色
-		if item.is_expired:
-			shelf_life_label.modulate = Color(1.0, 0.3, 0.3) # 红色：过期
-		elif item.shelf_life <= 5:
-			shelf_life_label.modulate = Color(1.0, 0.7, 0.3) # 橙色：警告
-		else:
-			shelf_life_label.modulate = Color.WHITE # 白色：正常
-	else:
-		shelf_life_label.visible = false
-
-
-func _create_shelf_life_label() -> void:
-	# 在代码中动态创建标签，以解决 .tscn 难以手动修改的问题
-	shelf_life_label = Label.new()
-	shelf_life_label.name = "ShelfLifeLabel"
-	add_child(shelf_life_label)
-	
-	# 设置样式
-	shelf_life_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	shelf_life_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	
-	# 设置字体大小
-	var font_size = 40
-	shelf_life_label.add_theme_font_size_override("font_size", font_size)
-	
-	# 设置描边以提高可读性
-	shelf_life_label.add_theme_constant_override("outline_size", 8)
-	shelf_life_label.add_theme_color_override("font_outline_color", Color.BLACK)
-	
-	# 设置位置 (根据项目 Sprite2D 坐标系统调整)
-	# 假设图标中心在 (0,0)，我们将标签放在右下角
-	shelf_life_label.position = Vector2(50, 50)
-	
-	# 初始隐藏
-	shelf_life_label.visible = false
+	var t = create_tween()
+	# 1. 缩小到 0
+	t.tween_property(icon_display, "scale", Vector2.ZERO, 0.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	# 2. 换图
+	t.tween_callback(func():
+		icon_display.texture = new_texture
+		icon_display.modulate = Color.WHITE
+		if item_shadow:
+			item_shadow.visible = false # 垃圾图可能不需要阴影，或者之后再显示
+	)
+	# 3. 弹回原始大小 (elastic)
+	t.tween_property(icon_display, "scale", _icon_original_scale, 0.6).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	t.tween_callback(func():
+		if item_shadow:
+			item_shadow.visible = not _is_selected
+	)

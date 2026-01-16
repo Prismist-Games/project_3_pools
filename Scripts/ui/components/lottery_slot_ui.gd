@@ -5,11 +5,12 @@ extends BaseSlotUI
 signal hovered(pool_index: int, pool_item_type: int)
 signal unhovered(pool_index: int)
 signal item_hovered(item_id: StringName) # NEW: 针对抽奖结果中具体物品的高亮
+signal badge_refresh_requested(slot_index: int, item: ItemInstance) # NEW: 请求刷新角标状态
 
 ## =====================================================================
 ## True Nodes (当前显示内容)
 ## =====================================================================
-@onready var pool_name_label: RichTextLabel = find_child("Lottery Pool Name_label", true)
+# @onready var pool_name_label: RichTextLabel = find_child("Lottery Pool Name_label", true)
 @onready var lid_icon: Sprite2D = find_child("Lottery Slot_lid_icon", true)
 @onready var lid_sprite: Sprite2D = find_child("Lottery Slot_lid", true)
 @onready var price_label: RichTextLabel = find_child("Price Label", true)
@@ -23,7 +24,7 @@ signal item_hovered(item_id: StringName) # NEW: 针对抽奖结果中具体物�
 ## =====================================================================
 @onready var lid_pseudo: Sprite2D = $"Lottery Slot_mask/Lottery Slot_lid/Lottery Slot_lid_psudo"
 @onready var lid_icon_pseudo: Sprite2D = lid_pseudo.get_node("Lottery Slot_lid_icon") if lid_pseudo else null
-@onready var pool_name_label_pseudo: RichTextLabel = lid_pseudo.get_node("Lottery Pool Name_label") if lid_pseudo else null
+# @onready var pool_name_label_pseudo: RichTextLabel = lid_pseudo.get_node("Lottery Pool Name_label") if lid_pseudo else null
 @onready var affix_label_pseudo: RichTextLabel = $"Lottery Slot_top_screen/Lottery Slot_top_screen_fill/Affix Label/Affix Label_psudo"
 @onready var price_label_pseudo: RichTextLabel = $"Lottery Slot_top_screen/Lottery Slot_top_screen_fill/Price Label/Price Label_psudo"
 @onready var items_grid_pseudo: VBoxContainer = $"Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"
@@ -40,6 +41,24 @@ signal item_hovered(item_id: StringName) # NEW: 针对抽奖结果中具体物�
 @onready var item_queue_2: Sprite2D = find_child("Item_queue_2", true)
 @onready var item_queue_2_shadow: Sprite2D = item_queue_2.get_node("Item_shadow") if item_queue_2 else null
 
+## 角标节点引用
+@onready var status_badge: Sprite2D = find_child("Item_status_LR", true)
+@onready var upgradeable_badge: Sprite2D = find_child("Item_upgradeable_UR", true)
+
+## 角标动画 Tween 引用
+var _status_badge_tween: Tween = null
+var _upgradeable_badge_tween: Tween = null
+
+## 角标当前状态
+var _status_badge_visible: bool = false
+var _upgradeable_badge_visible: bool = false
+
+## 角标动画配置
+const BADGE_SHOW_ROTATION: float = 0.0
+const BADGE_HIDE_ROTATION_RIGHT: float = deg_to_rad(90.0)
+const BADGE_HIDE_ROTATION_LEFT: float = deg_to_rad(-90.0)
+const BADGE_ANIMATION_DURATION: float = 1.0
+
 @onready var backgrounds: Node2D = find_child("Lottery Slot_backgrounds", true)
 
 ## Hover 图标素材（占位）
@@ -47,7 +66,7 @@ var _recycle_hover_texture: Texture2D = preload("res://assets/sprites/the_machin
 var _merge_hover_texture: Texture2D = preload("res://assets/sprites/icons/upgrade.png")
 
 ## Hover 状态类型 (与 ItemSlotUI 保持一致)
-enum HoverType { NONE, RECYCLABLE, MERGEABLE }
+enum HoverType {NONE, RECYCLABLE, MERGEABLE}
 var _current_hover_type: HoverType = HoverType.NONE
 var _is_hovered: bool = false
 var _is_mouse_pressed: bool = false # 跟踪鼠标是否按下
@@ -110,6 +129,9 @@ func _ready() -> void:
 	
 	# 记录 Push-Away 节点的初始位置
 	_store_push_initial_positions()
+	
+	# 初始化角标为隐藏状态
+	_init_badges()
 
 func _store_push_initial_positions() -> void:
 	## 存储所有参与推挤动画的节点的初始位置
@@ -195,6 +217,13 @@ func get_main_icon_global_scale() -> Vector2:
 
 func hide_main_icon() -> void:
 	item_main.visible = false
+	# 同时隐藏所有角标（不播放动画）
+	if status_badge:
+		status_badge.rotation = BADGE_HIDE_ROTATION_RIGHT
+		_status_badge_visible = false
+	if upgradeable_badge:
+		upgradeable_badge.rotation = BADGE_HIDE_ROTATION_LEFT
+		_upgradeable_badge_visible = false
 
 func show_main_icon() -> void:
 	item_main.visible = true
@@ -257,14 +286,17 @@ func _update_grid_icons(grid: VBoxContainer, display_items: Array[ItemData], sat
 			var item_data = display_items[i]
 			icon_node.texture = item_data.icon
 			
-			# 更新满足状态图标 (仅显示勾，不显示叉)
+			# 更新满足状态图标
+			# status: 0=没有物品, 1=有但品质不够(白色勾), 2=完全满足(不显示)
 			var status_icon = icon_node.get_node_or_null("Item Icon_status")
 			if status_icon:
-				var is_satisfied = satisfied_map.get(item_data.id, false)
-				if is_satisfied:
-					status_icon.texture = preload("res://assets/sprites/icons/tick_green.png")
+				var status = satisfied_map.get(item_data.id, 0)
+				if status == 1:
+					# 有物品但品质不够，显示白色勾
+					status_icon.texture = preload("res://assets/sprites/icons/tick_white.png")
 					status_icon.visible = true
 				else:
+					# 状态0（没有）或状态2（完全满足），都不显示角标
 					status_icon.visible = false
 		else:
 			icon_node.visible = false
@@ -346,12 +378,11 @@ func play_draw_anim() -> void:
 	pass
 
 func update_pending_display(pending_list: Array) -> void:
-	# 关键保护：如果当前槽位是 VFX 起点，绝对不允许逻辑更新覆盖 UI
-	# 否则会导致：1. 正在飞行的物品图标在原位复现；2. 队列由于逻辑超前更新而闪烁
-	if is_vfx_source:
-		return
-		
 	if pending_list.is_empty():
+		# 如果当前正在飞行（作为起始点），不要立即清空，否则会导致图标瞬间消失
+		if is_vfx_source:
+			return
+			
 		is_drawing = false
 		_top_item_id = &""
 		
@@ -371,16 +402,29 @@ func update_pending_display(pending_list: Array) -> void:
 		item_queue_2.texture = null
 		item_queue_2.visible = false
 		item_queue_2_shadow.visible = false
+		
+		# 隐藏所有角标
+		_hide_all_badges()
 		return
 	
 	# 队列不为空时，始终更新显示（即使 is_vfx_source = true）
 	# 因为队列的变化反映了真实的待定状态，必须及时更新以避免显示错误的物品
 	
-	# 设置背景颜色 (根据第一个物品的稀有度，与 ItemSlot 保持一致)
 	if backgrounds:
 		backgrounds.color = Constants.get_rarity_border_color(pending_list[0].rarity)
 	
+	# 更新当前排在首位的物品 ID (用于 hover 高亮)
+	var top_item = pending_list[0]
+	_top_item_id = top_item.item_data.id if top_item is ItemInstance else top_item.get("id", &"")
+	
 	# 设置主要物品（update_queue_display 内部会处理显示/隐藏）
+	# 关键保护：如果当前槽位是 VFX 起点，跳过真正的图标显示更新，避免干扰飞行中的 VFX
+	# 但我们已经记录了 top_item_id 并更新了背景色，确保逻辑一致
+	if is_vfx_source:
+		# 即使处于 VFX 状态，也要尝试静默更新队列信息（除了 main 以外的）
+		# 但为了稳妥，我们让 play_queue_advance_anim 负责这部分的物理表现
+		return
+		
 	update_queue_display(pending_list)
 
 func update_queue_display(items: Array) -> void:
@@ -394,7 +438,6 @@ func update_queue_display(items: Array) -> void:
 	# item_main 永远显示 items[0]
 	if items.size() > 0:
 		var top_item = items[0]
-		_top_item_id = top_item.item_data.id if top_item is ItemInstance else top_item.get("id", &"")
 		
 		item_main.texture = top_item.item_data.icon if top_item is ItemInstance else top_item.get("icon")
 		item_main.visible = true
@@ -487,6 +530,13 @@ func play_queue_advance_anim() -> void:
 	item_main.visible = q1_texture != null
 	item_main_shadow.visible = q1_texture != null
 	
+	# 【优化】前进完成后，如果还有物品，请求刷新角标
+	if q1_texture != null:
+		# 我们需要找到对应的 ItemInstance 以传递给信号
+		# 注意：此时 InventorySystem 可能已经 pop 了，所以我们依赖传入的 texture 或者外部刷新
+		# 为了保险，直接发信号，让 Controller 处理
+		badge_refresh_requested.emit(pool_index, null)
+	
 	if had_q2:
 		item_queue_1.texture = q2_texture
 		item_queue_1.visible = q2_texture != null
@@ -504,6 +554,10 @@ func play_queue_advance_anim() -> void:
 	# 更新背景颜色 (如果 main 仍有物品，保持当前颜色；否则重置)
 	if not item_main.visible and backgrounds:
 		backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
+		
+	# 如果所有物品都没了，隐藏角标
+	if not item_main.visible:
+		_hide_all_badges()
 
 
 func open_lid() -> void:
@@ -599,7 +653,7 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 	# 选择目标节点
 	var target_lid_sprite: Sprite2D = lid_pseudo if target_pseudo else lid_sprite
 	var target_lid_icon: Sprite2D = lid_icon_pseudo if target_pseudo else lid_icon
-	var target_pool_name: RichTextLabel = pool_name_label_pseudo if target_pseudo else pool_name_label
+	# var target_pool_name: RichTextLabel = pool_name_label_pseudo if target_pseudo else pool_name_label
 	var target_affix: RichTextLabel = affix_label_pseudo if target_pseudo else affix_label
 	var target_price: RichTextLabel = price_label_pseudo if target_pseudo else price_label
 	var target_desc: RichTextLabel = description_label_pseudo if target_pseudo else description_label
@@ -623,10 +677,10 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 			target_lid_icon.self_modulate = theme_color
 	
 	# 更新奖池名称
-	if target_pool_name and has_item_type:
-		var item_type = pool.item_type if "item_type" in pool else pool.get("item_type")
-		target_pool_name.text = tr(Constants.type_to_display_name(item_type)) + " " + tr("POOL_SUFFIX")
-		target_pool_name.visible = true
+	# if target_pool_name and has_item_type:
+	# 	var item_type = pool.item_type if "item_type" in pool else pool.get("item_type")
+	# 	target_pool_name.text = tr(Constants.type_to_display_name(item_type)) + " " + tr("POOL_SUFFIX")
+	# 	target_pool_name.visible = true
 	
 	# 更新价格 (始终保持可见)
 	if target_price:
@@ -794,6 +848,110 @@ func _reset_push_positions() -> void:
 	# 水平组 - 父子关系 (只重置 True 节点)
 	if description_label and _push_initial_positions.has("desc_true"):
 		description_label.position = _push_initial_positions["desc_true"]
+
+## =====================================================================
+## 角标动画系统 (与 ItemSlotUI 保持一致)
+## =====================================================================
+
+## 初始化所有角标到隐藏状态
+func _init_badges() -> void:
+	# Status 角标 (LR - Lower Right，隐藏位 90°)
+	if status_badge:
+		status_badge.rotation = BADGE_HIDE_ROTATION_RIGHT
+		_status_badge_visible = false
+	
+	# Upgradeable 角标 (UR - Upper Right，隐藏位 -90°)
+	if upgradeable_badge:
+		upgradeable_badge.rotation = BADGE_HIDE_ROTATION_LEFT
+		_upgradeable_badge_visible = false
+
+
+## 播放右侧角标动画
+func _animate_badge_right(badge: Sprite2D, should_show: bool, tween_ref: Tween) -> Tween:
+	if not badge:
+		return null
+	
+	if tween_ref and tween_ref.is_valid():
+		tween_ref.kill()
+	
+	var target_rotation = BADGE_SHOW_ROTATION if should_show else BADGE_HIDE_ROTATION_RIGHT
+	var new_tween = create_tween()
+	new_tween.tween_property(badge, "rotation", target_rotation, BADGE_ANIMATION_DURATION) \
+		.set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	
+	return new_tween
+
+
+## 播放左侧角标动画 (UR 隐藏位是 -90°, 在 ItemSlotUI 中也被归为 left 逻辑)
+func _animate_badge_left(badge: Sprite2D, should_show: bool, tween_ref: Tween) -> Tween:
+	if not badge:
+		return null
+	
+	if tween_ref and tween_ref.is_valid():
+		tween_ref.kill()
+	
+	var target_rotation = BADGE_SHOW_ROTATION if should_show else BADGE_HIDE_ROTATION_LEFT
+	var new_tween = create_tween()
+	new_tween.tween_property(badge, "rotation", target_rotation, BADGE_ANIMATION_DURATION) \
+		.set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	
+	return new_tween
+
+
+## 更新 status 角标（订单满足状态）
+## badge_state: 0=隐藏, 1=白色勾, 2=绿色勾
+func update_status_badge(badge_state: int) -> void:
+	if not status_badge: return
+	
+	# 【优化】如果正在播放开盖动画，等待动画结束再显示角标
+	if anim_player.is_playing() and anim_player.current_animation == "lid_open":
+		await anim_player.animation_finished
+	
+	# 再次检查，防止动画期间状态已变
+	if not status_badge: return
+	
+	var should_show = badge_state > 0
+	
+	# 更新纹理
+	if should_show:
+		match badge_state:
+			1:
+				status_badge.texture = preload("res://assets/sprites/icons/tick_white.png")
+			2:
+				status_badge.texture = preload("res://assets/sprites/icons/tick_green.png")
+	
+	# 只在状态变化时播放动画
+	if should_show != _status_badge_visible:
+		_status_badge_visible = should_show
+		_status_badge_tween = _animate_badge_right(status_badge, should_show, _status_badge_tween)
+
+
+## 更新 upgradeable 角标（可合成提示）
+func set_upgradeable_badge(should_show: bool) -> void:
+	if not upgradeable_badge: return
+	
+	# 【优化】如果正在播放开盖动画，等待动画结束再显示角标
+	if anim_player.is_playing() and anim_player.current_animation == "lid_open":
+		await anim_player.animation_finished
+	
+	# 再次检查
+	if not upgradeable_badge: return
+	
+	# 只在状态变化时播放动画
+	if should_show != _upgradeable_badge_visible:
+		_upgradeable_badge_visible = should_show
+		_upgradeable_badge_tween = _animate_badge_left(upgradeable_badge, should_show, _upgradeable_badge_tween)
+
+
+## 隐藏所有角标
+func _hide_all_badges() -> void:
+	if _status_badge_visible:
+		_status_badge_visible = false
+		_status_badge_tween = _animate_badge_right(status_badge, false, _status_badge_tween)
+	
+	if _upgradeable_badge_visible:
+		_upgradeable_badge_visible = false
+		_upgradeable_badge_tween = _animate_badge_left(upgradeable_badge, false, _upgradeable_badge_tween)
 
 
 ## =====================================================================

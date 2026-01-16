@@ -20,10 +20,10 @@ enum Feature {
 	MERGE, ## 合成功能
 	POOL_AFFIXES, ## 奖池词缀
 	ORDER_REFRESH, ## 订单刷新
-	ITEM_TYPE_MEDICINE, ## 物品类型: 药品
-	ITEM_TYPE_STATIONERY, ## 物品类型: 文具
-	ITEM_TYPE_CONVENIENCE, ## 物品类型: 便利
-	ITEM_TYPE_ENTERTAINMENT, ## 物品类型: 娱乐
+	ITEM_TYPE_RECTANGLE, ## 物品类型: 矩形
+	ITEM_TYPE_CIRCLE, ## 物品类型: 圆形
+	ITEM_TYPE_STAR, ## 物品类型: 星形
+	ITEM_TYPE_TRAPEZOID, ## 物品类型: 梯形
 }
 
 ## 功能 ID 到显示名称的映射
@@ -31,10 +31,10 @@ const FEATURE_DISPLAY_NAMES: Dictionary = {
 	Feature.MERGE: "合成",
 	Feature.POOL_AFFIXES: "奖池词缀",
 	Feature.ORDER_REFRESH: "订单刷新",
-	Feature.ITEM_TYPE_MEDICINE: "药品",
-	Feature.ITEM_TYPE_STATIONERY: "文具",
-	Feature.ITEM_TYPE_CONVENIENCE: "便利",
-	Feature.ITEM_TYPE_ENTERTAINMENT: "娱乐",
+	Feature.ITEM_TYPE_RECTANGLE: "矩形",
+	Feature.ITEM_TYPE_CIRCLE: "圆形",
+	Feature.ITEM_TYPE_STAR: "星形",
+	Feature.ITEM_TYPE_TRAPEZOID: "梯形",
 }
 
 ## 内部状态 (默认全锁)
@@ -159,8 +159,8 @@ func _feature_to_id(feature: Feature) -> StringName:
 		Feature.MERGE: return &"merge"
 		Feature.POOL_AFFIXES: return &"pool_affixes"
 		Feature.ORDER_REFRESH: return &"order_refresh"
-		Feature.ITEM_TYPE_MEDICINE: return &"item_type_medicine"
-		Feature.ITEM_TYPE_STATIONERY: return &"item_type_stationery"
-		Feature.ITEM_TYPE_CONVENIENCE: return &"item_type_convenience"
-		Feature.ITEM_TYPE_ENTERTAINMENT: return &"item_type_entertainment"
+		Feature.ITEM_TYPE_RECTANGLE: return &"item_type_rectangle"
+		Feature.ITEM_TYPE_CIRCLE: return &"item_type_circle"
+		Feature.ITEM_TYPE_STAR: return &"item_type_star"
+		Feature.ITEM_TYPE_TRAPEZOID: return &"item_type_trapezoid"
 		_: return &"unknown"

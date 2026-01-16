@@ -141,6 +141,14 @@ func get_slot_node(index: int) -> Control:
 	if index < 1 or index >= _slots.size(): return null
 	return _slots[index]
 
+func set_slots_locked(locked: bool) -> void:
+	for i in range(1, 5):
+		var slot = _get_slot_node(i)
+		if slot and slot.has_method("set_locked"):
+			slot.set_locked(locked)
+	if main_quest_slot and main_quest_slot.has_method("set_locked"):
+		main_quest_slot.set_locked(locked)
+
 func _get_slot_node(index: int) -> Control:
 	return get_slot_node(index)
 
@@ -149,6 +157,10 @@ func _get_slot_node(index: int) -> Control:
 func _on_slot_input(event: InputEvent, index: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
+			# 检查 UI 锁定
+			if game_ui and game_ui.is_ui_locked():
+				return
+			
 			if game_ui.state_machine and game_ui.state_machine.get_ui_mode() == Constants.UIMode.SUBMIT:
 				var order_idx = index - 1 if index != -1 else -1
 				_handle_smart_select_for_order(order_idx)

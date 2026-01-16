@@ -40,6 +40,7 @@ var era_label: Control = null
 @onready var dlc_panel: Node2D = find_child("The Machine DLC", true)
 @onready var dlc_item_slots_grid: GridContainer = find_child("Additional Item Slots Grid", true)
 @onready var dlc_label: RichTextLabel = find_child("DLC Label", true)
+@onready var dlc_animation_player: AnimationPlayer = null # 延迟获取，因为它是dlc_panel的子节点
 
 # --- 子控制器 ---
 const QuestIconHighlighterScript = preload("res://scripts/ui/controllers/quest_icon_highlighter.gd")
@@ -112,7 +113,11 @@ func _ready() -> void:
 	# 4. 初始刷新
 	_refresh_all()
 	
-	# 5. 初始化 DLC 面板状态（根据当前时代）
+	# 5. 获取 DLC AnimationPlayer 引用
+	if dlc_panel:
+		dlc_animation_player = dlc_panel.get_node_or_null("AnimationPlayer")
+	
+	# 6. 初始化 DLC 面板状态（根据当前时代）
 	_update_dlc_panel_visibility()
 	
 	if language_switch:
@@ -362,12 +367,15 @@ func _update_ui_mode_display() -> void:
 	var has_pending = not InventorySystem.pending_items.is_empty()
 	
 	# 背包格锁定逻辑：UI 锁、有待定项、或者非正常模式均锁
-	var inventory_locked = is_ui_locked() or has_pending
+	var inventory_locked = is_ui_locked() or has_pending or mode != Constants.UIMode.NORMAL
 	inventory_controller.set_slots_locked(inventory_locked)
 	
 	# 奖池锁定逻辑：UI 锁、有待定项、或者非正常模式均锁
 	var pool_locked = is_ui_locked() or has_pending or mode != Constants.UIMode.NORMAL
 	pool_controller.set_slots_locked(pool_locked)
+	
+	# 订单锁定逻辑：UI 锁即锁
+	order_controller.set_slots_locked(is_ui_locked())
 	
 	# 回收盖子展示逻辑：处于回收模式，或者有回收动画正在飞行中，或者正在执行回收锁
 	var recycle_active = (mode == Constants.UIMode.RECYCLE) or _ui_locks.has("recycle")
@@ -403,6 +411,10 @@ func _on_pending_queue_changed(items: Array[ItemInstance]) -> void:
 	
 	# 刷新当前hover的slot的状态
 	_refresh_all_hovered_slot_states()
+	
+	# 刷新 upgradeable 角标（pending 物品可能与背包物品配对）
+	if inventory_controller:
+		inventory_controller.refresh_upgradeable_badges()
 
 func _on_skills_changed(skills: Array) -> void:
 	if skill_slot_controller:
@@ -740,6 +752,7 @@ func _on_modal_requested(modal_id: StringName, payload: Variant) -> void:
 			state_machine.transition_to(&"TargetedSelection", {
 				"source_pool_index": payload.get("source_pool_index", last_clicked_pool_idx),
 				"pool_item_type": payload.get("pool_item_type", -1),
+				"gold_cost": payload.get("gold_cost", 0),
 				"callback": payload.get("callback", Callable())
 			})
 
@@ -847,9 +860,82 @@ func _on_item_recycled(slot_index: int, item: ItemInstance) -> void:
 
 # --- ERA_3: DLC 面板管理 ---
 
-func _on_era_changed(_era_index: int) -> void:
-	_update_dlc_panel_visibility()
-	_update_dlc_label()
+func _on_era_changed(era_index: int) -> void:
+	# 异步处理时代切换，包括动画播放
+	_handle_era_transition(era_index)
+
+
+## 处理时代切换（包括动画播放）
+func _handle_era_transition(_era_index: int) -> void:
+	var cfg = EraManager.current_config if EraManager else null
+	var has_type_limit = cfg and cfg.has_item_type_limit()
+	
+	# 判断是进入还是退出第三时代
+	var is_entering_era_3 = has_type_limit and not dlc_panel.visible
+	var is_exiting_era_3 = not has_type_limit and dlc_panel.visible
+	
+	if is_entering_era_3:
+		# --- 关键修复：在播放动画前初始化 DLC 内容 ---
+		# 1. 启用 DLC 槽位逻辑
+		if inventory_controller:
+			inventory_controller.set_dlc_slots_enabled(true)
+		
+		# 2. 刷新所有槽位（包括新的 DLC 槽位）的数据
+		inventory_controller.update_all_slots(InventorySystem.inventory)
+		_update_dlc_label()
+		
+		# 3. 播放 era_3_begin 动画
+		await _play_era_3_begin_animation()
+		
+		# 4. 确保面板最终状态正确
+		_update_dlc_panel_visibility()
+	elif is_exiting_era_3:
+		# 退出第三时代：先播放 era_3_end 动画，再移除 DLC
+		await _play_era_3_end_animation()
+		_update_dlc_panel_visibility()
+	else:
+		# 非第三时代的切换，直接更新
+		_update_dlc_panel_visibility()
+		_update_dlc_label()
+
+
+## 播放第三时代开始动画
+func _play_era_3_begin_animation() -> void:
+	if not dlc_animation_player or not dlc_animation_player.has_animation("era_3_begin"):
+		return
+	
+	# 锁定交互
+	lock_ui("era_3_transition")
+	print("[Game2DUI] 播放 ERA_3 开始动画...")
+	
+	# 确保 DLC 面板可见（但位置在屏幕外）
+	dlc_panel.visible = true
+	
+	# 播放动画
+	dlc_animation_player.play("era_3_begin")
+	await dlc_animation_player.animation_finished
+	
+	# 解锁交互
+	unlock_ui("era_3_transition")
+	print("[Game2DUI] ERA_3 开始动画播放完成。")
+
+
+## 播放第三时代结束动画
+func _play_era_3_end_animation() -> void:
+	if not dlc_animation_player or not dlc_animation_player.has_animation("era_3_end"):
+		return
+	
+	# 锁定交互
+	lock_ui("era_3_transition")
+	print("[Game2DUI] 播放 ERA_3 结束动画...")
+	
+	# 播放动画
+	dlc_animation_player.play("era_3_end")
+	await dlc_animation_player.animation_finished
+	
+	# 解锁交互
+	unlock_ui("era_3_transition")
+	print("[Game2DUI] ERA_3 结束动画播放完成。")
 
 
 ## 根据当前时代更新 DLC 面板的可见性

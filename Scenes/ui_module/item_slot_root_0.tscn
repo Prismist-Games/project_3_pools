@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cr0uv8jj87n1f"]
+[gd_scene load_steps=27 format=3 uid="uid://1aipywo3jhy1"]
 
 [ext_resource type="Script" uid="uid://exqnykh1n5lj" path="res://scripts/ui/components/item_slot_ui.gd" id="1_ixbl1"]
 [ext_resource type="Texture2D" uid="uid://caieb4p7g0f64" path="res://assets/sprites/item_slots/基地-4.png" id="2_kitn1"]
@@ -7,7 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://cglvasc20q3mu" path="res://assets/sprites/item_slots/基地-2.png" id="5_gnepb"]
 [ext_resource type="Texture2D" uid="uid://coaai2i4vi1sh" path="res://assets/sprites/item_slots/基地-3.png" id="6_idsbx"]
 [ext_resource type="Texture2D" uid="uid://bb0jex82xogr2" path="res://assets/sprites/item_slots/基地-8.png" id="7_731lk"]
-[ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="8_tc38w"]
+[ext_resource type="Shader" path="res://assets/shaders/silhouette.gdshader" id="8_731lk"]
+[ext_resource type="Texture2D" uid="uid://nju4di4bai4r" path="res://assets/sprites/icons/items/item_shape_centered.png" id="9_731lk"]
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="9_nc6kv"]
 [ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="10_y5mjh"]
 [ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="11_emsc1"]
@@ -17,36 +18,17 @@
 [ext_resource type="Texture2D" uid="uid://7s7gx5sytssb" path="res://assets/sprites/item_slots/基地-6 2.png" id="13_6ggen"]
 [ext_resource type="Texture2D" uid="uid://cemheosuktfhj" path="res://assets/sprites/item_slots/基地-5.png" id="14_0lcdy"]
 [ext_resource type="Texture2D" uid="uid://ju74ng2iyhft" path="res://assets/sprites/item_slots/小杆子.png" id="14_rfv0q"]
-
-[sub_resource type="Shader" id="Shader_ixbl1"]
-code = "shader_type canvas_item;
-
-// 剪影颜色
-uniform vec4 silhouette_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
-// 是否开启剪影效果
-uniform bool is_enabled = false;
-
-void fragment() {
-    // 获取原始贴图颜色
-    vec4 texture_color = texture(TEXTURE, UV);
-    
-    if (is_enabled) {
-        // 【纯色剪影】完全用指定颜色替换，只保留贴图的形状 (Alpha)
-        // 不与 COLOR 相乘，确保 ffffff 会渲染成纯白色
-        // 但保留节点的整体透明度调制
-        float alpha = texture_color.a * COLOR.a;
-        COLOR = vec4(silhouette_color.rgb, alpha);
-    } else {
-        // 正常渲染
-        COLOR = texture_color * COLOR;
-    }
-}
-"
+[ext_resource type="Texture2D" uid="uid://djd0iqblhln2k" path="res://assets/sprites/icons/upgrade_icon.png" id="15_gnepb"]
+[ext_resource type="Texture2D" uid="uid://dy1hdjyjjaxab" path="res://assets/sprites/icons/tick_empty.png" id="16_idsbx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ixbl1"]
-shader = SubResource("Shader_ixbl1")
+shader = ExtResource("8_731lk")
 shader_parameter/silhouette_color = Color(0.5, 0.5, 0.5, 1)
 shader_parameter/is_enabled = false
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_731lk"]
+atlas = ExtResource("9_731lk")
+region = Rect2(1000, 2000, 500, 500)
 
 [sub_resource type="Animation" id="Animation_ovo1l"]
 length = 0.001
@@ -147,9 +129,7 @@ scale = Vector2(0.65, 0.65)
 
 [node name="Item_icon" type="Sprite2D" parent="Item Slot_mask/Item Slot_item_root"]
 material = SubResource("ShaderMaterial_ixbl1")
-texture = ExtResource("8_tc38w")
-offset = Vector2(9, -0.5)
-region_enabled = true
+texture = SubResource("AtlasTexture_731lk")
 region_rect = Rect2(85, 75, 450, 450)
 
 [node name="Item_shadow" type="Sprite2D" parent="Item Slot_mask/Item Slot_item_root/Item_icon"]
@@ -173,14 +153,48 @@ self_modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
 show_behind_parent = true
 texture = ExtResource("12_rs8t5")
 
-[node name="Item_status" type="Sprite2D" parent="Item Slot_mask"]
+[node name="Item_status_LR" type="Sprite2D" parent="Item Slot_mask"]
 position = Vector2(87, 194)
 texture = ExtResource("11_emsc1")
 offset = Vector2(0.5, -110)
 
-[node name="pole" type="Sprite2D" parent="Item Slot_mask/Item_status"]
+[node name="pole" type="Sprite2D" parent="Item Slot_mask/Item_status_LR"]
 show_behind_parent = true
 position = Vector2(0, -62.305)
+texture = ExtResource("14_rfv0q")
+
+[node name="Item_upgradeable_UR" type="Sprite2D" parent="Item Slot_mask"]
+position = Vector2(86, -234)
+texture = ExtResource("15_gnepb")
+offset = Vector2(-0.5, 152)
+
+[node name="pole" type="Sprite2D" parent="Item Slot_mask/Item_upgradeable_UR"]
+show_behind_parent = true
+position = Vector2(0, 102.99999)
+rotation = -3.1415927
+texture = ExtResource("14_rfv0q")
+
+[node name="Item_freshness_UL" type="Sprite2D" parent="Item Slot_mask"]
+position = Vector2(-84, -234)
+texture = ExtResource("16_idsbx")
+offset = Vector2(-0.5, 152)
+
+[node name="Item_freshness_label" type="RichTextLabel" parent="Item Slot_mask/Item_freshness_UL"]
+offset_left = -31.0
+offset_top = 122.0
+offset_right = 33.0
+offset_bottom = 182.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 50
+text = "99"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="pole" type="Sprite2D" parent="Item Slot_mask/Item_freshness_UL"]
+show_behind_parent = true
+position = Vector2(0, 102.99999)
+rotation = -3.1415927
 texture = ExtResource("14_rfv0q")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="Item Slot_mask"]

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://cwma8d4dayb4q"]
+
+[ext_resource type="Script" uid="uid://m8m4kapcslxd" path="res://scripts/resources/item_resources/item_data.gd" id="1_1cf4n"]
+[ext_resource type="Texture2D" uid="uid://bv1rbyc0706kq" path="res://assets/sprites/icons/items/items_icon_centered.png" id="1_3ybad"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q6o7b"]
+atlas = ExtResource("1_3ybad")
+region = Rect2(1500, 2000, 500, 500)
+
+[resource]
+script = ExtResource("1_1cf4n")
+id = &"rectangle_computer"
+name = "RECTANGLE_COMPUTER"
+item_type = 2
+icon = SubResource("AtlasTexture_q6o7b")

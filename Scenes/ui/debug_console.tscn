@@ -149,7 +149,7 @@ text = "当前金币"
 unique_name_in_owner = true
 layout_mode = 2
 max_value = 1e+06
-step = 1.0
+step = 10.0
 allow_greater = true
 allow_lesser = true
 
@@ -280,4 +280,21 @@ text = "全部解锁"
 layout_mode = 2
 text = "全部锁定"
 
+[node name="HSeparator10" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
 
+[node name="AnimTestLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "动画测试"
+
+[node name="TestShockAnimButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "测试震惊动画 (Shocked)"
+
+[node name="TestImpatientAnimButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "测试不耐烦动画 (Impatient)"
+
+[node name="ResetAnimButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "重置动画 (Idle)"

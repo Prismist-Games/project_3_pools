@@ -1,12 +1,10 @@
-[gd_scene load_steps=152 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=129 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
-[ext_resource type="Script" uid="uid://d1vjf642fqt10" path="res://scripts/ui/skill_icon_ui.gd" id="1_skill_icon"]
-[ext_resource type="Script" uid="uid://rg8ahiwfwlxb" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
-[ext_resource type="PackedScene" uid="uid://dcrc7hmw85gqq" path="res://scenes/animated_sprites/background_animated.tscn" id="2_u8s40"]
+[ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
+[ext_resource type="PackedScene" uid="uid://dcrc7hmw85gqq" path="res://scenes/background_animated.tscn" id="2_u8s40"]
 [ext_resource type="Texture2D" uid="uid://b48curv0diwvx" path="res://assets/sprites/ground.PNG" id="2_vave4"]
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="3_4wmcb"]
-[ext_resource type="Texture2D" uid="uid://bm72nuf443xjm" path="res://assets/sprites/icons/items/entertainment_top.png" id="3_fiado"]
 [ext_resource type="Texture2D" uid="uid://b4qoptplb61wr" path="res://assets/sprites/the_machine/the_machine_display_outline.png" id="4_6b2j4"]
 [ext_resource type="Texture2D" uid="uid://c4wpgax5wfhpa" path="res://assets/sprites/the_machine/the_machine_legacy_fill.png" id="5_0dgko"]
 [ext_resource type="Texture2D" uid="uid://usox228a20t7" path="res://assets/sprites/the_machine/the_machine_legacy_outline.png" id="6_2v31b"]
@@ -14,46 +12,42 @@
 [ext_resource type="Texture2D" uid="uid://dp2k5ss5oefjc" path="res://assets/sprites/the_machine/the_machine_slot_outline.png" id="8_xqbja"]
 [ext_resource type="Texture2D" uid="uid://b6xu5iewxjacd" path="res://assets/sprites/icons/skills/偷工減料.png" id="9_8hb1a"]
 [ext_resource type="Texture2D" uid="uid://2sp6p7grlidd" path="res://assets/sprites/the_machine/the_machine_slot_outline_front.png" id="9_fvhsr"]
-[ext_resource type="Texture2D" uid="uid://cemheosuktfhj" path="res://assets/sprites/item_slots/基地-5.png" id="11_bobrt"]
-[ext_resource type="Texture2D" uid="uid://7s7gx5sytssb" path="res://assets/sprites/item_slots/基地-6 2.png" id="11_fkxe6"]
+[ext_resource type="Script" uid="uid://bwywox4emx4y5" path="res://scripts/ui/utils/custom_tooltip.gd" id="10_4tp6t"]
 [ext_resource type="Texture2D" uid="uid://b5gnskrlq8d81" path="res://assets/sprites/the_machine/the_machine_top.png" id="11_h0822"]
 [ext_resource type="Texture2D" uid="uid://balbu2vdssbb4" path="res://assets/sprites/the_machine/the_machine_top_outline_behind.png" id="12_lql4v"]
 [ext_resource type="Texture2D" uid="uid://x0x66srb2i00" path="res://assets/sprites/the_machine/the_machine_slot_outline_behind.png" id="13_7bc83"]
 [ext_resource type="Texture2D" uid="uid://bok47535elxgj" path="res://assets/sprites/the_machine_switch/基地-1.png" id="14_6b2j4"]
 [ext_resource type="Texture2D" uid="uid://ct1fu4kglmejc" path="res://assets/sprites/the_machine/the_machine_top_front.png" id="14_8sogx"]
-[ext_resource type="Texture2D" uid="uid://oxm0lvuajhqy" path="res://assets/sprites/item_slots/基地-1.png" id="14_o2140"]
 [ext_resource type="Texture2D" uid="uid://cmkaptn0k1n1x" path="res://assets/sprites/the_machine_switch/基地-4.png" id="15_0dgko"]
-[ext_resource type="Texture2D" uid="uid://cglvasc20q3mu" path="res://assets/sprites/item_slots/基地-2.png" id="15_aiivw"]
 [ext_resource type="Texture2D" uid="uid://dw0b4i78tkpru" path="res://assets/sprites/the_machine_switch/基地-7.png" id="15_fvhsr"]
 [ext_resource type="Texture2D" uid="uid://dwq0bu4hxfo5j" path="res://assets/sprites/the_machine/the_machine_side.png" id="15_phh48"]
 [ext_resource type="Texture2D" uid="uid://bfeh4pui1k6k1" path="res://assets/sprites/the_machine_switch/基地-3.png" id="16_2v31b"]
 [ext_resource type="Texture2D" uid="uid://d30sfg17qmuxb" path="res://assets/sprites/the_machine/the_machine_side_outline.png" id="16_aagg1"]
-[ext_resource type="Texture2D" uid="uid://coaai2i4vi1sh" path="res://assets/sprites/item_slots/基地-3.png" id="16_cu6b6"]
 [ext_resource type="Texture2D" uid="uid://bugs5jj4i014q" path="res://assets/sprites/the_machine_switch/基地-6.png" id="17_d4ujc"]
-[ext_resource type="Texture2D" uid="uid://caieb4p7g0f64" path="res://assets/sprites/item_slots/基地-4.png" id="17_ivepa"]
 [ext_resource type="Texture2D" uid="uid://dscqm4kp5fmva" path="res://assets/sprites/the_machine/the_machine_front.png" id="17_tmso7"]
 [ext_resource type="Texture2D" uid="uid://w68mqbo8q5e2" path="res://assets/sprites/the_machine/the_machine_front_outline.png" id="18_2kwm8"]
 [ext_resource type="Texture2D" uid="uid://dpqibsn4l8hxe" path="res://assets/sprites/the_machine_switch/Recycle_background_shade.png" id="18_8y6ih"]
-[ext_resource type="Texture2D" uid="uid://dlywfo3j61bw8" path="res://assets/sprites/item_slots/基地-6.png" id="18_ivepa"]
 [ext_resource type="Texture2D" uid="uid://lw48pfhb1slm" path="res://assets/sprites/the_machine_switch/Recycle_background_outline.png" id="18_u8s40"]
 [ext_resource type="Texture2D" uid="uid://tyc42trcd2xq" path="res://assets/sprites/the_machine_switch/基地-5.png" id="18_xqbja"]
-[ext_resource type="Texture2D" uid="uid://bb0jex82xogr2" path="res://assets/sprites/item_slots/基地-8.png" id="19_sojbq"]
-[ext_resource type="Script" uid="uid://ip5lr6ojc1cq" path="res://scripts/ui/utils/switch_background_follow.gd" id="19_ue141"]
+[ext_resource type="Script" uid="uid://cp4b85c6kcgdl" path="res://scripts/ui/utils/switch_background_follow.gd" id="19_ue141"]
 [ext_resource type="Texture2D" uid="uid://c1rw0mhgt1s1i" path="res://assets/sprites/the_machine/the_machine_display_fill.png" id="21_ue141"]
 [ext_resource type="Texture2D" uid="uid://bclpcjghycqdb" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="22_017ef"]
 [ext_resource type="Texture2D" uid="uid://d3xb6e3385m7k" path="res://assets/sprites/icons/coupon.png" id="25_ccvlu"]
 [ext_resource type="Texture2D" uid="uid://fcpknfhqe6td" path="res://assets/sprites/the_machine/the_machine_star.PNG" id="25_ue141"]
 [ext_resource type="Texture2D" uid="uid://bk6w30hxghp51" path="res://assets/sprites/quest_slots/基地-7.png" id="25_y6c7h"]
 [ext_resource type="Texture2D" uid="uid://b6sygmv0sgt3g" path="res://assets/sprites/quest_slots/基地-3.png" id="26_5jtl3"]
-[ext_resource type="Texture2D" uid="uid://b83tw66bk1v5s" path="res://assets/sprites/quest_slots/基地-6.png" id="26_a718j"]
-[ext_resource type="Texture2D" uid="uid://beldg0xqocq2k" path="res://assets/sprites/quest_slots/基地-5.png" id="27_0phgb"]
 [ext_resource type="Texture2D" uid="uid://cppyh38s818ov" path="res://assets/sprites/quest_slots/基地-2.png" id="27_lyel0"]
 [ext_resource type="Texture2D" uid="uid://fb6h3kogm80w" path="res://assets/sprites/quest_slots/基地-4.png" id="28_mfdr7"]
 [ext_resource type="Texture2D" uid="uid://w7eym4f1436o" path="res://assets/sprites/quest_slots/基地-1.png" id="29_xpfcn"]
 [ext_resource type="Texture2D" uid="uid://bkthx68vhcd00" path="res://assets/sprites/quest_slots/基地-10.png" id="30_iq50s"]
 [ext_resource type="Texture2D" uid="uid://cyixck513ac1o" path="res://assets/sprites/quest_slots/基地-9.png" id="33_0ehwc"]
 [ext_resource type="Texture2D" uid="uid://ddymclsitprmc" path="res://assets/sprites/quest_slots/基地-8.png" id="34_oeaov"]
+[ext_resource type="PackedScene" uid="uid://cr0uv8jj87n1f" path="res://scenes/ui_module/item_slot_root_0.tscn" id="36_6sdua"]
 [ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="37_50t6p"]
+[ext_resource type="Texture2D" uid="uid://ck7c3s60r0tf5" path="res://assets/sprites/the_machine_dlc/dlc_pole.png" id="39_6sdua"]
+[ext_resource type="Texture2D" uid="uid://c0cjgrstcb5on" path="res://assets/sprites/the_machine_dlc/dlc_panel.png" id="39_enqmm"]
+[ext_resource type="Texture2D" uid="uid://qlu81dcv2v71" path="res://assets/sprites/the_machine_dlc/dlc_screen_outline.png" id="41_4tp6t"]
+[ext_resource type="Texture2D" uid="uid://c5hf5dhl1twpv" path="res://assets/sprites/the_machine_dlc/dlc_screen_fill.png" id="42_p2bqf"]
 [ext_resource type="PackedScene" uid="uid://basts7bbr2vav" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
 [ext_resource type="Texture2D" uid="uid://dj5be2vipyhi4" path="res://assets/sprites/the_rabbit/the_rabbit_head_left.png" id="62_enqmm"]
@@ -81,229 +75,152 @@
 [ext_resource type="Texture2D" uid="uid://du7f02gcpaycx" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear.png" id="81_65xho"]
 [ext_resource type="Texture2D" uid="uid://c5i1aenksh4av" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear_inner.png" id="82_00smp"]
 [ext_resource type="Texture2D" uid="uid://cuq30wijqs4vm" path="res://assets/sprites/light_2.png" id="82_4tp6t"]
-[ext_resource type="Texture2D" uid="uid://ct11t7mhbuf40" path="res://assets/sprites/the_rabbit/the_rabbit_nose_wrinkle.png" id="82_otpb1"]
+[ext_resource type="Texture2D" uid="uid://cjvwo40l2innf" path="res://assets/sprites/the_rabbit/the_rabbit_right_eyeball_fill.png" id="83_jptrp"]
+[ext_resource type="Texture2D" uid="uid://h5k15o8ewu4i" path="res://assets/sprites/icons/item_rarity_glow.PNG" id="83_taegb"]
 [ext_resource type="Texture2D" uid="uid://c1v0nvxbrf6c" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_fill.png" id="85_q6adl"]
-[ext_resource type="Texture2D" uid="uid://btfsaxb523m4l" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_idle.png" id="86_8ocj1"]
 [ext_resource type="Texture2D" uid="uid://ca5ud3ae3x378" path="res://assets/sprites/the_rabbit/the_rabbit_right_foot.png" id="87_fs1h7"]
-[ext_resource type="Texture2D" uid="uid://ccfw8sduhx8rm" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_pressed.png" id="87_jdak2"]
+[ext_resource type="PackedScene" uid="uid://05ku7kwq0dxp" path="res://scenes/ui_module/quest_slot_root_1.tscn" id="87_n6ers"]
 [ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="87_u8s40"]
-[ext_resource type="Texture2D" uid="uid://dslsns6p86ffx" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_hover.png" id="88_6kw3k"]
 [ext_resource type="Texture2D" uid="uid://dokmgcwoitk6l" path="res://assets/sprites/the_rabbit/the_rabbit_right_hand.png" id="88_yytn1"]
 [ext_resource type="Texture2D" uid="uid://b0qmpkep8t4hu" path="res://assets/sprites/the_rabbit/the_rabbit_right_leg.png" id="89_g7jj0"]
-[ext_resource type="Texture2D" uid="uid://dpf5a45rbg06a" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_button_disabled.png" id="89_u4yck"]
+[ext_resource type="FontFile" uid="uid://bpg3iakb3o07a" path="res://assets/fonts/51282.otf" id="91_036e7"]
 [ext_resource type="Texture2D" uid="uid://blfi1cynn45pb" path="res://assets/sprites/the_rabbit/the_rabbit_wand_face.png" id="91_v12rw"]
 [ext_resource type="Texture2D" uid="uid://bta1pq0iskiiy" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_1.png" id="92_ishf8"]
+[ext_resource type="Texture2D" uid="uid://b5c7hch7jr4dn" path="res://assets/sprites/frames/框.png" id="92_taegb"]
+[ext_resource type="Texture2D" uid="uid://b8tqpjm1q4iww" path="res://assets/sprites/frames/杆子.png" id="93_m40pb"]
 [ext_resource type="Texture2D" uid="uid://ba8n4bffxpxgp" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_2.png" id="93_yhupc"]
-[ext_resource type="Texture2D" uid="uid://4ds5uce4fmqb" path="res://assets/sprites/icons/refresh.png" id="94_017ef"]
 [ext_resource type="Texture2D" uid="uid://ctkkq7iwtmubj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_3.png" id="94_i65o3"]
+[ext_resource type="Texture2D" uid="uid://dq1iss2p4wdhw" path="res://assets/sprites/frames/框小.png" id="94_jqdmi"]
+[ext_resource type="Texture2D" uid="uid://nju4di4bai4r" path="res://assets/sprites/icons/items/item_shape_centered.png" id="94_m40pb"]
 [ext_resource type="Texture2D" uid="uid://dfn54hrs485jj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_4.png" id="95_bttk6"]
 [ext_resource type="Texture2D" uid="uid://da0ig7cexq40g" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_5.png" id="96_jf2x3"]
 [ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="99_anim"]
 [ext_resource type="Texture2D" uid="uid://wu4k3jwrgfaj" path="res://assets/sprites/frames/dialog.png" id="101_6kw3k"]
-[ext_resource type="Texture2D" uid="uid://csk65f0qvtg84" path="res://assets/sprites/frames/5_choose_1.png" id="101_8ocj1"]
-[ext_resource type="Texture2D" uid="uid://51nvb4xvrn1c" path="res://assets/sprites/icons/items/antique_cup.PNG" id="102_jdak2"]
 [ext_resource type="Texture2D" uid="uid://ue7e5frhr0kh" path="res://assets/sprites/frames/mini.png" id="102_u4yck"]
 [ext_resource type="Texture2D" uid="uid://djaip0chmnewr" path="res://assets/sprites/frames/popup.png" id="103_otpb1"]
-[ext_resource type="Script" uid="uid://exqnykh1n5lj" path="res://scripts/ui/components/item_slot_ui.gd" id="111_item"]
 [ext_resource type="Script" uid="uid://con7nyakgbhan" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
 
-[sub_resource type="Animation" id="Animation_ovo1l"]
-length = 0.001
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_lid:position:y")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(2),
-"points": PackedFloat32Array(-337.5, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
+[sub_resource type="Shader" id="Shader_pwukw"]
+code = "shader_type canvas_item;
+
+uniform float scanline_count : hint_range(0, 1800) = 50.0;
+uniform float scanline_alpha : hint_range(0, 1) = 0.5;
+uniform float scanline_speed : hint_range(-10.0, 10.0) = 1.0;  // New: Speed of scanline movement
+
+uniform float vignette_intensity : hint_range(0, 5) = 0.4;
+uniform float screen_curvature : hint_range(0, 0.1) = 0.05;
+
+uniform float jitter_intensity : hint_range(0, 0.1) = 0.0; // New: Jitter amount
+uniform float noise_intensity : hint_range(0, 1) = 0.0;     // New: Static noise amount
+
+// Helper function for pseudo-random numbers
+float random(vec2 uv) {
+    return fract(sin(dot(uv.xy, vec2(12.9898,78.233))) * 43758.5453123);
 }
 
-[sub_resource type="Animation" id="Animation_u4yck"]
-resource_name = "item_lid_close"
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_lid:position:y")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(3, 0),
-"points": PackedFloat32Array(-341.5, -0.4, -0.088775635, 0.4, 0.088775635, -39.5, -0.43333334, 21.216349, 0.35, -17.843029),
-"times": PackedFloat32Array(0, 0.5)
+void fragment() {
+	vec2 uv = UV;
+	
+	// 1. Screen Curvature / Warp
+	// Distort UVs from center
+	vec2 center = vec2(0.5, 0.5);
+	vec2 offset = uv - center;
+	float dist_sq = dot(offset, offset);
+	// Basic barrel distortion
+	vec2 warped_uv = uv + offset * (dist_sq * screen_curvature);
+	
+	// If warped UV is outside [0,1], discard or mask (optional, but for overlay we might just want to let it vignette)
+	
+	// 2. Jitter
+	// Offset warped_uv slightly based on time
+	float time_step = floor(TIME * 60.0); // Jitter at 60fps intervals
+	vec2 jitter_offset = vec2(
+		random(vec2(time_step, 1.0)) - 0.5,
+		random(vec2(time_step, 2.0)) - 0.5
+	) * jitter_intensity;
+	
+	// Apply jitter to the texture look-up UVs (if we were warping the underlying texture)
+	// But since we are an OVERLAY, we aren't distorting the underlying texture directly unless we use SCREEN_TEXTURE.
+	// However, this shader is applied to a ColorRect on TOP of content.
+	// Standard approach for overlay is to just draw effects over the top.
+	// IF we want to distort the underlying text, we would need to use a BackBufferCopy or Screen reading shader.
+	// Given the instructions (\"add visual effects... to these screens\"), and previous setup involving ColorRect overlay:
+	// Let's stick to generating effects *on top* that simulate imperfections, 
+	// rather than warping the actual game text (which is safer for readability).
+	// BUT, \"Curvature\" usually implies geometric distortion.
+	// Since we are just a ColorRect overlay, we can use the curvature to curve the SCANLINES and VIGNETTE.
+	
+	// Use warped_uv for generating scanlines/vignette to match the curved look
+	
+	// 3. Scanlines with Roll
+	// Use warped_uv.y + TIME for movement
+	float scanline = sin((warped_uv.y + TIME * scanline_speed * 0.01) * scanline_count * 3.14159 * 2.0);
+	scanline = (scanline + 1.0) * 0.5;
+	
+	// 4. White Noise
+	float noise_val = random(warped_uv + vec2(TIME, TIME));
+	
+	// 5. Vignette (using warped coords)
+	float vig_dist = length(warped_uv - center);
+	float vig = smoothstep(0.4, 0.4 + 0.3, vig_dist) * vignette_intensity;
+
+	// Compose Color
+	// Start with black
+	vec3 dark_color = vec3(0.0);
+	
+	// Scanlines darken the screen
+	float sl_alpha = scanline * scanline_alpha;
+	
+	// Jitter effect on overlay: random flashes or horizontal offsets?
+	// Let's do a horizontal \"tearing\" scanline occasionall?
+	// Or just keep it simple: Jitter shifts the scanlines slightly.
+	
+	// Update alpha
+	float final_alpha = sl_alpha + vig;
+	
+	// Add noise (whitening)
+	vec3 noise_color = vec3(noise_val);
+	// Noise adds to color, doesn't just alpha blend black
+	
+	// Output
+	// We mix black overlay (scanlines/vignette) with white noise.
+	// This is an overlay, so COLOR.a determines how much we darken/lighten.
+	// Darkening: (0,0,0, alpha)
+	// Lightening: (1,1,1, alpha)
+	// We want mostly darkening, but noise adds light.
+	
+	COLOR.rgb = noise_color * noise_intensity;
+	COLOR.a = clamp(final_alpha + (noise_val * noise_intensity * 0.1), 0.0, 1.0);
 }
+"
 
-[sub_resource type="Animation" id="Animation_6kw3k"]
-resource_name = "item_lid_open"
-length = 0.5
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_lid:position:y")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(2, 2),
-"points": PackedFloat32Array(-39.5, -0.24998589, 12.744301, 0.35, -17.843029, -341.5, -0.38333333, 7.19046, 0, 0),
-"times": PackedFloat32Array(0, 0.5)
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_vy3lb"]
-_data = {
-&"RESET": SubResource("Animation_ovo1l"),
-&"item_lid_close": SubResource("Animation_u4yck"),
-&"item_lid_open": SubResource("Animation_6kw3k")
-}
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_017ef"]
-animation = &"rabbit_eyes_rolling"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_u8s40"]
-animation = &"rabbit_idle"
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_036e7"]
+shader = SubResource("Shader_pwukw")
+shader_parameter/scanline_count = 120.0000057
+shader_parameter/scanline_alpha = 0.15
+shader_parameter/scanline_speed = 2.0
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/screen_curvature = 0.05
+shader_parameter/jitter_intensity = 0.002
+shader_parameter/noise_intensity = 0.05
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_otpb1"]
+animation = &"rabbit_idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_u8s40"]
 animation = &"rabbit_impatient"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8y6ih"]
-animation = &"rabbit_knock_machine"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ccvlu"]
-animation = &"rabbit_nose_poking"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_50t6p"]
-animation = &"rabbit_shocked"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_otpb1"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_017ef"]
-xfade_time = 0.5
-switch_mode = 1
-advance_mode = 2
-advance_condition = &"is_low_gold"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u8s40"]
-xfade_time = 0.2
-switch_mode = 1
-advance_mode = 2
-advance_condition = &"recycle_lid_closed"
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8y6ih"]
-xfade_time = 0.2
-switch_mode = 1
 advance_mode = 2
-advance_condition = &"pool_clicked"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ccvlu"]
-xfade_time = 0.2
-switch_mode = 1
-advance_mode = 2
-advance_condition = &"is_submitting"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ivmbw"]
-priority = 0
-advance_mode = 2
-advance_condition = &"is_low_gold"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tiwwg"]
-xfade_time = 0.2
-priority = 0
-switch_mode = 2
-advance_mode = 2
-advance_condition = &"is_low_gold"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_caxmy"]
-xfade_time = 0.3
-priority = 0
-switch_mode = 2
-advance_mode = 2
-advance_condition = &"is_low_gold"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_65xho"]
-xfade_time = 0.2
-priority = 0
-switch_mode = 2
-advance_mode = 2
-advance_condition = &"is_low_gold"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_00smp"]
-xfade_time = 0.5
-switch_mode = 1
-advance_mode = 2
-advance_expression = "is_low_gold == false"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jptrp"]
-xfade_time = 0.2
-switch_mode = 1
-advance_mode = 2
-advance_condition = &"pool_clicked"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7v8nc"]
-xfade_time = 0.2
-switch_mode = 2
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q6adl"]
-xfade_time = 0.2
-switch_mode = 1
-advance_mode = 2
-advance_condition = &"recycle_lid_closed"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_f3s7l"]
-xfade_time = 0.2
-switch_mode = 2
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fs1h7"]
-xfade_time = 0.2
-switch_mode = 1
-advance_mode = 2
-advance_condition = &"is_submitting"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5v8qp"]
-xfade_time = 0.3
-switch_mode = 2
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_50t6p"]
-xfade_time = 0.1
-priority = 0
-switch_mode = 1
-advance_mode = 2
-advance_condition = &"order_success"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2a6p6"]
-xfade_time = 0.2
-priority = 2
-switch_mode = 1
-advance_mode = 2
-advance_condition = &"exit_submitting"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yytn1"]
-xfade_time = 0.2
-switch_mode = 1
-advance_mode = 2
-advance_condition = &"exit_submitting & is_low_gold"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_otpb1"]
-states/End/position = Vector2(1173, 35.5)
-states/Start/position = Vector2(446.5, -250.30501)
-states/rabbit_eyes_rolling/node = SubResource("AnimationNodeAnimation_017ef")
-states/rabbit_eyes_rolling/position = Vector2(-102.50006, 336.0225)
-states/rabbit_idle/node = SubResource("AnimationNodeAnimation_u8s40")
-states/rabbit_idle/position = Vector2(251.65988, -62.30313)
-states/rabbit_impatient/node = SubResource("AnimationNodeAnimation_otpb1")
-states/rabbit_impatient/position = Vector2(628.36, -63.22735)
-states/rabbit_knock_machine/node = SubResource("AnimationNodeAnimation_8y6ih")
-states/rabbit_knock_machine/position = Vector2(302.49994, 338.08374)
-states/rabbit_nose_poking/node = SubResource("AnimationNodeAnimation_ccvlu")
-states/rabbit_nose_poking/position = Vector2(642.81976, 337.0531)
-states/rabbit_shocked/node = SubResource("AnimationNodeAnimation_50t6p")
-states/rabbit_shocked/position = Vector2(956.31976, 336.53778)
-transitions = ["Start", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_otpb1"), "rabbit_idle", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_017ef"), "rabbit_impatient", "rabbit_knock_machine", SubResource("AnimationNodeStateMachineTransition_u8s40"), "rabbit_impatient", "rabbit_eyes_rolling", SubResource("AnimationNodeStateMachineTransition_8y6ih"), "rabbit_impatient", "rabbit_nose_poking", SubResource("AnimationNodeStateMachineTransition_ccvlu"), "Start", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_ivmbw"), "rabbit_knock_machine", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_tiwwg"), "rabbit_shocked", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_caxmy"), "rabbit_eyes_rolling", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_65xho"), "rabbit_impatient", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_00smp"), "rabbit_idle", "rabbit_eyes_rolling", SubResource("AnimationNodeStateMachineTransition_jptrp"), "rabbit_eyes_rolling", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_7v8nc"), "rabbit_idle", "rabbit_knock_machine", SubResource("AnimationNodeStateMachineTransition_q6adl"), "rabbit_knock_machine", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_f3s7l"), "rabbit_idle", "rabbit_nose_poking", SubResource("AnimationNodeStateMachineTransition_fs1h7"), "rabbit_shocked", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_5v8qp"), "rabbit_nose_poking", "rabbit_shocked", SubResource("AnimationNodeStateMachineTransition_50t6p"), "rabbit_nose_poking", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_2a6p6"), "rabbit_nose_poking", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_yytn1")]
-graph_offset = Vector2(56.739597, 127.98728)
+states/Start/position = Vector2(247, 118.625)
+states/rabbit_idle/node = SubResource("AnimationNodeAnimation_otpb1")
+states/rabbit_idle/position = Vector2(560.5, 118.75)
+states/rabbit_impatient/node = SubResource("AnimationNodeAnimation_u8s40")
+states/rabbit_impatient/position = Vector2(386.1925, 231.87497)
+transitions = ["Start", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_8y6ih")]
+graph_offset = Vector2(-340.8075, 38.971687)
 
 [sub_resource type="Animation" id="Animation_8y6ih"]
 length = 0.001
@@ -377,7 +294,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.5]
+"values": [0.2000000095]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -389,7 +306,7 @@ tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.5]
+"values": [0.50000002375]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
@@ -401,250 +318,7 @@ tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.0]
-}
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("TheRabbitNose:position")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(19.5, -307.5)]
-}
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("TheRabbitNoseWrinkle:visible")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/10/type = "value"
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/path = NodePath("TheRabbitNoseWrinkle:rotation")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0061147586]
-}
-tracks/11/type = "value"
-tracks/11/imported = false
-tracks/11/enabled = true
-tracks/11/path = NodePath("TheRabbitNoseWrinkle:position")
-tracks/11/interp = 1
-tracks/11/loop_wrap = true
-tracks/11/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-76, -478)]
-}
-tracks/12/type = "value"
-tracks/12/imported = false
-tracks/12/enabled = true
-tracks/12/path = NodePath("TheRabbitLeftEar:position")
-tracks/12/interp = 1
-tracks/12/loop_wrap = true
-tracks/12/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(19.5, -307.5)]
-}
-tracks/13/type = "value"
-tracks/13/imported = false
-tracks/13/enabled = true
-tracks/13/path = NodePath("TheRabbitRightEar:position")
-tracks/13/interp = 1
-tracks/13/loop_wrap = true
-tracks/13/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(19.5, -307.5)]
-}
-tracks/14/type = "value"
-tracks/14/imported = false
-tracks/14/enabled = true
-tracks/14/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
-tracks/14/interp = 1
-tracks/14/loop_wrap = true
-tracks/14/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 0)]
-}
-tracks/15/type = "value"
-tracks/15/imported = false
-tracks/15/enabled = true
-tracks/15/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
-tracks/15/interp = 1
-tracks/15/loop_wrap = true
-tracks/15/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 0)]
-}
-tracks/16/type = "value"
-tracks/16/imported = false
-tracks/16/enabled = true
-tracks/16/path = NodePath("TheRabbitLeftArm:position")
-tracks/16/interp = 1
-tracks/16/loop_wrap = true
-tracks/16/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(19.5, -307.5)]
-}
-tracks/17/type = "value"
-tracks/17/imported = false
-tracks/17/enabled = true
-tracks/17/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_color")
-tracks/17/interp = 1
-tracks/17/loop_wrap = true
-tracks/17/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0.1882353, 0.1882353, 0.1882353, 1)]
-}
-tracks/18/type = "value"
-tracks/18/imported = false
-tracks/18/enabled = true
-tracks/18/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_color")
-tracks/18/interp = 1
-tracks/18/loop_wrap = true
-tracks/18/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0.18, 0.18, 0.18, 1)]
-}
-tracks/19/type = "value"
-tracks/19/imported = false
-tracks/19/enabled = true
-tracks/19/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_outline_color")
-tracks/19/interp = 1
-tracks/19/loop_wrap = true
-tracks/19/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0, 0, 0, 1)]
-}
-tracks/20/type = "value"
-tracks/20/imported = false
-tracks/20/enabled = true
-tracks/20/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_outline_color")
-tracks/20/interp = 1
-tracks/20/loop_wrap = true
-tracks/20/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0, 0, 0, 1)]
-}
-tracks/21/type = "value"
-tracks/21/imported = false
-tracks/21/enabled = true
-tracks/21/path = NodePath("../../The Machine:position")
-tracks/21/interp = 1
-tracks/21/loop_wrap = true
-tracks/21/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(3750, 1488)]
-}
-tracks/22/type = "value"
-tracks/22/imported = false
-tracks/22/enabled = true
-tracks/22/path = NodePath(".:position")
-tracks/22/interp = 1
-tracks/22/loop_wrap = true
-tracks/22/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/23/type = "value"
-tracks/23/imported = false
-tracks/23/enabled = true
-tracks/23/path = NodePath("TheRabbitHeadLeft:position")
-tracks/23/interp = 1
-tracks/23/loop_wrap = true
-tracks/23/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(19.5, -307.5)]
-}
-tracks/24/type = "value"
-tracks/24/imported = false
-tracks/24/enabled = true
-tracks/24/path = NodePath("TheRabbitHeadMid:position")
-tracks/24/interp = 1
-tracks/24/loop_wrap = true
-tracks/24/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(19.5, -307.5)]
-}
-tracks/25/type = "value"
-tracks/25/imported = false
-tracks/25/enabled = true
-tracks/25/path = NodePath("TheRabbitHeadRight:position")
-tracks/25/interp = 1
-tracks/25/loop_wrap = true
-tracks/25/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(19.5, -307.5)]
-}
-
-[sub_resource type="Animation" id="Animation_tiwwg"]
-resource_name = "rabbit_eyes_rolling"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.35, 0.3501, 0.6, 0.8, 1),
-"transitions": PackedFloat32Array(1, 1, 0.4, 2.5, 0.5, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(0, -6), Vector2(0, 6), Vector2(0, -1.5), Vector2(0, 0.4), Vector2(0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.35, 0.3501, 0.6, 0.8, 1),
-"transitions": PackedFloat32Array(1, 1, 0.4, 2.5, 0.5, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(0, -6), Vector2(0, 6), Vector2(0, -1.5), Vector2(0, 0.4), Vector2(0, 0)]
+"values": [-0.33276048]
 }
 
 [sub_resource type="Animation" id="Animation_u8s40"]
@@ -717,7 +391,7 @@ resource_name = "rabbit_impatient"
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
-tracks/0/enabled = false
+tracks/0/enabled = true
 tracks/0/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_scale")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
@@ -729,7 +403,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = false
+tracks/1/enabled = true
 tracks/1/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_scale")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
@@ -751,477 +425,102 @@ tracks/2/keys = {
 "update": 0,
 "values": [-0.17453292, -0.2617994, -0.17453292]
 }
-tracks/3/type = "value"
+tracks/3/type = "method"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("TheRabbitLeftFoot:rotation")
-tracks/3/interp = 4
+tracks/3/path = NodePath("TheRabbitAnimator")
+tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"blink_to_impatient"
+}, {
+"args": [],
+"method": &"blink_to_normal"
+}]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TheRabbitLeftFoot:rotation")
+tracks/4/interp = 4
+tracks/4/loop_wrap = true
+tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(2.0000007, 0.6155723),
 "update": 0,
 "values": [-0.33276048, 0.0]
 }
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1.2, 0)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1.2, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_2a6p6"]
-resource_name = "rabbit_knock_machine"
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("TheRabbitLeftArm:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.45, 0.55, 0.65, 0.8),
-"transitions": PackedFloat32Array(1, 0.5, 2, 1, 0.5, 2, 1, 1),
-"update": 0,
-"values": [0.0, -0.9, 0.2, 0.0, -0.9, 0.3, 0.0, 0.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../../The Machine:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.25, 0.3, 0.55, 0.6, 0.65, 1),
-"transitions": PackedFloat32Array(1, 0.2, 1, 1, 0.2, 1, 1, 1),
-"update": 0,
-"values": [Vector2(3750, 1488), Vector2(3750, 1488), Vector2(3750, 1515), Vector2(3750, 1488), Vector2(3750, 1488), Vector2(3750, 1520), Vector2(3750, 1488), Vector2(3750, 1488)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.25, 0.3, 0.55, 0.6, 0.65, 1),
-"transitions": PackedFloat32Array(1, 0.5, 1, 1, 0.5, 1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, 15), Vector2(0, -8), Vector2(0, 0), Vector2(0, 20), Vector2(0, 0), Vector2(0, 0)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("TheRabbitLeftEar:rotation")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.55, 0.65, 0.75),
-"transitions": PackedFloat32Array(1, 0.5, 1, 1, 0.5, 1, 1),
-"update": 0,
-"values": [0.031002952, 0.031, -0.1, 0.031, 0.031, -0.15, 0.031]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("TheRabbitRightEar:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.55, 0.65, 0.75),
-"transitions": PackedFloat32Array(1, 0.5, 1, 1, 0.5, 1, 1),
-"update": 0,
-"values": [0.031703457, 0.032, 0.08, 0.032, 0.032, 0.1, 0.032]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("TheRabbitMustacheLeft:rotation")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.35, 0.55, 0.7),
-"transitions": PackedFloat32Array(1, 0.5, 1, 0.5, 1),
-"update": 0,
-"values": [-0.08134746, -0.15, -0.081, -0.18, -0.081]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("TheRabbitMustacheRight:rotation")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.35, 0.55, 0.7),
-"transitions": PackedFloat32Array(1, 0.5, 1, 0.5, 1),
-"update": 0,
-"values": [0.06733266, 0.15, 0.067, 0.18, 0.067]
-}
-
-[sub_resource type="Animation" id="Animation_ivmbw"]
-resource_name = "rabbit_nose_poking"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("TheRabbitNose:position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(21, -295)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("TheRabbitNoseWrinkle:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("TheRabbitNoseWrinkle:rotation")
-tracks/2/interp = 4
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.006114755]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("TheRabbitNoseWrinkle:position")
-tracks/3/interp = 2
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-96, -524)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("TheRabbitLeftEar:position")
-tracks/4/interp = 2
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(0.4352752, 1),
-"update": 0,
-"values": [Vector2(19.5, -307.5), Vector2(7, -283)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("TheRabbitRightEar:position")
-tracks/5/interp = 2
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(0.43527517, 1),
-"update": 0,
-"values": [Vector2(19.5, -307.5), Vector2(44, -282.21)]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
-tracks/6/interp = 2
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0, 1), Vector2(0, 1.2)]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
-tracks/7/interp = 2
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0, 1), Vector2(0, 1.2)]
-}
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("TheRabbitHeadLeft:position")
-tracks/8/interp = 2
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(20, -360)]
-}
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("TheRabbitHeadMid:position")
-tracks/9/interp = 2
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(19, -399)]
-}
-tracks/10/type = "value"
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/path = NodePath("TheRabbitHeadRight:position")
-tracks/10/interp = 2
-tracks/10/loop_wrap = true
-tracks/10/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(20, -378)]
-}
 
 [sub_resource type="Animation" id="Animation_50t6p"]
 resource_name = "rabbit_shocked"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("TheRabbitLeftArm:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 1.8, 2),
-"transitions": PackedFloat32Array(1, 0.5, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(19.5, -307.5), Vector2(32, -630), Vector2(10, 50), Vector2(12, 40), Vector2(12, 40), Vector2(19.5, -307.5)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("TheRabbitLeftArm:rotation")
-tracks/1/interp = 4
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 1.8, 2),
-"transitions": PackedFloat32Array(1, 0.5, 1, 1, 1, 1),
-"update": 0,
-"values": [0.0698132, -0.29147, 0.1, 0.08, 0.08, 0.0698132]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_color")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0.95, 0.95, 0.95, 1)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_color")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0.95, 0.95, 0.95, 1)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_outline_color")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0.79, 0.79, 0.79, 1)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_outline_color")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0.79, 0.79, 0.79, 1)]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(0.1, 0.1), Vector2(-0.07, -0.04), Vector2(0.06, -0.1), Vector2(-0.06, 0.08), Vector2(0.08, -0.05), Vector2(-0.05, 0.1), Vector2(0.04, -0.08), Vector2(-0.08, 0.05), Vector2(0.05, -0.05), Vector2(0, 0)]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(0.1, 0.1), Vector2(-0.07, -0.04), Vector2(0.06, -0.1), Vector2(-0.06, 0.08), Vector2(0.08, -0.05), Vector2(-0.05, 0.1), Vector2(0.04, -0.08), Vector2(-0.08, 0.05), Vector2(0.05, -0.05), Vector2(0, 0)]
-}
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("TheRabbitMustacheLeft:rotation")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [-0.1, -0.25, -0.2, -0.25, -0.2, -0.25, -0.2, -0.25, -0.2, -0.25, -0.2, -0.25, -0.2, -0.25, -0.2, -0.25, -0.2, -0.1]
-}
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("TheRabbitMustacheRight:rotation")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [0.1, 0.25, 0.2, 0.25, 0.2, 0.25, 0.2, 0.25, 0.2, 0.25, 0.2, 0.25, 0.2, 0.25, 0.2, 0.25, 0.2, 0.1]
-}
-tracks/10/type = "value"
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/path = NodePath("TheRabbitNose:position")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(19.5, -307.5), Vector2(22, -305), Vector2(17, -308), Vector2(22, -305), Vector2(17, -308), Vector2(22, -305), Vector2(17, -308), Vector2(22, -305), Vector2(17, -308), Vector2(22, -305), Vector2(17, -308), Vector2(22, -305), Vector2(17, -308), Vector2(22, -305), Vector2(17, -308), Vector2(22, -305), Vector2(19.5, -307.5), Vector2(19.5, -307.5)]
-}
-tracks/11/type = "value"
-tracks/11/imported = false
-tracks/11/enabled = true
-tracks/11/path = NodePath("TheRabbitLeftEar:rotation")
-tracks/11/interp = 1
-tracks/11/loop_wrap = true
-tracks/11/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [0, -0.05, -0.02, -0.05, -0.02, -0.05, -0.02, -0.05, -0.02, -0.05, -0.02, -0.05, -0.02, -0.05, -0.02, -0.05, -0.02, 0]
-}
-tracks/12/type = "value"
-tracks/12/imported = false
-tracks/12/enabled = true
-tracks/12/path = NodePath("TheRabbitRightEar:rotation")
-tracks/12/interp = 1
-tracks/12/loop_wrap = true
-tracks/12/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [0, 0.05, 0.02, 0.05, 0.02, 0.05, 0.02, 0.05, 0.02, 0.05, 0.02, 0.05, 0.02, 0.05, 0.02, 0.05, 0.02, 0]
-}
-
-[sub_resource type="Animation" id="Animation_caxmy"]
-resource_name = "rabbit_starring"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_8y6ih"]
 _data = {
 &"RESET": SubResource("Animation_8y6ih"),
-&"rabbit_eyes_rolling": SubResource("Animation_tiwwg"),
 &"rabbit_idle": SubResource("Animation_u8s40"),
 &"rabbit_impatient": SubResource("Animation_ccvlu"),
-&"rabbit_knock_machine": SubResource("Animation_2a6p6"),
-&"rabbit_nose_poking": SubResource("Animation_ivmbw"),
-&"rabbit_shocked": SubResource("Animation_50t6p"),
-&"rabbit_starring": SubResource("Animation_caxmy")
+&"rabbit_shocked": SubResource("Animation_50t6p")
 }
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_u4yck"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u8s40"]
 shader = ExtResource("81_017ef")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_thickness = 0.10000000475
-shader_parameter/pupil_texture = ExtResource("85_q6adl")
+shader_parameter/pupil_texture = ExtResource("83_jptrp")
 shader_parameter/use_pupil_texture = true
 shader_parameter/pupil_offset = Vector2(1, 0)
-shader_parameter/pupil_scale = 0.5
-shader_parameter/pupil_color = Color(0.18, 0.18, 0.18, 1)
+shader_parameter/pupil_scale = 0.2000000095
+shader_parameter/pupil_color = Color(0.1, 0.1, 0.1, 1)
 shader_parameter/pupil_outline_color = Color(0, 0, 0, 1)
 shader_parameter/pupil_outline_thickness = 0.10000000149012
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8y6ih"]
+shader = ExtResource("81_017ef")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_thickness = 0.10000000475
+shader_parameter/pupil_texture = ExtResource("83_jptrp")
+shader_parameter/use_pupil_texture = true
+shader_parameter/pupil_offset = Vector2(1, 0)
+shader_parameter/pupil_scale = 0.50000002375
+shader_parameter/pupil_color = Color(0.1, 0.1, 0.1, 1)
+shader_parameter/pupil_outline_color = Color(0, 0, 0, 1)
+shader_parameter/pupil_outline_thickness = 0.10000000149012
+
+[sub_resource type="Shader" id="Shader_taegb"]
+code = "shader_type canvas_item;
+
+uniform float saturation;
+
+void fragment() {
+    vec4 tex_color = texture(TEXTURE, UV);
+
+    COLOR.rgb = mix(vec3(dot(tex_color.rgb, vec3(0.299, 0.587, 0.114))), tex_color.rgb, saturation);
+	COLOR.a = tex_color.a;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m40pb"]
+shader = SubResource("Shader_taegb")
+shader_parameter/saturation = 0.0
+
+[sub_resource type="Shader" id="Shader_jqdmi"]
+code = "shader_type canvas_item;
+
+uniform float saturation;
+
+void fragment() {
+    vec4 tex_color = texture(TEXTURE, UV);
+
+    COLOR.rgb = mix(vec3(dot(tex_color.rgb, vec3(0.299, 0.587, 0.114))), tex_color.rgb, saturation);
+	COLOR.a = tex_color.a;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_enqmm"]
+shader = SubResource("Shader_jqdmi")
+shader_parameter/saturation = 0.0
 
 [sub_resource type="Animation" id="Animation_8ocj1"]
 length = 0.001
@@ -1330,29 +629,148 @@ _data = {
 &"popup_in": SubResource("Animation_otpb1")
 }
 
+[sub_resource type="Animation" id="Animation_6kw3k"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-161, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DLC Panel:position:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-5472, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(4029, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DLC Panel:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-18, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_p2bqf"]
+resource_name = "era_3_begin"
+length = 2.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(2, 2),
+"points": PackedFloat32Array(-161, -0.2499908, -107.338844, 0.2, 85.874245, 3236, -0.18333328, -8.690674, 0, 0),
+"times": PackedFloat32Array(0, 1.25)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DLC Panel:position:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(2, 2),
+"points": PackedFloat32Array(-5472, -0.25, 0, 0.24999999, 0, 317, -0.23333335, -102.43846, 0, 0),
+"times": PackedFloat32Array(1.25, 2.5)
+}
+
+[sub_resource type="Animation" id="Animation_u4yck"]
+resource_name = "era_3_end"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(4029, -0.25, 0, 0.25, 0, 4029, -0.041666668, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(3236, -0.25, 0, 0.25, 0, 3875, -0.041666668, -106.5, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DLC Panel:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(317, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DLC Panel:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-18, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_u4yck"]
+_data = {
+&"RESET": SubResource("Animation_6kw3k"),
+&"era_3_begin": SubResource("Animation_p2bqf"),
+&"era_3_end": SubResource("Animation_u4yck")
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jqdmi"]
+atlas = ExtResource("94_m40pb")
+region = Rect2(1500, 1500, 500, 500)
+
 [node name="Game2D" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_x7wb1")
 
-[node name="Background2" parent="."]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-script = null
+[node name="Background2" parent="." instance=ExtResource("2_u8s40")]
 metadata/_edit_lock_ = true
-metadata/_edit_group_ = true
 
 [node name="Background" type="Node2D" parent="."]
 position = Vector2(3001, 1689.25)
-metadata/_edit_lock_ = true
-metadata/_edit_group_ = true
 
 [node name="Background_floor" type="Sprite2D" parent="Background"]
 position = Vector2(0, 3.75)
@@ -1364,8 +782,6 @@ region_rect = Rect2(0, 2544, 6000, 831)
 [node name="The Machine" type="Node2D" parent="."]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 position = Vector2(3750, 1488)
-metadata/_edit_lock_ = true
-metadata/_edit_group_ = true
 
 [node name="TheMachineTopBehind" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
@@ -1410,7 +826,6 @@ scale = Vector2(0.945, 0.945)
 tooltip_text = "Skill Description"
 mouse_default_cursor_shape = 16
 texture = ExtResource("9_8hb1a")
-script = ExtResource("1_skill_icon")
 
 [node name="Input Area" type="Control" parent="The Machine/TheMachineSlot_0/TheMachineSlot_fill"]
 layout_mode = 3
@@ -1420,6 +835,7 @@ offset_top = -54.0
 offset_right = 265.0
 offset_bottom = 158.0
 mouse_filter = 1
+script = ExtResource("10_4tp6t")
 
 [node name="TheMachineSlot_1" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
@@ -1444,7 +860,6 @@ scale = Vector2(0.945, 0.945)
 tooltip_text = "Skill Description"
 mouse_default_cursor_shape = 16
 texture = ExtResource("9_8hb1a")
-script = ExtResource("1_skill_icon")
 
 [node name="Input Area" type="Control" parent="The Machine/TheMachineSlot_1/TheMachineSlot_fill"]
 layout_mode = 3
@@ -1453,6 +868,7 @@ offset_left = -150.0
 offset_top = -54.0
 offset_right = 265.0
 offset_bottom = 158.0
+script = ExtResource("10_4tp6t")
 
 [node name="TheMachineSlot_2" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
@@ -1477,7 +893,6 @@ scale = Vector2(0.945, 0.945)
 tooltip_text = "Skill Description"
 mouse_default_cursor_shape = 16
 texture = ExtResource("9_8hb1a")
-script = ExtResource("1_skill_icon")
 
 [node name="Input Area" type="Control" parent="The Machine/TheMachineSlot_2/TheMachineSlot_fill"]
 layout_mode = 3
@@ -1486,6 +901,7 @@ offset_left = -150.0
 offset_top = -54.0
 offset_right = 265.0
 offset_bottom = 158.0
+script = ExtResource("10_4tp6t")
 
 [node name="TheMachineTopFront" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
@@ -1530,7 +946,7 @@ region_enabled = true
 region_rect = Rect2(657, 514, 3142, 2633)
 
 [node name="TheMachineSwitch_Recycle" type="Node2D" parent="The Machine"]
-position = Vector2(1578.75, 1437.5)
+position = Vector2(1478, 1270)
 
 [node name="Switch_mask" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle"]
 clip_children = 1
@@ -1586,7 +1002,6 @@ position = Vector2(-24.75, 31.5)
 scale = Vector2(0.65, 0.65)
 
 [node name="Item_icon" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle/Switch_mask/Switch_item_root"]
-texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(55, 75, 450, 450)
@@ -1677,7 +1092,7 @@ mouse_default_cursor_shape = 2
 [node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/TheMachineSwitch_Recycle"]
 
 [node name="TheMachineSwitch_Submit" type="Node2D" parent="The Machine"]
-position = Vector2(1896.75, 1437.5)
+position = Vector2(1796, 1270)
 
 [node name="Switch_mask" type="Sprite2D" parent="The Machine/TheMachineSwitch_Submit"]
 clip_children = 1
@@ -1697,7 +1112,8 @@ offset_top = -81.5
 offset_right = 96.0
 offset_bottom = 125.5
 theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 42
+theme_override_fonts/normal_font = ExtResource("91_036e7")
+theme_override_font_sizes/normal_font_size = 60
 bbcode_enabled = true
 text = "SWITCH_SUBMIT"
 fit_content = true
@@ -1716,7 +1132,8 @@ offset_top = -134.5
 offset_right = 96.0
 offset_bottom = 72.5
 theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 42
+theme_override_fonts/normal_font = ExtResource("91_036e7")
+theme_override_font_sizes/normal_font_size = 60
 text = "SWITCH_CONFIRM"
 fit_content = true
 scroll_active = false
@@ -1766,7 +1183,7 @@ mouse_default_cursor_shape = 2
 
 [node name="TheMachineDisplayFill" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.08235294, 0.53333336, 0.6313726, 1)
-position = Vector2(1739.75, 1020.5)
+position = Vector2(1652, 855)
 texture = ExtResource("21_ue141")
 
 [node name="TheMachineDisplayOutline" type="Sprite2D" parent="The Machine/TheMachineDisplayFill"]
@@ -1774,9 +1191,9 @@ texture = ExtResource("4_6b2j4")
 
 [node name="Money_label" type="RichTextLabel" parent="The Machine/TheMachineDisplayFill"]
 offset_left = -254.5
-offset_top = -168.5
+offset_top = -76.5
 offset_right = 253.5
-offset_bottom = -31.5
+offset_bottom = 60.5
 theme_override_font_sizes/normal_font_size = 100
 bbcode_enabled = true
 text = "123"
@@ -1797,6 +1214,7 @@ grow_vertical = 2
 texture = ExtResource("51_8y6ih")
 
 [node name="Coupon_label" type="RichTextLabel" parent="The Machine/TheMachineDisplayFill"]
+visible = false
 offset_left = -265.5
 offset_top = 8.5
 offset_right = 259.5
@@ -1820,39 +1238,39 @@ offset_bottom = 33.0
 grow_vertical = 2
 texture = ExtResource("25_ccvlu")
 
-[node name="TheMachineLegacyFill" type="Sprite2D" parent="The Machine"]
-position = Vector2(447.25, 710)
-texture = ExtResource("5_0dgko")
-offset = Vector2(138.5, -26)
-region_enabled = true
-region_rect = Rect2(827, 1606, 2422, 111)
-
-[node name="TheMachineLegacyOutline" type="Sprite2D" parent="The Machine/TheMachineLegacyFill"]
+[node name="TheMachineLegend" type="Sprite2D" parent="The Machine"]
+position = Vector2(512.75, 662)
 texture = ExtResource("6_2v31b")
 offset = Vector2(142.5, -22.5)
-region_enabled = true
-region_rect = Rect2(824, 1600, 2436, 130)
 
-[node name="Legacy Grid" type="HBoxContainer" parent="The Machine/TheMachineLegacyFill"]
-offset_left = -1003.25
-offset_top = -57.0
-offset_right = 1321.75
-offset_bottom = 17.0
+[node name="TheMachineLegendFill" type="Sprite2D" parent="The Machine/TheMachineLegend"]
+self_modulate = Color(0.61960787, 0.9137255, 0.40392157, 1)
+show_behind_parent = true
+clip_children = 2
+position = Vector2(5.25, 6)
+texture = ExtResource("5_0dgko")
+offset = Vector2(138.5, -26)
+
+[node name="Legend Grid" type="HBoxContainer" parent="The Machine/TheMachineLegend/TheMachineLegendFill"]
+offset_left = -1005.25
+offset_top = -62.0
+offset_right = 1319.75
+offset_bottom = 12.0
 tooltip_text = "LEGACY_TOOLTIP"
 mouse_filter = 0
 mouse_default_cursor_shape = 16
 theme_override_constants/separation = 489
 
-[node name="Star Legacy Root_0" type="Control" parent="The Machine/TheMachineLegacyFill/Legacy Grid"]
+[node name="Star Legend Root_0" type="Control" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid"]
 layout_mode = 2
 
-[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_0"]
+[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_0"]
 self_modulate = Color(0.38431373, 0.7294118, 0.15686275, 1)
 position = Vector2(40, 23)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("25_ue141")
 
-[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_0"]
+[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_0"]
 layout_mode = 0
 offset_left = 99.0
 offset_top = -19.0
@@ -1865,16 +1283,16 @@ text = "+ 10%"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="Star Legacy Root_1" type="Control" parent="The Machine/TheMachineLegacyFill/Legacy Grid"]
+[node name="Star Legend Root_1" type="Control" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid"]
 layout_mode = 2
 
-[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_1"]
+[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_1"]
 self_modulate = Color(0.3372549, 0.64705884, 0.9254902, 1)
 position = Vector2(40, 23)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("25_ue141")
 
-[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_1"]
+[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_1"]
 layout_mode = 0
 offset_left = 99.0
 offset_top = -19.0
@@ -1887,16 +1305,16 @@ text = "+ 20%"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="Star Legacy Root_2" type="Control" parent="The Machine/TheMachineLegacyFill/Legacy Grid"]
+[node name="Star Legend Root_2" type="Control" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid"]
 layout_mode = 2
 
-[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_2"]
+[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_2"]
 self_modulate = Color(0.78431374, 0.37254903, 0.8901961, 1)
 position = Vector2(40, 23)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("25_ue141")
 
-[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_2"]
+[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_2"]
 layout_mode = 0
 offset_left = 99.0
 offset_top = -19.0
@@ -1909,16 +1327,16 @@ text = "+ 40%"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="Star Legacy Root_3" type="Control" parent="The Machine/TheMachineLegacyFill/Legacy Grid"]
+[node name="Star Legend Root_3" type="Control" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid"]
 layout_mode = 2
 
-[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_3"]
+[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_3"]
 self_modulate = Color(0.9254902, 0.60784316, 0.16078432, 1)
 position = Vector2(40, 23)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("25_ue141")
 
-[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_3"]
+[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_3"]
 layout_mode = 0
 offset_left = 99.0
 offset_top = -19.0
@@ -1931,16 +1349,16 @@ text = "+ 100%"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="Star Legacy Root_4" type="Control" parent="The Machine/TheMachineLegacyFill/Legacy Grid"]
+[node name="Star Legend Root_4" type="Control" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid"]
 layout_mode = 2
 
-[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_4"]
+[node name="TheMachineStar" type="Sprite2D" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_4"]
 self_modulate = Color(0.8980392, 0.31764707, 0.2509804, 1)
 position = Vector2(40, 23)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("25_ue141")
 
-[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegacyFill/Legacy Grid/Star Legacy Root_4"]
+[node name="Legacy_label" type="RichTextLabel" parent="The Machine/TheMachineLegend/TheMachineLegendFill/Legend Grid/Star Legend Root_4"]
 layout_mode = 0
 offset_left = 99.0
 offset_top = -19.0
@@ -1953,954 +1371,52 @@ text = "+ 150%"
 scroll_active = false
 vertical_alignment = 1
 
+[node name="ScreenEffectOverlay" type="ColorRect" parent="The Machine/TheMachineLegend/TheMachineLegendFill"]
+material = SubResource("ShaderMaterial_036e7")
+offset_left = -1085.0
+offset_top = -100.0
+offset_right = 1356.0
+offset_bottom = 35.0
+mouse_filter = 2
+
 [node name="Item Slots Grid" type="GridContainer" parent="The Machine"]
-offset_left = -468.25
-offset_top = 978.5
-offset_right = 1131.75
-offset_bottom = 1778.5
+offset_left = -494.0
+offset_top = 895.0
+offset_right = 1106.0
+offset_bottom = 1695.0
 theme_override_constants/h_separation = 400
 theme_override_constants/v_separation = 400
 columns = 5
 
-[node name="Item Slot_root_0" type="Control" parent="The Machine/Item Slots Grid"]
+[node name="Item Slot_root_0" parent="The Machine/Item Slots Grid" instance=ExtResource("36_6sdua")]
 layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-script = ExtResource("111_item")
 
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-offset = Vector2(196, -24.5)
-region_enabled = true
-region_rect = Rect2(392, 16, 296, 588)
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-offset = Vector2(-127.5, -108)
-region_enabled = true
-region_rect = Rect2(37, 53, 359, 347)
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-offset = Vector2(-26.5, 200)
-region_enabled = true
-region_rect = Rect2(0, 400, 635, 269)
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-offset = Vector2(-12.5, -15.5)
-region_enabled = true
-region_rect = Rect2(144, 116, 375, 406)
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask"]
-position = Vector2(-0.5, 1.5)
-scale = Vector2(0.65, 0.65)
-
-[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(85, 75, 450, 450)
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_item_root/Item_icon"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_item_root/Item_icon"]
-position = Vector2(139, -127)
-texture = ExtResource("37_50t6p")
-
-[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask"]
-position = Vector2(87.5, 94.5)
-texture = ExtResource("87_u8s40")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -337.5)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_0"]
-texture = ExtResource("11_bobrt")
-
-[node name="Input Area" type="Control" parent="The Machine/Item Slots Grid/Item Slot_root_0"]
-anchors_preset = 0
-offset_left = -136.0
-offset_top = -138.0
-offset_right = 138.0
-offset_bottom = 138.0
-mouse_default_cursor_shape = 2
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root_0"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
-
-[node name="Item Slot_root_1" type="Control" parent="The Machine/Item Slots Grid"]
+[node name="Item Slot_root_1" parent="The Machine/Item Slots Grid" instance=ExtResource("36_6sdua")]
 layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-script = ExtResource("111_item")
 
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-offset = Vector2(196, -24.5)
-region_enabled = true
-region_rect = Rect2(392, 16, 296, 588)
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-offset = Vector2(-127.5, -108)
-region_enabled = true
-region_rect = Rect2(37, 53, 359, 347)
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-offset = Vector2(-26.5, 200)
-region_enabled = true
-region_rect = Rect2(0, 400, 635, 269)
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-offset = Vector2(-12.5, -15.5)
-region_enabled = true
-region_rect = Rect2(144, 116, 375, 406)
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask"]
-position = Vector2(-0.5, 1.5)
-scale = Vector2(0.65, 0.65)
-
-[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(85, 75, 450, 450)
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_item_root/Item_icon"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_item_root/Item_icon"]
-position = Vector2(139, -127)
-texture = ExtResource("37_50t6p")
-
-[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask"]
-position = Vector2(87.5, 94.5)
-texture = ExtResource("87_u8s40")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -337.5)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_1"]
-texture = ExtResource("11_bobrt")
-
-[node name="Input Area" type="Control" parent="The Machine/Item Slots Grid/Item Slot_root_1"]
-anchors_preset = 0
-offset_left = -136.0
-offset_top = -138.0
-offset_right = 138.0
-offset_bottom = 138.0
-mouse_default_cursor_shape = 2
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root_1"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
-
-[node name="Item Slot_root_2" type="Control" parent="The Machine/Item Slots Grid"]
+[node name="Item Slot_root_2" parent="The Machine/Item Slots Grid" instance=ExtResource("36_6sdua")]
 layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-script = ExtResource("111_item")
 
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-offset = Vector2(196, -24.5)
-region_enabled = true
-region_rect = Rect2(392, 16, 296, 588)
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-offset = Vector2(-127.5, -108)
-region_enabled = true
-region_rect = Rect2(37, 53, 359, 347)
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-offset = Vector2(-26.5, 200)
-region_enabled = true
-region_rect = Rect2(0, 400, 635, 269)
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-offset = Vector2(-12.5, -15.5)
-region_enabled = true
-region_rect = Rect2(144, 116, 375, 406)
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask"]
-position = Vector2(-0.5, 1.5)
-scale = Vector2(0.65, 0.65)
-
-[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(85, 75, 450, 450)
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_item_root/Item_icon"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_item_root/Item_icon"]
-position = Vector2(139, -127)
-texture = ExtResource("37_50t6p")
-
-[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask"]
-position = Vector2(87.5, 94.5)
-texture = ExtResource("87_u8s40")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -337.5)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_2"]
-texture = ExtResource("11_bobrt")
-
-[node name="Input Area" type="Control" parent="The Machine/Item Slots Grid/Item Slot_root_2"]
-anchors_preset = 0
-offset_left = -136.0
-offset_top = -138.0
-offset_right = 138.0
-offset_bottom = 138.0
-mouse_default_cursor_shape = 2
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root_2"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
-
-[node name="Item Slot_root_3" type="Control" parent="The Machine/Item Slots Grid"]
+[node name="Item Slot_root_3" parent="The Machine/Item Slots Grid" instance=ExtResource("36_6sdua")]
 layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-script = ExtResource("111_item")
 
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-offset = Vector2(196, -24.5)
-region_enabled = true
-region_rect = Rect2(392, 16, 296, 588)
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-offset = Vector2(-127.5, -108)
-region_enabled = true
-region_rect = Rect2(37, 53, 359, 347)
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-offset = Vector2(-26.5, 200)
-region_enabled = true
-region_rect = Rect2(0, 400, 635, 269)
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-offset = Vector2(-12.5, -15.5)
-region_enabled = true
-region_rect = Rect2(144, 116, 375, 406)
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask"]
-position = Vector2(-0.5, 1.5)
-scale = Vector2(0.65, 0.65)
-
-[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(85, 75, 450, 450)
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_item_root/Item_icon"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_item_root/Item_icon"]
-position = Vector2(139, -127)
-texture = ExtResource("37_50t6p")
-
-[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask"]
-position = Vector2(87.5, 94.5)
-texture = ExtResource("87_u8s40")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -346.25)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_3"]
-texture = ExtResource("11_bobrt")
-
-[node name="Input Area" type="Control" parent="The Machine/Item Slots Grid/Item Slot_root_3"]
-anchors_preset = 0
-offset_left = -136.0
-offset_top = -138.0
-offset_right = 138.0
-offset_bottom = 138.0
-mouse_default_cursor_shape = 2
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root_3"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
-
-[node name="Item Slot_root_4" type="Control" parent="The Machine/Item Slots Grid"]
+[node name="Item Slot_root_4" parent="The Machine/Item Slots Grid" instance=ExtResource("36_6sdua")]
 layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-script = ExtResource("111_item")
 
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-offset = Vector2(196, -24.5)
-region_enabled = true
-region_rect = Rect2(392, 16, 296, 588)
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-offset = Vector2(-127.5, -108)
-region_enabled = true
-region_rect = Rect2(37, 53, 359, 347)
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-offset = Vector2(-26.5, 200)
-region_enabled = true
-region_rect = Rect2(0, 400, 635, 269)
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-offset = Vector2(-12.5, -15.5)
-region_enabled = true
-region_rect = Rect2(144, 116, 375, 406)
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask"]
-position = Vector2(-0.5, 1.5)
-scale = Vector2(0.65, 0.65)
-
-[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(85, 75, 450, 450)
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_item_root/Item_icon"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_item_root/Item_icon"]
-position = Vector2(139, -127)
-texture = ExtResource("37_50t6p")
-
-[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask"]
-position = Vector2(87.5, 94.5)
-texture = ExtResource("87_u8s40")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -346.25)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_4"]
-texture = ExtResource("11_bobrt")
-
-[node name="Input Area" type="Control" parent="The Machine/Item Slots Grid/Item Slot_root_4"]
-anchors_preset = 0
-offset_left = -136.0
-offset_top = -138.0
-offset_right = 138.0
-offset_bottom = 138.0
-mouse_default_cursor_shape = 2
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root_4"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
-
-[node name="Item Slot_root_5" type="Control" parent="The Machine/Item Slots Grid"]
+[node name="Item Slot_root_5" parent="The Machine/Item Slots Grid" instance=ExtResource("36_6sdua")]
 layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-script = ExtResource("111_item")
 
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-offset = Vector2(196, -24.5)
-region_enabled = true
-region_rect = Rect2(392, 16, 296, 588)
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-offset = Vector2(-127.5, -108)
-region_enabled = true
-region_rect = Rect2(37, 53, 359, 347)
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-offset = Vector2(-26.5, 200)
-region_enabled = true
-region_rect = Rect2(0, 400, 635, 269)
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-offset = Vector2(-12.5, -15.5)
-region_enabled = true
-region_rect = Rect2(144, 116, 375, 406)
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask"]
-position = Vector2(-0.5, 1.5)
-scale = Vector2(0.65, 0.65)
-
-[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(85, 75, 450, 450)
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_item_root/Item_icon"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_item_root/Item_icon"]
-position = Vector2(139, -127)
-texture = ExtResource("37_50t6p")
-
-[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask"]
-position = Vector2(87.5, 94.5)
-texture = ExtResource("87_u8s40")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -346.25)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_5"]
-texture = ExtResource("11_bobrt")
-
-[node name="Input Area" type="Control" parent="The Machine/Item Slots Grid/Item Slot_root_5"]
-anchors_preset = 0
-offset_left = -136.0
-offset_top = -138.0
-offset_right = 138.0
-offset_bottom = 138.0
-mouse_default_cursor_shape = 2
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root_5"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
-
-[node name="Item Slot_root_6" type="Control" parent="The Machine/Item Slots Grid"]
+[node name="Item Slot_root_6" parent="The Machine/Item Slots Grid" instance=ExtResource("36_6sdua")]
 layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-script = ExtResource("111_item")
 
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-offset = Vector2(196, -24.5)
-region_enabled = true
-region_rect = Rect2(392, 16, 296, 588)
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-offset = Vector2(-127.5, -108)
-region_enabled = true
-region_rect = Rect2(37, 53, 359, 347)
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-offset = Vector2(-26.5, 200)
-region_enabled = true
-region_rect = Rect2(0, 400, 635, 269)
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-offset = Vector2(-12.5, -15.5)
-region_enabled = true
-region_rect = Rect2(144, 116, 375, 406)
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask"]
-position = Vector2(-0.5, 1.5)
-scale = Vector2(0.65, 0.65)
-
-[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(85, 75, 450, 450)
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_item_root/Item_icon"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_item_root/Item_icon"]
-position = Vector2(139, -127)
-texture = ExtResource("37_50t6p")
-
-[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask"]
-position = Vector2(87.5, 94.5)
-texture = ExtResource("87_u8s40")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -346.25)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_6"]
-texture = ExtResource("11_bobrt")
-
-[node name="Input Area" type="Control" parent="The Machine/Item Slots Grid/Item Slot_root_6"]
-anchors_preset = 0
-offset_left = -136.0
-offset_top = -138.0
-offset_right = 138.0
-offset_bottom = 138.0
-mouse_default_cursor_shape = 2
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root_6"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
-
-[node name="Item Slot_root_7" type="Control" parent="The Machine/Item Slots Grid"]
+[node name="Item Slot_root_7" parent="The Machine/Item Slots Grid" instance=ExtResource("36_6sdua")]
 layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-script = ExtResource("111_item")
 
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-offset = Vector2(196, -24.5)
-region_enabled = true
-region_rect = Rect2(392, 16, 296, 588)
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-offset = Vector2(-127.5, -108)
-region_enabled = true
-region_rect = Rect2(37, 53, 359, 347)
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-offset = Vector2(-26.5, 200)
-region_enabled = true
-region_rect = Rect2(0, 400, 635, 269)
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-offset = Vector2(-12.5, -15.5)
-region_enabled = true
-region_rect = Rect2(144, 116, 375, 406)
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask"]
-position = Vector2(-0.5, 1.5)
-scale = Vector2(0.65, 0.65)
-
-[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(85, 75, 450, 450)
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_item_root/Item_icon"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_item_root/Item_icon"]
-position = Vector2(139, -127)
-texture = ExtResource("37_50t6p")
-
-[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask"]
-position = Vector2(87.5, 94.5)
-texture = ExtResource("87_u8s40")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -346.25)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_7"]
-texture = ExtResource("11_bobrt")
-
-[node name="Input Area" type="Control" parent="The Machine/Item Slots Grid/Item Slot_root_7"]
-anchors_preset = 0
-offset_left = -136.0
-offset_top = -138.0
-offset_right = 138.0
-offset_bottom = 138.0
-mouse_default_cursor_shape = 2
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root_7"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
-
-[node name="Item Slot_root_8" type="Control" parent="The Machine/Item Slots Grid"]
+[node name="Item Slot_root_8" parent="The Machine/Item Slots Grid" instance=ExtResource("36_6sdua")]
 layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-script = ExtResource("111_item")
 
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-offset = Vector2(196, -24.5)
-region_enabled = true
-region_rect = Rect2(392, 16, 296, 588)
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-offset = Vector2(-127.5, -108)
-region_enabled = true
-region_rect = Rect2(37, 53, 359, 347)
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-offset = Vector2(-26.5, 200)
-region_enabled = true
-region_rect = Rect2(0, 400, 635, 269)
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-offset = Vector2(-12.5, -15.5)
-region_enabled = true
-region_rect = Rect2(144, 116, 375, 406)
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask"]
-position = Vector2(-0.5, 1.5)
-scale = Vector2(0.65, 0.65)
-
-[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(85, 75, 450, 450)
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_item_root/Item_icon"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_item_root/Item_icon"]
-position = Vector2(139, -127)
-texture = ExtResource("37_50t6p")
-
-[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask"]
-position = Vector2(87.5, 94.5)
-texture = ExtResource("87_u8s40")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -346.25)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_8"]
-texture = ExtResource("11_bobrt")
-
-[node name="Input Area" type="Control" parent="The Machine/Item Slots Grid/Item Slot_root_8"]
-anchors_preset = 0
-offset_left = -136.0
-offset_top = -138.0
-offset_right = 138.0
-offset_bottom = 138.0
-mouse_default_cursor_shape = 2
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root_8"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
-
-[node name="Item Slot_root_9" type="Control" parent="The Machine/Item Slots Grid"]
+[node name="Item Slot_root_9" parent="The Machine/Item Slots Grid" instance=ExtResource("36_6sdua")]
 layout_mode = 2
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-script = ExtResource("111_item")
-
-[node name="Item Slot_mask" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9"]
-clip_children = 1
-texture = ExtResource("17_ivepa")
-
-[node name="Item Slot_backgrounds" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask"]
-position = Vector2(16, 6)
-script = ExtResource("2_ovo1l")
-color = Color(0.99215686, 0.5921569, 0.18431373, 1)
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("14_o2140")
-offset = Vector2(196, -24.5)
-region_enabled = true
-region_rect = Rect2(392, 16, 296, 588)
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("15_aiivw")
-offset = Vector2(-127.5, -108)
-region_enabled = true
-region_rect = Rect2(37, 53, 359, 347)
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_backgrounds"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-texture = ExtResource("16_cu6b6")
-offset = Vector2(-26.5, 200)
-region_enabled = true
-region_rect = Rect2(0, 400, 635, 269)
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_backgrounds"]
-texture = ExtResource("19_sojbq")
-offset = Vector2(-12.5, -15.5)
-region_enabled = true
-region_rect = Rect2(144, 116, 375, 406)
-
-[node name="Item Slot_item_root" type="Node2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask"]
-position = Vector2(-0.5, 1.5)
-scale = Vector2(0.65, 0.65)
-
-[node name="Item_icon" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_item_root"]
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(85, 75, 450, 450)
-
-[node name="Item_shadow" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_item_root/Item_icon"]
-self_modulate = Color(0, 0, 0, 0.39215687)
-show_behind_parent = true
-position = Vector2(6.000001, 156)
-scale = Vector2(0.6, 0.1)
-texture = ExtResource("3_4wmcb")
-
-[node name="Item_affix" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_item_root/Item_icon"]
-position = Vector2(139, -127)
-texture = ExtResource("37_50t6p")
-
-[node name="Item_status" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask"]
-position = Vector2(87.5, 94.5)
-texture = ExtResource("87_u8s40")
-
-[node name="Item Slot_lid" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask"]
-self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -346.25)
-texture = ExtResource("18_ivepa")
-
-[node name="Slot_led" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9/Item Slot_mask/Item Slot_lid"]
-self_modulate = Color(0.74190307, 0, 0.14498982, 1)
-position = Vector2(0, 136)
-texture = ExtResource("11_fkxe6")
-
-[node name="Item Slot_outline" type="Sprite2D" parent="The Machine/Item Slots Grid/Item Slot_root_9"]
-texture = ExtResource("11_bobrt")
-
-[node name="Input Area" type="Control" parent="The Machine/Item Slots Grid/Item Slot_root_9"]
-anchors_preset = 0
-offset_left = -136.0
-offset_top = -138.0
-offset_right = 138.0
-offset_bottom = 138.0
-mouse_default_cursor_shape = 2
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/Item Slots Grid/Item Slot_root_9"]
-root_node = NodePath("../../../..")
-libraries = {
-&"": SubResource("AnimationLibrary_vy3lb")
-}
 
 [node name="Lottery Slots Grid" type="HBoxContainer" parent="The Machine"]
 offset_left = -331.75
@@ -2920,24 +1436,15 @@ layout_mode = 2
 
 [node name="The Rabbit" type="Node2D" parent="."]
 position = Vector2(1434, 1998)
-metadata/_edit_lock_ = true
 
 [node name="MascotVisuals" type="Node2D" parent="The Rabbit"]
 
-[node name="TheRabbitAnimator" type="Node" parent="The Rabbit/MascotVisuals" node_paths=PackedStringArray("anim_tree")]
+[node name="TheRabbitAnimator" type="Node" parent="The Rabbit/MascotVisuals"]
 script = ExtResource("99_anim")
-anim_tree = NodePath("../AnimationTree")
 
 [node name="AnimationTree" type="AnimationTree" parent="The Rabbit/MascotVisuals"]
 tree_root = SubResource("AnimationNodeStateMachine_otpb1")
 anim_player = NodePath("../AnimationPlayer")
-parameters/conditions/exit_submitting = false
-"parameters/conditions/exit_submitting & is_low_gold" = false
-parameters/conditions/is_low_gold = false
-parameters/conditions/is_submitting = false
-parameters/conditions/order_success = false
-parameters/conditions/pool_clicked = false
-parameters/conditions/recycle_lid_closed = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/MascotVisuals"]
 libraries = {
@@ -3031,6 +1538,7 @@ region_rect = Rect2(2235, 1411, 366, 475)
 [node name="TheRabbitLeftFoot" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
 position = Vector2(30, 972)
+rotation = -0.33276048
 texture = ExtResource("73_u8s40")
 offset = Vector2(331, -232.5)
 region_enabled = true
@@ -3085,7 +1593,6 @@ region_rect = Rect2(1576, 382, 394, 772)
 [node name="TheRabbitHeadMid" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(19.5, -307.5)
-rotation = -0.0029281678
 texture = ExtResource("63_6sdua")
 offset = Vector2(-107, -683)
 region_enabled = true
@@ -3141,6 +1648,7 @@ region_enabled = true
 region_rect = Rect2(237, 1770, 671, 635)
 
 [node name="TheRabbitRefreshAll" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
 self_modulate = Color(0.9411765, 0.36078432, 0.38039216, 1)
 position = Vector2(19.5, -307.5)
 texture = ExtResource("77_6kw3k")
@@ -3172,14 +1680,14 @@ region_enabled = true
 region_rect = Rect2(378, 2088, 474, 478)
 
 [node name="TheRabbitLeftEyeFill" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
-material = SubResource("ShaderMaterial_u4yck")
+material = SubResource("ShaderMaterial_u8s40")
 position = Vector2(168, -718)
 texture = ExtResource("70_u4yck")
 
 [node name="TheRabbitRightEyeFill" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
-material = SubResource("ShaderMaterial_u4yck")
+material = SubResource("ShaderMaterial_8y6ih")
 position = Vector2(-347, -719)
-rotation = -0.05119752
+rotation = -0.04909912
 texture = ExtResource("85_q6adl")
 
 [node name="TheRabbitNose" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
@@ -3191,16 +1699,7 @@ offset = Vector2(-107.5, -227)
 region_enabled = true
 region_rect = Rect2(1291, 1397, 128, 127)
 
-[node name="TheRabbitNoseWrinkle" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
-visible = false
-position = Vector2(-76, -478)
-rotation = 0.0061147586
-texture = ExtResource("82_otpb1")
-offset = Vector2(7.6047363, -126.03711)
-
 [node name="QuestSystem" type="Node2D" parent="The Rabbit"]
-metadata/_edit_lock_ = true
-metadata/_edit_group_ = true
 
 [node name="Main Quest Slot_root" type="Control" parent="The Rabbit/QuestSystem"]
 z_index = 3
@@ -3264,29 +1763,26 @@ alignment = 2
 layout_mode = 2
 
 [node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0"]
+material = SubResource("ShaderMaterial_m40pb")
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(55, 75, 450, 450)
 
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
+[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
 show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
+position = Vector2(16, -28.666672)
+scale = Vector2(2.75, 2.75)
 texture = ExtResource("81_6sdua")
 
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon/Item_rarity"]
+[node name="Item_requirement_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon/Item_requirement"]
 texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
 
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
+[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
-texture = ExtResource("25_ue141")
+show_behind_parent = true
+texture = ExtResource("83_taegb")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
 position = Vector2(128, -107.333336)
@@ -3296,42 +1792,40 @@ texture = ExtResource("87_u8s40")
 layout_mode = 2
 
 [node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1"]
+material = SubResource("ShaderMaterial_enqmm")
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
 offset = Vector2(9, -0.5)
 region_enabled = true
 region_rect = Rect2(55, 75, 450, 450)
 
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
+[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
 show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
+position = Vector2(16, -28.666672)
+scale = Vector2(2.75, 2.75)
 texture = ExtResource("81_6sdua")
 
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon/Item_rarity"]
+[node name="Item_requirement_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon/Item_requirement"]
 texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
 
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
+[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(133.33334, 130.66667)
-texture = ExtResource("25_ue141")
+show_behind_parent = true
+texture = ExtResource("83_taegb")
 
 [node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
 position = Vector2(128, -107.333336)
 texture = ExtResource("87_u8s40")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask"]
-modulate = Color(0.84313726, 0.84313726, 0.84313726, 1)
+modulate = Color(1, 0.79607844, 0.03137255, 1)
 texture = ExtResource("30_iq50s")
 offset = Vector2(87, 4)
 region_enabled = true
 region_rect = Rect2(349, 446, 1221, 269)
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root"]
+self_modulate = Color(0.99607843, 0.90588236, 0.2901961, 1)
 texture = ExtResource("33_0ehwc")
 offset = Vector2(26, -32.5)
 region_enabled = true
@@ -3364,1077 +1858,17 @@ offset_right = -145.0
 offset_bottom = 624.0
 theme_override_constants/separation = -301
 
-[node name="Quest Slot_root_1" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid"]
-layout_mode = 2
-script = ExtResource("113_quest")
-
-[node name="Quest Slot_mask" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1"]
-clip_children = 1
-texture = ExtResource("25_y6c7h")
-offset = Vector2(76, 20)
-region_enabled = true
-region_rect = Rect2(456, 491, 985, 211)
-
-[node name="Quest Slot_background" type="Node2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask"]
-script = ExtResource("2_ovo1l")
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot_background"]
-texture = ExtResource("26_5jtl3")
-offset = Vector2(678.5, -104)
-region_enabled = true
-region_rect = Rect2(1357, 111, 388, 723)
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot_background"]
-texture = ExtResource("27_lyel0")
-offset = Vector2(-180.5, -264.5)
-region_enabled = true
-region_rect = Rect2(0, 0, 1384, 624)
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot_background"]
-texture = ExtResource("28_mfdr7")
-offset = Vector2(-44, 313.5)
-region_enabled = true
-region_rect = Rect2(105, 627, 1447, 526)
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot_background"]
-texture = ExtResource("29_xpfcn")
-offset = Vector2(-22, -42)
-region_enabled = true
-region_rect = Rect2(216, 318, 1269, 433)
-
-[node name="Quest Reward Icon" type="TextureRect" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask"]
-offset_left = -394.0
-offset_top = -59.25
-offset_right = -308.0
-offset_bottom = 6.75
-texture = ExtResource("51_8y6ih")
-expand_mode = 5
-
-[node name="Quest Reward Label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Reward Icon"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 90.0
-offset_top = -97.0
-offset_right = 979.0
-offset_bottom = 96.0
-grow_vertical = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 141
-bbcode_enabled = true
-text = "33 [s]25[/s]"
-fit_content = true
-scroll_active = false
-vertical_alignment = 1
-
-[node name="Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask"]
-offset_left = -186.0
-offset_top = 23.75
-offset_right = 1014.0
-offset_bottom = 63.75
-scale = Vector2(0.5, 0.5)
-theme_override_constants/separation = 325
-alignment = 2
-
-[node name="Quest Slot Item_root_0" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid"]
+[node name="Quest Slot_root_1" parent="The Rabbit/QuestSystem/Quest Slots Grid" instance=ExtResource("87_n6ers")]
 layout_mode = 2
 
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0"]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
-
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon/Item_rarity"]
-texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
-modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(146.66667, 133.33334)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("25_ue141")
-
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
-position = Vector2(128, -107.333336)
-texture = ExtResource("87_u8s40")
-
-[node name="Quest Slot Item_root_1" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid"]
+[node name="Quest Slot_root_2" parent="The Rabbit/QuestSystem/Quest Slots Grid" instance=ExtResource("87_n6ers")]
 layout_mode = 2
 
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1"]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
-
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon/Item_rarity"]
-texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
-modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(146.66667, 133.33334)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("25_ue141")
-
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
-position = Vector2(128, -107.333336)
-texture = ExtResource("87_u8s40")
-
-[node name="Quest Slot Item_root_2" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid"]
+[node name="Quest Slot_root_3" parent="The Rabbit/QuestSystem/Quest Slots Grid" instance=ExtResource("87_n6ers")]
 layout_mode = 2
 
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2"]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
-
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon/Item_rarity"]
-texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
-modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(146.66667, 133.33334)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("25_ue141")
-
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
-position = Vector2(128, -107.333336)
-texture = ExtResource("87_u8s40")
-
-[node name="Quest Slot Item_root_3" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid"]
+[node name="Quest Slot_root_4" parent="The Rabbit/QuestSystem/Quest Slots Grid" instance=ExtResource("87_n6ers")]
 layout_mode = 2
-
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3"]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
-
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon/Item_rarity"]
-texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
-modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(146.66667, 133.33334)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("25_ue141")
-
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
-position = Vector2(128, -107.333336)
-texture = ExtResource("87_u8s40")
-
-[node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_mask"]
-modulate = Color(0.84313726, 0.84313726, 0.84313726, 1)
-texture = ExtResource("30_iq50s")
-offset = Vector2(87, 4)
-region_enabled = true
-region_rect = Rect2(349, 446, 1221, 269)
-
-[node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1"]
-texture = ExtResource("26_a718j")
-offset = Vector2(75, -32.5)
-region_enabled = true
-region_rect = Rect2(303, 340, 1289, 408)
-
-[node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Quest Slot_outline"]
-texture = ExtResource("27_0phgb")
-offset = Vector2(75, -33.5)
-region_enabled = true
-region_rect = Rect2(296, 332, 1303, 422)
-
-[node name="Input Area" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1"]
-anchors_preset = 0
-offset_left = -461.0
-offset_top = -127.0
-offset_right = 711.0
-offset_bottom = 162.0
-mouse_default_cursor_shape = 2
-
-[node name="Refresh Button" type="TextureButton" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1"]
-self_modulate = Color(0.9411765, 0.36078432, 0.38039216, 1)
-layout_mode = 0
-offset_left = 581.0
-offset_top = -90.0
-offset_right = 708.0
-offset_bottom = 51.0
-mouse_default_cursor_shape = 2
-texture_normal = ExtResource("86_8ocj1")
-texture_pressed = ExtResource("87_jdak2")
-texture_hover = ExtResource("88_6kw3k")
-texture_disabled = ExtResource("89_u4yck")
-
-[node name="Refresh Count Label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Refresh Button"]
-layout_mode = 0
-offset_left = 30.0
-offset_top = 28.0
-offset_right = 115.0
-offset_bottom = 130.0
-mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 61
-bbcode_enabled = true
-text = "2"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Refresh Icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1/Refresh Button"]
-position = Vector2(73, 80.75)
-texture = ExtResource("94_017ef")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_1"]
-libraries = {
-&"": SubResource("AnimationLibrary_jdak2")
-}
-
-[node name="Quest Slot_root_2" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid"]
-layout_mode = 2
-script = ExtResource("113_quest")
-
-[node name="Quest Slot_mask" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2"]
-clip_children = 1
-texture = ExtResource("25_y6c7h")
-offset = Vector2(76, 20)
-region_enabled = true
-region_rect = Rect2(456, 491, 985, 211)
-
-[node name="Quest Slot_background" type="Node2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask"]
-script = ExtResource("2_ovo1l")
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot_background"]
-texture = ExtResource("26_5jtl3")
-offset = Vector2(678.5, -104)
-region_enabled = true
-region_rect = Rect2(1357, 111, 388, 723)
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot_background"]
-texture = ExtResource("27_lyel0")
-offset = Vector2(-180.5, -264.5)
-region_enabled = true
-region_rect = Rect2(0, 0, 1384, 624)
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot_background"]
-texture = ExtResource("28_mfdr7")
-offset = Vector2(-44, 313.5)
-region_enabled = true
-region_rect = Rect2(105, 627, 1447, 526)
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot_background"]
-texture = ExtResource("29_xpfcn")
-offset = Vector2(-22, -42)
-region_enabled = true
-region_rect = Rect2(216, 318, 1269, 433)
-
-[node name="Quest Reward Icon" type="TextureRect" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask"]
-offset_left = -394.0
-offset_top = -59.25
-offset_right = -308.0
-offset_bottom = 6.75
-texture = ExtResource("51_8y6ih")
-expand_mode = 5
-
-[node name="Quest Reward Label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Reward Icon"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 90.0
-offset_top = -97.0
-offset_right = 979.0
-offset_bottom = 96.0
-grow_vertical = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 141
-bbcode_enabled = true
-text = "33 [s]25[/s]"
-fit_content = true
-scroll_active = false
-vertical_alignment = 1
-
-[node name="Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask"]
-offset_left = -186.0
-offset_top = 23.75
-offset_right = 1014.0
-offset_bottom = 63.75
-scale = Vector2(0.5, 0.5)
-theme_override_constants/separation = 325
-alignment = 2
-
-[node name="Quest Slot Item_root_0" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid"]
-layout_mode = 2
-
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0"]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
-
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon/Item_rarity"]
-texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
-modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(146.66667, 133.33334)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("25_ue141")
-
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
-position = Vector2(128, -107.333336)
-texture = ExtResource("87_u8s40")
-
-[node name="Quest Slot Item_root_1" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid"]
-layout_mode = 2
-
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1"]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
-
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon/Item_rarity"]
-texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
-modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(146.66667, 133.33334)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("25_ue141")
-
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
-position = Vector2(128, -107.333336)
-texture = ExtResource("87_u8s40")
-
-[node name="Quest Slot Item_root_2" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid"]
-layout_mode = 2
-
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2"]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
-
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon/Item_rarity"]
-texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
-modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(146.66667, 133.33334)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("25_ue141")
-
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
-position = Vector2(128, -107.333336)
-texture = ExtResource("87_u8s40")
-
-[node name="Quest Slot Item_root_3" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid"]
-layout_mode = 2
-
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3"]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
-
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon/Item_rarity"]
-texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
-modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(146.66667, 133.33334)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("25_ue141")
-
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
-position = Vector2(128, -107.333336)
-texture = ExtResource("87_u8s40")
-
-[node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_mask"]
-modulate = Color(0.84313726, 0.84313726, 0.84313726, 1)
-texture = ExtResource("30_iq50s")
-offset = Vector2(87, 4)
-region_enabled = true
-region_rect = Rect2(349, 446, 1221, 269)
-
-[node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2"]
-texture = ExtResource("26_a718j")
-offset = Vector2(75, -32.5)
-region_enabled = true
-region_rect = Rect2(303, 340, 1289, 408)
-
-[node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Quest Slot_outline"]
-texture = ExtResource("27_0phgb")
-offset = Vector2(75, -33.5)
-region_enabled = true
-region_rect = Rect2(296, 332, 1303, 422)
-
-[node name="Input Area" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2"]
-anchors_preset = 0
-offset_left = -461.0
-offset_top = -127.0
-offset_right = 711.0
-offset_bottom = 162.0
-mouse_default_cursor_shape = 2
-
-[node name="Refresh Button" type="TextureButton" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2"]
-self_modulate = Color(0.9411765, 0.36078432, 0.38039216, 1)
-layout_mode = 0
-offset_left = 581.0
-offset_top = -90.0
-offset_right = 708.0
-offset_bottom = 51.0
-mouse_default_cursor_shape = 2
-texture_normal = ExtResource("86_8ocj1")
-texture_pressed = ExtResource("87_jdak2")
-texture_hover = ExtResource("88_6kw3k")
-texture_disabled = ExtResource("89_u4yck")
-
-[node name="Refresh Count Label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Refresh Button"]
-layout_mode = 0
-offset_left = 30.0
-offset_top = 28.0
-offset_right = 115.0
-offset_bottom = 130.0
-mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 61
-bbcode_enabled = true
-text = "2"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Refresh Icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2/Refresh Button"]
-position = Vector2(73, 80.75)
-texture = ExtResource("94_017ef")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_2"]
-libraries = {
-&"": SubResource("AnimationLibrary_jdak2")
-}
-
-[node name="Quest Slot_root_3" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid"]
-layout_mode = 2
-script = ExtResource("113_quest")
-
-[node name="Quest Slot_mask" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3"]
-clip_children = 1
-texture = ExtResource("25_y6c7h")
-offset = Vector2(76, 20)
-region_enabled = true
-region_rect = Rect2(456, 491, 985, 211)
-
-[node name="Quest Slot_background" type="Node2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask"]
-script = ExtResource("2_ovo1l")
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot_background"]
-texture = ExtResource("26_5jtl3")
-offset = Vector2(678.5, -104)
-region_enabled = true
-region_rect = Rect2(1357, 111, 388, 723)
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot_background"]
-texture = ExtResource("27_lyel0")
-offset = Vector2(-180.5, -264.5)
-region_enabled = true
-region_rect = Rect2(0, 0, 1384, 624)
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot_background"]
-texture = ExtResource("28_mfdr7")
-offset = Vector2(-44, 313.5)
-region_enabled = true
-region_rect = Rect2(105, 627, 1447, 526)
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot_background"]
-texture = ExtResource("29_xpfcn")
-offset = Vector2(-22, -42)
-region_enabled = true
-region_rect = Rect2(216, 318, 1269, 433)
-
-[node name="Quest Reward Icon" type="TextureRect" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask"]
-offset_left = -394.0
-offset_top = -59.25
-offset_right = -308.0
-offset_bottom = 6.75
-texture = ExtResource("51_8y6ih")
-expand_mode = 5
-
-[node name="Quest Reward Label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Reward Icon"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 90.0
-offset_top = -97.0
-offset_right = 979.0
-offset_bottom = 96.0
-grow_vertical = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 141
-bbcode_enabled = true
-text = "33 [s]25[/s]"
-fit_content = true
-scroll_active = false
-vertical_alignment = 1
-
-[node name="Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask"]
-offset_left = -186.0
-offset_top = 23.75
-offset_right = 1014.0
-offset_bottom = 63.75
-scale = Vector2(0.5, 0.5)
-theme_override_constants/separation = 325
-alignment = 2
-
-[node name="Quest Slot Item_root_0" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid"]
-layout_mode = 2
-
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0"]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
-
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon/Item_rarity"]
-texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
-modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(146.66667, 133.33334)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("25_ue141")
-
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
-position = Vector2(128, -107.333336)
-texture = ExtResource("87_u8s40")
-
-[node name="Quest Slot Item_root_1" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid"]
-layout_mode = 2
-
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1"]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
-
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon/Item_rarity"]
-texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
-modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(146.66667, 133.33334)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("25_ue141")
-
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
-position = Vector2(128, -107.333336)
-texture = ExtResource("87_u8s40")
-
-[node name="Quest Slot Item_root_2" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid"]
-layout_mode = 2
-
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2"]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
-
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon/Item_rarity"]
-texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
-modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(146.66667, 133.33334)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("25_ue141")
-
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
-position = Vector2(128, -107.333336)
-texture = ExtResource("87_u8s40")
-
-[node name="Quest Slot Item_root_3" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid"]
-layout_mode = 2
-
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3"]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
-
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon/Item_rarity"]
-texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
-modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(146.66667, 133.33334)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("25_ue141")
-
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
-position = Vector2(128, -107.333336)
-texture = ExtResource("87_u8s40")
-
-[node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_mask"]
-modulate = Color(0.84313726, 0.84313726, 0.84313726, 1)
-texture = ExtResource("30_iq50s")
-offset = Vector2(87, 4)
-region_enabled = true
-region_rect = Rect2(349, 446, 1221, 269)
-
-[node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3"]
-texture = ExtResource("26_a718j")
-offset = Vector2(75, -32.5)
-region_enabled = true
-region_rect = Rect2(303, 340, 1289, 408)
-
-[node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Quest Slot_outline"]
-texture = ExtResource("27_0phgb")
-offset = Vector2(75, -33.5)
-region_enabled = true
-region_rect = Rect2(296, 332, 1303, 422)
-
-[node name="Input Area" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3"]
-anchors_preset = 0
-offset_left = -461.0
-offset_top = -127.0
-offset_right = 711.0
-offset_bottom = 162.0
-mouse_default_cursor_shape = 2
-
-[node name="Refresh Button" type="TextureButton" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3"]
-self_modulate = Color(0.9411765, 0.36078432, 0.38039216, 1)
-layout_mode = 0
-offset_left = 581.0
-offset_top = -90.0
-offset_right = 708.0
-offset_bottom = 51.0
-mouse_default_cursor_shape = 2
-texture_normal = ExtResource("86_8ocj1")
-texture_pressed = ExtResource("87_jdak2")
-texture_hover = ExtResource("88_6kw3k")
-texture_disabled = ExtResource("89_u4yck")
-
-[node name="Refresh Count Label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Refresh Button"]
-layout_mode = 0
-offset_left = 30.0
-offset_top = 28.0
-offset_right = 115.0
-offset_bottom = 130.0
-mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 61
-bbcode_enabled = true
-text = "2"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Refresh Icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3/Refresh Button"]
-position = Vector2(73, 80.75)
-texture = ExtResource("94_017ef")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_3"]
-libraries = {
-&"": SubResource("AnimationLibrary_jdak2")
-}
-
-[node name="Quest Slot_root_4" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid"]
-layout_mode = 2
-script = ExtResource("113_quest")
-
-[node name="Quest Slot_mask" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4"]
-clip_children = 1
-texture = ExtResource("25_y6c7h")
-offset = Vector2(76, 20)
-region_enabled = true
-region_rect = Rect2(456, 491, 985, 211)
-
-[node name="Quest Slot_background" type="Node2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask"]
-script = ExtResource("2_ovo1l")
-
-[node name="Slot_background_side" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot_background"]
-texture = ExtResource("26_5jtl3")
-offset = Vector2(678.5, -104)
-region_enabled = true
-region_rect = Rect2(1357, 111, 388, 723)
-
-[node name="Slot_background_wall" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot_background"]
-texture = ExtResource("27_lyel0")
-offset = Vector2(-180.5, -264.5)
-region_enabled = true
-region_rect = Rect2(0, 0, 1384, 624)
-
-[node name="Slot_background_floor" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot_background"]
-texture = ExtResource("28_mfdr7")
-offset = Vector2(-44, 313.5)
-region_enabled = true
-region_rect = Rect2(105, 627, 1447, 526)
-
-[node name="Slot_background_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot_background"]
-texture = ExtResource("29_xpfcn")
-offset = Vector2(-22, -42)
-region_enabled = true
-region_rect = Rect2(216, 318, 1269, 433)
-
-[node name="Quest Reward Icon" type="TextureRect" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask"]
-offset_left = -394.0
-offset_top = -59.25
-offset_right = -308.0
-offset_bottom = 6.75
-texture = ExtResource("51_8y6ih")
-expand_mode = 5
-
-[node name="Quest Reward Label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Reward Icon"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 90.0
-offset_top = -97.0
-offset_right = 979.0
-offset_bottom = 96.0
-grow_vertical = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 141
-bbcode_enabled = true
-text = "33 [s]25[/s]"
-fit_content = true
-scroll_active = false
-vertical_alignment = 1
-
-[node name="Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask"]
-offset_left = -186.0
-offset_top = 23.75
-offset_right = 1014.0
-offset_bottom = 63.75
-scale = Vector2(0.5, 0.5)
-theme_override_constants/separation = 325
-alignment = 2
-
-[node name="Quest Slot Item_root_0" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid"]
-layout_mode = 2
-
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0"]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
-
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon/Item_rarity"]
-texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
-modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(146.66667, 133.33334)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("25_ue141")
-
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
-position = Vector2(128, -107.333336)
-texture = ExtResource("87_u8s40")
-
-[node name="Quest Slot Item_root_1" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid"]
-layout_mode = 2
-
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1"]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
-
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon/Item_rarity"]
-texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
-modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(146.66667, 133.33334)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("25_ue141")
-
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
-position = Vector2(128, -107.333336)
-texture = ExtResource("87_u8s40")
-
-[node name="Quest Slot Item_root_2" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid"]
-layout_mode = 2
-
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2"]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
-
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon/Item_rarity"]
-texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
-modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(146.66667, 133.33334)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("25_ue141")
-
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
-position = Vector2(128, -107.333336)
-texture = ExtResource("87_u8s40")
-
-[node name="Quest Slot Item_root_3" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid"]
-layout_mode = 2
-
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3"]
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_fiado")
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
-
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -37.333332)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_rarity_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon/Item_rarity"]
-texture = ExtResource("82_4tp6t")
-offset = Vector2(-1, 0.5)
-region_enabled = true
-region_rect = Rect2(40, 45, 160, 195)
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
-modulate = Color(0.18431373, 0.74509805, 0.2, 1)
-position = Vector2(146.66667, 133.33334)
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("25_ue141")
-
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
-position = Vector2(128, -107.333336)
-texture = ExtResource("87_u8s40")
-
-[node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_mask"]
-modulate = Color(0.84313726, 0.84313726, 0.84313726, 1)
-texture = ExtResource("30_iq50s")
-offset = Vector2(87, 4)
-region_enabled = true
-region_rect = Rect2(349, 446, 1221, 269)
-
-[node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4"]
-texture = ExtResource("26_a718j")
-offset = Vector2(75, -32.5)
-region_enabled = true
-region_rect = Rect2(303, 340, 1289, 408)
-
-[node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Quest Slot_outline"]
-texture = ExtResource("27_0phgb")
-offset = Vector2(75, -33.5)
-region_enabled = true
-region_rect = Rect2(296, 332, 1303, 422)
-
-[node name="Input Area" type="Control" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4"]
-anchors_preset = 0
-offset_left = -461.0
-offset_top = -127.0
-offset_right = 711.0
-offset_bottom = 162.0
-mouse_default_cursor_shape = 2
-
-[node name="Refresh Button" type="TextureButton" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4"]
-self_modulate = Color(0.9411765, 0.36078432, 0.38039216, 1)
-layout_mode = 0
-offset_left = 581.0
-offset_top = -90.0
-offset_right = 708.0
-offset_bottom = 51.0
-mouse_default_cursor_shape = 2
-texture_normal = ExtResource("86_8ocj1")
-texture_pressed = ExtResource("87_jdak2")
-texture_hover = ExtResource("88_6kw3k")
-texture_disabled = ExtResource("89_u4yck")
-
-[node name="Refresh Count Label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Refresh Button"]
-layout_mode = 0
-offset_left = 30.0
-offset_top = 28.0
-offset_right = 115.0
-offset_bottom = 130.0
-mouse_filter = 2
-theme_override_font_sizes/normal_font_size = 61
-bbcode_enabled = true
-text = "2"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Refresh Icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4/Refresh Button"]
-position = Vector2(73, 80.75)
-texture = ExtResource("94_017ef")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/QuestSystem/Quest Slots Grid/Quest Slot_root_4"]
-libraries = {
-&"": SubResource("AnimationLibrary_jdak2")
-}
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/QuestSystem"]
 root_node = NodePath("../..")
@@ -4448,7 +1882,6 @@ position = Vector2(-614, 0)
 texture = ExtResource("102_u4yck")
 
 [node name="Dialog Box" type="Sprite2D" parent="The Rabbit/QuestSystem"]
-visible = false
 z_index = 10
 position = Vector2(-1093, 577.75)
 texture = ExtResource("101_6kw3k")
@@ -4460,6 +1893,7 @@ offset_top = 206.0
 offset_right = 2257.0
 offset_bottom = 731.0
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("91_036e7")
 theme_override_font_sizes/normal_font_size = 125
 bbcode_enabled = true
 text = "asdofiasdflahjksd;lfj la;sdkfjlasdkjflkg lkfdgjdfklgd gdfjg klg dflgj dfg lkdfgj ldfkgj lkdf dflk jsdl jsdfl sdj fjweorjw woe rjeoir jweor  ioj weor oiwj e"
@@ -4467,7 +1901,6 @@ scroll_active = false
 visible_characters_behavior = 1
 
 [node name="Popup" type="NinePatchRect" parent="The Rabbit/QuestSystem"]
-visible = false
 z_index = 10
 offset_left = -6033.0
 offset_top = -795.25
@@ -4498,112 +1931,189 @@ bbcode_enabled = true
 text = "asdofiasdflahjksd;lfj la;sdkfjlasdkjflkg lkfdgjdfklgd gdfjg klg dflgj dfg lkdfgj ldfkgj lkdf dflk jsdl jsdfl sdj fjweorjw woe rjeoir jweor  ioj weor oiwj e"
 scroll_active = false
 
+[node name="The Machine DLC" type="Node2D" parent="."]
+z_index = 3
+position = Vector2(4029, -161)
+
+[node name="DLC Pole" type="Sprite2D" parent="The Machine DLC"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+position = Vector2(-1092, 49)
+texture = ExtResource("39_6sdua")
+
+[node name="DLC Panel" type="Sprite2D" parent="The Machine DLC"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+position = Vector2(-5472, -18)
+texture = ExtResource("39_enqmm")
+
+[node name="Additional Item Slots Grid" type="GridContainer" parent="The Machine DLC/DLC Panel"]
+offset_left = -1085.0
+offset_top = -36.5
+offset_right = 515.0
+offset_bottom = 763.5
+theme_override_constants/h_separation = 400
+theme_override_constants/v_separation = 400
+columns = 5
+
+[node name="Item Slot_root_0" parent="The Machine DLC/DLC Panel/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
+layout_mode = 2
+
+[node name="Item Slot_root_1" parent="The Machine DLC/DLC Panel/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
+layout_mode = 2
+
+[node name="Item Slot_root_2" parent="The Machine DLC/DLC Panel/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
+layout_mode = 2
+
+[node name="Item Slot_root_3" parent="The Machine DLC/DLC Panel/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
+layout_mode = 2
+
+[node name="Item Slot_root_4" parent="The Machine DLC/DLC Panel/Additional Item Slots Grid" instance=ExtResource("36_6sdua")]
+layout_mode = 2
+
+[node name="DLC Screen" type="Sprite2D" parent="The Machine DLC/DLC Panel"]
+position = Vector2(1002, -32.5)
+texture = ExtResource("41_4tp6t")
+
+[node name="DLC Screen_fill" type="Sprite2D" parent="The Machine DLC/DLC Panel/DLC Screen"]
+self_modulate = Color(0, 0.627451, 0.9647059, 1)
+texture = ExtResource("42_p2bqf")
+
+[node name="DLC Label" type="RichTextLabel" parent="The Machine DLC/DLC Panel/DLC Screen/DLC Screen_fill"]
+offset_left = -221.0
+offset_top = -113.0
+offset_right = 202.0
+offset_bottom = 94.0
+theme_override_font_sizes/normal_font_size = 55
+text = "道具种类: 0 / 7"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine DLC"]
+libraries = {
+&"": SubResource("AnimationLibrary_u4yck")
+}
+
 [node name="5 Choose 1" type="Sprite2D" parent="."]
-position = Vector2(4379, 2384)
-texture = ExtResource("101_8ocj1")
-metadata/_edit_group_ = true
-metadata/_edit_lock_ = true
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+position = Vector2(4414, 1742)
+texture = ExtResource("92_taegb")
+
+[node name="Pole" type="Sprite2D" parent="5 Choose 1"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+show_behind_parent = true
+position = Vector2(2002, 43)
+texture = ExtResource("93_m40pb")
 
 [node name="Item Choice Grid" type="HBoxContainer" parent="5 Choose 1"]
-offset_left = -1111.0
-offset_top = -1291.0
-offset_right = -794.0
-offset_bottom = -987.0
+offset_left = -945.0
+offset_top = 29.0
+offset_right = 995.0
+offset_bottom = 333.0
 theme_override_constants/separation = 485
 
 [node name="Item Choice Root_0" type="Control" parent="5 Choose 1/Item Choice Grid"]
 layout_mode = 2
 
-[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_0"]
-position = Vector2(157, 134)
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("102_jdak2")
-offset = Vector2(-7, 19)
+[node name="Item_background" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_0"]
+self_modulate = Color(0.05490196, 0.3529412, 0.28627452, 1)
+texture = ExtResource("94_jqdmi")
 region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
+region_rect = Rect2(20, 26, 351, 334)
+
+[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_0/Item_background"]
+scale = Vector2(0.75, 0.75)
+texture = SubResource("AtlasTexture_jqdmi")
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_0"]
 anchors_preset = 0
-offset_left = -6.0
-offset_top = -2.0
-offset_right = 319.0
-offset_bottom = 306.0
+offset_left = -163.0
+offset_top = -154.0
+offset_right = 162.0
+offset_bottom = 154.0
 mouse_default_cursor_shape = 2
 
 [node name="Item Choice Root_1" type="Control" parent="5 Choose 1/Item Choice Grid"]
 layout_mode = 2
 
-[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_1"]
-position = Vector2(157, 134)
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("102_jdak2")
-offset = Vector2(-7, 19)
+[node name="Item_background" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_1"]
+self_modulate = Color(0.05490196, 0.3529412, 0.28627452, 1)
+texture = ExtResource("94_jqdmi")
 region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
+region_rect = Rect2(20, 26, 351, 334)
+
+[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_1/Item_background"]
+scale = Vector2(0.75, 0.75)
+texture = SubResource("AtlasTexture_jqdmi")
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_1"]
 anchors_preset = 0
-offset_left = -6.0
-offset_top = -2.0
-offset_right = 319.0
-offset_bottom = 306.0
+offset_left = -163.0
+offset_top = -154.0
+offset_right = 162.0
+offset_bottom = 154.0
 mouse_default_cursor_shape = 2
 
 [node name="Item Choice Root_2" type="Control" parent="5 Choose 1/Item Choice Grid"]
 layout_mode = 2
 
-[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_2"]
-position = Vector2(157, 134)
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("102_jdak2")
-offset = Vector2(-7, 19)
+[node name="Item_background" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_2"]
+self_modulate = Color(0.05490196, 0.3529412, 0.28627452, 1)
+texture = ExtResource("94_jqdmi")
 region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
+region_rect = Rect2(20, 26, 351, 334)
+
+[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_2/Item_background"]
+scale = Vector2(0.75, 0.75)
+texture = SubResource("AtlasTexture_jqdmi")
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_2"]
 anchors_preset = 0
-offset_left = -6.0
-offset_top = -2.0
-offset_right = 319.0
-offset_bottom = 306.0
+offset_left = -163.0
+offset_top = -154.0
+offset_right = 162.0
+offset_bottom = 154.0
 mouse_default_cursor_shape = 2
 
 [node name="Item Choice Root_3" type="Control" parent="5 Choose 1/Item Choice Grid"]
 layout_mode = 2
 
-[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_3"]
-position = Vector2(157, 134)
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("102_jdak2")
-offset = Vector2(-7, 19)
+[node name="Item_background" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_3"]
+self_modulate = Color(0.05490196, 0.3529412, 0.28627452, 1)
+texture = ExtResource("94_jqdmi")
 region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
+region_rect = Rect2(20, 26, 351, 334)
+
+[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_3/Item_background"]
+scale = Vector2(0.75, 0.75)
+texture = SubResource("AtlasTexture_jqdmi")
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_3"]
 anchors_preset = 0
-offset_left = -6.0
-offset_top = -2.0
-offset_right = 319.0
-offset_bottom = 306.0
+offset_left = -163.0
+offset_top = -154.0
+offset_right = 162.0
+offset_bottom = 154.0
 mouse_default_cursor_shape = 2
 
 [node name="Item Choice Root_4" type="Control" parent="5 Choose 1/Item Choice Grid"]
 layout_mode = 2
 
-[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_4"]
-position = Vector2(157, 134)
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("102_jdak2")
-offset = Vector2(-7, 19)
+[node name="Item_background" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_4"]
+self_modulate = Color(0.05490196, 0.3529412, 0.28627452, 1)
+texture = ExtResource("94_jqdmi")
 region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
+region_rect = Rect2(20, 26, 351, 334)
+
+[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_4/Item_background"]
+scale = Vector2(0.75, 0.75)
+texture = SubResource("AtlasTexture_jqdmi")
 
 [node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_4"]
 anchors_preset = 0
-offset_left = -6.0
-offset_top = -2.0
-offset_right = 319.0
-offset_bottom = 306.0
+offset_left = -163.0
+offset_top = -154.0
+offset_right = 162.0
+offset_bottom = 154.0
 mouse_default_cursor_shape = 2
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -4611,13 +2121,9 @@ position = Vector2(2998, 1689)
 zoom = Vector2(0.32, 0.32)
 editor_draw_limits = true
 editor_draw_drag_margin = true
-metadata/_edit_group_ = true
-metadata/_edit_lock_ = true
 
 [node name="VfxLayer" type="Node2D" parent="."]
 z_index = 999
-metadata/_edit_group_ = true
-metadata/_edit_lock_ = true
 
 [node name="Language Switch" type="Button" parent="."]
 layout_mode = 0
@@ -4625,5 +2131,3 @@ offset_right = 132.0
 offset_bottom = 153.0
 theme_override_font_sizes/font_size = 32
 text = "EN/ZH"
-metadata/_edit_group_ = true
-metadata/_edit_lock_ = true

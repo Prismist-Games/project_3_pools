@@ -153,6 +153,10 @@ func select_option(index: int) -> void:
 		# 等待飞行完成后再关盖刷新 - 由 _on_vfx_queue_finished 处理
 		# ERA_4: 抽奖后递减保质期
 		ShelfLifeEffect.trigger_shelf_life_decrement()
+		
+		# 清除背包中的候选高亮
+		if controller and controller.inventory_controller:
+			controller.inventory_controller.refresh_upgradeable_badges([])
 
 func handle_input(event: InputEvent) -> bool:
 	# 拦截右键，阻止取消 (精准选择强制必须选一个)
@@ -194,6 +198,14 @@ func _setup_precise_display() -> void:
 			slot.play_reveal_sequence([item], false, true)
 			# 清空默认的池类型，防止触发类型高亮
 			slot.current_pool_item_type = -1
+			
+			# 【新增】设置角标状态
+			if controller.pool_controller:
+				if slot.has_method("update_status_badge"):
+					slot.update_status_badge(controller.pool_controller._calculate_badge_state(item))
+				if slot.has_method("set_upgradeable_badge"):
+					slot.set_upgradeable_badge(controller.pool_controller._calculate_upgradeable_state(item))
+			
 			# 为该 slot 单独连接 hover 信号，高亮特定物品
 			_connect_slot_hover(i, item.item_data.id)
 		else:
@@ -201,6 +213,10 @@ func _setup_precise_display() -> void:
 			if slot.lid_sprite:
 				slot.lid_sprite.position.y = 0
 			slot.current_pool_item_type = -1
+	
+	# 【优化】通知背包控制器，考虑当前的 options 进行角标高亮
+	if controller and controller.inventory_controller:
+		controller.inventory_controller.refresh_upgradeable_badges(options)
 	
 	# 立即解锁界面
 	if controller.pool_controller:
