@@ -58,13 +58,15 @@ func select_option(index: int) -> void:
 	# 完成选择后一般返回 Idle
 	machine.transition_to(&"Idle")
 
-func handle_input(event: InputEvent) -> bool:
-	# 技能选择允许右键取消
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-		if modal_type == &"skill_select":
-			machine.transition_to(&"Idle")
-			return true
+func handle_input(_event: InputEvent) -> bool:
+	# 取消操作已迁移到 CancelButtonController
 	return false
+
+
+## 公开取消方法，供 CancelButtonController 调用
+func cancel() -> void:
+	if modal_type == &"skill_select":
+		machine.transition_to(&"Idle")
 
 func _setup_skill_selection_display() -> void:
 	if not controller: return

@@ -216,16 +216,18 @@ func _create_fly_sprite(item: ItemInstance, start_pos: Vector2, start_scale: Vec
 	
 	return sprite
 
-func handle_input(event: InputEvent) -> bool:
+func handle_input(_event: InputEvent) -> bool:
 	# 动画中不响应输入
 	if _is_animating:
 		return true
 	
-	# 右键取消（放弃本次 Trade-in，关门回到 Idle）
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-		_cancel_trade_in()
-		return true
+	# 取消操作已迁移到 CancelButtonController
 	return false
+
+
+## 公开取消方法，供 CancelButtonController 调用
+func cancel() -> void:
+	_cancel_trade_in()
 
 ## 取消以旧换新
 func _cancel_trade_in() -> void:

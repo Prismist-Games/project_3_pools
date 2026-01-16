@@ -31,11 +31,8 @@ func can_transition_to(next_state: StringName) -> bool:
 		return InventorySystem.pending_items.is_empty()
 	return false
 
-func handle_input(event: InputEvent) -> bool:
-	# pending模式下右键不触发任何功能（不允许取消流程，只能放入/替换/丢弃）
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-		# 返回true表示已处理，但不执行任何操作，防止触发通用取消逻辑
-		return true
+func handle_input(_event: InputEvent) -> bool:
+	# pending 模式不可取消，必须放入/替换/丢弃
 	return false
 
 ## 关闭奖池盖并刷新（所有 3 格同时播放推挤动画）

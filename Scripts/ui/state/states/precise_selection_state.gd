@@ -158,10 +158,8 @@ func select_option(index: int) -> void:
 		if controller and controller.inventory_controller:
 			controller.inventory_controller.refresh_upgradeable_badges([])
 
-func handle_input(event: InputEvent) -> bool:
-	# 拦截右键，阻止取消 (精准选择强制必须选一个)
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-		return true
+func handle_input(_event: InputEvent) -> bool:
+	# 精准选择强制必须选一个，不可取消
 	return false
 
 ## 展示二选一界面

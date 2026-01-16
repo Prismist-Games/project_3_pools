@@ -150,13 +150,15 @@ func exit() -> void:
 func can_transition_to(_next_state: StringName) -> bool:
 	return true
 
-func handle_input(event: InputEvent) -> bool:
-	# 右键取消
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-		if not _has_acted:
-			_cancel_selection()
-		return true
+func handle_input(_event: InputEvent) -> bool:
+	# 取消操作已迁移到 CancelButtonController
 	return false
+
+
+## 公开取消方法，供 CancelButtonController 调用
+func cancel() -> void:
+	if not _has_acted:
+		_cancel_selection()
 
 ## 玩家选择了某个物品
 func select_item(index: int) -> void:
