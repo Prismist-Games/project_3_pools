@@ -206,6 +206,11 @@ func _on_submit_switch_input(event: InputEvent) -> void:
 		if not event.pressed:
 			if not game_ui or not game_ui.state_machine: return
 			
+			# 如果 UI 已锁定，则忽略点击，防止重复触发
+			if game_ui.is_ui_locked():
+				print("[SwitchController] Click ignored: UI is locked")
+				return
+			
 			# 使用 get_ui_mode() 代替 GameManager 检查
 			if game_ui.state_machine.get_ui_mode() == Constants.UIMode.NORMAL:
 				game_ui.state_machine.transition_to(&"Submitting")
@@ -229,6 +234,11 @@ func _on_recycle_switch_input(event: InputEvent) -> void:
 
 		if not event.pressed:
 			if not game_ui or not game_ui.state_machine: return
+
+			# 如果 UI 已锁定，则忽略点击，防止重复触发
+			if game_ui.is_ui_locked():
+				print("[SwitchController] Click ignored: UI is locked")
+				return
 
 			var current_mode = game_ui.state_machine.get_ui_mode()
 
