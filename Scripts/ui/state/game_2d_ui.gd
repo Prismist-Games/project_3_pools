@@ -367,12 +367,15 @@ func _update_ui_mode_display() -> void:
 	var has_pending = not InventorySystem.pending_items.is_empty()
 	
 	# 背包格锁定逻辑：UI 锁、有待定项、或者非正常模式均锁
-	var inventory_locked = is_ui_locked() or has_pending
+	var inventory_locked = is_ui_locked() or has_pending or mode != Constants.UIMode.NORMAL
 	inventory_controller.set_slots_locked(inventory_locked)
 	
 	# 奖池锁定逻辑：UI 锁、有待定项、或者非正常模式均锁
 	var pool_locked = is_ui_locked() or has_pending or mode != Constants.UIMode.NORMAL
 	pool_controller.set_slots_locked(pool_locked)
+	
+	# 订单锁定逻辑：UI 锁即锁
+	order_controller.set_slots_locked(is_ui_locked())
 	
 	# 回收盖子展示逻辑：处于回收模式，或者有回收动画正在飞行中，或者正在执行回收锁
 	var recycle_active = (mode == Constants.UIMode.RECYCLE) or _ui_locks.has("recycle")
@@ -748,6 +751,7 @@ func _on_modal_requested(modal_id: StringName, payload: Variant) -> void:
 			state_machine.transition_to(&"TargetedSelection", {
 				"source_pool_index": payload.get("source_pool_index", last_clicked_pool_idx),
 				"pool_item_type": payload.get("pool_item_type", -1),
+				"gold_cost": payload.get("gold_cost", 0),
 				"callback": payload.get("callback", Callable())
 			})
 

@@ -131,8 +131,8 @@ func get_mode_from_state(state_name: StringName) -> Constants.UIMode:
 			return Constants.UIMode.SUBMIT
 		&"Recycling":
 			return Constants.UIMode.RECYCLE
-		&"TradeIn":
+		&"TradeIn", &"PreciseSelection", &"TargetedSelection":
 			return Constants.UIMode.REPLACE
 		_:
-			# 默认为 NORMAL (Idle, Drawing, PreciseSelection, Modal, etc.)
+			# 默认为 NORMAL (Idle, Drawing, Modal, etc.)
 			return Constants.UIMode.NORMAL

@@ -84,7 +84,7 @@ func update_recycle_visuals(is_on: bool) -> void:
 	
 	if not is_on:
 		if tween:
-			tween.finished.connect(func(): 
+			tween.finished.connect(func():
 				if not _recycle_is_on:
 					update_recycle_label(0)
 					clear_recycle_icon()
@@ -124,7 +124,7 @@ func hide_recycle_preview() -> void:
 	var tween = _recycle_tween
 	if tween:
 		# 使用弱引用或在 tween 开始前记录状态，防止竞争
-		tween.finished.connect(func(): 
+		tween.finished.connect(func():
 			if not _recycle_is_on:
 				update_recycle_label(0)
 		)
@@ -193,6 +193,9 @@ func _tween_switch(switch_node: Node2D, target_y: float) -> Tween:
 func _on_submit_switch_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
+			# 检查 UI 锁定
+			if game_ui and game_ui.is_ui_locked():
+				return
 			_is_submit_pressed = true
 		else:
 			_is_submit_pressed = false
@@ -200,6 +203,10 @@ func _on_submit_switch_input(event: InputEvent) -> void:
 		_refresh_switch_visual(submit_switch, _submit_is_on, _is_submit_hovered, _is_submit_pressed)
 		
 		if not event.pressed:
+			# 检查 UI 锁定（松开时也需要检查）
+			if game_ui and game_ui.is_ui_locked():
+				return
+			
 			if not game_ui or not game_ui.state_machine: return
 			
 			# 使用 get_ui_mode() 代替 GameManager 检查
@@ -217,6 +224,9 @@ func _on_submit_switch_input(event: InputEvent) -> void:
 func _on_recycle_switch_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
+			# 检查 UI 锁定
+			if game_ui and game_ui.is_ui_locked():
+				return
 			_is_recycle_pressed = true
 		else:
 			_is_recycle_pressed = false
@@ -224,6 +234,10 @@ func _on_recycle_switch_input(event: InputEvent) -> void:
 		_refresh_switch_visual(recycle_switch, _recycle_is_on, _is_recycle_hovered, _is_recycle_pressed)
 
 		if not event.pressed:
+			# 检查 UI 锁定（松开时也需要检查）
+			if game_ui and game_ui.is_ui_locked():
+				return
+			
 			if not game_ui or not game_ui.state_machine: return
 
 			var current_mode = game_ui.state_machine.get_ui_mode()
@@ -251,6 +265,8 @@ func _on_recycle_switch_input(event: InputEvent) -> void:
 					await recycling_state.recycle_confirm()
 
 func _on_submit_switch_hover() -> void:
+	if game_ui and game_ui.is_ui_locked():
+		return
 	_is_submit_hovered = true
 	_refresh_switch_visual(submit_switch, _submit_is_on, _is_submit_hovered, _is_submit_pressed)
 
@@ -259,6 +275,8 @@ func _on_submit_switch_unhover() -> void:
 	_refresh_switch_visual(submit_switch, _submit_is_on, _is_submit_hovered, _is_submit_pressed)
 
 func _on_recycle_switch_hover() -> void:
+	if game_ui and game_ui.is_ui_locked():
+		return
 	_is_recycle_hovered = true
 	if game_ui and game_ui.has_method("_on_recycle_switch_mouse_entered"):
 		game_ui._on_recycle_switch_mouse_entered()

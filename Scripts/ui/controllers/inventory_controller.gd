@@ -365,12 +365,23 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 			var slot = get_slot_node(index) as ItemSlotUI
 			
 			if event.pressed:
+				# 检查 UI 锁定
+				if game_ui and game_ui.is_ui_locked():
+					return
+				
 				# 鼠标按下：icon缩小
 				_pressed_slot_index = index
 				if slot and slot.has_method("handle_mouse_press"):
 					slot.handle_mouse_press()
 			else:
 				# 鼠标松开：确认点击行为
+				# 检查 UI 锁定（松开时也需要检查）
+				if game_ui and game_ui.is_ui_locked():
+					_pressed_slot_index = -1
+					if slot and slot.has_method("handle_mouse_release"):
+						slot.handle_mouse_release()
+					return
+				
 				# Delegate to state machine via Game2DUI or access directly
 				if game_ui and game_ui.state_machine:
 					var current_state = game_ui.state_machine.get_current_state()

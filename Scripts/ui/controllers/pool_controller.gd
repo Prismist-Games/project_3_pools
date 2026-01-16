@@ -306,6 +306,14 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 			var slot = _get_slot_node(index) as LotterySlotUI
 			
 			if event.pressed:
+				# 检查状态与锁定
+				if game_ui and game_ui.state_machine:
+					var state_name = game_ui.state_machine.get_current_state_name()
+					if state_name == &"PreciseSelection":
+						if index >= 2: return # 精准选择模式下屏蔽 Slot 2
+					elif game_ui.is_ui_locked():
+						return # 其他锁定状态下屏蔽所有输入
+				
 				# 鼠标按下：让lid复位
 				_pressed_slot_index = index
 				if slot and slot.has_method("handle_mouse_press"):

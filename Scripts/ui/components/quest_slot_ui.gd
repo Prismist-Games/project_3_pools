@@ -38,7 +38,15 @@ func setup(index: int) -> void:
 func get_order() -> OrderData:
 	return _current_order
 
+func set_locked(locked: bool) -> void:
+	is_locked = locked
+	if refresh_button:
+		# 如果订单本身已经没次数了，保持禁用；否则根据锁定状态设置
+		var has_uses = _current_order and _current_order.refresh_count > 0
+		refresh_button.disabled = locked or not has_uses
+
 func _on_refresh_button_pressed() -> void:
+	if is_locked: return
 	if order_index != -1:
 		EventBus.game_event.emit(&"order_refresh_requested", ContextProxy.new({"index": order_index - 1}))
 
@@ -77,9 +85,6 @@ func update_order_display(order_data: OrderData, req_states: Array = []) -> void
 		return
 	
 	visible = true
-	# Update reward display
-	if reward_label:
-		reward_label.text = str(order_data.reward_gold)
 	
 	if reward_icon:
 		reward_icon.texture = preload("res://assets/sprites/icons/money.png")
@@ -96,8 +101,28 @@ func update_order_display(order_data: OrderData, req_states: Array = []) -> void
 	if is_submit_mode:
 		var is_satisfied = _check_order_satisfied(order_data, req_states)
 		_set_protrude(is_satisfied)
+		
+		# 更新奖励显示：如果满足，根据选中物品计算预览奖励
+		if reward_label:
+			if is_satisfied:
+				var selected_items: Array[ItemInstance] = []
+				for idx in InventorySystem.multi_selected_indices:
+					if idx >= 0 and idx < InventorySystem.inventory.size():
+						var item = InventorySystem.inventory[idx]
+						if item:
+							selected_items.append(item)
+				
+				var preview = order_data.calculate_preview_rewards(selected_items)
+				if preview.gold != order_data.reward_gold:
+					reward_label.text = "%d[s]%d[/s]" % [preview.gold, order_data.reward_gold]
+				else:
+					reward_label.text = str(order_data.reward_gold)
+			else:
+				reward_label.text = str(order_data.reward_gold)
 	else:
 		_reset_protrude()
+		if reward_label:
+			reward_label.text = str(order_data.reward_gold)
 
 func _update_requirements(reqs: Array[Dictionary], req_states: Array) -> void:
 	# 适配不同名字的 Grid (Quest Slot Items Grid 或 Main Quest Slot Items Grid)
@@ -261,7 +286,7 @@ func _start_rarity_rotation(req_index: int, rarity_sprite: Sprite2D) -> void:
 	# 检查是否已有有效的旋转动画
 	var existing_tween = _rarity_rotation_tweens.get(req_index)
 	if existing_tween and existing_tween.is_valid() and existing_tween.is_running():
-		return  # 已经在旋转，不需要重新创建
+		return # 已经在旋转，不需要重新创建
 	
 	# 停止旧的动画（如果存在）
 	if existing_tween:
@@ -269,7 +294,7 @@ func _start_rarity_rotation(req_index: int, rarity_sprite: Sprite2D) -> void:
 	
 	# 创建新的旋转动画
 	var rotation_tween = create_tween()
-	rotation_tween.set_loops()  # 无限循环
+	rotation_tween.set_loops() # 无限循环
 	rotation_tween.tween_property(rarity_sprite, "rotation", TAU, 3.0) \
 		.from(0.0) \
 		.set_trans(Tween.TRANS_LINEAR)
