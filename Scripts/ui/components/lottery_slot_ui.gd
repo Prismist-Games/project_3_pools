@@ -353,12 +353,18 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 	
 	# 3. 定格最终品质
 	if not items.is_empty() and backgrounds:
-		backgrounds.color = Constants.get_rarity_border_color(items[0].rarity)
+		var rarity_value = items[0].rarity if items[0] is ItemInstance else items[0].get("rarity", 0)
+		# 特殊处理：rarity = -1 表示技能选择，使用机器色
+		if rarity_value == -1:
+			backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
+		else:
+			backgrounds.color = Constants.get_rarity_border_color(rarity_value)
 	elif backgrounds:
 		backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
 	
 	if not skip_shuffle:
 		await get_tree().create_timer(0.3).timeout # 最终揭示后的停留
+
 
 ## 播放关盖序列（仅关盖和重置显示，刷新动画由 PoolController 统一处理）
 func play_close_sequence() -> void:
@@ -420,7 +426,12 @@ func update_pending_display(pending_list: Array) -> void:
 	# 因为队列的变化反映了真实的待定状态，必须及时更新以避免显示错误的物品
 	
 	if backgrounds:
-		backgrounds.color = Constants.get_rarity_border_color(pending_list[0].rarity)
+		var rarity_value = pending_list[0].rarity if pending_list[0] is ItemInstance else pending_list[0].get("rarity", 0)
+		# 特殊处理：rarity = -1 表示技能选择，使用机器色
+		if rarity_value == -1:
+			backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
+		else:
+			backgrounds.color = Constants.get_rarity_border_color(rarity_value)
 	
 	# 更新当前排在首位的物品 ID (用于 hover 高亮)
 	var top_item = pending_list[0]
@@ -715,7 +726,9 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 		
 		if target_lid_sprite:
 			target_lid_sprite.self_modulate = theme_color
-		if target_lid_icon:
+		
+		# 只有当 item_type >= 0 时才更新盖子图标（-1 表示技能选择模式，不显示物品类型图标）
+		if item_type >= 0 and target_lid_icon:
 			target_lid_icon.texture = Constants.type_to_icon(item_type)
 			target_lid_icon.self_modulate = theme_color
 	
