@@ -99,6 +99,8 @@ func get_selectable_skills(count: int = 3) -> Array[SkillData]:
 var _effect_subscriptions: Dictionary = {} # Mapping: SkillEffect -> Callable
 
 func _rebuild_effects(skills: Array) -> void:
+	print("[SkillSystem] Rebuilding effects for ", skills.size(), " skills")
+	
 	# Clean up old connections
 	for eff: SkillEffect in _active_effects:
 		if eff in _effect_subscriptions:
@@ -113,9 +115,14 @@ func _rebuild_effects(skills: Array) -> void:
 		var skill_data: SkillData = s as SkillData
 		if skill_data == null:
 			continue
+		
+		print("[SkillSystem] Processing skill: ", skill_data.id, " with ", skill_data.effects.size(), " effects")
+		
 		for eff: SkillEffect in skill_data.effects:
 			if eff == null:
+				print("[SkillSystem] Warning: null effect in skill ", skill_data.id)
 				continue
+			
 			_active_effects.append(eff)
 			
 			# Connect signal with skill_id bound
@@ -123,6 +130,9 @@ func _rebuild_effects(skills: Array) -> void:
 			if not eff.triggered.is_connected(callback):
 				eff.triggered.connect(callback)
 				_effect_subscriptions[eff] = callback
+				print("[SkillSystem] Connected signal for effect in skill: ", skill_data.id)
+			else:
+				print("[SkillSystem] Signal already connected for skill: ", skill_data.id)
 
 
 func _dispatch(event_id: StringName, context: RefCounted) -> void:
@@ -154,6 +164,8 @@ func _on_effect_triggered(type: String, skill_id: String) -> void:
 	var ctx = SkillFeedbackContext.new()
 	ctx.skill_id = skill_id
 	ctx.type = type
+	
+	print("[SkillSystem] Emitting skill_visual_feedback for skill_id: ", skill_id, " type: ", type)
 	
 	EventBus.game_event.emit(&"skill_visual_feedback", ctx)
 

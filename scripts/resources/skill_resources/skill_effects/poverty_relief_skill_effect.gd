@@ -9,12 +9,20 @@ class_name PovertyReliefSkillEffect
 
 
 func on_event(event_id: StringName, context: RefCounted) -> void:
+	print("[PovertyRelief] Received event: ", event_id)
+	
 	if event_id != &"order_completed":
 		return
 		
 	var ctx = context as OrderCompletedContext
-	if ctx == null: return
+	if ctx == null:
+		print("[PovertyRelief] Context is null")
+		return
+	
+	print("[PovertyRelief] Gold: ", GameManager.gold, " Threshold: ", gold_threshold)
 	
 	if GameManager.gold < gold_threshold:
+		print("[PovertyRelief] Triggering! Emitting signal...")
 		triggered.emit(TRIGGER_INSTANT)
 		ctx.reward_gold += bonus_gold
+		print("[PovertyRelief] Signal emitted, bonus applied")

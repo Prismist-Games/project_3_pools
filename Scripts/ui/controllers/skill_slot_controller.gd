@@ -14,9 +14,9 @@ signal slot_hovered(index: int)
 signal slot_unhovered(index: int)
 
 ## 位置常量
-const SLOT_Y_DOWN: float = -888.0    ## 降下状态 (空槽)
-const SLOT_Y_UP: float = -1160.0     ## 升起状态 (有技能)
-const SLOT_Y_HOVER: float = -1190.0  ## hover 状态 (选择替换时)
+const SLOT_Y_DOWN: float = -888.0 ## 降下状态 (空槽)
+const SLOT_Y_UP: float = -1160.0 ## 升起状态 (有技能)
+const SLOT_Y_HOVER: float = -1190.0 ## hover 状态 (选择替换时)
 const ANIMATION_DURATION: float = 0.5 # 增加时长使其更明显
 
 ## 槽位节点引用
@@ -96,6 +96,10 @@ func refresh_slots(skills: Array, animated: bool = true) -> void:
 			if icon_node:
 				icon_node.texture = skill.icon
 				icon_node.tooltip_text = "" # 清除旧位置 tooltip
+				
+				# Call setup if method exists (for SkillIconUI script)
+				if icon_node.has_method("setup"):
+					icon_node.setup(skill)
 			
 			# 设置 Tooltip 到 Input Area
 			if input_area:
@@ -171,6 +175,10 @@ func update_slot_skill(index: int, skill: SkillData) -> void:
 	if icon_node and skill:
 		icon_node.texture = skill.icon
 		icon_node.tooltip_text = ""
+		
+		# Call setup if method exists
+		if icon_node.has_method("setup"):
+			icon_node.setup(skill)
 	
 	if input_area and skill:
 		input_area.tooltip_text = "%s: %s" % [tr(skill.name), tr(skill.description)]
