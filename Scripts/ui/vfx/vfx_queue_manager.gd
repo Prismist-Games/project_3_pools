@@ -229,6 +229,17 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 			if source_slot.has_method("update_pending_display") and InventorySystem:
 				source_slot.update_pending_display(InventorySystem.pending_items)
 	
+	# 播放放置音效
+	if not task.get("is_merge", false):
+		EventBus.game_event.emit(&"item_placed", item)
+	else:
+		# 如果是合并，合并的逻辑可能会在 _execute_merge 或其他地方（TODO），但此次飞行确实结束了。
+		# 考虑到合并通常也有放置的声音，但可能不同。
+		# 用户要求 "物品往物品栏格子的飞行动画结束后触发"，所以这里也应该触发。
+		# 除非 merge 有单独的 VFX。目前 _execute_merge 只是 delay。
+		# 让我们统一触发。
+		EventBus.game_event.emit(&"item_placed", item)
+	
 	# 清理 rarity 相关资源
 	var rarity_tween = fly_sprite.get_meta("rarity_tween", null)
 	if rarity_tween:
@@ -317,9 +328,20 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 				source_lottery_slot.is_vfx_source = false
 
 ## 执行合成动画
-func _execute_merge(_task: Dictionary) -> void:
+func _execute_merge(task: Dictionary) -> void:
 	# TODO: 实现更精美的合成动画
 	await get_tree().create_timer(0.2).timeout
+	# 合成也算一种放置完成 (如果是原地合成)
+	# 但通常有一方是飞过来的，飞过来的那个在上面已经触发了。
+	# 这里可能是原地的效果?
+	# 只要没有 flight 任务覆盖，这里触发也没问题。
+	# 不过目前 Game2DUI 中 merge 会触发 generic_fly 或 fly_to_inventory (replace)。
+	# _execute_merge 很少被直接用到主要的移动中?
+	# 查阅 Game2DUI.gd: _on_item_merged -> _item_replaced -> fly_to_inventory (with is_merge=true)
+	# 所以 fly_to_inventory 会覆盖 merge 的情况。
+	# 只有原地合并 (如果存在) 才会用到这个? 但 inventory system 的 merge logic 似乎总是涉及 source/target。
+	# 暂时不在 _execute_merge 加，以免重复，因为它通常伴随 flight。
+
 
 ## 执行通用飞行动画（例如物品移动）
 func _execute_generic_fly(task: Dictionary) -> void:
@@ -355,6 +377,8 @@ func _execute_generic_fly(task: Dictionary) -> void:
 		tween.tween_property(rarity_sprite, "scale", end_scale, duration)
 	
 	await tween.finished
+	
+	EventBus.game_event.emit(&"item_placed", item)
 	
 	# 清理 rarity 相关资源
 	var rarity_tween = sprite.get_meta("rarity_tween", null)
@@ -412,6 +436,8 @@ func _execute_swap(task: Dictionary) -> void:
 			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	
 	await tween.finished
+	
+	EventBus.game_event.emit(&"item_placed", item1)
 	
 	# 清理 rarity 相关资源
 	var rarity_tween1 = sprite1.get_meta("rarity_tween", null)

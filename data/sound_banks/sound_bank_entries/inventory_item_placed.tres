@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SoundBankEntry" load_steps=3 format=3 uid="uid://r021c62q0hk3"]
+
+[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_76cwt"]
+[ext_resource type="AudioStream" uid="uid://b6qg1up3m1a2k" path="res://assets/audio/sfx/impactPlate_medium_003.ogg" id="2_w87j6"]
+
+[resource]
+script = ExtResource("1_76cwt")
+id = &"item_placed"
+stream = ExtResource("2_w87j6")

@@ -1,7 +1,12 @@
-[gd_resource type="Resource" script_class="SoundBank" load_steps=3 format=3 uid="uid://dau45fsuuxh62"]
+[gd_resource type="Resource" script_class="SoundBank" load_steps=7 format=3 uid="uid://dau45fsuuxh62"]
 
 [ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_ravhl"]
+[ext_resource type="Resource" uid="uid://1bgkxluyecdq" path="res://data/sound_banks/sound_bank_entries/lottery_slot_door_open.tres" id="2_4vcdd"]
 [ext_resource type="Script" uid="uid://dr61yr7ctt2cp" path="res://scripts/resources/sound_bank.gd" id="2_fpnhq"]
+[ext_resource type="Resource" uid="uid://r021c62q0hk3" path="res://data/sound_banks/sound_bank_entries/inventory_item_placed.tres" id="3_n24do"]
+[ext_resource type="Resource" uid="uid://7ukx0n30g0eg" path="res://data/sound_banks/sound_bank_entries/lottery_slot_door_close.tres" id="4_wpva4"]
+[ext_resource type="Resource" uid="uid://bira48cjhkpkv" path="res://data/sound_banks/sound_bank_entries/order_completed.tres" id="5_wtlee"]
 
 [resource]
 script = ExtResource("2_fpnhq")
+entries = Array[ExtResource("1_ravhl")]([ExtResource("2_4vcdd"), ExtResource("3_n24do"), ExtResource("4_wpva4"), ExtResource("5_wtlee")])

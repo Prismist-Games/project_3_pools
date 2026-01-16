@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SoundBankEntry" load_steps=3 format=3 uid="uid://1bgkxluyecdq"]
+
+[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_6u8vs"]
+[ext_resource type="AudioStream" uid="uid://2adf6oj75s6a" path="res://assets/audio/sfx/zapsplat_household_metal_garage_door_open_fast_recorded_inside_distance_111288.mp3" id="2_8s7gs"]
+
+[resource]
+script = ExtResource("1_6u8vs")
+id = &"pool_lid_open"
+stream = ExtResource("2_8s7gs")
+target_duration = 1.2

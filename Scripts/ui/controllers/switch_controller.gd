@@ -19,6 +19,7 @@ var _is_submit_pressed: bool = false
 var _is_recycle_pressed: bool = false
 var _submit_is_on: bool = false
 var _recycle_is_on: bool = false
+var _recycle_lid_closed_emitted: bool = false # 防止重复发送 recycle_lid_closed 信号
 
 func setup(submit_node: Node2D, recycle_node: Node2D) -> void:
 	submit_switch = submit_node
@@ -85,15 +86,21 @@ func update_recycle_visuals(is_on: bool) -> void:
 	if not is_on:
 		if tween:
 			tween.finished.connect(func():
-				if not _recycle_is_on:
+				if not _recycle_is_on and not _recycle_lid_closed_emitted:
+					_recycle_lid_closed_emitted = true
 					update_recycle_label(0)
 					clear_recycle_icon()
 					EventBus.game_event.emit(&"recycle_lid_closed", null)
 			)
 		else:
-			update_recycle_label(0)
-			clear_recycle_icon()
-			EventBus.game_event.emit(&"recycle_lid_closed", null)
+			if not _recycle_lid_closed_emitted:
+				_recycle_lid_closed_emitted = true
+				update_recycle_label(0)
+				clear_recycle_icon()
+				EventBus.game_event.emit(&"recycle_lid_closed", null)
+	else:
+		# 开启时重置标记
+		_recycle_lid_closed_emitted = false
 
 ## 统一的视觉刷新逻辑
 func _refresh_switch_visual(node: Node2D, is_on: bool, is_hovered: bool, is_pressed: bool) -> void:
@@ -127,13 +134,16 @@ func hide_recycle_preview() -> void:
 	if tween:
 		# 使用弱引用或在 tween 开始前记录状态，防止竞争
 		tween.finished.connect(func():
-			if not _recycle_is_on:
+			if not _recycle_is_on and not _recycle_lid_closed_emitted:
+				_recycle_lid_closed_emitted = true
 				update_recycle_label(0)
 				EventBus.game_event.emit(&"recycle_lid_closed", null)
 		)
 	else:
-		update_recycle_label(0)
-		EventBus.game_event.emit(&"recycle_lid_closed", null)
+		if not _recycle_lid_closed_emitted:
+			_recycle_lid_closed_emitted = true
+			update_recycle_label(0)
+			EventBus.game_event.emit(&"recycle_lid_closed", null)
 
 func set_recycle_icon(texture: Texture2D) -> void:
 	if recycle_switch:
@@ -190,7 +200,6 @@ func _tween_switch(switch_node: Node2D, target_y: float) -> Tween:
 			handle.call("_update_background_positions")
 	, start_y, target_y, 0.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	
-	AudioManager.play_sfx(&"switch_toggle")
 	return tween
 
 # --- Input ---
@@ -204,9 +213,6 @@ func _on_submit_switch_input(event: InputEvent) -> void:
 		
 		_refresh_switch_visual(submit_switch, _submit_is_on, _is_submit_hovered, _is_submit_pressed)
 		
-		if event.pressed:
-			AudioManager.play_sfx(&"ui_click")
-			
 		if not event.pressed:
 			if not game_ui or not game_ui.state_machine: return
 			
@@ -235,9 +241,6 @@ func _on_recycle_switch_input(event: InputEvent) -> void:
 			_is_recycle_pressed = false
 		
 		_refresh_switch_visual(recycle_switch, _recycle_is_on, _is_recycle_hovered, _is_recycle_pressed)
-
-		if event.pressed:
-			AudioManager.play_sfx(&"ui_click")
 
 		if not event.pressed:
 			if not game_ui or not game_ui.state_machine: return

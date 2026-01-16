@@ -26,6 +26,7 @@ signal bgm_changed(bgm_id: StringName)
 const SFX_POOL_SIZE: int = 12
 var _sfx_pool: Array[AudioStreamPlayer] = []
 var _sfx_registry: Dictionary = {} # StringName -> SoundBankEntry
+var _active_sounds: Dictionary = {} # StringName -> Array[AudioStreamPlayer] (追踪每个音效的活跃播放器)
 
 # --- BGM ---
 var _bgm_player_a: AudioStreamPlayer
@@ -72,24 +73,61 @@ func load_sound_bank(bank: SoundBank) -> void:
 ## 播放音效
 func play_sfx(sfx_id: StringName, override_pitch: float = 0.0) -> void:
 	if not _sfx_registry.has(sfx_id):
-		# 可以在这里根据需要决定是否 push_warning
 		return
 	
 	var entry: SoundBankEntry = _sfx_registry[sfx_id]
 	if not entry.stream: return
 	
-	var player = _get_idle_sfx_player()
+	# ... (限制最大同时播放数量逻辑保持不变)
+	if not _active_sounds.has(sfx_id): _active_sounds[sfx_id] = []
+	var active_players: Array = _active_sounds[sfx_id]
+	active_players = active_players.filter(func(p): return p.playing)
+	_active_sounds[sfx_id] = active_players
+	if active_players.size() >= entry.max_polyphony:
+		var oldest = active_players[0] as AudioStreamPlayer
+		oldest.stop()
+		active_players.remove_at(0)
 	
+	var player = _get_idle_sfx_player()
 	player.stream = entry.stream
 	player.volume_db = entry.volume_db
+	player.bus = entry.bus
 	
-	# 音高随机化
+	# --- 计算最终音高 ---
+	var final_pitch: float = 1.0
+	
 	if override_pitch > 0:
-		player.pitch_scale = override_pitch
+		final_pitch = override_pitch
+	elif entry.target_duration > 0.0:
+		var original_length = entry.stream.get_length()
+		if original_length > 0.0:
+			final_pitch = original_length / entry.target_duration
+	
+	# 最后加上随机偏移
+	var variance = randf_range(-entry.pitch_variance, entry.pitch_variance)
+	player.pitch_scale = final_pitch * (1.0 + variance)
+	
+	player.play()
+	active_players.append(player)
+
+## 播放音效并匹配指定时长
+func play_sfx_timed(sfx_id: StringName, target_duration: float) -> void:
+	if not _sfx_registry.has(sfx_id): return
+	var entry: SoundBankEntry = _sfx_registry[sfx_id]
+	if not entry.stream: return
+	
+	var player = _get_idle_sfx_player()
+	player.stream = entry.stream
+	player.volume_db = entry.volume_db
+	player.bus = entry.bus
+	
+	var original_length = entry.stream.get_length()
+	if original_length > 0 and target_duration > 0:
+		var base_p = original_length / target_duration
+		player.pitch_scale = base_p * (1.0 + randf_range(-entry.pitch_variance, entry.pitch_variance))
 	else:
-		var variance = entry.pitch_variance
-		player.pitch_scale = 1.0 + randf_range(-variance, variance)
-		
+		player.pitch_scale = 1.0 + randf_range(-entry.pitch_variance, entry.pitch_variance)
+	
 	player.play()
 
 ## 注册 BGM
@@ -127,6 +165,10 @@ func _on_game_event(event_id: StringName, _context: RefCounted) -> void:
 	# 自动尝试播放与事件同名的音效
 	if _sfx_registry.has(event_id):
 		play_sfx(event_id)
+	else:
+		# 调试提示：如果收到了信号但没声音，通常是因为 SoundBank 里没配
+		print("[AudioDebug] Received event: %s (but no SFX registered)" % event_id)
+		pass
 
 # --- 内部工具 ---
 
