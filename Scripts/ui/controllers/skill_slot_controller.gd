@@ -14,9 +14,9 @@ signal slot_hovered(index: int)
 signal slot_unhovered(index: int)
 
 ## 位置常量
-const SLOT_Y_DOWN: float = -888.0    ## 降下状态 (空槽)
-const SLOT_Y_UP: float = -1160.0     ## 升起状态 (有技能)
-const SLOT_Y_HOVER: float = -1190.0  ## hover 状态 (选择替换时)
+const SLOT_Y_DOWN: float = -888.0 ## 降下状态 (空槽)
+const SLOT_Y_UP: float = -1160.0 ## 升起状态 (有技能)
+const SLOT_Y_HOVER: float = -1190.0 ## hover 状态 (选择替换时)
 const ANIMATION_DURATION: float = 0.5 # 增加时长使其更明显
 
 ## 槽位节点引用
