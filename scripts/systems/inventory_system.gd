@@ -37,8 +37,15 @@ var pending_item: ItemInstance:
 
 var selected_slot_index: int = -1:
 	set(v):
+		var old = selected_slot_index
 		selected_slot_index = v
 		selection_changed.emit(selected_slot_index)
+		
+		if v != -1 and v != old:
+			if v >= 0 and v < inventory.size():
+				var item = inventory[v]
+				if item:
+					EventBus.game_event.emit(&"item_selected", item)
 
 var multi_selected_indices: Array[int] = []
 ## selected_indices_for_order 是 multi_selected_indices 的别名
@@ -118,6 +125,7 @@ func handle_slot_click(index: int) -> void:
 			multi_selected_indices.erase(index)
 		else:
 			multi_selected_indices.append(index)
+			EventBus.game_event.emit(&"item_selected", target_item)
 		
 		multi_selection_changed.emit(multi_selected_indices)
 		return
@@ -183,8 +191,10 @@ func handle_slot_click(index: int) -> void:
 			if target_item != null:
 				self.selected_slot_index = index
 		elif selected_idx == index:
-			# 2. 当前已选中同一个格子 -> 取消选中
+			# 2. 当前已选中同一个格子 -> 取消选中 (原地放下)
 			self.selected_slot_index = -1
+			if target_item != null:
+				EventBus.game_event.emit(&"item_placed", target_item)
 		else:
 			# 3. 当前已选中另一个格子
 			var source_item = inventory[selected_idx]

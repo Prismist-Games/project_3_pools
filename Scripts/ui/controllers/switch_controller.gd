@@ -20,6 +20,7 @@ var _is_recycle_pressed: bool = false
 var _submit_is_on: bool = false
 var _recycle_is_on: bool = false
 var _recycle_lid_closed_emitted: bool = false # 防止重复发送 recycle_lid_closed 信号
+var _has_recycled_since_open: bool = false # 跟踪在盖子打开期间是否有物品被回收
 
 func setup(submit_node: Node2D, recycle_node: Node2D) -> void:
 	submit_switch = submit_node
@@ -69,17 +70,36 @@ func _init_switches() -> void:
 		
 		var off_label = recycle_switch.find_child("Switch_off_label", true)
 		if off_label: off_label.text = "SWITCH_RECYCLE"
+		
+		# 监听物品回收事件，标记本次开盖期间发生了回收
+		if not EventBus.item_recycled.is_connected(_on_item_recycled_for_sound):
+			EventBus.item_recycled.connect(_on_item_recycled_for_sound)
+
+func _on_item_recycled_for_sound(_dx: int, _item: RefCounted) -> void:
+	if _recycle_is_on:
+		_has_recycled_since_open = true
 
 func update_switch_visuals(mode: Constants.UIMode) -> void:
 	update_submit_visuals(mode == Constants.UIMode.SUBMIT)
 	update_recycle_visuals(mode == Constants.UIMode.RECYCLE)
 
 func update_submit_visuals(is_on: bool) -> void:
-	_submit_is_on = is_on
+	if _submit_is_on != is_on:
+		_submit_is_on = is_on
+		if is_on:
+			EventBus.game_event.emit(&"switch_on", null)
+		else:
+			EventBus.game_event.emit(&"switch_off", null)
 	_refresh_switch_visual(submit_switch, _submit_is_on, _is_submit_hovered, _is_submit_pressed)
 
 func update_recycle_visuals(is_on: bool) -> void:
-	_recycle_is_on = is_on
+	if _recycle_is_on != is_on:
+		_recycle_is_on = is_on
+		if is_on:
+			EventBus.game_event.emit(&"switch_on", null)
+		else:
+			EventBus.game_event.emit(&"switch_off", null)
+			
 	_refresh_switch_visual(recycle_switch, _recycle_is_on, _is_recycle_hovered, _is_recycle_pressed)
 	var tween = _recycle_tween
 	
@@ -91,6 +111,10 @@ func update_recycle_visuals(is_on: bool) -> void:
 					update_recycle_label(0)
 					clear_recycle_icon()
 					EventBus.game_event.emit(&"recycle_lid_closed", null)
+					
+					if _has_recycled_since_open:
+						EventBus.game_event.emit(&"recycle_processed", null)
+						_has_recycled_since_open = false
 			)
 		else:
 			if not _recycle_lid_closed_emitted:
@@ -100,6 +124,8 @@ func update_recycle_visuals(is_on: bool) -> void:
 				EventBus.game_event.emit(&"recycle_lid_closed", null)
 	else:
 		# 开启时重置标记
+		if not _recycle_is_on:
+			_has_recycled_since_open = false
 		_recycle_lid_closed_emitted = false
 
 ## 统一的视觉刷新逻辑
@@ -123,12 +149,18 @@ func show_recycle_preview(value: int) -> void:
 		_recycle_tween.kill()
 		_recycle_tween = null
 	
-	_recycle_is_on = true
+	if not _recycle_is_on:
+		_recycle_is_on = true
+		EventBus.game_event.emit(&"switch_on", null)
+		
 	update_recycle_label(value)
 	_tween_switch(recycle_switch, SWITCH_ON_Y)
 
 func hide_recycle_preview() -> void:
-	_recycle_is_on = false
+	if _recycle_is_on:
+		_recycle_is_on = false
+		EventBus.game_event.emit(&"switch_off", null)
+		
 	_refresh_switch_visual(recycle_switch, _recycle_is_on, _is_recycle_hovered, _is_recycle_pressed)
 	var tween = _recycle_tween
 	if tween:
@@ -138,12 +170,20 @@ func hide_recycle_preview() -> void:
 				_recycle_lid_closed_emitted = true
 				update_recycle_label(0)
 				EventBus.game_event.emit(&"recycle_lid_closed", null)
+				
+				if _has_recycled_since_open:
+					EventBus.game_event.emit(&"recycle_processed", null)
+					_has_recycled_since_open = false
 		)
 	else:
 		if not _recycle_lid_closed_emitted:
 			_recycle_lid_closed_emitted = true
 			update_recycle_label(0)
 			EventBus.game_event.emit(&"recycle_lid_closed", null)
+			
+			if _has_recycled_since_open:
+				EventBus.game_event.emit(&"recycle_processed", null)
+				_has_recycled_since_open = false
 
 func set_recycle_icon(texture: Texture2D) -> void:
 	if recycle_switch:

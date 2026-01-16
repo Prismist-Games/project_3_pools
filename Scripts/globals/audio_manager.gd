@@ -66,6 +66,11 @@ func _setup_bgm_players() -> void:
 ## 注册音效库
 func load_sound_bank(bank: SoundBank) -> void:
 	if not bank: return
+	
+	# 如果音效库配置了自动扫描路径，先执行扫描以加载条目
+	if bank.has_method("load_from_dir") and not bank.scan_path.is_empty():
+		bank.load_from_dir()
+		
 	for entry in bank.entries:
 		if entry.id != &"":
 			_sfx_registry[entry.id] = entry

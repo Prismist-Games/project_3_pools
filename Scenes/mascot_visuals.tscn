@@ -1,7 +1,9 @@
-[gd_scene load_steps=72 format=3 uid="uid://bdgyvnue2xmp5"]
+[gd_scene load_steps=74 format=3 uid="uid://bdgyvnue2xmp5"]
 
 [ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="1_fu8yu"]
+[ext_resource type="AudioStream" uid="uid://bmus83sm4cx3t" path="res://assets/audio/sfx/381588__dorianmastin__snd_impactheavywall01.wav" id="2_kmeeb"]
 [ext_resource type="Texture2D" uid="uid://ciklekvdp5hak" path="res://assets/sprites/the_rabbit/the_rabbit_left_arm.png" id="2_vpgxp"]
+[ext_resource type="AudioStream" uid="uid://hp7wuy3elrv2" path="res://assets/audio/sfx/381591__dorianmastin__snd_impactheavywall04.wav" id="3_cs4hr"]
 [ext_resource type="Texture2D" uid="uid://deairpal3cmlr" path="res://assets/sprites/the_rabbit/the_rabbit_left_thumb.png" id="3_kmeeb"]
 [ext_resource type="Texture2D" uid="uid://bsdf5iwmcegpx" path="res://assets/sprites/the_rabbit/the_rabbit_left_palm.png" id="4_cs4hr"]
 [ext_resource type="Texture2D" uid="uid://bjlpf6bxe6kb1" path="res://assets/sprites/the_rabbit/the_rabbit_wand_stick.PNG" id="5_nc5n7"]
@@ -34,7 +36,7 @@
 [ext_resource type="Texture2D" uid="uid://c1v0nvxbrf6c" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_fill.png" id="32_xscfi"]
 [ext_resource type="Texture2D" uid="uid://defnrkt223vrw" path="res://assets/sprites/the_rabbit/the_rabbit_left_eye_fill.png" id="33_d56hm"]
 [ext_resource type="Texture2D" uid="uid://dpf1mwji6h4d" path="res://assets/sprites/the_rabbit/the_rabbit_nose.png" id="34_58itp"]
-[ext_resource type="Texture2D" uid="uid://ct11t7mhbuf40" path="res://assets/sprites/the_rabbit/the_rabbit_nose_wrinkle.png" id="35_oa7gp"]
+[ext_resource type="Texture2D" uid="uid://c6edx6vdhm54e" path="res://assets/sprites/the_rabbit/the_rabbit_nose_wrinkle.png" id="35_oa7gp"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_017ef"]
 animation = &"rabbit_eyes_rolling"
@@ -754,6 +756,36 @@ tracks/6/keys = {
 "update": 0,
 "values": [0.06733266, 0.15, 0.067, 0.18, 0.067]
 }
+tracks/7/type = "audio"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("AudioStreamPlayer")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("2_kmeeb")
+}],
+"times": PackedFloat32Array(0.2)
+}
+tracks/7/use_blend = true
+tracks/8/type = "audio"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("AudioStreamPlayer")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("3_cs4hr")
+}],
+"times": PackedFloat32Array(0.55)
+}
+tracks/8/use_blend = true
 
 [sub_resource type="Animation" id="Animation_ivmbw"]
 resource_name = "rabbit_nose_poking"
@@ -1124,10 +1156,12 @@ libraries = {
 &"": SubResource("AnimationLibrary_8y6ih")
 }
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = -10.0
+
 [node name="TheRabbitLeftArm" type="Sprite2D" parent="."]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(19.5, -307.5)
-rotation = 0.06948817
 texture = ExtResource("2_vpgxp")
 offset = Vector2(441.5, 72.5)
 region_enabled = true
@@ -1251,7 +1285,7 @@ region_rect = Rect2(1131, 687, 913, 1073)
 [node name="TheRabbitLeftEar" type="Sprite2D" parent="."]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(19.5, -307.5)
-rotation = 6.2752824
+rotation = 0.031002952
 texture = ExtResource("19_hv4t5")
 offset = Vector2(300, -903)
 region_enabled = true
@@ -1275,7 +1309,7 @@ region_rect = Rect2(900, 652, 911, 705)
 [node name="TheRabbitRightEar" type="Sprite2D" parent="."]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(19.5, -307.5)
-rotation = 0.0234024
+rotation = 0.031703457
 texture = ExtResource("22_8867w")
 offset = Vector2(-685.5, -975)
 region_enabled = true
@@ -1298,7 +1332,7 @@ region_rect = Rect2(540, 786, 802, 778)
 [node name="TheRabbitMustacheLeft" type="Sprite2D" parent="."]
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
 position = Vector2(19.5, -307.5)
-rotation = 6.2304826
+rotation = -0.08134746
 texture = ExtResource("25_qhr86")
 offset = Vector2(250.5, -73)
 region_enabled = true
@@ -1307,7 +1341,7 @@ region_rect = Rect2(1245, 1347, 936, 535)
 [node name="TheRabbitMustacheRight" type="Sprite2D" parent="."]
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
 position = Vector2(19.5, -307.5)
-rotation = 0.015062489
+rotation = 0.06733266
 texture = ExtResource("26_wr5f3")
 offset = Vector2(-604, -121.5)
 region_enabled = true
