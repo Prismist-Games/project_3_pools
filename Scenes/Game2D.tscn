@@ -1451,6 +1451,8 @@ theme_override_font_sizes/normal_font_size = 125
 bbcode_enabled = true
 text = "asdofiasdflahjksd;lfj la;sdkfjlasdkjflkg lkfdgjdfklgd gdfjg klg dflgj dfg lkdfgj ldfkgj lkdf dflk jsdl jsdfl sdj fjweorjw woe rjeoir jweor  ioj weor oiwj e"
 scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
 visible_characters_behavior = 1
 
 [node name="Cancel" type="Node2D" parent="The Rabbit/QuestSystem"]
@@ -1485,6 +1487,8 @@ theme_override_font_sizes/normal_font_size = 85
 bbcode_enabled = true
 text = "No thanks."
 scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Popup" type="NinePatchRect" parent="The Rabbit/QuestSystem"]
 z_index = 10
