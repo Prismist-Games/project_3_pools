@@ -27,7 +27,7 @@ RARITY_UNKNOWN,Unknown,未知
 # =====================================================================
 # Item Names (物品名称) - Keys must match resource file names exactly
 # =====================================================================
-TRIANGLE_CONE,Triangle Cone,三角锥
+TRIANGLE_CONE,Triangle Cone,锥桶
 TRIANGLE_FLASK,Triangle Flask,锥形瓶
 TRIANGLE_HAT,Triangle Hat,派对帽
 TRIANGLE_PERFUME,Triangle Perfume,香水瓶
@@ -41,7 +41,7 @@ RECTANGLE_NOTEBOOK,Rectangle Notebook,笔记本
 
 CIRCLE_BALLOON,Circle Balloon,气球
 CIRCLE_BASKETBALL,Circle Basketball,篮球
-CIRCLE_BUTTON,Circle Button,按钮
+CIRCLE_BUTTON,Circle Button,纽扣
 CIRCLE_COMPASS,Circle Compass,指南针
 CIRCLE_GLOBE,Circle Globe,地球仪
 

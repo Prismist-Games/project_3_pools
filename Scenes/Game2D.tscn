@@ -1,4 +1,4 @@
-[gd_scene load_steps=126 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=127 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
@@ -527,63 +527,130 @@ _data = {
 
 [sub_resource type="Animation" id="Animation_6kw3k"]
 length = 0.001
-tracks/0/type = "value"
+tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:y")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(4029, -161)]
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-161, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
 }
-tracks/1/type = "value"
+tracks/1/type = "bezier"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("DLC Panel:position")
+tracks/1/path = NodePath("DLC Panel:position:x")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-5472, -18)]
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-5472, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(4029, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DLC Panel:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-18, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
 }
 
 [sub_resource type="Animation" id="Animation_p2bqf"]
 resource_name = "era_3_begin"
 length = 2.5
-tracks/0/type = "value"
+tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:y")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.2666667),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(4029, -161), Vector2(4029, 3230)]
+"handle_modes": PackedInt32Array(2, 2),
+"points": PackedFloat32Array(-161, -0.2499908, -107.338844, 0.2, 85.874245, 3236, -0.18333328, -8.690674, 0, 0),
+"times": PackedFloat32Array(0, 1.25)
 }
-tracks/1/type = "value"
+tracks/1/type = "bezier"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("DLC Panel:position")
+tracks/1/path = NodePath("DLC Panel:position:x")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(1.2666667, 2.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(-5472, -18), Vector2(313, -18)]
+"handle_modes": PackedInt32Array(2, 2),
+"points": PackedFloat32Array(-5472, -0.25, 0, 0.24999999, 0, 317, -0.23333335, -102.43846, 0, 0),
+"times": PackedFloat32Array(1.25, 2.5)
+}
+
+[sub_resource type="Animation" id="Animation_u4yck"]
+resource_name = "era_3_end"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(4029, -0.25, 0, 0.25, 0, 4029, -0.041666668, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(3236, -0.25, 0, 0.25, 0, 3875, -0.041666668, -106.5, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DLC Panel:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(317, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DLC Panel:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-18, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_u4yck"]
 _data = {
 &"RESET": SubResource("Animation_6kw3k"),
-&"era_3_begin": SubResource("Animation_p2bqf")
+&"era_3_begin": SubResource("Animation_p2bqf"),
+&"era_3_end": SubResource("Animation_u4yck")
 }
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jqdmi"]
