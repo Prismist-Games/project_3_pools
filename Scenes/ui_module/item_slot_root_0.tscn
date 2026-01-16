@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://cr0uv8jj87n1f"]
+[gd_scene load_steps=27 format=3 uid="uid://1aipywo3jhy1"]
 
 [ext_resource type="Script" uid="uid://exqnykh1n5lj" path="res://scripts/ui/components/item_slot_ui.gd" id="1_ixbl1"]
 [ext_resource type="Texture2D" uid="uid://caieb4p7g0f64" path="res://assets/sprites/item_slots/基地-4.png" id="2_kitn1"]
@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cglvasc20q3mu" path="res://assets/sprites/item_slots/基地-2.png" id="5_gnepb"]
 [ext_resource type="Texture2D" uid="uid://coaai2i4vi1sh" path="res://assets/sprites/item_slots/基地-3.png" id="6_idsbx"]
 [ext_resource type="Texture2D" uid="uid://bb0jex82xogr2" path="res://assets/sprites/item_slots/基地-8.png" id="7_731lk"]
-[ext_resource type="Shader" uid="uid://bekyeolq5u2hf" path="res://assets/shaders/silhouette.gdshader" id="8_731lk"]
+[ext_resource type="Shader" path="res://assets/shaders/silhouette.gdshader" id="8_731lk"]
 [ext_resource type="Texture2D" uid="uid://nju4di4bai4r" path="res://assets/sprites/icons/items/item_shape_centered.png" id="9_731lk"]
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="9_nc6kv"]
 [ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="10_y5mjh"]

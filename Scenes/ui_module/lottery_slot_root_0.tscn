@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://basts7bbr2vav"]
+[gd_scene load_steps=43 format=3 uid="uid://basts7bbr2vav"]
 
 [ext_resource type="Script" uid="uid://c008hefncbbkm" path="res://scripts/ui/components/lottery_slot_ui.gd" id="1_1b0mf"]
 [ext_resource type="Texture2D" uid="uid://cpcef3r3dbaxq" path="res://assets/sprites/lottery_slots/基地-7.png" id="2_gntc1"]
@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="9_arr72"]
 [ext_resource type="Texture2D" uid="uid://b4cuujipxrcyu" path="res://assets/sprites/lottery_slots/lottery_slot_lid_fill.png" id="10_4aaut"]
 [ext_resource type="Texture2D" uid="uid://bclpcjghycqdb" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="10_gntc1"]
-[ext_resource type="Shader" uid="uid://bekyeolq5u2hf" path="res://assets/shaders/silhouette.gdshader" id="10_yj02r"]
+[ext_resource type="Shader" path="res://assets/shaders/silhouette.gdshader" id="10_yj02r"]
 [ext_resource type="Texture2D" uid="uid://bv1rbyc0706kq" path="res://assets/sprites/icons/items/items_icon_centered.png" id="11_o6rv1"]
 [ext_resource type="Texture2D" uid="uid://u8vv873f380j" path="res://assets/sprites/lottery_slots/lottery_slot_lid_outline.png" id="12_p4alg"]
 [ext_resource type="Texture2D" uid="uid://fnqmsybn8c5r" path="res://assets/sprites/lottery_slots/基地-6.png" id="13_r08pi"]
@@ -47,7 +47,215 @@ region = Rect2(1000, 2000, 500, 500)
 atlas = ExtResource("8_arr72")
 region = Rect2(1500, 1500, 500, 500)
 
+[sub_resource type="Shader" id="Shader_rqxoj"]
+code = "shader_type canvas_item;
+
+uniform float scanline_count : hint_range(0, 1800) = 50.0;
+uniform float scanline_alpha : hint_range(0, 1) = 0.5;
+uniform float scanline_speed : hint_range(-10.0, 10.0) = 1.0;  // New: Speed of scanline movement
+
+uniform float vignette_intensity : hint_range(0, 5) = 0.4;
+uniform float screen_curvature : hint_range(0, 0.1) = 0.05;
+
+uniform float jitter_intensity : hint_range(0, 0.1) = 0.0; // New: Jitter amount
+uniform float noise_intensity : hint_range(0, 1) = 0.0;     // New: Static noise amount
+
+// Helper function for pseudo-random numbers
+float random(vec2 uv) {
+    return fract(sin(dot(uv.xy, vec2(12.9898,78.233))) * 43758.5453123);
+}
+
+void fragment() {
+	vec2 uv = UV;
+	
+	// 1. Screen Curvature / Warp
+	// Distort UVs from center
+	vec2 center = vec2(0.5, 0.5);
+	vec2 offset = uv - center;
+	float dist_sq = dot(offset, offset);
+	// Basic barrel distortion
+	vec2 warped_uv = uv + offset * (dist_sq * screen_curvature);
+	
+	// If warped UV is outside [0,1], discard or mask (optional, but for overlay we might just want to let it vignette)
+	
+	// 2. Jitter
+	// Offset warped_uv slightly based on time
+	float time_step = floor(TIME * 60.0); // Jitter at 60fps intervals
+	vec2 jitter_offset = vec2(
+		random(vec2(time_step, 1.0)) - 0.5,
+		random(vec2(time_step, 2.0)) - 0.5
+	) * jitter_intensity;
+	
+	// Apply jitter to the texture look-up UVs (if we were warping the underlying texture)
+	// But since we are an OVERLAY, we aren't distorting the underlying texture directly unless we use SCREEN_TEXTURE.
+	// However, this shader is applied to a ColorRect on TOP of content.
+	// Standard approach for overlay is to just draw effects over the top.
+	// IF we want to distort the underlying text, we would need to use a BackBufferCopy or Screen reading shader.
+	// Given the instructions (\"add visual effects... to these screens\"), and previous setup involving ColorRect overlay:
+	// Let's stick to generating effects *on top* that simulate imperfections, 
+	// rather than warping the actual game text (which is safer for readability).
+	// BUT, \"Curvature\" usually implies geometric distortion.
+	// Since we are just a ColorRect overlay, we can use the curvature to curve the SCANLINES and VIGNETTE.
+	
+	// Use warped_uv for generating scanlines/vignette to match the curved look
+	
+	// 3. Scanlines with Roll
+	// Use warped_uv.y + TIME for movement
+	float scanline = sin((warped_uv.y + TIME * scanline_speed * 0.01) * scanline_count * 3.14159 * 2.0);
+	scanline = (scanline + 1.0) * 0.5;
+	
+	// 4. White Noise
+	float noise_val = random(warped_uv + vec2(TIME, TIME));
+	
+	// 5. Vignette (using warped coords)
+	float vig_dist = length(warped_uv - center);
+	float vig = smoothstep(0.4, 0.4 + 0.3, vig_dist) * vignette_intensity;
+
+	// Compose Color
+	// Start with black
+	vec3 dark_color = vec3(0.0);
+	
+	// Scanlines darken the screen
+	float sl_alpha = scanline * scanline_alpha;
+	
+	// Jitter effect on overlay: random flashes or horizontal offsets?
+	// Let's do a horizontal \"tearing\" scanline occasionall?
+	// Or just keep it simple: Jitter shifts the scanlines slightly.
+	
+	// Update alpha
+	float final_alpha = sl_alpha + vig;
+	
+	// Add noise (whitening)
+	vec3 noise_color = vec3(noise_val);
+	// Noise adds to color, doesn't just alpha blend black
+	
+	// Output
+	// We mix black overlay (scanlines/vignette) with white noise.
+	// This is an overlay, so COLOR.a determines how much we darken/lighten.
+	// Darkening: (0,0,0, alpha)
+	// Lightening: (1,1,1, alpha)
+	// We want mostly darkening, but noise adds light.
+	
+	COLOR.rgb = noise_color * noise_intensity;
+	COLOR.a = clamp(final_alpha + (noise_val * noise_intensity * 0.1), 0.0, 1.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d80ls"]
+shader = SubResource("Shader_rqxoj")
+shader_parameter/scanline_count = 10.000000475
+shader_parameter/scanline_alpha = 0.15
+shader_parameter/scanline_speed = 10.0
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/screen_curvature = 0.05
+shader_parameter/jitter_intensity = 0.002
+shader_parameter/noise_intensity = 0.05
+
 [sub_resource type="Theme" id="Theme_uwqtw"]
+
+[sub_resource type="Shader" id="Shader_d80ls"]
+code = "shader_type canvas_item;
+
+uniform float scanline_count : hint_range(0, 1800) = 50.0;
+uniform float scanline_alpha : hint_range(0, 1) = 0.5;
+uniform float scanline_speed : hint_range(-10.0, 10.0) = 1.0;  // New: Speed of scanline movement
+
+uniform float vignette_intensity : hint_range(0, 5) = 0.4;
+uniform float screen_curvature : hint_range(0, 0.1) = 0.05;
+
+uniform float jitter_intensity : hint_range(0, 0.1) = 0.0; // New: Jitter amount
+uniform float noise_intensity : hint_range(0, 1) = 0.0;     // New: Static noise amount
+
+// Helper function for pseudo-random numbers
+float random(vec2 uv) {
+    return fract(sin(dot(uv.xy, vec2(12.9898,78.233))) * 43758.5453123);
+}
+
+void fragment() {
+	vec2 uv = UV;
+	
+	// 1. Screen Curvature / Warp
+	// Distort UVs from center
+	vec2 center = vec2(0.5, 0.5);
+	vec2 offset = uv - center;
+	float dist_sq = dot(offset, offset);
+	// Basic barrel distortion
+	vec2 warped_uv = uv + offset * (dist_sq * screen_curvature);
+	
+	// If warped UV is outside [0,1], discard or mask (optional, but for overlay we might just want to let it vignette)
+	
+	// 2. Jitter
+	// Offset warped_uv slightly based on time
+	float time_step = floor(TIME * 60.0); // Jitter at 60fps intervals
+	vec2 jitter_offset = vec2(
+		random(vec2(time_step, 1.0)) - 0.5,
+		random(vec2(time_step, 2.0)) - 0.5
+	) * jitter_intensity;
+	
+	// Apply jitter to the texture look-up UVs (if we were warping the underlying texture)
+	// But since we are an OVERLAY, we aren't distorting the underlying texture directly unless we use SCREEN_TEXTURE.
+	// However, this shader is applied to a ColorRect on TOP of content.
+	// Standard approach for overlay is to just draw effects over the top.
+	// IF we want to distort the underlying text, we would need to use a BackBufferCopy or Screen reading shader.
+	// Given the instructions (\"add visual effects... to these screens\"), and previous setup involving ColorRect overlay:
+	// Let's stick to generating effects *on top* that simulate imperfections, 
+	// rather than warping the actual game text (which is safer for readability).
+	// BUT, \"Curvature\" usually implies geometric distortion.
+	// Since we are just a ColorRect overlay, we can use the curvature to curve the SCANLINES and VIGNETTE.
+	
+	// Use warped_uv for generating scanlines/vignette to match the curved look
+	
+	// 3. Scanlines with Roll
+	// Use warped_uv.y + TIME for movement
+	float scanline = sin((warped_uv.y + TIME * scanline_speed * 0.01) * scanline_count * 3.14159 * 2.0);
+	scanline = (scanline + 1.0) * 0.5;
+	
+	// 4. White Noise
+	float noise_val = random(warped_uv + vec2(TIME, TIME));
+	
+	// 5. Vignette (using warped coords)
+	float vig_dist = length(warped_uv - center);
+	float vig = smoothstep(0.4, 0.4 + 0.3, vig_dist) * vignette_intensity;
+
+	// Compose Color
+	// Start with black
+	vec3 dark_color = vec3(0.0);
+	
+	// Scanlines darken the screen
+	float sl_alpha = scanline * scanline_alpha;
+	
+	// Jitter effect on overlay: random flashes or horizontal offsets?
+	// Let's do a horizontal \"tearing\" scanline occasionall?
+	// Or just keep it simple: Jitter shifts the scanlines slightly.
+	
+	// Update alpha
+	float final_alpha = sl_alpha + vig;
+	
+	// Add noise (whitening)
+	vec3 noise_color = vec3(noise_val);
+	// Noise adds to color, doesn't just alpha blend black
+	
+	// Output
+	// We mix black overlay (scanlines/vignette) with white noise.
+	// This is an overlay, so COLOR.a determines how much we darken/lighten.
+	// Darkening: (0,0,0, alpha)
+	// Lightening: (1,1,1, alpha)
+	// We want mostly darkening, but noise adds light.
+	
+	COLOR.rgb = noise_color * noise_intensity;
+	COLOR.a = clamp(final_alpha + (noise_val * noise_intensity * 0.1), 0.0, 1.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7jhwx"]
+shader = SubResource("Shader_d80ls")
+shader_parameter/scanline_count = 100.00000475
+shader_parameter/scanline_alpha = 0.15
+shader_parameter/scanline_speed = 4.000000665
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/screen_curvature = 0.05
+shader_parameter/jitter_intensity = 0.002
+shader_parameter/noise_intensity = 0.05
 
 [sub_resource type="Animation" id="Animation_jptrp"]
 length = 0.001
@@ -519,7 +727,7 @@ position = Vector2(-234, -405.25)
 texture = ExtResource("20_ihuts")
 
 [node name="ScreenEffectOverlay" type="ColorRect" parent="Lottery Slot_top_screen/Lottery Slot_top_screen_fill"]
-material = ExtResource("23_crt00")
+material = SubResource("ShaderMaterial_d80ls")
 offset_left = -329.0
 offset_top = -507.0
 offset_right = 320.0
@@ -568,7 +776,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ScreenEffectOverlay" type="ColorRect" parent="Lottery Slot_description_screen/Lottery Slot_description_screen_fill"]
-material = ExtResource("23_crt00")
+material = SubResource("ShaderMaterial_7jhwx")
 offset_left = -514.0
 offset_top = -315.75
 offset_right = 497.0
