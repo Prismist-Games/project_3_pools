@@ -1475,9 +1475,9 @@ vertical_alignment = 1
 
 [node name="Popup" type="NinePatchRect" parent="The Rabbit/QuestSystem"]
 z_index = 10
-offset_left = -6033.0
+offset_left = -5745.7153
 offset_top = -757.3812
-offset_right = -1497.0
+offset_right = -1209.7153
 offset_bottom = 152.61877
 texture = ExtResource("103_otpb1")
 patch_margin_left = 100
