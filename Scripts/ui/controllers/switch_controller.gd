@@ -190,6 +190,7 @@ func _tween_switch(switch_node: Node2D, target_y: float) -> Tween:
 			handle.call("_update_background_positions")
 	, start_y, target_y, 0.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	
+	AudioManager.play_sfx(&"switch_toggle")
 	return tween
 
 # --- Input ---
@@ -203,6 +204,9 @@ func _on_submit_switch_input(event: InputEvent) -> void:
 		
 		_refresh_switch_visual(submit_switch, _submit_is_on, _is_submit_hovered, _is_submit_pressed)
 		
+		if event.pressed:
+			AudioManager.play_sfx(&"ui_click")
+			
 		if not event.pressed:
 			if not game_ui or not game_ui.state_machine: return
 			
@@ -231,6 +235,9 @@ func _on_recycle_switch_input(event: InputEvent) -> void:
 			_is_recycle_pressed = false
 		
 		_refresh_switch_visual(recycle_switch, _recycle_is_on, _is_recycle_hovered, _is_recycle_pressed)
+
+		if event.pressed:
+			AudioManager.play_sfx(&"ui_click")
 
 		if not event.pressed:
 			if not game_ui or not game_ui.state_machine: return

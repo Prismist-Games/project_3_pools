@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="SoundBankEntry" load_steps=2 format=3 uid="uid://bira48cjhkpkv"]
+
+[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_mybj3"]
+
+[resource]
+script = ExtResource("1_mybj3")
