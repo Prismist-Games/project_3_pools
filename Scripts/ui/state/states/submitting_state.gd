@@ -96,19 +96,40 @@ func submit_order() -> void:
 		controller.unlock_ui("submit")
 		return
 	
-	# 2. 播放所有满足订单的 lid_close 动画
-	var close_tasks: Array = []
+	# 2. 播放所有满足订单 Item Slots 和 Quest Slots 的 lid_close 动画
+	var max_close_duration: float = 0.0
+	
+	# 收集涉及的 Inventory Item Slots
+	var submitting_item_slots: Array[Control] = []
+	if controller.inventory_controller:
+		for idx in indices:
+			var slot = controller.inventory_controller.get_slot_node(idx)
+			if slot:
+				submitting_item_slots.append(slot)
+	
+	# 播放 Item Slot Close 动画
+	for slot in submitting_item_slots:
+		if slot.has_method("play_submit_close"):
+			var dur = slot.play_submit_close()
+			if dur > max_close_duration:
+				max_close_duration = dur
+	
+	# 播放 Quest Slot Close 动画
 	for slot in satisfying_slots:
 		if slot.has_node("AnimationPlayer"):
 			var anim_player = slot.get_node("AnimationPlayer")
 			if anim_player.has_animation("lid_close"):
 				anim_player.play("lid_close")
-				close_tasks.append(anim_player.animation_finished)
+				var dur = anim_player.get_animation("lid_close").length
+				if dur > max_close_duration:
+					max_close_duration = dur
 	
-	# 等待所有关闭动画完成 (Parallel wait simulation)
-	if not close_tasks.is_empty():
-		for task in close_tasks:
-			await task
+	# 等待所有关闭动画完成 (使用 Timer 避免信号丢失导致卡死)
+	if max_close_duration > 0.0:
+		await controller.get_tree().create_timer(max_close_duration).timeout
+	else:
+		# 保底 wait
+		await controller.get_tree().process_frame
 	
 	# 3. 执行提交
 	var success = OrderSystem.submit_order(-1, indices)
@@ -118,11 +139,28 @@ func submit_order() -> void:
 		# 延迟一帧确保数据已经同步到 UI 节点上
 		await controller.get_tree().process_frame
 		
+		var max_open_duration: float = 0.0
+		
+		# 播放 Item Slot Open 动画 (此时物品已被移除，显示空槽)
+		for slot in submitting_item_slots:
+			if is_instance_valid(slot) and slot.has_method("play_submit_open"):
+				var dur = slot.play_submit_open()
+				if dur > max_open_duration:
+					max_open_duration = dur
+		
+		# 播放 Quest Slot Open 动画
 		for slot in satisfying_slots:
 			if is_instance_valid(slot) and slot.has_node("AnimationPlayer"):
 				var anim_player = slot.get_node("AnimationPlayer")
 				if anim_player.has_animation("lid_open"):
 					anim_player.play("lid_open")
+					var dur = anim_player.get_animation("lid_open").length
+					if dur > max_open_duration:
+						max_open_duration = dur
+		
+		# 等待 Item Slot 开盖动画完成
+		if max_open_duration > 0.0:
+			await controller.get_tree().create_timer(max_open_duration).timeout
 		
 		# 检查是否已经发生了自动状态转换（如主线触发的技能选择）
 		if machine.get_current_state_name() == &"Submitting":

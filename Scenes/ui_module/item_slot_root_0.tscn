@@ -36,25 +36,26 @@ length = 0.001
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_lid:position:y")
+tracks/0/path = NodePath("@SubViewportContainer@10522/@SubViewport@10523/Item Slot_root_0/Item Slot_mask/Item Slot_lid:position:y")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"handle_modes": PackedInt32Array(2),
-"points": PackedFloat32Array(-337.5, -0.25, 0, 0.25, 0),
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-341.5, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
 
 [sub_resource type="Animation" id="Animation_u4yck"]
 resource_name = "item_lid_close"
+length = 0.5
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_lid:position:y")
+tracks/0/path = NodePath("@SubViewportContainer@10522/@SubViewport@10523/Item Slot_root_0/Item Slot_mask/Item Slot_lid:position:y")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"handle_modes": PackedInt32Array(3, 0),
+"handle_modes": PackedInt32Array(0, 0),
 "points": PackedFloat32Array(-341.5, -0.4, -0.088775635, 0.4, 0.088775635, -39.5, -0.43333334, 21.216349, 0.35, -17.843029),
 "times": PackedFloat32Array(0, 0.5)
 }
@@ -65,11 +66,11 @@ length = 0.5
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("The Machine/Item Slots Grid/Item Slot_root_0/Item Slot_mask/Item Slot_lid:position:y")
+tracks/0/path = NodePath("@SubViewportContainer@10522/@SubViewport@10523/Item Slot_root_0/Item Slot_mask/Item Slot_lid:position:y")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"handle_modes": PackedInt32Array(2, 2),
+"handle_modes": PackedInt32Array(0, 0),
 "points": PackedFloat32Array(-39.5, -0.24998589, 12.744301, 0.35, -17.843029, -341.5, -0.38333333, 7.19046, 0, 0),
 "times": PackedFloat32Array(0, 0.5)
 }
@@ -201,7 +202,7 @@ texture = ExtResource("14_rfv0q")
 
 [node name="Item Slot_lid" type="Sprite2D" parent="Item Slot_mask"]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(0, -337.5)
+position = Vector2(0, -341.5)
 texture = ExtResource("12_80j2g")
 
 [node name="Slot_led" type="Sprite2D" parent="Item Slot_mask/Item Slot_lid"]
