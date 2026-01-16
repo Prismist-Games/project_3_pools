@@ -143,7 +143,8 @@ enum UIMode {
 	NORMAL, ## 整理模式
 	SUBMIT, ## 提交模式
 	RECYCLE, ## 回收模式
-	REPLACE ## 以旧换新模式
+	REPLACE, ## 以旧换新模式
+	LOCKED ## 锁定模式 (精准选择/有的放矢)
 }
 
 ## UX 规范颜色 (针对白色背景优化)

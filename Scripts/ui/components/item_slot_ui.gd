@@ -147,6 +147,12 @@ func update_display(item: ItemInstance) -> void:
 		affix_display.visible = false
 		led_display.modulate = Color(0.5, 0.5, 0.5, 0.5) # Grayed out
 		
+		# 重置绝育效果
+		if icon_display and icon_display.material:
+			var mat = icon_display.material as ShaderMaterial
+			if mat:
+				mat.set_shader_parameter("saturation", 1.0)
+		
 		# 背景颜色渐变到空槽颜色
 		if backgrounds:
 			_animate_background_color(Constants.COLOR_BG_SLOT_EMPTY)
@@ -167,8 +173,12 @@ func update_display(item: ItemInstance) -> void:
 	if item_shadow:
 		item_shadow.visible = not _is_selected # 选中时不显示阴影
 	
-	# Affix display logic based on item properties
-	affix_display.visible = item.sterile
+	# 绝育的不再使用 item_affix 作为显示，而是使用 shader
+	affix_display.visible = false
+	if icon_display and icon_display.material:
+		var mat = icon_display.material as ShaderMaterial
+		if mat:
+			mat.set_shader_parameter("saturation", 0.0 if item.sterile else 1.0)
 	
 	# ERA_4: 过期物品视觉标识
 	if item.is_expired:
@@ -280,19 +290,40 @@ func _animate_selection(active: bool) -> void:
 			_selection_tween.kill()
 			_selection_tween = null
 		
-		# 复位图标
+		# 复位图标 - 平滑播放恢复动画
 		if icon_display and icon_display.top_level:
-			# 立即设置位置和缩放（无动画），避免 top_level 切换时抽搐
-			icon_display.scale = _icon_original_scale
+			# 创建恢复动画 (Tween)
+			var closing_tween = create_tween().set_parallel(true)
+			closing_tween.tween_property(icon_display, "scale", _icon_original_scale, 0.2) \
+				.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 			
-			# 关闭 top_level 并恢复局部位置
-			icon_display.top_level = false
-			icon_display.z_index = 0
-			icon_display.position = _icon_original_position
-		
-		# 恢复阴影
-		if item_shadow:
-			item_shadow.visible = icon_display.texture != null
+			# 计算目标全局位置：回到其原本在 Slot 中的位置
+			# 使用 get_parent().global_position 是最健壮的，因为 top_level 不改变 parent 引用
+			if icon_display.get_parent():
+				var target_global_pos = icon_display.get_parent().to_global(_icon_original_position)
+				closing_tween.tween_property(icon_display, "global_position", target_global_pos, 0.2) \
+					.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+			
+			closing_tween.set_parallel(false)
+			closing_tween.tween_callback(func():
+				# Callback 中再次检查，防止在动画过程中 slot 状态发生改变
+				if is_instance_valid(icon_display) and not _is_selected:
+					icon_display.top_level = false
+					icon_display.z_index = 0
+					icon_display.position = _icon_original_position
+					icon_display.scale = _icon_original_scale
+					# 恢复阴影
+					if item_shadow:
+						item_shadow.visible = icon_display.texture != null
+			)
+		else:
+			# 后备方案：如果没有处于 top_level 状态，直接同步复位比例和位置
+			if icon_display:
+				icon_display.scale = _icon_original_scale
+				icon_display.position = _icon_original_position
+			# 恢复阴影
+			if item_shadow:
+				item_shadow.visible = icon_display.texture != null
 
 ## 更新 rarity 显示（选中时显示并旋转，非选中时隐藏）
 func _update_rarity_display() -> void:

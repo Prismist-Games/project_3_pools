@@ -373,16 +373,20 @@ func _update_ui_mode_display() -> void:
 	var mode = state_machine.get_ui_mode()
 	var has_pending = not InventorySystem.pending_items.is_empty()
 	
-	# 背包格锁定逻辑：UI 锁、有待定项、或者非正常模式均锁
-	var inventory_locked = is_ui_locked() or has_pending or mode != Constants.UIMode.NORMAL
+	# 背包格锁定逻辑：UI 锁、有待定项、或者非正常模式（但以旧换新模式除外）均锁
+	var inventory_locked = is_ui_locked() or has_pending
+	# 只有在非 NORMAL 且非 REPLACE 模式下才强制锁定背包
+	if mode != Constants.UIMode.NORMAL and mode != Constants.UIMode.REPLACE:
+		inventory_locked = true
+	
 	inventory_controller.set_slots_locked(inventory_locked)
 	
 	# 奖池锁定逻辑：UI 锁、有待定项、或者非正常模式均锁
 	var pool_locked = is_ui_locked() or has_pending or mode != Constants.UIMode.NORMAL
 	pool_controller.set_slots_locked(pool_locked)
 	
-	# 订单锁定逻辑：UI 锁即锁
-	order_controller.set_slots_locked(is_ui_locked())
+	# 订单锁定逻辑：UI 锁或非正常模式均锁
+	order_controller.set_slots_locked(is_ui_locked() or mode != Constants.UIMode.NORMAL)
 	
 	# 回收盖子展示逻辑：处于回收模式，或者有回收动画正在飞行中，或者正在执行回收锁
 	var recycle_active = (mode == Constants.UIMode.RECYCLE) or _ui_locks.has("recycle")
@@ -644,6 +648,8 @@ func _on_item_moved(source_idx: int, target_idx: int) -> void:
 			"item": item,
 			"start_pos": inventory_controller.get_slot_global_position(source_idx),
 			"end_pos": inventory_controller.get_slot_global_position(target_idx),
+			"start_scale": inventory_controller.get_slot_global_scale(source_idx),
+			"end_scale": inventory_controller.get_slot_global_scale(target_idx),
 			"source_slot_node": source_node,
 			"target_slot_node": target_node,
 			"is_merge": is_merge,
@@ -763,12 +769,20 @@ func _on_item_swapped(idx1: int, idx2: int) -> void:
 	if node2: node2.is_vfx_target = true
 	
 	if vfx_manager:
+		# idx1 是发起方（选中状态，Scale较大），idx2 是目标方（正常状态，Scale正常）
+		# 我们希望两个物品落地时都恢复到正常 Scale，所以使用 idx2 的 Scale 作为基准 end_scale
+		var normal_scale = inventory_controller.get_slot_global_scale(idx2)
+		
 		vfx_manager.enqueue({
 			"type": "swap",
 			"item1": item1,
 			"item2": item2,
 			"pos1": inventory_controller.get_slot_global_position(idx1),
 			"pos2": inventory_controller.get_slot_global_position(idx2),
+			"scale1": inventory_controller.get_slot_global_scale(idx1),
+			"scale2": normal_scale,
+			"end_scale1": normal_scale,
+			"end_scale2": normal_scale,
 			"slot1_node": node1,
 			"slot2_node": node2,
 			"idx1": idx1,

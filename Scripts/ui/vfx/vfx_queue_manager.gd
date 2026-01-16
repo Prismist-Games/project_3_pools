@@ -38,6 +38,8 @@ var vfx_layer: Node2D = null
 ## 引用到主控制器 (已移除，通过 task 传参)
 # var controller: Node = null
 
+var _silhouette_shader: Shader = preload("res://assets/shaders/silhouette.gdshader")
+
 ## 检查队列是否繁忙
 func is_busy() -> bool:
 	return _is_processing or not _queue.is_empty()
@@ -202,14 +204,14 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 	tween.set_parallel(true)
 	tween.tween_property(fly_sprite, "global_position", target_pos, 0.4) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(fly_sprite, "scale", target_scale, 0.4) \
+	tween.tween_property(fly_sprite, "global_scale", target_scale, 0.4) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	
 	# 同步 rarity 背景的动画
 	if rarity_sprite:
 		tween.tween_property(rarity_sprite, "global_position", target_pos, 0.4) \
 			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		tween.tween_property(rarity_sprite, "scale", target_scale, 0.4) \
+		tween.tween_property(rarity_sprite, "global_scale", target_scale, 0.4) \
 			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	
 	await tween.finished
@@ -280,14 +282,14 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 	tween.set_parallel(true)
 	tween.tween_property(fly_sprite, "global_position", target_pos, 0.3) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-	tween.tween_property(fly_sprite, "scale", target_scale, 0.3) \
+	tween.tween_property(fly_sprite, "global_scale", target_scale, 0.3) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	
 	# 同步 rarity 背景的动画
 	if rarity_sprite:
 		tween.tween_property(rarity_sprite, "global_position", target_pos, 0.3) \
 			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-		tween.tween_property(rarity_sprite, "scale", target_scale, 0.3) \
+		tween.tween_property(rarity_sprite, "global_scale", target_scale, 0.3) \
 			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	
 	await tween.finished
@@ -326,8 +328,8 @@ func _execute_generic_fly(task: Dictionary) -> void:
 	var item = task.get("item")
 	var start_pos: Vector2 = task.get("start_pos")
 	var end_pos: Vector2 = task.get("end_pos")
-	var start_scale: Vector2 = task.get("start_scale", Vector2(0.65, 0.65))
-	var end_scale: Vector2 = task.get("end_scale", Vector2(0.65, 0.65))
+	var start_scale: Vector2 = task.get("start_scale", Vector2.ONE)
+	var end_scale: Vector2 = task.get("end_scale", Vector2.ONE)
 	var duration: float = task.get("duration", 0.4)
 	
 	# From Context
@@ -347,12 +349,12 @@ func _execute_generic_fly(task: Dictionary) -> void:
 	var rarity_sprite = sprite.get_meta("rarity_sprite", null)
 	var tween = create_tween().set_parallel(true)
 	tween.tween_property(sprite, "global_position", end_pos, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(sprite, "scale", end_scale, duration)
+	tween.tween_property(sprite, "global_scale", end_scale, duration)
 	
 	# 同步 rarity 背景的动画
 	if rarity_sprite:
 		tween.tween_property(rarity_sprite, "global_position", end_pos, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		tween.tween_property(rarity_sprite, "scale", end_scale, duration)
+		tween.tween_property(rarity_sprite, "global_scale", end_scale, duration)
 	
 	await tween.finished
 	
@@ -378,7 +380,10 @@ func _execute_swap(task: Dictionary) -> void:
 	var pos1: Vector2 = task.get("pos1")
 	var pos2: Vector2 = task.get("pos2")
 	var duration: float = task.get("duration", 0.4)
-	var scale: Vector2 = task.get("scale", Vector2(0.65, 0.65))
+	
+	# 获取起始比例，支持独立比例或统一比例
+	var scale1: Vector2 = task.get("scale1", task.get("scale", Vector2(1.0, 1.0)))
+	var scale2: Vector2 = task.get("scale2", task.get("scale", Vector2(1.0, 1.0)))
 	
 	# From Context
 	var slot1 = task.get("slot1_node")
@@ -391,25 +396,36 @@ func _execute_swap(task: Dictionary) -> void:
 		slot2.is_vfx_target = true
 		slot2.hide_icon()
 	
-	var sprite1 = _create_fly_sprite(item1, pos1, scale)
-	var sprite2 = _create_fly_sprite(item2, pos2, scale)
+	var sprite1 = _create_fly_sprite(item1, pos1, scale1)
+	var sprite2 = _create_fly_sprite(item2, pos2, scale2)
 	
 	var rarity_sprite1 = sprite1.get_meta("rarity_sprite", null)
 	var rarity_sprite2 = sprite2.get_meta("rarity_sprite", null)
 	
 	var tween = create_tween().set_parallel(true)
+	# 交换位置
 	tween.tween_property(sprite1, "global_position", pos2, duration) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(sprite2, "global_position", pos1, duration) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	
+	# 交换比例 (恢复到正常比例，这里简单假设 landing scale 为 1.0 对应的基准)
+	# 如果有明确的 end_scale 也可以通过 task 传，但通常 Swap 是 Inventory 内操作，落地就是 1.0
+	var landing_scale1 = task.get("end_scale1", Vector2.ONE)
+	var landing_scale2 = task.get("end_scale2", Vector2.ONE)
+	
+	tween.tween_property(sprite1, "global_scale", landing_scale1, duration)
+	tween.tween_property(sprite2, "global_scale", landing_scale2, duration)
+	
 	# 同步 rarity 背景的动画
 	if rarity_sprite1:
 		tween.tween_property(rarity_sprite1, "global_position", pos2, duration) \
 			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+		tween.tween_property(rarity_sprite1, "global_scale", landing_scale1, duration)
 	if rarity_sprite2:
 		tween.tween_property(rarity_sprite2, "global_position", pos1, duration) \
 			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+		tween.tween_property(rarity_sprite2, "global_scale", landing_scale2, duration)
 	
 	await tween.finished
 	
@@ -447,8 +463,26 @@ func _create_fly_sprite(item, start_pos: Vector2, start_scale: Vector2, animate_
 	else:
 		sprite.texture = item.item_data.icon
 	sprite.global_position = start_pos
-	sprite.scale = start_scale
+	sprite.global_scale = start_scale
 	sprite.z_index = 100
+	
+	# 检查并应用绝育效果 (去色)
+	var is_sterile: bool = false
+	if item is ItemInstance:
+		is_sterile = item.sterile
+	elif item is Dictionary:
+		is_sterile = item.get("sterile", false)
+	elif "sterile" in item:
+		is_sterile = item.sterile
+		
+	if is_sterile:
+		var mat = ShaderMaterial.new()
+		mat.shader = _silhouette_shader
+		mat.set_shader_parameter("saturation", 0.0)
+		# 确保不启用剪影模式（只用去色逻辑）
+		mat.set_shader_parameter("is_enabled", false)
+		sprite.material = mat
+		
 	vfx_layer.add_child(sprite)
 	
 	# 创建 rarity 背景（在图标后面）
@@ -462,16 +496,17 @@ func _create_fly_sprite(item, start_pos: Vector2, start_scale: Vector2, animate_
 		
 		# 根据来源决定是否播放入场动画
 		if animate_rarity_entry:
-			rarity_sprite.scale = Vector2.ZERO # 初始 scale 为 0
+			rarity_sprite.scale = Vector2.ZERO # 初始 scale 为 0 (局部) -> 入场动画还是用局部控制方便? NO, global consistent.
+			rarity_sprite.global_scale = Vector2.ZERO
 		else:
-			rarity_sprite.scale = start_scale # 直接显示
+			rarity_sprite.global_scale = start_scale # 直接显示
 		
 		vfx_layer.add_child(rarity_sprite)
 		
 		# 如果需要入场动画，播放 scale 从 0 到 1 的动画
 		if animate_rarity_entry:
 			var scale_tween = create_tween()
-			scale_tween.tween_property(rarity_sprite, "scale", start_scale, 0.05) \
+			scale_tween.tween_property(rarity_sprite, "global_scale", start_scale, 0.05) \
 				.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		
 		# 开始旋转动画

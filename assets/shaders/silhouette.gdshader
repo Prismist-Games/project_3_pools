@@ -5,6 +5,9 @@ uniform vec4 silhouette_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
 // 是否开启剪影效果
 uniform bool is_enabled = false;
 
+// 饱和度
+uniform float saturation = 1.0;
+
 void fragment() {
     // 获取原始贴图颜色
     vec4 texture_color = texture(TEXTURE, UV);
@@ -17,6 +20,7 @@ void fragment() {
         COLOR = vec4(silhouette_color.rgb, alpha);
     } else {
         // 正常渲染
-        
+        COLOR.rgb = mix(vec3(dot(texture_color.rgb, vec3(0.299, 0.587, 0.114))), texture_color.rgb, saturation);
+        COLOR.a = texture_color.a;
     }
 }

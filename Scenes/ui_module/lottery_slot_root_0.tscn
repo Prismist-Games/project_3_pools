@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="9_arr72"]
 [ext_resource type="Texture2D" uid="uid://b4cuujipxrcyu" path="res://assets/sprites/lottery_slots/lottery_slot_lid_fill.png" id="10_4aaut"]
 [ext_resource type="Texture2D" uid="uid://bclpcjghycqdb" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="10_gntc1"]
-[ext_resource type="Shader" path="res://assets/shaders/silhouette.gdshader" id="10_yj02r"]
+[ext_resource type="Shader" uid="uid://bekyeolq5u2hf" path="res://assets/shaders/silhouette.gdshader" id="10_yj02r"]
 [ext_resource type="Texture2D" uid="uid://bv1rbyc0706kq" path="res://assets/sprites/icons/items/items_icon_centered.png" id="11_o6rv1"]
 [ext_resource type="Texture2D" uid="uid://u8vv873f380j" path="res://assets/sprites/lottery_slots/lottery_slot_lid_outline.png" id="12_p4alg"]
 [ext_resource type="Texture2D" uid="uid://fnqmsybn8c5r" path="res://assets/sprites/lottery_slots/基地-6.png" id="13_r08pi"]
@@ -472,11 +472,11 @@ texture = ExtResource("15_do7yb")
 
 [node name="Lottery Required Items Icon Grid" type="VBoxContainer" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill"]
 offset_left = 342.0
-offset_top = -234.0
+offset_top = -257.75
 offset_right = 484.0
-offset_bottom = 292.0
+offset_bottom = 292.25
 mouse_filter = 2
-theme_override_constants/separation = -46
+theme_override_constants/separation = -35
 
 [node name="Item Icon_0" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid"]
 layout_mode = 2
@@ -560,11 +560,11 @@ expand_mode = 3
 
 [node name="Lottery Required Items Icon Grid_psudo" type="VBoxContainer" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill"]
 offset_left = 187.0
-offset_top = -234.25
+offset_top = -258.0
 offset_right = 329.0
-offset_bottom = 291.75
+offset_bottom = 292.0
 mouse_filter = 2
-theme_override_constants/separation = -46
+theme_override_constants/separation = -35
 
 [node name="Item Icon_0" type="TextureRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill/Lottery Required Items Icon Grid_psudo"]
 layout_mode = 2

@@ -32,7 +32,10 @@ func enter(payload: Dictionary = {}) -> void:
 	_is_animating = false
 	
 	if controller:
-		controller.lock_ui("trade_in")
+		# controller.lock_ui("trade_in") - REMOVED: Managed by UIMode.REPLACE
+		if controller.has_method("unlock_ui"):
+			controller.unlock_ui("trade_in") # Force unlock just in case
+			
 		controller.last_clicked_pool_idx = pool_index
 		controller.pending_source_pool_idx = pool_index
 	
@@ -41,7 +44,8 @@ func enter(payload: Dictionary = {}) -> void:
 
 func exit() -> void:
 	if controller:
-		controller.unlock_ui("trade_in")
+		# controller.unlock_ui("trade_in") - REMOVED
+		pass
 	
 	pool_index = -1
 	on_trade_callback = Callable()
@@ -111,7 +115,9 @@ func _execute_trade_in_sequence(slot_index: int, item: ItemInstance) -> void:
 	var item_slot = controller.inventory_controller.get_slot_node(slot_index)
 	
 	if not lottery_slot or not item_slot:
+		push_error("[TradeInState] Error: missing nodes. PoolIdx: %s, ItemSlot: %s" % [pool_index, slot_index])
 		_is_animating = false
+		_is_selecting = false
 		return
 	
 	# 1. 物品从 item slot 飞入 lottery slot

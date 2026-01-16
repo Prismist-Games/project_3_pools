@@ -126,6 +126,10 @@ func _ready() -> void:
 	# 关键修复 2：将材质唯一化
 	if item_main and item_main.material:
 		item_main.material = item_main.material.duplicate()
+	if item_queue_1 and item_queue_1.material:
+		item_queue_1.material = item_queue_1.material.duplicate()
+	if item_queue_2 and item_queue_2.material:
+		item_queue_2.material = item_queue_2.material.duplicate()
 	
 	# 记录 Push-Away 节点的初始位置
 	_store_push_initial_positions()
@@ -403,6 +407,11 @@ func update_pending_display(pending_list: Array) -> void:
 		item_queue_2.visible = false
 		item_queue_2_shadow.visible = false
 		
+		# 重置绝育效果
+		for node in [item_main, item_queue_1, item_queue_2]:
+			if node.material:
+				(node.material as ShaderMaterial).set_shader_parameter("saturation", 1.0)
+		
 		# 隐藏所有角标
 		_hide_all_badges()
 		return
@@ -449,6 +458,12 @@ func update_queue_display(items: Array) -> void:
 			# 如果scale异常（接近0），才重置
 			if item_main.scale.length() < 0.1:
 				item_main.scale = _item_icon_original_scale
+		
+		# 设置绝育效果
+		if item_main.material:
+			var mat = item_main.material as ShaderMaterial
+			var is_sterile = top_item.sterile if top_item is ItemInstance else top_item.get("sterile", false)
+			mat.set_shader_parameter("saturation", 0.0 if is_sterile else 1.0)
 	else:
 		_top_item_id = &""
 		item_main.texture = null
@@ -464,6 +479,12 @@ func update_queue_display(items: Array) -> void:
 		item_queue_1.position = base_pos + queue_1_offset
 		item_queue_1.scale = Vector2(queue_1_scale, queue_1_scale)
 		item_queue_1.z_index = 0
+		
+		# 设置绝育效果
+		if item_queue_1.material:
+			var mat = item_queue_1.material as ShaderMaterial
+			var is_sterile = q1_item.sterile if q1_item is ItemInstance else q1_item.get("sterile", false)
+			mat.set_shader_parameter("saturation", 0.0 if is_sterile else 1.0)
 	else:
 		item_queue_1.texture = null
 		item_queue_1.visible = false
@@ -478,6 +499,12 @@ func update_queue_display(items: Array) -> void:
 		item_queue_2.position = base_pos + queue_2_offset
 		item_queue_2.scale = Vector2(queue_2_scale, queue_2_scale)
 		item_queue_2.z_index = 0
+		
+		# 设置绝育效果
+		if item_queue_2.material:
+			var mat = item_queue_2.material as ShaderMaterial
+			var is_sterile = q2_item.sterile if q2_item is ItemInstance else q2_item.get("sterile", false)
+			mat.set_shader_parameter("saturation", 0.0 if is_sterile else 1.0)
 	else:
 		item_queue_2.texture = null
 		item_queue_2.visible = false
@@ -490,12 +517,20 @@ func play_queue_advance_anim() -> void:
 	
 	var duration = 0.3
 	
-	# 捕获动画前的 texture 和状态（防止动画期间数据变化导致的竞态条件）
+	# 捕获动画前的状态 (Texture + Saturation)
 	var q1_texture = item_queue_1.texture
+	var q1_saturation = 1.0
+	if item_queue_1.material:
+		q1_saturation = (item_queue_1.material as ShaderMaterial).get_shader_parameter("saturation")
+		
 	var q2_texture = item_queue_2.texture if item_queue_2.visible else null
+	var q2_saturation = 1.0
+	if item_queue_2.visible and item_queue_2.material:
+		q2_saturation = (item_queue_2.material as ShaderMaterial).get_shader_parameter("saturation")
+	
 	var had_q2 = item_queue_2.visible
 	
-	# 创建 Tween（此时已确保至少有 queue1 的动画）
+	# 创建 Tween
 	var tw = create_tween().set_parallel(true)
 	
 	var q1_pos = item_queue_1.position
@@ -525,10 +560,12 @@ func play_queue_advance_anim() -> void:
 	item_queue_2.position = _initial_transforms[item_queue_2]["pos"]
 	item_queue_2.scale = _initial_transforms[item_queue_2]["scale"]
 	
-	# 更新 texture（基于动画开始时捕获的状态）
+	# 更新 texture 和 saturation（基于动画开始时捕获的状态）
 	item_main.texture = q1_texture
 	item_main.visible = q1_texture != null
 	item_main_shadow.visible = q1_texture != null
+	if item_main.material:
+		(item_main.material as ShaderMaterial).set_shader_parameter("saturation", q1_saturation)
 	
 	# 【优化】前进完成后，如果还有物品，请求刷新角标
 	if q1_texture != null:
@@ -541,15 +578,21 @@ func play_queue_advance_anim() -> void:
 		item_queue_1.texture = q2_texture
 		item_queue_1.visible = q2_texture != null
 		item_queue_1_shadow.visible = q2_texture != null
+		if item_queue_1.material:
+			(item_queue_1.material as ShaderMaterial).set_shader_parameter("saturation", q2_saturation)
 	else:
 		item_queue_1.texture = null
 		item_queue_1.visible = false
 		item_queue_1_shadow.visible = false
+		if item_queue_1.material:
+			(item_queue_1.material as ShaderMaterial).set_shader_parameter("saturation", 1.0)
 	
 	# queue_2 总是被前移或清空
 	item_queue_2.texture = null
 	item_queue_2.visible = false
 	item_queue_2_shadow.visible = false
+	if item_queue_2.material:
+		(item_queue_2.material as ShaderMaterial).set_shader_parameter("saturation", 1.0)
 	
 	# 更新背景颜色 (如果 main 仍有物品，保持当前颜色；否则重置)
 	if not item_main.visible and backgrounds:
