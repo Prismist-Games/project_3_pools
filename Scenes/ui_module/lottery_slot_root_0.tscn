@@ -35,8 +35,6 @@ region = Rect2(1500, 1500, 500, 500)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gntc1"]
 shader = ExtResource("10_yj02r")
-shader_parameter/silhouette_color = Color(0.5, 0.5, 0.5, 1)
-shader_parameter/is_enabled = false
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_arr72"]
 atlas = ExtResource("11_o6rv1")
@@ -508,7 +506,6 @@ texture = ExtResource("10_4aaut")
 [node name="Lottery Slot_lid_icon" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_lid"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 position = Vector2(-11, -0.99999976)
-scale = Vector2(0.675, 0.675)
 texture = ExtResource("17_4aaut")
 
 [node name="Lottery Pool Name_label" type="RichTextLabel" parent="Lottery Slot_mask/Lottery Slot_lid"]
@@ -536,7 +533,6 @@ texture = ExtResource("10_4aaut")
 [node name="Lottery Slot_lid_icon" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_lid/Lottery Slot_lid_psudo"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 position = Vector2(-11, -1)
-scale = Vector2(0.675, 0.675)
 texture = ExtResource("17_4aaut")
 
 [node name="Lottery Pool Name_label" type="RichTextLabel" parent="Lottery Slot_mask/Lottery Slot_lid/Lottery Slot_lid_psudo"]

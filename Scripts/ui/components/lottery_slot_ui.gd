@@ -33,6 +33,7 @@ signal badge_refresh_requested(slot_index: int, item: ItemInstance) # NEW: 请�
 ## =====================================================================
 ## Item Display Nodes
 ## =====================================================================
+@onready var item_root: Node2D = find_child("Lottery Slot_item_root", true)
 @onready var item_main: Sprite2D = find_child("Item_main", true)
 @onready var item_main_shadow: Sprite2D = item_main.get_node("Item_shadow") if item_main else null
 @onready var item_main_hover_icon: Sprite2D = item_main.get_node_or_null("Item_hover_icon") if item_main else null
@@ -316,9 +317,49 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 	
 	is_drawing = true
 
-	# 1. 盖子全开
-	if anim_player.has_animation("lid_open"):
-		anim_player.play("lid_open")
+	# === 1. 初始状态设置 (揭示前) ===
+	if backgrounds:
+		backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
+	
+	# 准备数据
+	var top_item = items[0] if not items.is_empty() else null
+	var item_type = Constants.ItemType.NONE
+	var real_icon = null
+	
+	if top_item:
+		if top_item is ItemInstance:
+			item_type = top_item.item_data.item_type
+			real_icon = top_item.item_data.icon
+		elif top_item is Dictionary:
+			if top_item.has("item_data"):
+				item_type = top_item.item_data.item_type
+				real_icon = top_item.item_data.icon
+			else:
+				item_type = top_item.get("type", Constants.ItemType.NONE)
+				real_icon = top_item.get("icon")
+	
+	# 物品显示设置：使用类别图标 + 黑色实现剪影
+	if item_main:
+		# 确保 Shader 禁用
+		if item_main.material:
+			(item_main.material as ShaderMaterial).set_shader_parameter("is_enabled", false)
+		
+		# 设置剪影状态 (Category Icon + Low Quality Black)
+		if top_item:
+			var cat_icon = Constants.type_to_icon(item_type)
+			# 如果是技能选择(-1)，可能没有类别图标，直接用真实图标变黑
+			if cat_icon:
+				item_main.texture = cat_icon
+			else:
+				item_main.texture = real_icon
+			
+			if item_root:
+				item_root.modulate = Color.BLACK
+			
+			# 设置绝育效果 parameter (虽然现在是黑的看不出来，但为了状态一致)
+			if item_main.material:
+				var is_sterile = top_item.sterile if top_item is ItemInstance else top_item.get("sterile", false)
+				(item_main.material as ShaderMaterial).set_shader_parameter("saturation", 0.0 if is_sterile else 1.0)
 	
 	# 临时隐藏/重置图标
 	if not skip_pop_anim:
@@ -330,7 +371,21 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 		item_queue_1.scale = Vector2(queue_1_scale, queue_1_scale)
 		item_queue_2.scale = Vector2(queue_2_scale, queue_2_scale)
 	
+	# 仅更新队列 (跳过主图标，因为我们手动设置了剪影)
+	# update_queue_display 会重置 texture，所以我们需要手动处理 queue 1 & 2
+	# 或者我们先调用 standard update，然后覆盖 main?
+	# update_queue_display 内部会设置 item_main.texture = top_item.icon
+	# 所以我们必须在 update_queue_display 之后再次覆盖 item_main
+	
 	update_queue_display(items)
+	
+	# === 覆盖 item_main 为剪影状态 ===
+	if item_main and top_item:
+		var cat_icon = Constants.type_to_icon(item_type)
+		if cat_icon:
+			item_main.texture = cat_icon
+		else:
+			item_main.texture = real_icon
 	
 	if not items.is_empty() and not skip_pop_anim:
 		var tw = create_tween().set_parallel(true)
@@ -340,30 +395,61 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 		if items.size() > 2:
 			tw.tween_property(item_queue_2, "scale", Vector2(queue_2_scale, queue_2_scale), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
-	# 2. 背景颜色洗牌感
-	if not skip_shuffle:
-		var shuffle_timer = 0.0
-		var duration = 0.5
-		var interval = 0.05
-		while shuffle_timer < duration:
-			if backgrounds:
-				backgrounds.color = Constants.get_rarity_border_color(randi() % 5)
-			await get_tree().create_timer(interval).timeout
-			shuffle_timer += interval
+	# === 2. 播放盖子打开动画并等待完成 ===
+	if anim_player.has_animation("lid_open"):
+		anim_player.play("lid_open")
+		if anim_player.is_playing():
+			await anim_player.animation_finished
+
+	var reveal_step_delay: float = 0.5
+
+	# === 3. 稀有度阶梯上升动画 ===
+	if not skip_shuffle and not items.is_empty():
+		var rarity_value: int = items[0].rarity if items[0] is ItemInstance else items[0].get("rarity", 0)
+		
+		# 特殊处理：rarity = -1 表示技能选择，跳过阶梯动画
+		if rarity_value >= 0 and rarity_value <= Constants.Rarity.MYTHIC:
+			# 从 COMMON (0) 开始逐级升到目标稀有度
+			for current_step in range(rarity_value + 1):
+				if backgrounds:
+					backgrounds.color = Constants.get_rarity_border_color(current_step)
+				await get_tree().create_timer(reveal_step_delay).timeout
+			
+			# === 4. 最终揭示前的等待 ===
+			# 额外等待一下，模拟最后一下"当"
+			# await get_tree().create_timer(reveal_step_delay).timeout
 	
-	# 3. 定格最终品质
+	# === 5. 揭示真实物品 (Scale 0 -> Swap -> Scale 1) ===
+	if item_main and top_item:
+		# 缩小
+		var tw_hide = create_tween()
+		tw_hide.tween_property(item_main, "scale", Vector2.ZERO, 0.15).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+		await tw_hide.finished
+		
+		# 切换为真身
+		item_main.texture = real_icon
+		if item_root:
+			item_root.modulate = Color.WHITE
+		
+		# 放大
+		var tw_show = create_tween()
+		tw_show.tween_property(item_main, "scale", Vector2.ONE, 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		await tw_show.finished
+	
+	# === 6. 揭示后停留 ===
+	# 物品显形后，停留一段时间再进行后续流程（入包/Pending）
+	if not skip_shuffle and not items.is_empty():
+		await get_tree().create_timer(reveal_step_delay).timeout
+	
+	# 定格最终品质颜色 (确保非 shuffle 模式也正确设置)
 	if not items.is_empty() and backgrounds:
-		var rarity_value = items[0].rarity if items[0] is ItemInstance else items[0].get("rarity", 0)
-		# 特殊处理：rarity = -1 表示技能选择，使用机器色
+		var rarity_value: int = items[0].rarity if items[0] is ItemInstance else items[0].get("rarity", 0)
 		if rarity_value == -1:
 			backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
 		else:
 			backgrounds.color = Constants.get_rarity_border_color(rarity_value)
 	elif backgrounds:
 		backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
-	
-	if not skip_shuffle:
-		await get_tree().create_timer(0.3).timeout # 最终揭示后的停留
 
 
 ## 播放关盖序列（仅关盖和重置显示，刷新动画由 PoolController 统一处理）
@@ -376,6 +462,17 @@ func play_close_sequence() -> void:
 	# 关盖后，确保背景色和物品显示重置
 	if backgrounds:
 		backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
+	
+	# 确保剪影 shader 被禁用
+	if item_main and item_main.material:
+		var mat = item_main.material as ShaderMaterial
+		if mat:
+			mat.set_shader_parameter("is_enabled", false)
+	
+	# 重置 modulate (从剪影恢复)
+	if item_root:
+		item_root.modulate = Color.WHITE
+	
 	item_main.visible = false
 	item_main_shadow.visible = false
 	item_queue_1.visible = false
@@ -413,6 +510,10 @@ func update_pending_display(pending_list: Array) -> void:
 		item_queue_2.visible = false
 		item_queue_2_shadow.visible = false
 		
+		# 重置 root
+		if item_root:
+			item_root.modulate = Color.WHITE
+
 		# 重置绝育效果
 		for node in [item_main, item_queue_1, item_queue_2]:
 			if node.material:

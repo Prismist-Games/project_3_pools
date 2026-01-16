@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://dp2k5ss5oefjc" path="res://assets/sprites/the_machine/the_machine_slot_outline.png" id="8_xqbja"]
 [ext_resource type="Texture2D" uid="uid://b6xu5iewxjacd" path="res://assets/sprites/icons/skills/偷工減料.png" id="9_8hb1a"]
 [ext_resource type="Texture2D" uid="uid://2sp6p7grlidd" path="res://assets/sprites/the_machine/the_machine_slot_outline_front.png" id="9_fvhsr"]
-[ext_resource type="Script" path="res://scripts/ui/utils/custom_tooltip.gd" id="10_4tp6t"]
+[ext_resource type="Script" uid="uid://bwywox4emx4y5" path="res://scripts/ui/utils/custom_tooltip.gd" id="10_4tp6t"]
 [ext_resource type="Texture2D" uid="uid://b5gnskrlq8d81" path="res://assets/sprites/the_machine/the_machine_top.png" id="11_h0822"]
 [ext_resource type="Texture2D" uid="uid://balbu2vdssbb4" path="res://assets/sprites/the_machine/the_machine_top_outline_behind.png" id="12_lql4v"]
 [ext_resource type="Texture2D" uid="uid://x0x66srb2i00" path="res://assets/sprites/the_machine/the_machine_slot_outline_behind.png" id="13_7bc83"]
@@ -44,7 +44,7 @@
 [ext_resource type="Texture2D" uid="uid://c6ntc5efhqvlx" path="res://assets/sprites/the_machine_switch/绿钩.png" id="32_5dh48"]
 [ext_resource type="Texture2D" uid="uid://cyixck513ac1o" path="res://assets/sprites/quest_slots/基地-9.png" id="33_0ehwc"]
 [ext_resource type="Texture2D" uid="uid://ddymclsitprmc" path="res://assets/sprites/quest_slots/基地-8.png" id="34_oeaov"]
-[ext_resource type="PackedScene" uid="uid://1aipywo3jhy1" path="res://scenes/ui_module/item_slot_root_0.tscn" id="36_6sdua"]
+[ext_resource type="PackedScene" uid="uid://cr0uv8jj87n1f" path="res://scenes/ui_module/item_slot_root_0.tscn" id="36_6sdua"]
 [ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="37_50t6p"]
 [ext_resource type="Texture2D" uid="uid://ck7c3s60r0tf5" path="res://assets/sprites/the_machine_dlc/dlc_pole.png" id="39_6sdua"]
 [ext_resource type="PackedScene" uid="uid://b2mfixaghaocc" path="res://scenes/mascot_visuals.tscn" id="39_aagg1"]
@@ -607,9 +607,9 @@ region_enabled = true
 region_rect = Rect2(152, 162, 428, 227)
 
 [node name="Skill_icon" type="TextureRect" parent="The Machine/TheMachineSlot_0/TheMachineSlot_fill"]
-offset_left = -208.25
+offset_left = -119.25
 offset_top = -122.25
-offset_right = 358.75
+offset_right = 447.75
 offset_bottom = 251.75
 scale = Vector2(0.945, 0.945)
 tooltip_text = "Skill Description"
