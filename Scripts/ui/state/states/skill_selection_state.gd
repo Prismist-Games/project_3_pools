@@ -32,7 +32,7 @@ var _has_made_selection: bool = false
 ## 推挤动画时长
 const PUSH_DURATION: float = 0.4
 
-func enter(payload: Dictionary = {}) -> void:
+func enter(_payload: Dictionary = {}) -> void:
 	selected_skill_index = -1
 	selected_skill = null
 	_in_replace_mode = false
@@ -87,13 +87,15 @@ func can_transition_to(_next_state: StringName) -> bool:
 	return true
 
 
-func handle_input(event: InputEvent) -> bool:
-	# 右键取消
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-		if not _has_made_selection:
-			_cancel_selection()
-		return true
+func handle_input(_event: InputEvent) -> bool:
+	# 取消操作已迁移到 CancelButtonController
 	return false
+
+
+## 公开取消方法，供 CancelButtonController 调用
+func cancel() -> void:
+	if not _has_made_selection:
+		_cancel_selection()
 
 
 ## 玩家选择了某个技能 (点击 lottery slot)

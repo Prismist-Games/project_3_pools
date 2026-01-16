@@ -26,12 +26,14 @@ func exit() -> void:
 func can_transition_to(next_state: StringName) -> bool:
 	return next_state == &"Idle"
 
-func handle_input(event: InputEvent) -> bool:
-	# 右键取消
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-		machine.transition_to(&"Idle")
-		return true
+func handle_input(_event: InputEvent) -> bool:
+	# 取消操作已迁移到 CancelButtonController
 	return false
+
+
+## 公开取消方法，供 CancelButtonController 调用
+func cancel() -> void:
+	machine.transition_to(&"Idle")
 
 ## 执行批量回收（从 game_2d_ui.gd 迁移）
 func recycle_confirm() -> void:

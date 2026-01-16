@@ -34,6 +34,9 @@ var era_label: Control = null
 @onready var rabbit_dialog_box: Sprite2D = find_child("Dialog Box", true)
 @onready var rabbit_dialog_label: RichTextLabel = find_child("Dialog Label", true)
 
+# Cancel 按钮节点引用
+@onready var cancel_root: Node2D = find_child("Cancel", true)
+
 @onready var language_switch: Button = get_node_or_null("Language Switch")
 
 # --- ERA_3 DLC 面板节点引用 ---
@@ -51,6 +54,7 @@ var order_controller: OrderController
 var switch_controller: SwitchController
 var skill_slot_controller: SkillSlotController
 var rabbit_dialog_controller: RabbitDialogController
+var cancel_button_controller: CancelButtonController
 var quest_icon_highlighter: RefCounted # QuestIconHighlighter
 
 # --- 新架构: 状态机与 VFX 管理器 ---
@@ -186,6 +190,15 @@ func _init_controllers() -> void:
 	add_child(rabbit_dialog_controller)
 	rabbit_dialog_controller.setup(rabbit_dialog_box, rabbit_dialog_label)
 	
+	# 初始化取消按钮控制器
+	cancel_button_controller = CancelButtonController.new()
+	cancel_button_controller.name = "CancelButtonController"
+	cancel_button_controller.game_ui = self
+	add_child(cancel_button_controller)
+	if cancel_root:
+		cancel_button_controller.setup(cancel_root)
+		cancel_button_controller.cancel_pressed.connect(_on_cancel_pressed)
+	
 	# 初始化订单图标高亮管理器
 	quest_icon_highlighter = QuestIconHighlighterScript.new()
 	quest_icon_highlighter.order_controller = order_controller
@@ -233,6 +246,9 @@ func _on_state_changed(from_state: StringName, to_state: StringName) -> void:
 	
 	# 处理兔子对话框
 	_handle_rabbit_dialog(from_state, to_state)
+	
+	# 处理 Cancel 按钮显隐
+	_handle_cancel_button(from_state, to_state)
 	
 	# State changed -> Mode might allow interaction or not, update display
 	_update_ui_mode_display()
@@ -320,10 +336,6 @@ func _input(event: InputEvent) -> void:
 		_toggle_debug_console()
 		get_viewport().set_input_as_handled()
 		return
-		
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-		_handle_cancel_input(event)
-		return
 	
 	# 处理lottery slot和item slot的全局鼠标松开事件（防止鼠标移出区域后松开无法触发）
 	if event is InputEventMouseButton and not event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -331,17 +343,6 @@ func _input(event: InputEvent) -> void:
 			pool_controller.handle_global_mouse_release()
 		if inventory_controller and inventory_controller.has_method("handle_global_mouse_release"):
 			inventory_controller.handle_global_mouse_release()
-
-
-func _handle_cancel_input(event: InputEvent) -> void:
-	# 1. 优先让状态机处理（如提交、回收、技能选择等专用状态）
-	if state_machine and state_machine.handle_input(event):
-		get_viewport().set_input_as_handled()
-		return
-	
-	# 2. 状态机未处理（通常在 Idle 状态），执行通用取消逻辑
-	_handle_cancel()
-	get_viewport().set_input_as_handled()
 
 
 func _toggle_debug_console() -> void:
@@ -564,6 +565,44 @@ func _handle_cancel() -> void:
 	
 	if changed:
 		_refresh_all()
+
+
+## Cancel 按钮被点击时的回调
+func _on_cancel_pressed() -> void:
+	# 优先调用当前状态的 cancel() 方法（如果存在）
+	if state_machine:
+		var current_state = state_machine.get_current_state()
+		if current_state and current_state.has_method("cancel"):
+			current_state.cancel()
+			return
+	
+	# Fallback: 通用取消逻辑
+	_handle_cancel()
+
+
+## 处理 Cancel 按钮的显隐
+func _handle_cancel_button(from_state: StringName, to_state: StringName) -> void:
+	if not cancel_button_controller:
+		return
+	
+	# 定义可取消的状态列表
+	const CANCELABLE_STATES: Array[StringName] = [
+		&"Submitting",
+		&"Recycling",
+		&"TradeIn",
+		&"TargetedSelection",
+		&"SkillSelection",
+	]
+	
+	var was_cancelable = from_state in CANCELABLE_STATES
+	var is_cancelable = to_state in CANCELABLE_STATES
+	
+	# 如果进入可取消状态，显示 Cancel 按钮
+	if is_cancelable and not was_cancelable:
+		cancel_button_controller.show_cancel_button()
+	# 如果离开可取消状态（非通过点击 Cancel），静默隐藏
+	elif was_cancelable and not is_cancelable:
+		cancel_button_controller.hide_cancel_button_silent()
 
 # --- 锁管理 ---
 func lock_ui(reason: String) -> void:

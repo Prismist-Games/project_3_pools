@@ -24,12 +24,14 @@ func can_transition_to(next_state: StringName) -> bool:
 	# 同时允许在提交主线任务后跳转到技能选择或模态窗口
 	return next_state in [&"Idle", &"SkillSelection", &"Modal"]
 
-func handle_input(event: InputEvent) -> bool:
-	# 右键取消
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-		machine.transition_to(&"Idle")
-		return true
+func handle_input(_event: InputEvent) -> bool:
+	# 取消操作已迁移到 CancelButtonController
 	return false
+
+
+## 公开取消方法，供 CancelButtonController 调用
+func cancel() -> void:
+	machine.transition_to(&"Idle")
 
 ## 执行订单提交（从 game_2d_ui.gd 迁移）
 func submit_order() -> void:
