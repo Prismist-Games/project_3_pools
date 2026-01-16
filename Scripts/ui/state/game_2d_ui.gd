@@ -502,6 +502,7 @@ func _handle_single_item_recycle(selected_idx: int) -> void:
 			if pool_slot.get("is_vfx_source") != null:
 				pool_slot.is_vfx_source = true
 			
+			EventBus.item_recycled.emit(-1, item) # (-1 stands for pending/temp slot)
 			InventorySystem.recycle_item_instance(item)
 			InventorySystem.pending_item = null
 	elif selected_idx != -1:

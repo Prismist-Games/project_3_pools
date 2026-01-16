@@ -16,6 +16,8 @@ func enter(_payload: Dictionary = {}) -> void:
 func exit() -> void:
 	InventorySystem.interaction_mode = InventorySystem.InteractionMode.NORMAL
 	InventorySystem.multi_selected_indices.clear()
+	if controller:
+		controller.unlock_ui("submit")
 
 func can_transition_to(next_state: StringName) -> bool:
 	# 可以取消回 Idle，或者提交成功后回 Idle
@@ -38,8 +40,11 @@ func submit_order() -> void:
 	controller.lock_ui("submit")
 	
 	# 1. 预检查哪些订单会被满足
+	var indices = InventorySystem.multi_selected_indices.duplicate()
+	InventorySystem.multi_selected_indices = [] # 立即清空，防止动画期间重复触发，且更新 UI 状态
+	
 	var selected_items: Array[ItemInstance] = []
-	for idx in InventorySystem.multi_selected_indices:
+	for idx in indices:
 		if idx >= 0 and idx < InventorySystem.inventory.size() and InventorySystem.inventory[idx] != null:
 			selected_items.append(InventorySystem.inventory[idx])
 	
@@ -104,7 +109,7 @@ func submit_order() -> void:
 			await task
 	
 	# 3. 执行提交
-	var success = OrderSystem.submit_order(-1, InventorySystem.multi_selected_indices)
+	var success = OrderSystem.submit_order(-1, indices)
 	
 	if success:
 		# 播放开盖动画逻辑：无论是否跳转状态，只要提交成功就应该开盖

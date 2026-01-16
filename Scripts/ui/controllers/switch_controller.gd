@@ -84,14 +84,16 @@ func update_recycle_visuals(is_on: bool) -> void:
 	
 	if not is_on:
 		if tween:
-			tween.finished.connect(func(): 
+			tween.finished.connect(func():
 				if not _recycle_is_on:
 					update_recycle_label(0)
 					clear_recycle_icon()
+					EventBus.game_event.emit(&"recycle_lid_closed", null)
 			)
 		else:
 			update_recycle_label(0)
 			clear_recycle_icon()
+			EventBus.game_event.emit(&"recycle_lid_closed", null)
 
 ## 统一的视觉刷新逻辑
 func _refresh_switch_visual(node: Node2D, is_on: bool, is_hovered: bool, is_pressed: bool) -> void:
@@ -124,12 +126,14 @@ func hide_recycle_preview() -> void:
 	var tween = _recycle_tween
 	if tween:
 		# 使用弱引用或在 tween 开始前记录状态，防止竞争
-		tween.finished.connect(func(): 
+		tween.finished.connect(func():
 			if not _recycle_is_on:
 				update_recycle_label(0)
+				EventBus.game_event.emit(&"recycle_lid_closed", null)
 		)
 	else:
 		update_recycle_label(0)
+		EventBus.game_event.emit(&"recycle_lid_closed", null)
 
 func set_recycle_icon(texture: Texture2D) -> void:
 	if recycle_switch:
@@ -202,6 +206,11 @@ func _on_submit_switch_input(event: InputEvent) -> void:
 		if not event.pressed:
 			if not game_ui or not game_ui.state_machine: return
 			
+			# 如果 UI 已锁定，则忽略点击，防止重复触发
+			if game_ui.is_ui_locked():
+				print("[SwitchController] Click ignored: UI is locked")
+				return
+			
 			# 使用 get_ui_mode() 代替 GameManager 检查
 			if game_ui.state_machine.get_ui_mode() == Constants.UIMode.NORMAL:
 				game_ui.state_machine.transition_to(&"Submitting")
@@ -225,6 +234,11 @@ func _on_recycle_switch_input(event: InputEvent) -> void:
 
 		if not event.pressed:
 			if not game_ui or not game_ui.state_machine: return
+
+			# 如果 UI 已锁定，则忽略点击，防止重复触发
+			if game_ui.is_ui_locked():
+				print("[SwitchController] Click ignored: UI is locked")
+				return
 
 			var current_mode = game_ui.state_machine.get_ui_mode()
 

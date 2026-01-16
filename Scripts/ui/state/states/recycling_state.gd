@@ -41,8 +41,10 @@ func recycle_confirm() -> void:
 	
 	controller.lock_ui("recycle")
 	
-	# 收集要回收的物品索引
+	# 收集要回收的物品索引并立即清除选中状态，防止重复操作
 	var indices = InventorySystem.multi_selected_indices.duplicate()
+	InventorySystem.multi_selected_indices = [] # 触发 multi_selection_changed 信号刷新 UI
+	
 	if indices.is_empty():
 		controller.unlock_ui("recycle")
 		machine.transition_to(&"Idle")
@@ -57,7 +59,7 @@ func recycle_confirm() -> void:
 	else:
 		# Fallback
 		var switch_item_root = controller.recycle_switch.find_child("Switch_item_root", true)
-		if switch_item_root: 
+		if switch_item_root:
 			end_pos = switch_item_root.global_position
 			recycle_icon_node = switch_item_root.find_child("Item_icon", true)
 	
