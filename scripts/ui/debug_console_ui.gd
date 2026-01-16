@@ -41,30 +41,6 @@ func _ready() -> void:
 	_connect_signals()
 	_sync_from_unlock_manager()
 	
-	# 连接动画测试按钮 (手动添加的节点)
-	var anim_shock_btn = find_child("TestShockAnimButton", true, false)
-	if anim_shock_btn:
-		anim_shock_btn.pressed.connect(func():
-			get_tree().call_group("debug_animator", "test_shock")
-			print("[DebugConsole] 已触发震惊动画测试")
-		)
-	
-	var anim_impatient_btn = find_child("TestImpatientAnimButton", true, false)
-	if anim_impatient_btn:
-		anim_impatient_btn.pressed.connect(func():
-			get_tree().call_group("debug_animator", "test_impatient")
-			print("[DebugConsole] 已触发不耐烦动画测试")
-		)
-	
-
-	var anim_reset_btn = find_child("ResetAnimButton", true, false)
-	if anim_reset_btn:
-		anim_reset_btn.pressed.connect(func():
-			# 强制回到 IDLE
-			get_tree().call_group("debug_animator", "_transition_to_state", &"Idle")
-			print("[DebugConsole] 已重置动画到 Idle")
-		)
-	
 	_setup_performance_monitor()
 
 
@@ -166,6 +142,7 @@ func _connect_signals() -> void:
 	UnlockManager.order_item_req_range_changed.connect(_on_order_item_req_range_value_changed)
 	
 	# 连接物品生成信号
+	item_type_option.item_selected.connect(_on_item_type_selected)
 	generate_button.pressed.connect(_on_generate_pressed)
 	generate_batch_button.pressed.connect(_on_generate_batch_pressed)
 	
@@ -187,6 +164,7 @@ func _sync_from_unlock_manager() -> void:
 	inventory_size_spinbox.value = UnlockManager.inventory_size
 	
 	# 同步金币
+	gold_spinbox.step = 1
 	gold_spinbox.value = GameManager.gold
 	
 	# 同步订单配置
@@ -368,7 +346,6 @@ func _update_performance_stats() -> void:
 	var objects = Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
 	_perf_labels["Objects"].text = str(objects)
 	
-	# Orphan Nodes
 	var orphans = Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)
 	_perf_labels["Orphans"].text = str(orphans)
 

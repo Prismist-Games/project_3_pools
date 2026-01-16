@@ -317,6 +317,7 @@ func recycle_item(index: int) -> void:
 	if index < 0 or index >= inventory.size(): return
 	var item = inventory[index]
 	if item != null:
+		EventBus.item_recycled.emit(index, item)
 		recycle_item_instance(item)
 		inventory[index] = null
 		if selected_slot_index == index:

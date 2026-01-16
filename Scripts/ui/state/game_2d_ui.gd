@@ -834,6 +834,10 @@ func _refresh_all_hovered_slot_states() -> void:
 
 func _on_item_recycled(slot_index: int, item: ItemInstance) -> void:
 	"""处理批量回收时的单个物品回收动画（ERA_3 种类替换场景）"""
+	# 如果是手动触发的回收（UI已锁定），则跳过自动VFX，避免重复
+	if _ui_locks.has("recycle"):
+		return
+
 	if not vfx_manager:
 		return
 		

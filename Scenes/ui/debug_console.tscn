@@ -283,18 +283,4 @@ text = "全部锁定"
 [node name="HSeparator10" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="AnimTestLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-text = "动画测试"
 
-[node name="TestShockAnimButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-text = "测试震惊动画 (Shocked)"
-
-[node name="TestImpatientAnimButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-text = "测试不耐烦动画 (Impatient)"
-
-[node name="ResetAnimButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-text = "重置动画 (Idle)"

@@ -98,8 +98,6 @@ func _ready() -> void:
 	)
 	EventBus.game_event.connect(_on_game_event)
 	
-	add_to_group("debug_animator")
-
 
 	_reset_blink_timer()
 
@@ -294,10 +292,6 @@ func play_shocked_animation() -> void:
 func reset_to_idle() -> void:
 	if _playback: _playback.travel(STATE_RABBIT_IDLE)
 
-func debug_travel_to_state(state_name: StringName) -> void:
-	if _playback:
-		_playback.travel(state_name)
-		print("[RabbitAnimator] Debug travel to state: ", state_name)
 
 # --- 奖池悬浮交互 ---
 
