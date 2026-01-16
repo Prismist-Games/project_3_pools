@@ -11,11 +11,11 @@ var controller: Node = null
 func enter(_payload: Dictionary = {}) -> void:
 	# UI State Machine is now the source of truth
 	InventorySystem.interaction_mode = InventorySystem.InteractionMode.MULTI_SELECT
-	InventorySystem.multi_selected_indices.clear()
+	InventorySystem.selected_indices_for_order = []
 
 func exit() -> void:
 	InventorySystem.interaction_mode = InventorySystem.InteractionMode.NORMAL
-	InventorySystem.multi_selected_indices.clear()
+	InventorySystem.selected_indices_for_order = []
 	if controller:
 		controller.unlock_ui("submit")
 
@@ -43,7 +43,7 @@ func submit_order() -> void:
 	
 	# 1. 预检查哪些订单会被满足
 	var indices = InventorySystem.multi_selected_indices.duplicate()
-	InventorySystem.multi_selected_indices = [] # 立即清空，防止动画期间重复触发，且更新 UI 状态
+	InventorySystem.selected_indices_for_order = [] # 立即清空，防止动画期间重复触发，且更新 UI 状态
 	
 	var selected_items: Array[ItemInstance] = []
 	for idx in indices:

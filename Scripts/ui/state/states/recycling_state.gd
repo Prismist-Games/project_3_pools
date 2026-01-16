@@ -45,7 +45,7 @@ func recycle_confirm() -> void:
 	
 	# 收集要回收的物品索引并立即清除选中状态，防止重复操作
 	var indices = InventorySystem.multi_selected_indices.duplicate()
-	InventorySystem.multi_selected_indices = [] # 触发 multi_selection_changed 信号刷新 UI
+	InventorySystem.selected_indices_for_order = [] # 触发 multi_selection_changed 信号刷新 UI
 	
 	if indices.is_empty():
 		controller.unlock_ui("recycle")

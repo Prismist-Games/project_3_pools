@@ -185,7 +185,7 @@ func _on_recycle_mode_button_pressed() -> void:
 
 func _cancel_current_mode() -> void:
 	GameManager.current_ui_mode = Constants.UIMode.NORMAL
-	InventorySystem.multi_selected_indices.clear()
+	InventorySystem.selected_indices_for_order = []
 	GameManager.order_selection_index = -1
 
 	_on_inventory_changed(InventorySystem.inventory)
@@ -197,7 +197,7 @@ func _execute_multi_recycle() -> void:
 	indices.reverse()
 	for idx in indices:
 		InventorySystem.recycle_item(idx)
-	InventorySystem.multi_selected_indices.clear()
+	InventorySystem.selected_indices_for_order = []
 
 
 func _on_pending_queue_changed(items: Array[ItemInstance]) -> void:

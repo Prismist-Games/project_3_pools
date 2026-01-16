@@ -560,7 +560,7 @@ func _handle_cancel() -> void:
 		changed = true
 	
 	if not InventorySystem.multi_selected_indices.is_empty():
-		InventorySystem.multi_selected_indices.clear()
+		InventorySystem.selected_indices_for_order = []
 		changed = true
 	
 	if changed:

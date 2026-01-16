@@ -278,7 +278,6 @@ texture = ExtResource("15_vvcjj")
 texture = ExtResource("16_6ixpp")
 
 [node name="Input Area" type="Control" parent="."]
-visible = false
 anchors_preset = 0
 offset_left = -461.0
 offset_top = -127.0
