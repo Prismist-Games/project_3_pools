@@ -86,10 +86,12 @@ func _initialize_game_state() -> void:
 
 func add_gold(amount: int) -> void:
 	gold += amount
+	EventBus.game_event.emit(&"gold_gained", null)
 
 func spend_gold(amount: int) -> bool:
 	if gold >= amount:
 		gold -= amount
+		EventBus.game_event.emit(&"gold_spent", null)
 		return true
 	return false
 
