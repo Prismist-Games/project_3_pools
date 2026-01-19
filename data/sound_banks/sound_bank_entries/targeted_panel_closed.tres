@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SoundBankEntry" load_steps=3 format=3 uid="uid://cfx27f3b4p0pt"]
+
+[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_fumv2"]
+[ext_resource type="AudioStream" uid="uid://ds6nku1h08rf4" path="res://assets/audio/sfx/cabinet_close.wav" id="2_fumv2"]
+
+[resource]
+script = ExtResource("1_fumv2")
+id = &"targeted_panel_closed"
+stream = ExtResource("2_fumv2")
+volume_db = -15.0

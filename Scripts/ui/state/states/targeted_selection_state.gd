@@ -429,6 +429,10 @@ func _play_panel_rise() -> void:
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_BACK)
 	tween.tween_property(_panel, "position:x", PANEL_VISIBLE_X, ANIMATION_DURATION)
+	
+	# 发出面板打开信号（用于音效）
+	EventBus.game_event.emit(&"targeted_panel_opened", null)
+	
 	await tween.finished
 
 ## 播放面板向右侧退出动画
@@ -443,6 +447,10 @@ func _play_panel_fall() -> void:
 	tween.set_ease(Tween.EASE_IN)
 	tween.set_trans(Tween.TRANS_BACK)
 	tween.tween_property(_panel, "position:x", PANEL_HIDDEN_X, ANIMATION_DURATION)
+	
+	# 发出面板关闭信号（用于音效）
+	EventBus.game_event.emit(&"targeted_panel_closed", null)
+	
 	await tween.finished
 	
 	_panel.visible = false
