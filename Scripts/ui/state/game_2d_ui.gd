@@ -948,6 +948,9 @@ func _on_era_changed(era_index: int) -> void:
 	if era_index >= 1:
 		_show_era_popup(era_index)
 	
+	# 刷新所有普通订单（保留主线订单）
+	OrderSystem.refresh_all_normal_orders()
+	
 	# 异步处理时代切换，包括动画播放
 	_handle_era_transition(era_index)
 
