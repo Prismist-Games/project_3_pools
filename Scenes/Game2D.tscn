@@ -13,8 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://dp2k5ss5oefjc" path="res://assets/sprites/the_machine/the_machine_slot_outline.png" id="8_xqbja"]
 [ext_resource type="Texture2D" uid="uid://b6xu5iewxjacd" path="res://assets/sprites/icons/skills/偷工減料.png" id="9_8hb1a"]
 [ext_resource type="Texture2D" uid="uid://2sp6p7grlidd" path="res://assets/sprites/the_machine/the_machine_slot_outline_front.png" id="9_fvhsr"]
-[ext_resource type="Script" uid="uid://k01008e5batl" path="res://scripts/ui/skill_icon_ui.gd" id="10_k01008e5batl"]
 [ext_resource type="Script" uid="uid://bwywox4emx4y5" path="res://scripts/ui/utils/custom_tooltip.gd" id="10_4tp6t"]
+[ext_resource type="Script" uid="uid://k01008e5batl" path="res://scripts/ui/skill_icon_ui.gd" id="10_k01008e5batl"]
 [ext_resource type="Texture2D" uid="uid://b5gnskrlq8d81" path="res://assets/sprites/the_machine/the_machine_top.png" id="11_h0822"]
 [ext_resource type="Texture2D" uid="uid://balbu2vdssbb4" path="res://assets/sprites/the_machine/the_machine_top_outline_behind.png" id="12_lql4v"]
 [ext_resource type="Texture2D" uid="uid://x0x66srb2i00" path="res://assets/sprites/the_machine/the_machine_slot_outline_behind.png" id="13_7bc83"]
@@ -301,21 +301,9 @@ void fragment() {
 shader = SubResource("Shader_taegb")
 shader_parameter/saturation = 0.0
 
-[sub_resource type="Shader" id="Shader_jqdmi"]
-code = "shader_type canvas_item;
-
-uniform float saturation;
-
-void fragment() {
-    vec4 tex_color = texture(TEXTURE, UV);
-
-    COLOR.rgb = mix(vec3(dot(tex_color.rgb, vec3(0.299, 0.587, 0.114))), tex_color.rgb, saturation);
-	COLOR.a = tex_color.a;
-}"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_enqmm"]
-shader = SubResource("Shader_jqdmi")
-shader_parameter/saturation = 0.0
+[sub_resource type="AtlasTexture" id="AtlasTexture_amd4b"]
+atlas = ExtResource("94_m40pb")
+region = Rect2(1500, 500, 500, 500)
 
 [sub_resource type="Animation" id="Animation_8ocj1"]
 length = 0.001
@@ -1194,7 +1182,7 @@ offset_bottom = 63.0
 mouse_filter = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 66
-text = "+ 150%"
+text = "+ 300%"
 scroll_active = false
 vertical_alignment = 1
 
@@ -1333,14 +1321,12 @@ layout_mode = 2
 [node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0"]
 material = SubResource("ShaderMaterial_m40pb")
 scale = Vector2(0.75, 0.75)
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
+texture = SubResource("AtlasTexture_amd4b")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
 show_behind_parent = true
-position = Vector2(16, -28.666672)
+position = Vector2(16, -28.667)
 scale = Vector2(2.75, 2.75)
 texture = ExtResource("81_6sdua")
 
@@ -1360,16 +1346,14 @@ texture = ExtResource("87_u8s40")
 layout_mode = 2
 
 [node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1"]
-material = SubResource("ShaderMaterial_enqmm")
+material = SubResource("ShaderMaterial_m40pb")
 scale = Vector2(0.75, 0.75)
-offset = Vector2(9, -0.5)
-region_enabled = true
-region_rect = Rect2(55, 75, 450, 450)
+texture = SubResource("AtlasTexture_amd4b")
 
 [node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
 show_behind_parent = true
-position = Vector2(16, -28.666672)
+position = Vector2(16, -28.667)
 scale = Vector2(2.75, 2.75)
 texture = ExtResource("81_6sdua")
 
@@ -1426,7 +1410,7 @@ texture = ExtResource("102_u4yck")
 
 [node name="Dialog Box" type="Sprite2D" parent="The Rabbit/QuestSystem"]
 z_index = 10
-position = Vector2(-1040.9524, 591.4285)
+position = Vector2(-1040.9524, 539.99994)
 scale = Vector2(0.9523812, 0.9523812)
 texture = ExtResource("101_6kw3k")
 offset = Vector2(1035, 366)

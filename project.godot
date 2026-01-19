@@ -41,6 +41,7 @@ PoolSystem="*res://scripts/systems/pool_system.gd"
 AnimationDirector="*res://scripts/systems/animation_director.gd"
 EraManager="*res://scripts/globals/era_manager.gd"
 AudioManager="*res://scripts/globals/audio_manager.gd"
+LocaleManager="*res://scripts/globals/locale_manager.gd"
 
 [display]
 

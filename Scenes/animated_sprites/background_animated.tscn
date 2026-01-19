@@ -1,13 +1,9 @@
-[gd_scene load_steps=61 format=3 uid="uid://dcrc7hmw85gqq"]
+[gd_scene load_steps=49 format=3 uid="uid://dcrc7hmw85gqq"]
 
 [ext_resource type="Texture2D" uid="uid://bprtu4q6lify4" path="res://assets/sprites/city_bg/蓝蓝天.png" id="2_3agmw"]
 [ext_resource type="Texture2D" uid="uid://dc7coucih34ai" path="res://assets/sprites/city_bg/黑天.png" id="3_xvhlv"]
 [ext_resource type="Texture2D" uid="uid://corealqu7vor0" path="res://assets/sprites/city_bg/星星.png" id="4_eojs8"]
 [ext_resource type="Texture2D" uid="uid://bkqwxl75hwhrs" path="res://assets/sprites/city_bg/蓝天.png" id="5_rk1d7"]
-[ext_resource type="Texture2D" uid="uid://q6364f2dwx3q" path="res://assets/sprites/background/背景-4.png" id="6_70wxu"]
-[ext_resource type="Texture2D" uid="uid://cv32cj6ieg6h4" path="res://assets/sprites/background/背景-2.png" id="7_arxqr"]
-[ext_resource type="Texture2D" uid="uid://d5cfbyoxnec7" path="res://assets/sprites/background/背景-1.png" id="8_v0nl0"]
-[ext_resource type="Texture2D" uid="uid://yq4g7rr8qqwd" path="res://assets/sprites/background/背景-3.png" id="9_ic2l0"]
 [ext_resource type="Texture2D" uid="uid://cfqybxqdg26wt" path="res://assets/sprites/shooting_star/star-1.png" id="10_30pou"]
 [ext_resource type="Texture2D" uid="uid://dyx7bj267u0ep" path="res://assets/sprites/shooting_star/star-2.png" id="11_xai7a"]
 [ext_resource type="Texture2D" uid="uid://c3wrlcxob46ao" path="res://assets/sprites/shooting_star/star-3.png" id="12_jac82"]
@@ -24,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://kx4gcqh1vsvk" path="res://assets/sprites/shooting_star/star-14.png" id="23_6c5bw"]
 [ext_resource type="Texture2D" uid="uid://d2y80oe3yvfdp" path="res://assets/sprites/shooting_star/star-15.png" id="24_am225"]
 [ext_resource type="Texture2D" uid="uid://bs6o45mabkert" path="res://assets/sprites/shooting_star/star-16.png" id="25_46gh2"]
+[ext_resource type="Texture2D" uid="uid://mmbyci6k4nbn" path="res://assets/sprites/city_bg/Cloud.PNG" id="25_m01df"]
 [ext_resource type="Texture2D" uid="uid://bcfn05acf0l25" path="res://assets/sprites/shooting_star/star-17.png" id="26_q5lop"]
 [ext_resource type="Texture2D" uid="uid://dqeh4ue34ils" path="res://assets/sprites/shooting_star/star-18.png" id="27_vavsk"]
 [ext_resource type="Texture2D" uid="uid://ln16uqo4o83f" path="res://assets/sprites/shooting_star/star-19.png" id="28_k2lye"]
@@ -131,158 +128,6 @@ _data = {
 &"bluesky": SubResource("Animation_4q382")
 }
 
-[sub_resource type="Animation" id="Animation_xtmvk"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("云4:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(3422, -377.5)]
-}
-
-[sub_resource type="Animation" id="Animation_tbeue"]
-resource_name = "云4"
-length = 15.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("云4:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 15),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(3422, -377.5), Vector2(-3772, -377.5)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_rb7q3"]
-_data = {
-&"RESET": SubResource("Animation_xtmvk"),
-&"云4": SubResource("Animation_tbeue")
-}
-
-[sub_resource type="Animation" id="Animation_beipi"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(4839, -1091.5)]
-}
-
-[sub_resource type="Animation" id="Animation_nohjd"]
-resource_name = "云2"
-length = 50.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 50),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(4839, -1091.5), Vector2(-3806, -1091.5)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_xtmvk"]
-_data = {
-&"RESET": SubResource("Animation_beipi"),
-&"云2": SubResource("Animation_nohjd")
-}
-
-[sub_resource type="Animation" id="Animation_rlgvj"]
-length = 50.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("../云2:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 50),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(4839, -1091.5), Vector2(-4405, -1091.5)]
-}
-
-[sub_resource type="Animation" id="Animation_rb7q3"]
-resource_name = "云1"
-length = 26.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 26),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(3597, -1276.5), Vector2(-3460, -1276.5)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_x2iqi"]
-_data = {
-&"RESET": SubResource("Animation_rlgvj"),
-&"云1": SubResource("Animation_rb7q3")
-}
-
-[sub_resource type="Animation" id="Animation_1chke"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("../云3:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(3696, -806.5)]
-}
-
-[sub_resource type="Animation" id="Animation_40vo1"]
-resource_name = "云3"
-length = 20.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("../云3:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 20),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(3696, -806.5), Vector2(-3696, -806.5)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_hnnim"]
-_data = {
-&"RESET": SubResource("Animation_1chke"),
-&"云3": SubResource("Animation_40vo1")
-}
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_ourjd"]
 animations = [{
 "frames": [{
@@ -350,6 +195,44 @@ animations = [{
 "name": &"流星",
 "speed": 19.0
 }]
+
+[sub_resource type="Animation" id="Animation_yelt0"]
+resource_name = "cloud"
+length = 150.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 150),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-2975, -223.68822), Vector2(2988.9692, -223.68822)]
+}
+
+[sub_resource type="Animation" id="Animation_dlcj5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2988.9692, -223.68822)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xtal7"]
+_data = {
+&"RESET": SubResource("Animation_dlcj5"),
+&"cloud": SubResource("Animation_yelt0")
+}
 
 [sub_resource type="Animation" id="Animation_5v8qp"]
 length = 0.001
@@ -503,55 +386,23 @@ libraries = {
 &"": SubResource("AnimationLibrary_5oxjh")
 }
 
-[node name="云4" type="Sprite2D" parent="蓝天"]
-position = Vector2(3422, -377.5)
-scale = Vector2(0.58130455, 0.5277778)
-texture = ExtResource("6_70wxu")
-
-[node name="云之动画4" type="AnimationPlayer" parent="蓝天/云4"]
-root_node = NodePath("../..")
-libraries = {
-&"": SubResource("AnimationLibrary_rb7q3")
-}
-autoplay = "云4"
-
-[node name="云2" type="Sprite2D" parent="蓝天"]
-position = Vector2(4839, -1091.5)
-scale = Vector2(0.7287552, 0.7619048)
-texture = ExtResource("7_arxqr")
-
-[node name="云之动画2" type="AnimationPlayer" parent="蓝天/云2"]
-libraries = {
-&"": SubResource("AnimationLibrary_xtmvk")
-}
-
-[node name="云1" type="Sprite2D" parent="蓝天"]
-position = Vector2(3597, -1276.5)
-scale = Vector2(0.525015, 0.5795305)
-texture = ExtResource("8_v0nl0")
-
-[node name="云之动画1" type="AnimationPlayer" parent="蓝天/云1"]
-libraries = {
-&"": SubResource("AnimationLibrary_x2iqi")
-}
-
-[node name="云3" type="Sprite2D" parent="蓝天"]
-position = Vector2(3696, -806.5)
-scale = Vector2(0.58130455, 0.5277778)
-texture = ExtResource("9_ic2l0")
-
-[node name="云之动画3" type="AnimationPlayer" parent="蓝天/云3"]
-root_node = NodePath("../../云1")
-libraries = {
-&"": SubResource("AnimationLibrary_hnnim")
-}
-
 [node name="流星" type="AnimatedSprite2D" parent="."]
-position = Vector2(-794.0001, -722.25)
+position = Vector2(-794, -722.25)
 scale = Vector2(0.78332585, 0.7591726)
 sprite_frames = SubResource("SpriteFrames_ourjd")
 animation = &"流星"
 frame = 19
+
+[node name="Cloud" type="Sprite2D" parent="."]
+position = Vector2(2988.9692, -223.68822)
+scale = Vector2(1.9616182, 1.9616184)
+texture = ExtResource("25_m01df")
+
+[node name="cloud" type="AnimationPlayer" parent="Cloud"]
+libraries = {
+&"": SubResource("AnimationLibrary_xtal7")
+}
+autoplay = "cloud"
 
 [node name="黑" type="Sprite2D" parent="."]
 position = Vector2(3000, -30)
