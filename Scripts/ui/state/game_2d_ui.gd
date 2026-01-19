@@ -128,13 +128,7 @@ func _ready() -> void:
 		language_switch.pressed.connect(_on_language_switch_pressed)
 
 func _on_language_switch_pressed() -> void:
-	var current_locale = TranslationServer.get_locale()
-	var new_locale = "en" if current_locale.begins_with("zh") else "zh"
-	TranslationServer.set_locale(new_locale)
-	
-	# Godot 会自动发出 NOTIFICATION_TRANSLATION_CHANGED
-	# 我们在 _notification 中处理强制刷新
-	print("[Game2DUI] 语言切换至: %s" % new_locale)
+	LocaleManager.toggle_locale()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED:
