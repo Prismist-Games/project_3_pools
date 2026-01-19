@@ -43,7 +43,6 @@ func submit_order() -> void:
 	
 	# 1. 预检查哪些订单会被满足
 	var indices = InventorySystem.multi_selected_indices.duplicate()
-	InventorySystem.multi_selected_indices = [] # 立即清空，防止动画期间重复触发，且更新 UI 状态
 	
 	var selected_items: Array[ItemInstance] = []
 	for idx in indices:
@@ -92,9 +91,12 @@ func submit_order() -> void:
 				satisfying_slots.append(slot)
 	
 	if satisfied_order_count == 0:
-		# 提交失败，没有任何订单被满足
+		# 提交失败，没有任何订单被满足 - 保持选中状态
 		controller.unlock_ui("submit")
 		return
+	
+	# 提交成功：清空选中列表，防止动画期间重复触发
+	InventorySystem.multi_selected_indices = []
 	
 	# 2. 播放所有满足订单的 lid_close 动画
 	var close_tasks: Array = []
