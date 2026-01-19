@@ -66,6 +66,15 @@ func type_to_icon(type: ItemType) -> Texture2D:
 		ItemType.TRAPEZOID: return preload("res://assets/sprites/icons/category_trapezoid.png")
 		_: return null
 
+func type_to_silhouette_icon(type: ItemType) -> Texture2D:
+	match type:
+		ItemType.TRIANGLE: return preload("res://assets/sprites/icons/silhouette_triangle.png")
+		ItemType.RECTANGLE: return preload("res://assets/sprites/icons/silhouette_rectangle.png")
+		ItemType.CIRCLE: return preload("res://assets/sprites/icons/silhouette_circle.png")
+		ItemType.STAR: return preload("res://assets/sprites/icons/silhouette_star.png")
+		ItemType.TRAPEZOID: return preload("res://assets/sprites/icons/silhouette_trapezoid.png")
+		_: return null
+
 
 func rarity_id(rarity: int) -> StringName:
 	match rarity:

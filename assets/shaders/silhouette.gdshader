@@ -20,7 +20,7 @@ void fragment() {
         COLOR = vec4(silhouette_color.rgb, alpha);
     } else {
         // 正常渲染
-        COLOR.rgb = mix(vec3(dot(texture_color.rgb, vec3(0.299, 0.587, 0.114))), texture_color.rgb, saturation) * modulate.rgb;
-        COLOR.a = texture_color.a * modulate.a;
+        COLOR.rgb = mix(vec3(dot(texture_color.rgb, vec3(0.299, 0.587, 0.114))), texture_color.rgb, saturation);
+        COLOR.a = texture_color.a;
     }
 }
