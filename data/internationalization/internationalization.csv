@@ -132,6 +132,7 @@ BTN_CONFIRM_SUBMIT,Confirm Submit,确认提交
 BTN_RECYCLE_MODE,Recycle Mode,回收模式
 BTN_CONFIRM_RECYCLE,Confirm Recycle,确认回收
 BTN_CANCEL,Cancel,取消
+BTN_CONTINUE,BRING IT ON,来吧
 
 # Currency Display
 UI_GOLD_DISPLAY,Gold: %d,金币: %d
@@ -169,6 +170,9 @@ MODAL_TARGETED_TITLE,Targeted: Choose Type,有的放矢：选择类型
 MODAL_CONFIRM,Confirm,确认
 MODAL_CANCEL,Cancel,取消
 MODAL_ABANDON,Abandon,放弃
+MODAL_ERA_2,"[font_size=100][color=gold]ERA 2: Market Volatility[/color][/font_size]\n\nThe market has become unstable. Pool costs will now fluctuate after each draw. Plan your spending carefully!","[font_size=100][color=gold]第二时代：市场波动[/color][/font_size]\n\n市场变得极其不稳定。每次抽奖后，奖池的消耗都会发生波动。请谨慎规划你的金币！"
+MODAL_ERA_3,"[font_size=100][color=gold]ERA 3: Industrial Standard[/color][/font_size]\n\nThe factory has imposed strict variety limits. You can only keep a limited number of item types in your backpack. Redundant types must be replaced or recycled.","[font_size=100][color=gold]第三时代：工业标准[/color][/font_size]\n\n工厂实施了严格的种类限制。你的背包中只能保留有限种类的道具。超出种类的道具必须被替换或回收。"
+MODAL_ERA_4,"[font_size=100][color=gold]ERA 4: Perishable Goods[/color][/font_size]\n\nTime is ticking! Items now have a shelf life and will expire if not used. Complete orders quickly before your items turn into trash!","[font_size=100][color=gold]第四时代：临期物品[/color][/font_size]\n\n时间就是金钱！现在所有道具都有保质期，超期未使用的道具会变成废品。在它们腐烂前快交订单！"
 
 # =====================================================================
 # Pool Card (奖池卡片)

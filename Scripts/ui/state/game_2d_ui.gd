@@ -45,6 +45,12 @@ var era_label: Control = null
 @onready var dlc_label: RichTextLabel = find_child("DLC Label", true)
 @onready var dlc_animation_player: AnimationPlayer = null # 延迟获取，因为它是dlc_panel的子节点
 
+# --- ERA Popup 节点引用 ---
+@onready var screen_mask: Control = find_child("Screen Mask", true)
+@onready var popup_window: Control = find_child("Popup Window", true)
+@onready var popup_button: BaseButton = find_child("Popup_button", true)
+@onready var popup_label: RichTextLabel = find_child("Popup_RichTextLabel", true)
+
 # --- 子控制器 ---
 const QuestIconHighlighterScript = preload("res://scripts/ui/controllers/quest_icon_highlighter.gd")
 
@@ -126,6 +132,21 @@ func _ready() -> void:
 	
 	if language_switch:
 		language_switch.pressed.connect(_on_language_switch_pressed)
+
+	# 7. 初始化 Era Popup
+	_init_era_popup()
+
+func _init_era_popup() -> void:
+	if screen_mask:
+		screen_mask.visible = false
+		screen_mask.modulate.a = 0
+	
+	if popup_window:
+		# 强制设置初始位置到隐藏位置
+		popup_window.position.y = -4000
+	
+	if popup_button:
+		popup_button.pressed.connect(_hide_era_popup)
 
 func _on_language_switch_pressed() -> void:
 	var current_locale = TranslationServer.get_locale()
@@ -924,8 +945,61 @@ func _on_item_recycled(slot_index: int, item: ItemInstance) -> void:
 # --- ERA_3: DLC 面板管理 ---
 
 func _on_era_changed(era_index: int) -> void:
+	# 时代切换时显示全屏弹窗（从第二时代开始，即 era_index >= 1）
+	if era_index >= 1:
+		_show_era_popup(era_index)
+	
 	# 异步处理时代切换，包括动画播放
 	_handle_era_transition(era_index)
+
+
+## 显示时代切换弹窗
+func _show_era_popup(era_index: int) -> void:
+	if not popup_window or not screen_mask:
+		return
+	
+	# 更新文本
+	if popup_label:
+		var key = "MODAL_ERA_%d" % (era_index + 1)
+		popup_label.text = key
+	
+	# 锁定交互
+	lock_ui("era_popup")
+	
+	# 显示 Mask
+	screen_mask.visible = true
+	var mask_tween = create_tween()
+	mask_tween.tween_property(screen_mask, "modulate:a", 1.0, 0.3)
+	
+	# 弹出 Window (从 -4000 到 -700)
+	var win_tween = create_tween()
+	win_tween.set_trans(Tween.TRANS_BACK)
+	win_tween.set_ease(Tween.EASE_OUT)
+	win_tween.tween_property(popup_window, "position:y", -700.0, 0.6)
+
+
+## 隐藏时代切换弹窗
+func _hide_era_popup() -> void:
+	if not popup_window or not screen_mask:
+		unlock_ui("era_popup")
+		return
+	
+	# 隐藏 Window (从 -700 到 -4000)
+	var win_tween = create_tween()
+	win_tween.set_trans(Tween.TRANS_BACK)
+	win_tween.set_ease(Tween.EASE_IN)
+	win_tween.tween_property(popup_window, "position:y", -4000.0, 0.5)
+	
+	# 延迟隐藏 Mask
+	await win_tween.finished
+	
+	var mask_tween = create_tween()
+	mask_tween.tween_property(screen_mask, "modulate:a", 0.0, 0.3)
+	await mask_tween.finished
+	screen_mask.visible = false
+	
+	# 解锁交互
+	unlock_ui("era_popup")
 
 
 ## 处理时代切换（包括动画播放）
