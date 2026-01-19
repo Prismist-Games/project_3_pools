@@ -162,6 +162,7 @@ func _execute_submission(order: OrderData, items_to_consume: Array[ItemInstance]
 	# 最终奖励 = 显示奖励 * (1 + 提交物品品质加成之和)
 	context.reward_gold = roundi(order.reward_gold * (1.0 + total_submitted_bonus))
 	context.submitted_items = items_to_consume
+	context.order_data = order
 	
 	# 发出信号让技能系统进一步修改
 	EventBus.order_completed.emit(context)
