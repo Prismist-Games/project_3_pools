@@ -8,3 +8,4 @@ script = ExtResource("1_vhlcp")
 id = &"pool_lid_closed"
 stream = ExtResource("2_2i7qe")
 volume_db = -10.0
+pitch_variance = 0.0

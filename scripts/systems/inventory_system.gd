@@ -169,7 +169,8 @@ func handle_slot_click(index: int) -> void:
 					inventory[index] = pending
 					item_replaced.emit(index, pending, target_item) # 这里传递的 old_item 只是为了动画效果
 				else:
-					# 正常单个替换
+					# 正常单个替换 - 发出 item_recycled 信号以触发回收相关逻辑（如兔子动画）
+					EventBus.item_recycled.emit(index, target_item)
 					recycle_item_instance(target_item)
 					inventory[index] = pending
 					item_replaced.emit(index, pending, target_item)

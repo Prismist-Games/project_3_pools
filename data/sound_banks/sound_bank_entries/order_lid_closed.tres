@@ -8,4 +8,5 @@ script = ExtResource("1_fwsea")
 id = &"order_lid_closed"
 stream = ExtResource("2_7wqxj")
 volume_db = -20.0
+pitch_variance = 0.0
 play_delay = 0.4
