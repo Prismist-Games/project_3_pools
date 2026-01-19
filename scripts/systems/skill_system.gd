@@ -23,8 +23,10 @@ var current_skills: Array[SkillData] = []:
 ## 技能状态（跨回合或跨操作的临时状态）
 var skill_state: Dictionary = {
 	"consecutive_commons": 0, ## 连续抽到普通物品次数 (安慰奖)
-	"next_draw_guaranteed_rare": false, ## 下一次必定稀有 (时来运转/安慰奖)
-	"next_draw_extra_item": false ## 下一次多给一个 (自动补货)
+	"next_draw_guaranteed_rare": false, ## 下一次必定稀有 (时来运转/安慰奖共享)
+	"next_draw_extra_item": false, ## 下一次多给一个 (自动补货)
+	"consolation_prize_active": false, ## 安慰奖独立激活标记
+	"good_luck_active": false ## 时来运转独立激活标记
 }
 
 
@@ -74,6 +76,10 @@ func add_skill(skill: SkillData) -> bool:
 		current_skills.append(skill)
 		_rebuild_effects(current_skills)
 		skills_changed.emit(current_skills)
+		
+		# 发出技能槽位升起信号（用于音效）
+		EventBus.game_event.emit(&"skill_slot_raised", null)
+		
 		return true
 	return false
 
@@ -82,6 +88,9 @@ func replace_skill(index: int, new_skill: SkillData) -> void:
 		current_skills[index] = new_skill
 		_rebuild_effects(current_skills)
 		skills_changed.emit(current_skills)
+		
+		# 发出技能槽位升起信号（用于音效）
+		EventBus.game_event.emit(&"skill_slot_raised", null)
 
 func get_selectable_skills(count: int = 3) -> Array[SkillData]:
 	# 依赖 GameManager.all_skills 数据源
@@ -165,10 +174,21 @@ func _on_effect_triggered(type: String, skill_id: String) -> void:
 	ctx.skill_id = skill_id
 	ctx.type = type
 	
-	print("[SkillSystem] Emitting skill_visual_feedback for skill_id: ", skill_id, " type: ", type)
+	print("[SkillSystem] Emitting skill feedback for skill_id: ", skill_id, " type: ", type)
 	
+	# 核心视觉与逻辑事件
 	EventBus.game_event.emit(&"skill_visual_feedback", ctx)
 	EventBus.game_event.emit(&"skill_triggered", ctx)
+
+	# --- 信号派发 (单次触发模式) ---
+	match type:
+		SkillEffect.TRIGGER_PENDING:
+			# 技能进入待命状态（如充能开始）
+			EventBus.game_event.emit(&"skill_pending", ctx)
+				
+		SkillEffect.TRIGGER_ACTIVATE, SkillEffect.TRIGGER_INSTANT:
+			# 技能正式生效或瞬间触发
+			EventBus.game_event.emit(&"skill_activated", ctx)
 
 
 func _on_game_event(event_id: StringName, context: RefCounted) -> void:

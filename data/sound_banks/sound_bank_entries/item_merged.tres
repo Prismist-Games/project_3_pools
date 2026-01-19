@@ -7,3 +7,4 @@
 script = ExtResource("1_cq67k")
 id = &"item_merged"
 stream = ExtResource("2_cq67k")
+volume_db = -10.0

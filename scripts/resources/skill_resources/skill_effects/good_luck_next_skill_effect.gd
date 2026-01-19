@@ -17,6 +17,7 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 
 func _handle_order_completed() -> void:
 	SkillSystem.skill_state.next_draw_guaranteed_rare = true
+	SkillSystem.skill_state.good_luck_active = true
 	triggered.emit(TRIGGER_PENDING)
 
 
@@ -33,8 +34,13 @@ func _handle_item_obtained(item: ItemInstance) -> void:
 	# 对特殊词缀(精准/有的放矢/以旧换新)生效
 	if item == null: return
 	
-	if SkillSystem.skill_state.next_draw_guaranteed_rare:
-		SkillSystem.skill_state.next_draw_guaranteed_rare = false
+	# 使用独立标记检测时来运转是否激活
+	if SkillSystem.skill_state.good_luck_active:
+		SkillSystem.skill_state.good_luck_active = false
+		# 同时清除共享标记（如果没有其他技能也在使用）
+		if not SkillSystem.skill_state.consolation_prize_active:
+			SkillSystem.skill_state.next_draw_guaranteed_rare = false
+			
 		triggered.emit(TRIGGER_ACTIVATE)
 		# 如果品质低于稀有，升级到稀有
 		if item.rarity < Constants.Rarity.RARE:
@@ -42,6 +48,6 @@ func _handle_item_obtained(item: ItemInstance) -> void:
 
 
 func get_visual_state() -> String:
-	if SkillSystem.skill_state.next_draw_guaranteed_rare:
+	if SkillSystem.skill_state.good_luck_active:
 		return TRIGGER_PENDING
 	return ""
