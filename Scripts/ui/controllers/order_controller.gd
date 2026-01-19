@@ -119,6 +119,7 @@ func play_refresh_sequence(index: int) -> void:
 		slot.set_refresh_visual(true)
 	
 	if slot.anim_player.has_animation("lid_close"):
+		EventBus.game_event.emit(&"order_lid_closed", null)
 		slot.anim_player.play("lid_close")
 		await slot.anim_player.animation_finished
 
@@ -127,6 +128,7 @@ func play_open_sequence(index: int) -> void:
 	if not slot: return
 	
 	if slot.anim_player.has_animation("lid_open"):
+		EventBus.game_event.emit(&"order_lid_opened", null)
 		slot.anim_player.play("lid_open")
 		await slot.anim_player.animation_finished
 	

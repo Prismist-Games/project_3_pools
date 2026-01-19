@@ -10,6 +10,8 @@ class_name SoundBankEntry
 @export_group("音量与音高")
 @export_range(-40.0, 6.0) var volume_db: float = 0.0
 @export_range(0.0, 0.5) var pitch_variance: float = 0.05 ## 随机音高偏移范围
+@export_group("播放控制")
+@export var play_delay: float = 0.0 ## 触发后的延迟播放时间（秒）
 @export var target_duration: float = 0.0 ## 目标播放时长（0 = 使用原始时长，> 0 = 自动调整 pitch_scale 匹配此时长）
 
 @export_group("高级设置")

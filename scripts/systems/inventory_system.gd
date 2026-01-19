@@ -258,6 +258,7 @@ func _perform_merge(item_a: ItemInstance, item_b: ItemInstance, target_index: in
 	
 	# Emit merge signal with the item that was in the slot (item_b) as the target context
 	item_merged.emit(target_index, new_item, item_b)
+	EventBus.game_event.emit(&"item_placed", new_item)
 
 ## 回收物品实例
 func recycle_item_instance(item: ItemInstance) -> void:

@@ -229,16 +229,11 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 			if source_slot.has_method("update_pending_display") and InventorySystem:
 				source_slot.update_pending_display(InventorySystem.pending_items)
 	
-	# 播放放置音效
-	if not task.get("is_merge", false):
-		EventBus.game_event.emit(&"item_placed", item)
-	else:
-		# 如果是合并，合并的逻辑可能会在 _execute_merge 或其他地方（TODO），但此次飞行确实结束了。
-		# 考虑到合并通常也有放置的声音，但可能不同。
-		# 用户要求 "物品往物品栏格子的飞行动画结束后触发"，所以这里也应该触发。
-		# 除非 merge 有单独的 VFX。目前 _execute_merge 只是 delay。
-		# 让我们统一触发。
-		EventBus.game_event.emit(&"item_placed", item)
+	# 播放放置/合成音效
+	if task.get("is_merge", false):
+		EventBus.game_event.emit(&"item_merged", item)
+	
+	EventBus.game_event.emit(&"item_placed", item)
 	
 	# 清理 rarity 相关资源
 	var rarity_tween = fly_sprite.get_meta("rarity_tween", null)
@@ -328,7 +323,7 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 				source_lottery_slot.is_vfx_source = false
 
 ## 执行合成动画
-func _execute_merge(task: Dictionary) -> void:
+func _execute_merge(_task: Dictionary) -> void:
 	# TODO: 实现更精美的合成动画
 	await get_tree().create_timer(0.2).timeout
 	# 合成也算一种放置完成 (如果是原地合成)
@@ -378,6 +373,9 @@ func _execute_generic_fly(task: Dictionary) -> void:
 	
 	await tween.finished
 	
+	if task.get("is_merge", false):
+		EventBus.game_event.emit(&"item_merged", item)
+		
 	EventBus.game_event.emit(&"item_placed", item)
 	
 	# 清理 rarity 相关资源

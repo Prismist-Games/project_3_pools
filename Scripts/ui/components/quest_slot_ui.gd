@@ -48,6 +48,7 @@ func set_locked(locked: bool) -> void:
 func _on_refresh_button_pressed() -> void:
 	if is_locked: return
 	if order_index != -1:
+		EventBus.game_event.emit(&"order_refresh_button_pressed", null)
 		EventBus.game_event.emit(&"order_refresh_requested", ContextProxy.new({"index": order_index - 1}))
 
 ## 设置刷新按钮的视觉状态（按下保持/弹起）和交互锁定

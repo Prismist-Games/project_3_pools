@@ -83,7 +83,17 @@ func play_sfx(sfx_id: StringName, override_pitch: float = 0.0) -> void:
 	var entry: SoundBankEntry = _sfx_registry[sfx_id]
 	if not entry.stream: return
 	
-	# ... (限制最大同时播放数量逻辑保持不变)
+	# 如果有延迟设置，启动延迟处理
+	if entry.play_delay > 0.0:
+		get_tree().create_timer(entry.play_delay).timeout.connect(
+			func(): _internal_do_play_sfx(sfx_id, entry, override_pitch)
+		)
+	else:
+		_internal_do_play_sfx(sfx_id, entry, override_pitch)
+
+## 内部实际执行播放的逻辑
+func _internal_do_play_sfx(sfx_id: StringName, entry: SoundBankEntry, override_pitch: float) -> void:
+	# 限制最大同时播放数量
 	if not _active_sounds.has(sfx_id): _active_sounds[sfx_id] = []
 	var active_players: Array = _active_sounds[sfx_id]
 	active_players = active_players.filter(func(p): return p.playing)
