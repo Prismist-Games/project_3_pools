@@ -62,3 +62,9 @@ func _deferred_add_to_queue(cloned_item: ItemInstance) -> void:
 	
 	# 尝试自动将物品添加到背包（会自动处理飞行动画等）
 	InventorySystem.try_auto_add_pending()
+
+
+func get_visual_state() -> String:
+	if SkillSystem.skill_state.next_draw_extra_item:
+		return TRIGGER_PENDING
+	return ""

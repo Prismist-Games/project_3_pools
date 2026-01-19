@@ -39,3 +39,9 @@ func _handle_item_obtained(item: ItemInstance) -> void:
 		# 如果品质低于稀有，升级到稀有
 		if item.rarity < Constants.Rarity.RARE:
 			item.rarity = Constants.Rarity.RARE
+
+
+func get_visual_state() -> String:
+	if SkillSystem.skill_state.next_draw_guaranteed_rare:
+		return TRIGGER_PENDING
+	return ""

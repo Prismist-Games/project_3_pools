@@ -22,6 +22,17 @@ func setup(skill: SkillData) -> void:
 	
 	# 注意：根据需求，tooltip 不再放在 skill_icon 上，而是由父级控制器放在 Input Area 上
 	self.tooltip_text = ""
+	
+	# 检查并恢复当前视觉状态 (例如 Pending)
+	if skill.effects:
+		for eff in skill.effects:
+			if eff.has_method("get_visual_state"):
+				var state = eff.get_visual_state()
+				if state != "":
+					print("[SkillIconUI] Restoring visual state: ", state, " for skill: ", skill.id)
+					_play_feedback(state)
+					# 假设一个技能只有一个主视觉状态，找到即停止
+					break
 
 
 func _on_game_event(event_id: StringName, context: RefCounted) -> void:

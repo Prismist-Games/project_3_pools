@@ -57,3 +57,9 @@ func _handle_item_obtained(item: ItemInstance) -> void:
 	else:
 		# 非普通物品重置计数
 		state.consecutive_commons = 0
+
+
+func get_visual_state() -> String:
+	if SkillSystem.skill_state.next_draw_guaranteed_rare:
+		return TRIGGER_PENDING
+	return ""

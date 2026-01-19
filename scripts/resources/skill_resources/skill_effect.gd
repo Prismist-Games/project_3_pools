@@ -25,3 +25,9 @@ const TRIGGER_ACTIVATE = "activate"
 
 ## 技能效果触发信号：用于通知 UI 播放特效
 signal triggered(type: String)
+
+
+## 获取当前视觉状态（用于 UI 初始化时恢复状态）
+## 返回：TRIGGER_PENDING / TRIGGER_INSTANT / TRIGGER_ACTIVATE，或 ""（无状态）
+func get_visual_state() -> String:
+	return ""
