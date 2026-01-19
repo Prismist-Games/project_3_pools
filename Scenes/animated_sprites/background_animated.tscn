@@ -385,6 +385,7 @@ texture = ExtResource("5_rk1d7")
 libraries = {
 &"": SubResource("AnimationLibrary_5oxjh")
 }
+autoplay = "bluesky"
 
 [node name="流星" type="AnimatedSprite2D" parent="."]
 position = Vector2(-794, -722.25)
