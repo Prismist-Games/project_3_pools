@@ -128,6 +128,44 @@ _data = {
 &"bluesky": SubResource("Animation_4q382")
 }
 
+[sub_resource type="Animation" id="Animation_dlcj5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2988.9692, -223.68822)]
+}
+
+[sub_resource type="Animation" id="Animation_yelt0"]
+resource_name = "cloud"
+length = 150.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 150),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-2975, -223.68822), Vector2(2988.9692, -223.68822)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xtal7"]
+_data = {
+&"RESET": SubResource("Animation_dlcj5"),
+&"cloud": SubResource("Animation_yelt0")
+}
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_ourjd"]
 animations = [{
 "frames": [{
@@ -195,44 +233,6 @@ animations = [{
 "name": &"流星",
 "speed": 19.0
 }]
-
-[sub_resource type="Animation" id="Animation_dlcj5"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(2988.9692, -223.68822)]
-}
-
-[sub_resource type="Animation" id="Animation_yelt0"]
-resource_name = "cloud"
-length = 150.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 150),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(-2975, -223.68822), Vector2(2988.9692, -223.68822)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_xtal7"]
-_data = {
-&"RESET": SubResource("Animation_dlcj5"),
-&"cloud": SubResource("Animation_yelt0")
-}
 
 [sub_resource type="Animation" id="Animation_5v8qp"]
 length = 0.001
@@ -387,23 +387,23 @@ libraries = {
 }
 autoplay = "bluesky"
 
+[node name="Cloud" type="Sprite2D" parent="蓝天"]
+position = Vector2(2988.9692, -223.68822)
+scale = Vector2(0.6538727, 0.65387285)
+texture = ExtResource("25_m01df")
+
+[node name="cloud" type="AnimationPlayer" parent="蓝天/Cloud"]
+libraries = {
+&"": SubResource("AnimationLibrary_xtal7")
+}
+autoplay = "cloud"
+
 [node name="流星" type="AnimatedSprite2D" parent="."]
 position = Vector2(-794, -722.25)
 scale = Vector2(0.78332585, 0.7591726)
 sprite_frames = SubResource("SpriteFrames_ourjd")
 animation = &"流星"
 frame = 19
-
-[node name="Cloud" type="Sprite2D" parent="."]
-position = Vector2(2988.9692, -223.68822)
-scale = Vector2(1.9616182, 1.9616184)
-texture = ExtResource("25_m01df")
-
-[node name="cloud" type="AnimationPlayer" parent="Cloud"]
-libraries = {
-&"": SubResource("AnimationLibrary_xtal7")
-}
-autoplay = "cloud"
 
 [node name="黑" type="Sprite2D" parent="."]
 position = Vector2(3000, -30)

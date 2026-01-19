@@ -473,7 +473,12 @@ func _on_item_slot_mouse_entered(index: int) -> void:
 		var target_item = InventorySystem.inventory[index]
 		if target_item != null:
 			if not InventorySystem.can_merge(InventorySystem.pending_item, target_item):
-				var value = Constants.rarity_recycle_value(target_item.rarity)
+				var value: int
+				# ERA3: 种类限制模式下，显示所有同名物品的总回收值
+				if InventorySystem.would_exceed_type_limit(InventorySystem.pending_item):
+					value = InventorySystem.get_total_recycle_value_for_name(target_item.item_data.id)
+				else:
+					value = Constants.rarity_recycle_value(target_item.rarity)
 				switch_controller.show_recycle_preview(value)
 
 func _on_item_slot_mouse_exited(_index: int) -> void:
