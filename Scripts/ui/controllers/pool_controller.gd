@@ -76,16 +76,11 @@ func play_all_refresh_animations(pools: Array, clicked_slot_idx: int = -1) -> vo
 	# 确保标记已设置（兜底，调用方应该已经设置了）
 	_is_animating_refresh = true
 	
-	# 1. 先让被点击的 slot 关盖
+	# 1. 先让被点击的 slot 关盖 (不再强制检查 is_drawing，因为物品飞走后该状态可能已被重置)
 	if clicked_slot_idx >= 0 and clicked_slot_idx < _slots.size():
 		var clicked_slot = _get_slot_node(clicked_slot_idx)
 		if clicked_slot and clicked_slot.has_method("close_lid"):
-			# 关键修复：仅在槽位处于打开状态时才播放关盖动画
-			# 检查 is_drawing (正在展示) 或 is_waiting_for_trade_in (以旧换新等待中)
-			var is_open: bool = clicked_slot.get("is_drawing") == true or clicked_slot.get("is_waiting_for_trade_in") == true
-			
-			if is_open:
-				await clicked_slot.close_lid()
+			await clicked_slot.close_lid()
 			
 			clicked_slot.is_drawing = false
 			# 重置物品显示

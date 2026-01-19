@@ -74,15 +74,24 @@ func _initialize_game_state() -> void:
 	
 	# 初始化背包空间 (直接设为 10)
 	InventorySystem.initialize_inventory(10)
+	
+	# 加载音效库
+	var sfx_bank = load("res://data/sound_banks/main_sfx.tres")
+	if sfx_bank:
+		AudioManager.load_sound_bank(sfx_bank)
+	else:
+		push_warning("GameManager: 未找到音效库 (res://data/sound_banks/main_sfx.tres)")
 
 # --- 经济与状态方法 ---
 
 func add_gold(amount: int) -> void:
 	gold += amount
+	EventBus.game_event.emit(&"gold_gained", null)
 
 func spend_gold(amount: int) -> bool:
 	if gold >= amount:
 		gold -= amount
+		EventBus.game_event.emit(&"gold_spent", null)
 		return true
 	return false
 

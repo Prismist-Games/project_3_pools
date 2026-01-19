@@ -743,6 +743,7 @@ func play_queue_advance_anim() -> void:
 func open_lid() -> void:
 	if anim_player.has_animation("lid_open"):
 		anim_player.play("lid_open")
+		EventBus.game_event.emit(&"pool_lid_open", ContextProxy.new({"slot_index": pool_index}))
 
 ## 为以旧换新打开盖子（空槽状态，等待物品飞入）
 func open_lid_for_trade_in() -> void:
@@ -761,15 +762,14 @@ func open_lid_for_trade_in() -> void:
 		backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
 	
 	# 打开盖子
-	if anim_player.has_animation("lid_open"):
-		anim_player.play("lid_open")
+	open_lid()
 
 func close_lid() -> void:
 	is_waiting_for_trade_in = false
 	if anim_player.has_animation("lid_close"):
 		anim_player.play("lid_close")
-		if anim_player.is_playing():
-			await anim_player.animation_finished
+		await anim_player.animation_finished
+	EventBus.game_event.emit(&"pool_lid_closed", ContextProxy.new({"slot_index": pool_index}))
 
 ## 播放抖动动画（用于以旧换新投入后的反馈）
 func play_shake() -> void:

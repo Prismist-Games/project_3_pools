@@ -165,6 +165,7 @@ func _execute_submission(order: OrderData, items_to_consume: Array[ItemInstance]
 	
 	# 发出信号让技能系统进一步修改
 	EventBus.order_completed.emit(context)
+	EventBus.game_event.emit(&"order_completed", context)
 	
 	# 主线订单没有金币奖励，只有普通订单才发放金币
 	if not order.is_mainline:

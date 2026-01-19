@@ -231,6 +231,12 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 			if source_slot.has_method("update_pending_display") and InventorySystem:
 				source_slot.update_pending_display(InventorySystem.pending_items)
 	
+	# 播放放置/合成音效
+	if task.get("is_merge", false):
+		EventBus.game_event.emit(&"item_merged", item)
+	
+	EventBus.game_event.emit(&"item_placed", item)
+	
 	# 清理 rarity 相关资源
 	var rarity_tween = fly_sprite.get_meta("rarity_tween", null)
 	if rarity_tween:
@@ -322,6 +328,17 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 func _execute_merge(_task: Dictionary) -> void:
 	# TODO: 实现更精美的合成动画
 	await get_tree().create_timer(0.2).timeout
+	# 合成也算一种放置完成 (如果是原地合成)
+	# 但通常有一方是飞过来的，飞过来的那个在上面已经触发了。
+	# 这里可能是原地的效果?
+	# 只要没有 flight 任务覆盖，这里触发也没问题。
+	# 不过目前 Game2DUI 中 merge 会触发 generic_fly 或 fly_to_inventory (replace)。
+	# _execute_merge 很少被直接用到主要的移动中?
+	# 查阅 Game2DUI.gd: _on_item_merged -> _item_replaced -> fly_to_inventory (with is_merge=true)
+	# 所以 fly_to_inventory 会覆盖 merge 的情况。
+	# 只有原地合并 (如果存在) 才会用到这个? 但 inventory system 的 merge logic 似乎总是涉及 source/target。
+	# 暂时不在 _execute_merge 加，以免重复，因为它通常伴随 flight。
+
 
 ## 执行通用飞行动画（例如物品移动）
 func _execute_generic_fly(task: Dictionary) -> void:
@@ -357,6 +374,11 @@ func _execute_generic_fly(task: Dictionary) -> void:
 		tween.tween_property(rarity_sprite, "global_scale", end_scale, duration)
 	
 	await tween.finished
+	
+	if task.get("is_merge", false):
+		EventBus.game_event.emit(&"item_merged", item)
+		
+	EventBus.game_event.emit(&"item_placed", item)
 	
 	# 清理 rarity 相关资源
 	var rarity_tween = sprite.get_meta("rarity_tween", null)
@@ -428,6 +450,8 @@ func _execute_swap(task: Dictionary) -> void:
 		tween.tween_property(rarity_sprite2, "global_scale", landing_scale2, duration)
 	
 	await tween.finished
+	
+	EventBus.game_event.emit(&"item_placed", item1)
 	
 	# 清理 rarity 相关资源
 	var rarity_tween1 = sprite1.get_meta("rarity_tween", null)

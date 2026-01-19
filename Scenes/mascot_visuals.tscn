@@ -1,7 +1,9 @@
 [gd_scene load_steps=100 format=3 uid="uid://b2mfixaghaocc"]
 
 [ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="1_fu8yu"]
+[ext_resource type="AudioStream" uid="uid://bmus83sm4cx3t" path="res://assets/audio/sfx/381588__dorianmastin__snd_impactheavywall01.wav" id="2_kmeeb"]
 [ext_resource type="Texture2D" uid="uid://ciklekvdp5hak" path="res://assets/sprites/the_rabbit/the_rabbit_left_arm.png" id="2_vpgxp"]
+[ext_resource type="AudioStream" uid="uid://hp7wuy3elrv2" path="res://assets/audio/sfx/381591__dorianmastin__snd_impactheavywall04.wav" id="3_cs4hr"]
 [ext_resource type="Texture2D" uid="uid://deairpal3cmlr" path="res://assets/sprites/the_rabbit/the_rabbit_left_thumb.png" id="3_kmeeb"]
 [ext_resource type="Texture2D" uid="uid://bsdf5iwmcegpx" path="res://assets/sprites/the_rabbit/the_rabbit_left_palm.png" id="4_cs4hr"]
 [ext_resource type="Texture2D" uid="uid://bjlpf6bxe6kb1" path="res://assets/sprites/the_rabbit/the_rabbit_wand_stick.PNG" id="5_nc5n7"]
@@ -777,6 +779,36 @@ tracks/6/keys = {
 "update": 0,
 "values": [0.06733266, 0.15, 0.067, 0.18, 0.067]
 }
+tracks/7/type = "audio"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("AudioStreamPlayer")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("2_kmeeb")
+}],
+"times": PackedFloat32Array(0.2)
+}
+tracks/7/use_blend = true
+tracks/8/type = "audio"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("AudioStreamPlayer")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("3_cs4hr")
+}],
+"times": PackedFloat32Array(0.55)
+}
+tracks/8/use_blend = true
 
 [sub_resource type="Animation" id="Animation_ivmbw"]
 resource_name = "rabbit_nose_poking"
@@ -1260,6 +1292,9 @@ parameters/conditions/recycle_lid_closed = false
 libraries = {
 &"": SubResource("AnimationLibrary_8y6ih")
 }
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = -10.0
 
 [node name="TheRabbitLeftArm" type="Sprite2D" parent="."]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)

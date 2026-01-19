@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SoundBankEntry" load_steps=3 format=3 uid="uid://cqutcrp1bo5pr"]
+
+[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_cqlm5"]
+[ext_resource type="AudioStream" uid="uid://dldjwc6ox116t" path="res://assets/audio/sfx/button_pressed.wav" id="2_06rw1"]
+
+[resource]
+script = ExtResource("1_cqlm5")
+id = &"order_refresh_button_pressed"
+stream = ExtResource("2_06rw1")
+volume_db = -15.0

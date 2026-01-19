@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dp2k5ss5oefjc" path="res://assets/sprites/the_machine/the_machine_slot_outline.png" id="8_xqbja"]
 [ext_resource type="Texture2D" uid="uid://b6xu5iewxjacd" path="res://assets/sprites/icons/skills/偷工減料.png" id="9_8hb1a"]
 [ext_resource type="Texture2D" uid="uid://2sp6p7grlidd" path="res://assets/sprites/the_machine/the_machine_slot_outline_front.png" id="9_fvhsr"]
+[ext_resource type="Script" uid="uid://k01008e5batl" path="res://scripts/ui/skill_icon_ui.gd" id="10_k01008e5batl"]
 [ext_resource type="Script" uid="uid://bwywox4emx4y5" path="res://scripts/ui/utils/custom_tooltip.gd" id="10_4tp6t"]
 [ext_resource type="Texture2D" uid="uid://b5gnskrlq8d81" path="res://assets/sprites/the_machine/the_machine_top.png" id="11_h0822"]
 [ext_resource type="Texture2D" uid="uid://balbu2vdssbb4" path="res://assets/sprites/the_machine/the_machine_top_outline_behind.png" id="12_lql4v"]
@@ -625,6 +626,7 @@ scale = Vector2(0.945, 0.945)
 tooltip_text = "Skill Description"
 mouse_default_cursor_shape = 16
 texture = ExtResource("9_8hb1a")
+script = ExtResource("10_k01008e5batl")
 
 [node name="Input Area" type="Control" parent="The Machine/TheMachineSlot_0/TheMachineSlot_fill"]
 layout_mode = 3
@@ -659,6 +661,7 @@ scale = Vector2(0.945, 0.945)
 tooltip_text = "Skill Description"
 mouse_default_cursor_shape = 16
 texture = ExtResource("9_8hb1a")
+script = ExtResource("10_k01008e5batl")
 
 [node name="Input Area" type="Control" parent="The Machine/TheMachineSlot_1/TheMachineSlot_fill"]
 layout_mode = 3
@@ -692,6 +695,7 @@ scale = Vector2(0.945, 0.945)
 tooltip_text = "Skill Description"
 mouse_default_cursor_shape = 16
 texture = ExtResource("9_8hb1a")
+script = ExtResource("10_k01008e5batl")
 
 [node name="Input Area" type="Control" parent="The Machine/TheMachineSlot_2/TheMachineSlot_fill"]
 layout_mode = 3

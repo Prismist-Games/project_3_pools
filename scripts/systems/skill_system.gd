@@ -168,6 +168,7 @@ func _on_effect_triggered(type: String, skill_id: String) -> void:
 	print("[SkillSystem] Emitting skill_visual_feedback for skill_id: ", skill_id, " type: ", type)
 	
 	EventBus.game_event.emit(&"skill_visual_feedback", ctx)
+	EventBus.game_event.emit(&"skill_triggered", ctx)
 
 
 func _on_game_event(event_id: StringName, context: RefCounted) -> void:

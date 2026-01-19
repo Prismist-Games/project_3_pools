@@ -162,8 +162,8 @@ func _on_game_event(event_id: StringName, _payload: Variant) -> void:
 			if anim_tree:
 				anim_tree.set("parameters/conditions/recycle_lid_closed", true)
 			print("[RabbitAnimator] Trigger: knock machine")
-		else:
-			print("[RabbitAnimator] Lid closed ignored: No items recycled")
+		# else:
+			# print("[RabbitAnimator] Lid closed ignored: No items recycled")
 		
 		# 周期结束重置
 		_has_recycled_items = false
@@ -176,8 +176,8 @@ func _find_required_nodes() -> void:
 	_right_eye_fill = p.find_child("TheRabbitRightEyeFill", true, false)
 	
 	
-	print("[RabbitAnimator] Left Eye Fill found: ", _left_eye_fill != null)
-	print("[RabbitAnimator] Right Eye Fill found: ", _right_eye_fill != null)
+	# print("[RabbitAnimator] Left Eye Fill found: ", _left_eye_fill != null)
+	# print("[RabbitAnimator] Right Eye Fill found: ", _right_eye_fill != null)
 
 	# 时代视觉组件 (在 WandFaceFill 下)
 	var wand_fill = p.find_child("TheRabbitWandFaceFill", true, false)
