@@ -1,4 +1,4 @@
-[gd_scene load_steps=102 format=3 uid="uid://b2mfixaghaocc"]
+[gd_scene load_steps=105 format=3 uid="uid://b2mfixaghaocc"]
 
 [ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="1_fu8yu"]
 [ext_resource type="AudioStream" uid="uid://bmus83sm4cx3t" path="res://assets/audio/sfx/381588__dorianmastin__snd_impactheavywall01.wav" id="2_kmeeb"]
@@ -1199,6 +1199,7 @@ tracks/0/keys = {
 resource_name = "era_3_rotation"
 length = 3.0
 loop_mode = 1
+step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -1258,6 +1259,44 @@ animations = [{
 "name": &"randomness",
 "speed": 10.0
 }]
+
+[sub_resource type="Animation" id="Animation_wr5f3"]
+resource_name = "era_4_rotation"
+length = 5.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.283185307179586]
+}
+
+[sub_resource type="Animation" id="Animation_22g54"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [6.2831855]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_22g54"]
+_data = {
+&"RESET": SubResource("Animation_22g54"),
+&"era_4_rotation": SubResource("Animation_wr5f3")
+}
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u4yck"]
 shader = ExtResource("31_wrirs")
@@ -1397,8 +1436,7 @@ texture = ExtResource("7_fu8yu")
 sprite_frames = SubResource("SpriteFrames_np3ll")
 animation = &"wave"
 autoplay = "wave"
-frame = 2
-frame_progress = 0.48310062
+frame_progress = 0.23792309
 
 [node name="Era_3" type="Node2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
 visible = false
@@ -1409,6 +1447,7 @@ scale = Vector2(1.0000001, 1.0000001)
 texture = ExtResource("7_fu8yu")
 
 [node name="Era_3_face" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_3"]
+position = Vector2(3.963745, -0.48706055)
 scale = Vector2(1.165, 1.165)
 texture = ExtResource("24_24e80")
 
@@ -1419,17 +1458,23 @@ libraries = {
 autoplay = "era_3_rotation"
 
 [node name="Era_4" type="Node2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
-visible = false
 
 [node name="Era_4_face" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_4"]
 modulate = Color(0.5058824, 0.827451, 0.44313726, 1)
 texture = ExtResource("7_fu8yu")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_4"]
+rotation = 6.2831855
 sprite_frames = SubResource("SpriteFrames_oa7gp")
 animation = &"randomness"
 autoplay = "randomness"
-frame_progress = 0.24261561
+frame_progress = 0.9680881
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_4"]
+libraries = {
+&"": SubResource("AnimationLibrary_22g54")
+}
+autoplay = "era_4_rotation"
 
 [node name="TheRabbitLeftFingers" type="Sprite2D" parent="TheRabbitLeftArm"]
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)

@@ -560,11 +560,8 @@ position = Vector2(-5, 0)
 texture = ExtResource("3_amd4b")
 
 [node name="Background_floor" type="Sprite2D" parent="Background"]
-position = Vector2(0, 3.75)
+position = Vector2(0, 1273.75)
 texture = ExtResource("2_vave4")
-offset = Vector2(0, 1272)
-region_enabled = true
-region_rect = Rect2(0, 2544, 6000, 831)
 
 [node name="The Machine" type="Node2D" parent="."]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)

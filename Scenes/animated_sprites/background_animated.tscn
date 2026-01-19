@@ -196,6 +196,21 @@ animations = [{
 "speed": 19.0
 }]
 
+[sub_resource type="Animation" id="Animation_dlcj5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2988.9692, -223.68822)]
+}
+
 [sub_resource type="Animation" id="Animation_yelt0"]
 resource_name = "cloud"
 length = 150.0
@@ -211,21 +226,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(-2975, -223.68822), Vector2(2988.9692, -223.68822)]
-}
-
-[sub_resource type="Animation" id="Animation_dlcj5"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(2988.9692, -223.68822)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xtal7"]
@@ -406,7 +406,7 @@ autoplay = "cloud"
 
 [node name="黑" type="Sprite2D" parent="."]
 position = Vector2(3000, -30)
-scale = Vector2(6, 6)
+scale = Vector2(3, 3)
 texture = ExtResource("30_utpsi")
 
 [node name="黑" type="AnimationPlayer" parent="黑"]
@@ -417,7 +417,7 @@ autoplay = "黑"
 
 [node name="灰" type="Sprite2D" parent="."]
 position = Vector2(3000, -30)
-scale = Vector2(6, 6)
+scale = Vector2(3, 3)
 texture = ExtResource("31_rbd3v")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="灰"]
@@ -428,7 +428,7 @@ autoplay = "new_animation"
 
 [node name="白" type="Sprite2D" parent="."]
 position = Vector2(3000, -30)
-scale = Vector2(6, 6)
+scale = Vector2(3, 3)
 texture = ExtResource("32_b7jjn")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="白"]
