@@ -192,8 +192,8 @@ func _setup_precise_display() -> void:
 		# slot_0 和 slot_1 同时开始播放揭示动画 (开盖)
 		if i < mini(options.size(), 2):
 			var item = options[i]
-			# 关键优化：增加 skip_shuffle=true 跳过洗牌，消除闪烁
-			slot.play_reveal_sequence([item], false, true)
+			# 允许播放完整的 reveal 序列（包含稀有度阶梯）
+			slot.play_reveal_sequence([item], false, false)
 			# 清空默认的池类型，防止触发类型高亮
 			slot.current_pool_item_type = -1
 			
@@ -216,9 +216,15 @@ func _setup_precise_display() -> void:
 	if controller and controller.inventory_controller:
 		controller.inventory_controller.refresh_upgradeable_badges(options)
 	
-	# 立即解锁界面
+	# 等待所有动画播放完成（稀有度阶梯需要时间）
+	# 粗略估算：0.3s (pop) + 稀有度步进 (0.3s * n) + 揭示动画 (0.4s) + 停留 (0.3s)
+	await controller.get_tree().create_timer(1.8).timeout
+	
+	# 完成后解锁界面
 	if controller.pool_controller:
 		controller.pool_controller._is_animating_refresh = false
+	
+	controller.unlock_ui("precise_selection")
 
 const PUSH_DURATION: float = 0.4
 

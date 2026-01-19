@@ -199,3 +199,11 @@ func pick_weighted_index(weights: PackedFloat32Array, rng: RandomNumberGenerator
 		if roll <= acc:
 			return i
 	return max(weights.size() - 1, 0)
+
+
+## 处理 Tooltip 中的 BBCode，将 60px 的图标缩小为 16px
+func process_tooltip_text(text: String) -> String:
+	# 替换所有 [img=60] 为 [img=16]
+	# 增加容错：同时也替换 [img]...[/img] 中可能存在的尺寸标识，或者直接强制尺寸
+	# 简单替换 CSV 中的标准格式即可满足用户需求
+	return text.replace("[img=60]", "[img=16]")

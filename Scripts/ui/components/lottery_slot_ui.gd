@@ -344,40 +344,53 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 	if backgrounds:
 		backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
 	
-	var item_type = Constants.ItemType.NONE
-	var real_icon = null
+	# 收集所有需要揭示的物品数据 (最多3个：Main, Queue 1, Queue 2)
+	var reveal_items_data: Array[Dictionary] = []
+	var node_list = [item_main, item_queue_1, item_queue_2]
+	var scale_list = [Vector2.ONE, Vector2(queue_1_scale, queue_1_scale), Vector2(queue_2_scale, queue_2_scale)]
 	
-	if top_item:
-		if top_item is ItemInstance:
-			item_type = top_item.item_data.item_type
-			real_icon = top_item.item_data.icon
-		elif top_item is Dictionary:
-			var data = top_item.get("item_data")
-			if data and data is ItemData:
-				item_type = data.item_type
-				real_icon = data.icon
-			else:
-				item_type = top_item.get("type", Constants.ItemType.NONE)
-				real_icon = top_item.get("icon")
-	
-	# 物品显示设置：使用类别图标 + 黑色实现剪影
-	if item_main:
-		# 确保 Shader 禁用
-		if item_main.material:
-			(item_main.material as ShaderMaterial).set_shader_parameter("is_enabled", false)
+	for i in range(min(items.size(), 3)):
+		var itm = items[i]
+		var itm_type = Constants.ItemType.NONE
+		var itm_icon = null
 		
-		# 设置剪影状态 (Silhouette Texture)
-		if top_item:
-			var silhouette_icon = Constants.type_to_silhouette_icon(item_type)
-			if silhouette_icon:
-				item_main.texture = silhouette_icon
+		if itm is ItemInstance:
+			itm_type = itm.item_data.item_type
+			itm_icon = itm.item_data.icon
+		elif itm is Dictionary:
+			var itm_data = itm.get("item_data")
+			if itm_data and itm_data is ItemData:
+				itm_type = itm_data.item_type
+				itm_icon = itm_data.icon
 			else:
-				item_main.texture = real_icon
-			
-			# 设置绝育效果 parameter
-			if item_main.material:
-				var is_sterile = top_item.sterile if top_item is ItemInstance else top_item.get("sterile", false)
-				(item_main.material as ShaderMaterial).set_shader_parameter("saturation", 0.0 if is_sterile else 1.0)
+				itm_type = itm.get("type", Constants.ItemType.NONE)
+				itm_icon = itm.get("icon")
+		
+		var sil_icon = Constants.type_to_silhouette_icon(itm_type)
+		# 如果没有对应的剪影图标，回退到原始图标
+		if not sil_icon: sil_icon = itm_icon
+		
+		reveal_items_data.append({
+			"node": node_list[i],
+			"real_icon": itm_icon,
+			"silhouette_icon": sil_icon,
+			"target_scale": scale_list[i],
+			"item_ref": itm
+		})
+	
+	# 初始显示设置
+	for r_data in reveal_items_data:
+		var node = r_data.node
+		if node:
+			node.texture = r_data.silhouette_icon
+			if node.material:
+				(node.material as ShaderMaterial).set_shader_parameter("is_enabled", false)
+				var is_sterile = false
+				if r_data.item_ref is ItemInstance:
+					is_sterile = r_data.item_ref.sterile
+				elif r_data.item_ref is Dictionary:
+					is_sterile = r_data.item_ref.get("sterile", false)
+				(node.material as ShaderMaterial).set_shader_parameter("saturation", 0.0 if is_sterile else 1.0)
 	
 	# 临时隐藏/重置图标
 	if not skip_pop_anim:
@@ -389,23 +402,17 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 		item_queue_1.scale = Vector2(queue_1_scale, queue_1_scale)
 		item_queue_2.scale = Vector2(queue_2_scale, queue_2_scale)
 	
+	# 更新底层显示（位置、可见性等）
 	update_queue_display(items)
 	
-	# === 覆盖 item_main 为剪影状态 ===
-	if item_main and top_item:
-		var silhouette_icon = Constants.type_to_silhouette_icon(item_type)
-		if silhouette_icon:
-			item_main.texture = silhouette_icon
-		else:
-			item_main.texture = real_icon
+	# === 再次覆盖为剪影状态 (因为 update_queue_display 会重置 texture) ===
+	for r_data in reveal_items_data:
+		r_data.node.texture = r_data.silhouette_icon
 	
 	if not items.is_empty() and not skip_pop_anim:
 		var tw = create_tween().set_parallel(true)
-		tw.tween_property(item_main, "scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-		if items.size() > 1:
-			tw.tween_property(item_queue_1, "scale", Vector2(queue_1_scale, queue_1_scale), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-		if items.size() > 2:
-			tw.tween_property(item_queue_2, "scale", Vector2(queue_2_scale, queue_2_scale), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		for r_data in reveal_items_data:
+			tw.tween_property(r_data.node, "scale", r_data.target_scale, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 	# === 2. 播放盖子打开动画并等待完成 ===
 	if anim_player.has_animation("lid_open"):
@@ -441,18 +448,21 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 			# await get_tree().create_timer(reveal_step_delay).timeout
 	
 	# === 5. 揭示真实物品 (Scale 0 -> Swap -> Scale 1) ===
-	if item_main and top_item:
+	if not reveal_items_data.is_empty():
 		# 缩小
-		var tw_hide = create_tween()
-		tw_hide.tween_property(item_main, "scale", Vector2.ZERO, 0.15).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+		var tw_hide = create_tween().set_parallel(true)
+		for r_data in reveal_items_data:
+			tw_hide.tween_property(r_data.node, "scale", Vector2.ZERO, 0.15).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 		await tw_hide.finished
 		
 		# 切换为真身
-		item_main.texture = real_icon
+		for r_data in reveal_items_data:
+			r_data.node.texture = r_data.real_icon
 		
 		# 放大
-		var tw_show = create_tween()
-		tw_show.tween_property(item_main, "scale", Vector2.ONE, 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		var tw_show = create_tween().set_parallel(true)
+		for r_data in reveal_items_data:
+			tw_show.tween_property(r_data.node, "scale", r_data.target_scale, 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		await tw_show.finished
 	
 	# === 6. 揭示后停留 ===

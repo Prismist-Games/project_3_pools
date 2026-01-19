@@ -1593,6 +1593,7 @@ libraries = {
 }
 
 [node name="5 Choose 1" type="Sprite2D" parent="."]
+visible = false
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 position = Vector2(4414, 1742)
 texture = ExtResource("92_taegb")
