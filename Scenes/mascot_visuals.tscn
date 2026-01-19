@@ -1,4 +1,4 @@
-[gd_scene load_steps=100 format=3 uid="uid://b2mfixaghaocc"]
+[gd_scene load_steps=102 format=3 uid="uid://b2mfixaghaocc"]
 
 [ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="1_fu8yu"]
 [ext_resource type="AudioStream" uid="uid://bmus83sm4cx3t" path="res://assets/audio/sfx/381588__dorianmastin__snd_impactheavywall01.wav" id="2_kmeeb"]
@@ -1180,6 +1180,21 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="Animation" id="Animation_qhr86"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Era_3_face:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
 [sub_resource type="Animation" id="Animation_vpvb0"]
 resource_name = "era_3_rotation"
 length = 3.0
@@ -1195,21 +1210,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, 6.2831855]
-}
-
-[sub_resource type="Animation" id="Animation_qhr86"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Era_3_face:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qhr86"]
@@ -1397,9 +1397,11 @@ texture = ExtResource("7_fu8yu")
 sprite_frames = SubResource("SpriteFrames_np3ll")
 animation = &"wave"
 autoplay = "wave"
-frame_progress = 0.2539253
+frame = 2
+frame_progress = 0.48310062
 
 [node name="Era_3" type="Node2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
+visible = false
 
 [node name="Era_3_fill" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_3"]
 modulate = Color(0.2, 0.6039216, 0.5019608, 1)
@@ -1417,6 +1419,7 @@ libraries = {
 autoplay = "era_3_rotation"
 
 [node name="Era_4" type="Node2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
+visible = false
 
 [node name="Era_4_face" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_4"]
 modulate = Color(0.5058824, 0.827451, 0.44313726, 1)

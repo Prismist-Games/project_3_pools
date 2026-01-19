@@ -20,9 +20,11 @@ const FADE_DURATION: float = 0.3
 ## 节点引用
 @onready var background: ColorRect = $Background
 @onready var slide_image: TextureRect = $Background/SlideImage
-@onready var prev_button: Button = $Background/ButtonContainer/PrevButton
-@onready var next_button: Button = $Background/ButtonContainer/NextButton
-@onready var close_button: Button = $Background/CloseButton
+@onready var prev_button: TextureButton = $Background/ButtonContainer/PrevButton
+@onready var next_button: TextureButton = $Background/ButtonContainer/NextButton
+@onready var close_button: TextureButton = $Background/CloseButton
+@onready var prev_button_label: RichTextLabel = $Background/ButtonContainer/PrevButton/RichTextLabel
+@onready var next_button_label: RichTextLabel = $Background/ButtonContainer/NextButton/RichTextLabel
 
 ## 是否正在显示
 var _is_showing: bool = false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=96 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=95 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
@@ -55,7 +55,6 @@
 [ext_resource type="Texture2D" uid="uid://c5hf5dhl1twpv" path="res://assets/sprites/the_machine_dlc/dlc_screen_fill.png" id="42_p2bqf"]
 [ext_resource type="PackedScene" uid="uid://basts7bbr2vav" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
-[ext_resource type="Texture2D" uid="uid://caieb4p7g0f64" path="res://assets/sprites/item_slots/基地-4.png" id="71_i4ggu"]
 [ext_resource type="Texture2D" uid="uid://dueqqf84ep58p" path="res://assets/sprites/frames/rabbit_popup.png" id="72_d4tgn"]
 [ext_resource type="Texture2D" uid="uid://b7qsbdjotcn0r" path="res://assets/sprites/frames/rabbit_popup_button.png" id="73_1wqh7"]
 [ext_resource type="Texture2D" uid="uid://hrp7bsul1woh" path="res://assets/sprites/frames/rabbit_popup_button_pressed.png" id="74_1wndc"]
@@ -1717,17 +1716,15 @@ editor_draw_drag_margin = true
 [node name="VfxLayer" type="Node2D" parent="."]
 z_index = 999
 
-[node name="Screen Mask" type="TextureRect" parent="."]
-self_modulate = Color(0, 0, 0, 0.5019608)
+[node name="Screen Mask" type="ColorRect" parent="."]
 z_index = 10
 layout_mode = 0
 offset_left = -851.0
 offset_top = -608.0
 offset_right = 7007.0
 offset_bottom = 3900.0
-mouse_filter = 0
 mouse_force_pass_scroll_events = false
-texture = ExtResource("71_i4ggu")
+color = Color(0, 0, 0, 0.5019608)
 
 [node name="Popup Window" type="TextureRect" parent="."]
 z_index = 11
