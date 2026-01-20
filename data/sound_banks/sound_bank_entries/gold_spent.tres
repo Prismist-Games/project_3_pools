@@ -1,10 +1,11 @@
 [gd_resource type="Resource" script_class="SoundBankEntry" load_steps=3 format=3 uid="uid://1urfxwrmwj5c"]
 
 [ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_2l837"]
-[ext_resource type="AudioStream" uid="uid://c5pc7o5o4qxe2" path="res://assets/audio/sfx/spend_gold.wav" id="2_7ddye"]
+[ext_resource type="AudioStream" uid="uid://fv4r00lfx0sn" path="res://assets/audio/sfx/795404__robinhood76__13224-coin-slot-load.wav" id="2_7ddye"]
 
 [resource]
 script = ExtResource("1_2l837")
 id = &"gold_spent"
 stream = ExtResource("2_7ddye")
-volume_db = -15.0
+volume_db = -20.0
+bus = "SFX"

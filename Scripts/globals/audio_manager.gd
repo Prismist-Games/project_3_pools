@@ -34,6 +34,11 @@ var _bgm_player_b: AudioStreamPlayer
 var _active_bgm_player: AudioStreamPlayer
 var _bgm_registry: Dictionary = {} # StringName -> AudioStream
 
+# --- Rarity Reveal 音效控制 ---
+var _current_rarity_reveal_player: AudioStreamPlayer = null
+var _rarity_complete_player: AudioStreamPlayer = null # 专用播放器，不会被抢占
+
+
 func _ready() -> void:
 	_setup_sfx_pool()
 	_setup_bgm_players()
@@ -49,6 +54,12 @@ func _setup_sfx_pool() -> void:
 		player.bus = &"SFX"
 		add_child(player)
 		_sfx_pool.append(player)
+	
+	# 创建专用的 rarity complete 播放器（不会被池抢占）
+	_rarity_complete_player = AudioStreamPlayer.new()
+	_rarity_complete_player.bus = &"SFX"
+	add_child(_rarity_complete_player)
+
 
 func _setup_bgm_players() -> void:
 	_bgm_player_a = AudioStreamPlayer.new()
@@ -119,8 +130,8 @@ func _internal_do_play_sfx(sfx_id: StringName, entry: SoundBankEntry, override_p
 			final_pitch = original_length / entry.target_duration
 	
 	# 最后加上随机偏移
-	var variance = randf_range(-entry.pitch_variance, entry.pitch_variance)
-	player.pitch_scale = final_pitch * (1.0 + variance)
+	# Pitch variance removed as requested
+	player.pitch_scale = final_pitch
 	
 	player.play()
 	active_players.append(player)
@@ -139,11 +150,182 @@ func play_sfx_timed(sfx_id: StringName, target_duration: float) -> void:
 	var original_length = entry.stream.get_length()
 	if original_length > 0 and target_duration > 0:
 		var base_p = original_length / target_duration
-		player.pitch_scale = base_p * (1.0 + randf_range(-entry.pitch_variance, entry.pitch_variance))
+		player.pitch_scale = base_p
 	else:
-		player.pitch_scale = 1.0 + randf_range(-entry.pitch_variance, entry.pitch_variance)
+		player.pitch_scale = 1.0
 	
 	player.play()
+
+## 播放音效并通过 Pitch Shift Bus 调整音调
+func play_sfx_with_pitch(sfx_id: StringName, pitch_scale: float) -> void:
+	if not _sfx_registry.has(sfx_id):
+		return
+	
+	var entry: SoundBankEntry = _sfx_registry[sfx_id]
+	if not entry.stream:
+		return
+	
+
+	var player = _get_idle_sfx_player()
+	player.stream = entry.stream
+	player.volume_db = entry.volume_db
+	player.bus = &"RarityReveal" # 使用 Pitch Shift Bus
+	player.pitch_scale = 1.0 # 保持为 1.0，通过 Bus 效果调整
+	
+	# 设置 Bus 的 Pitch Shift 效果
+	_set_bus_pitch_shift(&"RarityReveal", pitch_scale)
+	
+	player.play()
+	
+	# 记录最后一个播放器（用于完成音效等待）
+	_current_rarity_reveal_player = player
+
+## 根据品质播放揭示完成音效
+## 可配置不同品质的完成音效 ID：rarity_complete_common, rarity_complete_rare, 等等
+func play_rarity_reveal_complete(rarity: int) -> AudioStreamPlayer:
+	# 等待最后一个 rarity reveal 音效播放完成
+	if _current_rarity_reveal_player and is_instance_valid(_current_rarity_reveal_player):
+		if _current_rarity_reveal_player.playing:
+			# 等待播放器自然播放完成
+			await _current_rarity_reveal_player.finished
+		_current_rarity_reveal_player = null
+	
+	var sfx_id: StringName
+	
+	match rarity:
+		Constants.Rarity.COMMON:
+			sfx_id = &"rarity_complete_common"
+		Constants.Rarity.UNCOMMON:
+			sfx_id = &"rarity_complete_uncommon"
+		Constants.Rarity.RARE:
+			sfx_id = &"rarity_complete_rare"
+		Constants.Rarity.EPIC:
+			sfx_id = &"rarity_complete_epic"
+		Constants.Rarity.LEGENDARY:
+			sfx_id = &"rarity_complete_legendary"
+		Constants.Rarity.MYTHIC:
+			sfx_id = &"rarity_complete_mythic"
+		_:
+			sfx_id = &"rarity_complete_common" # 默认
+	
+	# 使用专用播放器播放完成音效（不会被池抢占）
+	if not _sfx_registry.has(sfx_id):
+		return null
+	
+	var entry: SoundBankEntry = _sfx_registry[sfx_id]
+	if not entry.stream:
+		return null
+	
+	# 如果上一个完成音效还在播放，让它继续（不强制停止）
+	# 使用专用播放器确保不会被其他音效抢占
+	_rarity_complete_player.stream = entry.stream
+	_rarity_complete_player.volume_db = entry.volume_db
+	_rarity_complete_player.bus = entry.bus
+	_rarity_complete_player.pitch_scale = 1.0
+	_rarity_complete_player.play()
+	
+	return _rarity_complete_player
+
+
+## 播放循环音效（返回播放器引用以便后续控制）
+## 使用专用的 "RarityReveal" Bus 来支持 Pitch Shift 效果
+func play_sfx_looping(sfx_id: StringName, initial_pitch: float = 1.0) -> AudioStreamPlayer:
+	if not _sfx_registry.has(sfx_id):
+		return null
+	
+	var entry: SoundBankEntry = _sfx_registry[sfx_id]
+	if not entry.stream:
+		return null
+	
+	var player = _get_idle_sfx_player()
+	player.stream = entry.stream
+	player.volume_db = entry.volume_db
+	
+	# 使用专门的 "RarityReveal" Bus（需要在项目中配置 Pitch Shift 效果）
+	player.bus = &"RarityReveal"
+	player.pitch_scale = 1.0 # 保持为 1.0，通过 Bus 效果调整音调
+	
+	# 初始化 Bus 的 Pitch Shift 效果
+	_set_bus_pitch_shift(&"RarityReveal", initial_pitch)
+	
+	player.play()
+	return player
+
+## 调整 Bus 的 Pitch Shift 效果（带平滑过渡）
+func set_sfx_pitch(player: AudioStreamPlayer, target_pitch: float, duration: float = 0.1) -> void:
+	if not player or not is_instance_valid(player):
+		return
+	
+	# 确认使用的是 RarityReveal Bus
+	if player.bus != &"RarityReveal":
+		push_warning("AudioManager: set_sfx_pitch called on player not using RarityReveal bus")
+		return
+	
+	# 通过 Bus 的 Pitch Shift 效果调整音调
+	if duration <= 0:
+		_set_bus_pitch_shift(&"RarityReveal", target_pitch)
+	else:
+		# 平滑过渡音调
+		var bus_idx = AudioServer.get_bus_index(&"RarityReveal")
+		if bus_idx < 0:
+			return
+			
+		var effect_idx = _get_pitch_shift_effect_index(bus_idx)
+		if effect_idx < 0:
+			return
+		
+		var effect = AudioServer.get_bus_effect(bus_idx, effect_idx)
+		if effect is AudioEffectPitchShift:
+			var current_pitch = effect.pitch_scale
+			var tween = create_tween()
+			tween.tween_method(
+				func(p: float): _set_bus_pitch_shift(&"RarityReveal", p),
+				current_pitch,
+				target_pitch,
+				duration
+			).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+## 停止循环音效（带淡出）
+func stop_sfx_looping(player: AudioStreamPlayer, fade_duration: float = 0.2) -> void:
+	if not player or not is_instance_valid(player) or not player.playing:
+		return
+	
+	if fade_duration <= 0:
+		player.stop()
+	else:
+		var original_volume = player.volume_db
+		var tween = create_tween()
+		tween.tween_property(player, "volume_db", -80.0, fade_duration)
+		tween.tween_callback(func():
+			player.stop()
+			player.volume_db = original_volume # 恢复原始音量供下次使用
+		)
+
+## 内部方法：设置指定 Bus 的 Pitch Shift 效果
+func _set_bus_pitch_shift(bus_name: StringName, pitch_scale: float) -> void:
+	var bus_idx = AudioServer.get_bus_index(bus_name)
+	if bus_idx < 0:
+		push_warning("AudioManager: Bus '%s' not found" % bus_name)
+		return
+	
+	var effect_idx = _get_pitch_shift_effect_index(bus_idx)
+	if effect_idx < 0:
+		push_warning("AudioManager: No PitchShift effect found on bus '%s'" % bus_name)
+		return
+	
+	var effect = AudioServer.get_bus_effect(bus_idx, effect_idx)
+	if effect is AudioEffectPitchShift:
+		effect.pitch_scale = pitch_scale
+
+## 内部方法：获取 Bus 上的 Pitch Shift 效果索引
+func _get_pitch_shift_effect_index(bus_idx: int) -> int:
+	var effect_count = AudioServer.get_bus_effect_count(bus_idx)
+	for i in range(effect_count):
+		var effect = AudioServer.get_bus_effect(bus_idx, i)
+		if effect is AudioEffectPitchShift:
+			return i
+	return -1
+
 
 ## 注册 BGM
 func register_bgm(bgm_id: StringName, stream: AudioStream) -> void:

@@ -51,7 +51,7 @@
 [ext_resource type="PackedScene" uid="uid://cr0uv8jj87n1f" path="res://scenes/ui_module/item_slot_root_0.tscn" id="36_6sdua"]
 [ext_resource type="Texture2D" uid="uid://c0k24j0daifc0" path="res://assets/sprites/icons/cross.png" id="37_50t6p"]
 [ext_resource type="Texture2D" uid="uid://ck7c3s60r0tf5" path="res://assets/sprites/the_machine_dlc/dlc_pole.png" id="39_6sdua"]
-[ext_resource type="PackedScene" uid="uid://bdgyvnue2xmp5" path="res://scenes/mascot_visuals.tscn" id="39_aagg1"]
+[ext_resource type="PackedScene" uid="uid://b2mfixaghaocc" path="res://scenes/mascot_visuals.tscn" id="39_aagg1"]
 [ext_resource type="Texture2D" uid="uid://c0cjgrstcb5on" path="res://assets/sprites/the_machine_dlc/dlc_panel.png" id="39_enqmm"]
 [ext_resource type="Texture2D" uid="uid://qlu81dcv2v71" path="res://assets/sprites/the_machine_dlc/dlc_screen_outline.png" id="41_4tp6t"]
 [ext_resource type="Texture2D" uid="uid://c5hf5dhl1twpv" path="res://assets/sprites/the_machine_dlc/dlc_screen_fill.png" id="42_p2bqf"]

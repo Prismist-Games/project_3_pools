@@ -336,6 +336,7 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 		
 		if anim_player.has_animation("lid_open"):
 			anim_player.play("lid_open")
+			EventBus.game_event.emit(&"pool_lid_open", ContextProxy.new({"slot_index": pool_index}))
 			if anim_player.is_playing():
 				await anim_player.animation_finished
 		return
@@ -417,6 +418,7 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 	# === 2. 播放盖子打开动画并等待完成 ===
 	if anim_player.has_animation("lid_open"):
 		anim_player.play("lid_open")
+		EventBus.game_event.emit(&"pool_lid_open", ContextProxy.new({"slot_index": pool_index}))
 		if anim_player.is_playing():
 			await anim_player.animation_finished
 
@@ -432,6 +434,14 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 			for current_step in range(rarity_value + 1):
 				if backgrounds:
 					backgrounds.color = Constants.get_rarity_border_color(current_step)
+				
+				# 每次品质提升时播放音效，音调随品质升高
+				# Common(0)=1.0, Uncommon(1)=1.1, Rare(2)=1.2, Epic(3)=1.3, Legendary(4)=1.4, Mythic(5)=1.5
+				var pitch = 1.0 + (current_step * 0.1)
+				AudioManager.play_sfx_with_pitch(&"rarity_reveal_step", pitch)
+				
+				# 添加微小延迟避免音效叠加时的峰值冲突
+				await get_tree().create_timer(0.05).timeout
 					
 				reveal_tween = create_tween().set_parallel(true)
 				# punch scale and rotation at the same time
@@ -455,6 +465,10 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 			tw_hide.tween_property(r_data.node, "scale", Vector2.ZERO, 0.15).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 		await tw_hide.finished
 		
+		# 播放揭示完成音效（根据品质，在后台播放完成）
+		# 关键修改：等待之前的音效完成，并获取播放器句柄
+		var complete_sfx_player = await AudioManager.play_rarity_reveal_complete(rarity_value)
+		
 		# 切换为真身
 		for r_data in reveal_items_data:
 			r_data.node.texture = r_data.real_icon
@@ -464,11 +478,18 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 		for r_data in reveal_items_data:
 			tw_show.tween_property(r_data.node, "scale", r_data.target_scale, 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		await tw_show.finished
+		
+		# 触发获取物品的通用音效
+		# AudioManager.play_sfx(&"item_obtained") - Moved to VfxQueueManager
 	
-	# === 6. 揭示后停留 ===
-	# 物品显形后，停留一段时间再进行后续流程（入包/Pending）
-	if not skip_shuffle and not items.is_empty():
-		await get_tree().create_timer(reveal_step_delay).timeout
+		# === 6. 揭示后停留 ===
+		# 物品显形后，停留一段时间再进行后续流程（入包/Pending）
+		if not skip_shuffle and not items.is_empty():
+			await get_tree().create_timer(reveal_step_delay).timeout
+		
+		# 关键修改：确保完成音效播放完毕才退出
+		if complete_sfx_player and is_instance_valid(complete_sfx_player) and complete_sfx_player.playing:
+			await complete_sfx_player.finished
 	
 	# 定格最终品质颜色 (确保非 shuffle 模式也正确设置)
 	if not items.is_empty() and backgrounds:

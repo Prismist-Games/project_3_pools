@@ -110,7 +110,8 @@ func _do_normal_draw(ctx: DrawContext) -> void:
 		ctx.result_items.append(item_instance)
 		
 		EventBus.item_obtained.emit(item_instance)
-		EventBus.game_event.emit(&"item_obtained", item_instance)
+		# 注意：不在这里发射 game_event，避免过早播放音效
+		# 音效应在 UI 揭示序列完成时播放（见 lottery_slot_ui.gd:480）
 	
 	# ERA_4: 抽奖后递减保质期（通过效果系统）
 	var cfg = EraManager.current_config if EraManager else null

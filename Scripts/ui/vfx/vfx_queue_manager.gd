@@ -182,6 +182,8 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 	
 	# 如果有来源奖池槽位，处理推进动画
 	var source_slot = task.get("source_lottery_slot")
+	if source_slot:
+		AudioManager.play_sfx(&"item_obtained")
 	
 	# 创建飞行精灵（从 lottery slot 飞出时播放 rarity 入场动画）
 	var fly_sprite = _create_fly_sprite(item, start_pos, start_scale, source_slot != null)

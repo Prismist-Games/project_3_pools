@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SoundBankEntry" load_steps=3 format=3 uid="uid://bgclxy7kpdma6"]
+
+[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_vcwbk"]
+[ext_resource type="AudioStream" uid="uid://c033iw4yqtdsc" path="res://assets/audio/sfx/epic_complete.wav" id="2_vcwbk"]
+
+[resource]
+script = ExtResource("1_vcwbk")
+id = &"rarity_complete_epic"
+stream = ExtResource("2_vcwbk")
+volume_db = -30.0
+max_polyphony = 1
+bus = "SFX"
