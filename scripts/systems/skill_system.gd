@@ -232,7 +232,7 @@ func _on_effect_triggered(type: String, skill_id: String) -> void:
 			# 技能正式生效或瞬间触发
 			EventBus.game_event.emit(&"skill_activated", ctx)
 			
-		SkillEffect.TRIGGER_CANCEL:
+		SkillEffect.TRIGGER_DEACTIVATE:
 			# 技能退出待命状态（静默，不播放激活动画）
 			EventBus.game_event.emit(&"skill_cancelled", ctx)
 

@@ -11,6 +11,10 @@ class_name OcdSkillEffect
 var _is_pending: bool = false
 
 
+func initialize() -> void:
+	_check_orders_for_same_type()
+
+
 func on_event(event_id: StringName, context: RefCounted) -> void:
 	match event_id:
 		&"orders_updated":
@@ -35,7 +39,7 @@ func _check_orders_for_same_type() -> void:
 		var all_same = true
 		for req in order.requirements:
 			var item_id = req.get("item_id", &"")
-			var item_data = GameManager.get_item_data_by_id(item_id)
+			var item_data = GameManager.get_item_data(item_id)
 			if item_data == null:
 				continue
 			if first_type == -1:
@@ -58,7 +62,7 @@ func _check_orders_for_same_type() -> void:
 func _handle_order_completed(ctx: OrderCompletedContext) -> void:
 	if ctx == null: return
 	# 只处理普通订单，不处理主线订单
-	if ctx.order != null and ctx.order.is_mainline: return
+	if ctx.order_data != null and ctx.order_data.is_mainline: return
 	
 	if ctx.submitted_items.size() > 1:
 		var first_type = ctx.submitted_items[0].item_data.item_type
@@ -69,7 +73,7 @@ func _handle_order_completed(ctx: OrderCompletedContext) -> void:
 				break
 		if consistent:
 			triggered.emit(TRIGGER_ACTIVATE)
-			ctx.reward_gold *= multiplier
+			ctx.reward_gold = int(ctx.reward_gold * multiplier)
 
 
 func get_visual_state() -> String:

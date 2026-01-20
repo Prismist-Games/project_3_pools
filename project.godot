@@ -24,7 +24,7 @@ resources_spreadsheet_view/freeze_first_column=true
 [application]
 
 config/name="Project 3 Pools"
-run/main_scene="uid://3vd6vr0ax1kf"
+run/main_scene="uid://cf1cjj8xlhblr"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 

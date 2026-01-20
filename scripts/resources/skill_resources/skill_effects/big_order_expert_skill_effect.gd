@@ -12,6 +12,10 @@ class_name BigOrderExpertSkillEffect
 var _is_pending: bool = false
 
 
+func initialize() -> void:
+	_check_orders_for_big()
+
+
 func on_event(event_id: StringName, context: RefCounted) -> void:
 	match event_id:
 		&"orders_updated":
@@ -42,7 +46,7 @@ func _check_orders_for_big() -> void:
 func _handle_order_completed(ctx: OrderCompletedContext) -> void:
 	if ctx == null: return
 	# 只处理普通订单，不处理主线订单
-	if ctx.order != null and ctx.order.is_mainline: return
+	if ctx.order_data != null and ctx.order_data.is_mainline: return
 	
 	if ctx.submitted_items.size() >= count_threshold:
 		triggered.emit(TRIGGER_ACTIVATE)

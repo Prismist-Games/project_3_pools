@@ -66,24 +66,6 @@ func _on_game_event(event_id: StringName, context: RefCounted) -> void:
 func _play_feedback(type: String) -> void:
 	var effect = null
 	
-	# 处理取消：静默清除 pending 效果
-	if type == SkillEffect.TRIGGER_CANCEL:
-		if is_instance_valid(_pending_effect):
-			_pending_effect.queue_free()
-			_pending_effect = null
-		return
-	
-	if type == SkillEffect.TRIGGER_ACTIVATE:
-		if is_instance_valid(_pending_effect):
-			effect = _pending_effect
-			_pending_effect = null # Clear ref so we don't track it anymore
-			if effect.has_method("activate"):
-				effect.activate()
-			return
-		else:
-			# Fallback if no pending effect exists
-			type = SkillEffect.TRIGGER_INSTANT
-	
 	# DEACTIVATE: 直接移除 pending 效果，不变黄
 	if type == SkillEffect.TRIGGER_DEACTIVATE:
 		if is_instance_valid(_pending_effect):
@@ -94,6 +76,15 @@ func _play_feedback(type: String) -> void:
 			_pending_effect = null
 		return
 	
+	if type == SkillEffect.TRIGGER_ACTIVATE:
+		if is_instance_valid(_pending_effect):
+			effect = _pending_effect
+			_pending_effect = null
+			if effect.has_method("activate"):
+				effect.activate()
+			return
+		else:
+			type = SkillEffect.TRIGGER_INSTANT
 	# Spawn new if needed
 	if effect == null:
 		effect = EFFECT_SCENE.instantiate()
