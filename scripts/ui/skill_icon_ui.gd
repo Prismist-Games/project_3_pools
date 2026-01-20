@@ -66,6 +66,13 @@ func _on_game_event(event_id: StringName, context: RefCounted) -> void:
 func _play_feedback(type: String) -> void:
 	var effect = null
 	
+	# 处理取消：静默清除 pending 效果
+	if type == SkillEffect.TRIGGER_CANCEL:
+		if is_instance_valid(_pending_effect):
+			_pending_effect.queue_free()
+			_pending_effect = null
+		return
+	
 	if type == SkillEffect.TRIGGER_ACTIVATE:
 		if is_instance_valid(_pending_effect):
 			effect = _pending_effect

@@ -134,6 +134,9 @@ func _rebuild_effects(skills: Array) -> void:
 			
 			_active_effects.append(eff)
 			
+			# 调用技能效果的初始化方法（用于连接信号等）
+			eff.initialize()
+			
 			# Connect signal with skill_id bound
 			var callback = _on_effect_triggered.bind(skill_data.id)
 			if not eff.triggered.is_connected(callback):
@@ -189,6 +192,10 @@ func _on_effect_triggered(type: String, skill_id: String) -> void:
 		SkillEffect.TRIGGER_ACTIVATE, SkillEffect.TRIGGER_INSTANT:
 			# 技能正式生效或瞬间触发
 			EventBus.game_event.emit(&"skill_activated", ctx)
+			
+		SkillEffect.TRIGGER_CANCEL:
+			# 技能退出待命状态（静默，不播放激活动画）
+			EventBus.game_event.emit(&"skill_cancelled", ctx)
 
 
 func _on_game_event(event_id: StringName, context: RefCounted) -> void:

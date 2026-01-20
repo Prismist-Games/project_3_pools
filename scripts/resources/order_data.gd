@@ -152,24 +152,8 @@ func validate_selection(selected_items: Array) -> Dictionary:
 		# 例如：提交一个 Epic 物品，加成 = 0.4
 		total_bonus += Constants.rarity_bonus(best_match.rarity)
 	
-	# 步骤 2: 严格检查 - 确保提交的每个物品都能匹配至少一个订单需求
-	# 防止玩家提交不必要的额外物品
-	for item in selected_items:
-		if item == null:
-			continue
-			
-		var can_match_any_requirement = false
-		for req in requirements:
-			var item_id = req.get("item_id", &"")
-			var min_rarity = req.get("min_rarity", 0)
-			
-			if item.item_data.id == item_id and item.rarity >= min_rarity:
-				can_match_any_requirement = true
-				break
-		
-		if not can_match_any_requirement:
-			result["reason"] = "unnecessary_items"
-			return result
+	# 注意：允许玩家提交额外物品（用于触发强迫症等技能）
+	# 不再拒绝包含"不必要物品"的选择
 			
 	result.valid = true
 	result.total_submitted_bonus = total_bonus

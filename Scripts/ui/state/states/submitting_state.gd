@@ -41,59 +41,49 @@ func submit_order() -> void:
 	
 	controller.lock_ui("submit")
 	
-	# 1. 预检查哪些订单会被满足
+	# 1. 预检查哪些订单会被满足（使用 OrderSystem 的全局检查）
 	var indices = InventorySystem.multi_selected_indices.duplicate()
 	
-	var selected_items: Array[ItemInstance] = []
-	for idx in indices:
-		if idx >= 0 and idx < InventorySystem.inventory.size() and InventorySystem.inventory[idx] != null:
-			selected_items.append(InventorySystem.inventory[idx])
+	# 使用 OrderSystem 的预检查方法（包含全局物品必要性检查）
+	var will_submit_orders = OrderSystem.preview_submit(indices)
 	
-	if selected_items.is_empty():
+	if will_submit_orders.is_empty():
+		# 没有订单会被提交
 		controller.unlock_ui("submit")
 		return
 	
-	# 找出所有会被满足的订单及其对应的UI槽位
+	# 找出对应的 UI 槽位
 	var satisfying_slots: Array[Control] = []
-	var satisfied_order_count: int = 0
 	
-	for i in range(OrderSystem.current_orders.size()):
-		var order = OrderSystem.current_orders[i]
-		if order.validate_selection(selected_items).valid:
-			satisfied_order_count += 1
-			var slot: Control = null
-			
-			# 通过 OrderController 查找对应的 UI 槽位
-			if controller.order_controller:
-				# 检查是否是主线任务
-				if order.is_mainline:
-					slot = controller.order_controller.main_quest_slot
-				else:
-					# 普通订单：在 quest_slots_grid 中查找
-					for child in controller.order_controller.quest_slots_grid.get_children():
-						if child.has_method("get_order") and child.get_order() == order:
-							slot = child
-							break
-					
-					# 如果还没找到，尝试备选方案
-					if not slot:
-						for ui_idx in range(1, 5):
-							var ui_slot = controller.order_controller.quest_slots_grid.get_node_or_null("Quest Slot_root_" + str(ui_idx))
-							if ui_slot:
-								# 这里假设顺序匹配，虽然不够严谨但作为保底
-								var displayed_order_idx = ui_idx - 1
-								if displayed_order_idx < OrderSystem.current_orders.size():
-									if OrderSystem.current_orders[displayed_order_idx] == order:
-										slot = ui_slot
-										break
-			
-			if slot:
-				satisfying_slots.append(slot)
-	
-	if satisfied_order_count == 0:
-		# 提交失败，没有任何订单被满足 - 保持选中状态
-		controller.unlock_ui("submit")
-		return
+	for order in will_submit_orders:
+		var slot: Control = null
+		
+		# 通过 OrderController 查找对应的 UI 槽位
+		if controller.order_controller:
+			# 检查是否是主线任务
+			if order.is_mainline:
+				slot = controller.order_controller.main_quest_slot
+			else:
+				# 普通订单：在 quest_slots_grid 中查找
+				for child in controller.order_controller.quest_slots_grid.get_children():
+					if child.has_method("get_order") and child.get_order() == order:
+						slot = child
+						break
+				
+				# 如果还没找到，尝试备选方案
+				if not slot:
+					for ui_idx in range(1, 5):
+						var ui_slot = controller.order_controller.quest_slots_grid.get_node_or_null("Quest Slot_root_" + str(ui_idx))
+						if ui_slot:
+							# 这里假设顺序匹配，虽然不够严谨但作为保底
+							var displayed_order_idx = ui_idx - 1
+							if displayed_order_idx < OrderSystem.current_orders.size():
+								if OrderSystem.current_orders[displayed_order_idx] == order:
+									slot = ui_slot
+									break
+		
+		if slot:
+			satisfying_slots.append(slot)
 	
 	# 提交成功：清空选中列表，防止动画期间重复触发
 	InventorySystem.multi_selected_indices = []

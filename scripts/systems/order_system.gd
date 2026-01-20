@@ -75,6 +75,51 @@ func _add_refresh_to_all_orders() -> void:
 	EventBus.orders_updated.emit(current_orders)
 
 
+## 预检查哪些订单会被提交（供 UI 使用，包含全局物品必要性检查）
+## 返回会被提交的订单列表，如果返回空则表示不会进行任何提交
+func preview_submit(selected_indices: Array[int]) -> Array[OrderData]:
+	var inventory = InventorySystem.inventory
+	var selected_items: Array[ItemInstance] = []
+	for idx in selected_indices:
+		if idx >= 0 and idx < inventory.size() and inventory[idx] != null:
+			selected_items.append(inventory[idx])
+	
+	if selected_items.is_empty():
+		return []
+	
+	# 找出所有可满足的订单
+	var satisfied_orders: Array[OrderData] = []
+	for order in current_orders:
+		if order.validate_selection(selected_items).valid:
+			satisfied_orders.append(order)
+			
+	if satisfied_orders.is_empty():
+		return []
+	
+	# 全局检查：确保每个选中物品都属于至少一个可满足订单的需求
+	for item in selected_items:
+		if item == null:
+			continue
+			
+		var is_needed_by_any_order = false
+		for order in satisfied_orders:
+			for req in order.requirements:
+				var item_id = req.get("item_id", &"")
+				var min_rarity = req.get("min_rarity", 0)
+				
+				if item.item_data.id == item_id and item.rarity >= min_rarity:
+					is_needed_by_any_order = true
+					break
+			if is_needed_by_any_order:
+				break
+		
+		if not is_needed_by_any_order:
+			# 这个物品不属于任何可满足订单的需求
+			return []
+	
+	return satisfied_orders
+
+
 func submit_order(index: int, selected_indices: Array[int] = []) -> bool:
 	if index != -1:
 		return _submit_single_order(index, selected_indices)
@@ -123,15 +168,39 @@ func _submit_all_satisfied(selected_indices: Array[int]) -> bool:
 	
 	if selected_items.is_empty():
 		return false
-		
+	
+	# 找出所有可满足的订单
+	var satisfied_orders: Array[OrderData] = []
 	var satisfied_indices: Array[int] = []
 	for i in range(current_orders.size()):
 		var order = current_orders[i]
 		if order.validate_selection(selected_items).valid:
+			satisfied_orders.append(order)
 			satisfied_indices.append(i)
 			
 	if satisfied_indices.is_empty():
 		return false
+	
+	# 全局检查：确保每个选中物品都属于至少一个可满足订单的需求
+	for item in selected_items:
+		if item == null:
+			continue
+			
+		var is_needed_by_any_order = false
+		for order in satisfied_orders:
+			for req in order.requirements:
+				var item_id = req.get("item_id", &"")
+				var min_rarity = req.get("min_rarity", 0)
+				
+				if item.item_data.id == item_id and item.rarity >= min_rarity:
+					is_needed_by_any_order = true
+					break
+			if is_needed_by_any_order:
+				break
+		
+		if not is_needed_by_any_order:
+			# 这个物品不属于任何可满足订单的需求
+			return false
 		
 	# 按索引倒序排列，方便替换
 	satisfied_indices.sort()

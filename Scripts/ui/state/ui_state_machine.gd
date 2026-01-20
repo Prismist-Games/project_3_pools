@@ -90,6 +90,9 @@ func transition_to(state_name: StringName, payload: Dictionary = {}) -> bool:
 	# 发出信号
 	state_changed.emit(from_state_name, state_name)
 	
+	# 同步更新 GameManager.current_ui_mode（供技能系统等使用）
+	GameManager.current_ui_mode = get_mode_from_state(state_name)
+	
 	# 转换完成，清除挂起状态
 	pending_state_name = &""
 	
@@ -111,6 +114,9 @@ func force_set_state(state_name: StringName, payload: Dictionary = {}) -> void:
 	current_state = _states[state_name]
 	if current_state.has_method("enter"):
 		current_state.enter(payload)
+	
+	# 同步更新 GameManager.current_ui_mode
+	GameManager.current_ui_mode = get_mode_from_state(state_name)
 
 ## 转发输入事件到当前状态
 func handle_input(event: InputEvent) -> bool:
