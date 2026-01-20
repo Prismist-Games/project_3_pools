@@ -118,6 +118,9 @@ func draw() -> void:
 		if controller.vfx_manager:
 			controller.vfx_manager.is_paused = false
 		
+		# 触发金币不足音效信号
+		EventBus.game_event.emit(&"gold_insufficient", null)
+		
 		# 抖动反馈
 		slot.play_shake()
 		controller.last_clicked_pool_idx = -1

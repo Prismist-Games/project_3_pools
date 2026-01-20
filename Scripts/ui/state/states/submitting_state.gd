@@ -49,7 +49,9 @@ func submit_order() -> void:
 	var will_submit_orders = OrderSystem.preview_submit(indices)
 	
 	if will_submit_orders.is_empty():
-		# 没有订单会被提交
+		# 没有订单会被提交，触发反馈音效信号
+		EventBus.game_event.emit(&"order_submission_failed", null)
+		
 		controller.unlock_ui("submit")
 		return
 	
