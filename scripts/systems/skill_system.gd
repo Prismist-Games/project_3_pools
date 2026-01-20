@@ -43,6 +43,21 @@ func _ready() -> void:
 		EventBus.order_completed.connect(_on_order_completed)
 	if not EventBus.item_obtained.is_connected(_on_item_obtained):
 		EventBus.item_obtained.connect(_on_item_obtained)
+	# item_obtained_no_auto 复用同一处理函数，让技能能响应精准/有的放矢等词缀
+	if not EventBus.item_obtained_no_auto.is_connected(_on_item_obtained):
+		EventBus.item_obtained_no_auto.connect(_on_item_obtained)
+	
+	# 监听合成事件（让谈判专家等技能能响应合成）
+	if not InventorySystem.item_merged.is_connected(_on_item_merged):
+		InventorySystem.item_merged.connect(_on_item_merged)
+	
+	# 监听金币变化（让幸运7/贫困救济等能响应金币变化）
+	if not GameManager.gold_changed.is_connected(_on_gold_changed):
+		GameManager.gold_changed.connect(_on_gold_changed)
+	
+	# 监听订单更新（让强迫症/大订单专家/困难订单专家响应订单变化）
+	if not EventBus.orders_updated.is_connected(_on_orders_updated):
+		EventBus.orders_updated.connect(_on_orders_updated)
 
 	## 可扩展事件
 	if not EventBus.game_event.is_connected(_on_game_event):
@@ -58,6 +73,14 @@ func _exit_tree() -> void:
 		EventBus.order_completed.disconnect(_on_order_completed)
 	if EventBus.item_obtained.is_connected(_on_item_obtained):
 		EventBus.item_obtained.disconnect(_on_item_obtained)
+	if EventBus.item_obtained_no_auto.is_connected(_on_item_obtained):
+		EventBus.item_obtained_no_auto.disconnect(_on_item_obtained)
+	if InventorySystem.item_merged.is_connected(_on_item_merged):
+		InventorySystem.item_merged.disconnect(_on_item_merged)
+	if GameManager.gold_changed.is_connected(_on_gold_changed):
+		GameManager.gold_changed.disconnect(_on_gold_changed)
+	if EventBus.orders_updated.is_connected(_on_orders_updated):
+		EventBus.orders_updated.disconnect(_on_orders_updated)
 	if EventBus.game_event.is_connected(_on_game_event):
 		EventBus.game_event.disconnect(_on_game_event)
 
@@ -167,6 +190,22 @@ func _on_item_obtained(item: RefCounted) -> void:
 	_dispatch(&"item_obtained", item)
 
 
+## 合成事件处理（让谈判专家等技能响应合成）
+## 注意：item_merged(index, new_item, target_item) 的签名
+func _on_item_merged(_index: int, new_item: ItemInstance, _target_item: ItemInstance) -> void:
+	_dispatch(&"item_merged", new_item)
+
+
+## 金币变化事件处理（让幸运7/贫困救济能响应金币变化）
+func _on_gold_changed(_new_gold: int) -> void:
+	_dispatch(&"gold_changed", null)
+
+
+## 订单更新事件处理（让强迫症/大订单专家/困难订单专家能响应订单变化）
+func _on_orders_updated(_orders: Array) -> void:
+	_dispatch(&"orders_updated", null)
+
+
 func _on_effect_triggered(type: String, skill_id: String) -> void:
 	# Dispatch generic game event for UI to pick up
 	# Wrap in RefCounted to satisfy signal signature
@@ -192,6 +231,15 @@ func _on_effect_triggered(type: String, skill_id: String) -> void:
 
 
 func _on_game_event(event_id: StringName, context: RefCounted) -> void:
+	# 过滤掉已经通过 typed signal 处理的事件，避免重复派发
+	# - item_obtained/item_obtained_no_auto: 通过 EventBus 的 typed signal 处理
+	# - item_merged: 通过 InventorySystem.item_merged typed signal 处理
+	# - draw_requested/draw_finished: 通过 EventBus 的 typed signal 处理
+	# - order_completed: 通过 EventBus 的 typed signal 处理
+	match event_id:
+		&"item_obtained", &"item_merged", &"draw_requested", &"draw_finished", &"order_completed":
+			return
+	
 	_dispatch(event_id, context)
 
 

@@ -4,4 +4,4 @@
 
 [resource]
 script = ExtResource("1")
-threshold = 5
+threshold = 3

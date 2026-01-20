@@ -77,6 +77,16 @@ func _play_feedback(type: String) -> void:
 			# Fallback if no pending effect exists
 			type = SkillEffect.TRIGGER_INSTANT
 	
+	# DEACTIVATE: 直接移除 pending 效果，不变黄
+	if type == SkillEffect.TRIGGER_DEACTIVATE:
+		if is_instance_valid(_pending_effect):
+			if _pending_effect.has_method("deactivate"):
+				_pending_effect.deactivate()
+			else:
+				_pending_effect.queue_free()
+			_pending_effect = null
+		return
+	
 	# Spawn new if needed
 	if effect == null:
 		effect = EFFECT_SCENE.instantiate()
