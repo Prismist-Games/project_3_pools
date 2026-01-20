@@ -57,6 +57,9 @@ func enter(_payload: Dictionary = {}) -> void:
 	if controller.pool_controller:
 		controller.pool_controller._is_animating_refresh = true
 	
+	# 清除所有 lottery slot 的 hover 状态和视觉效果
+	_clear_all_slot_hover_states()
+	
 	# 展示技能选择 UI
 	_setup_skill_display()
 
@@ -263,7 +266,8 @@ func _reveal_skill_slot(slot: Control, skill: SkillData, index: int) -> void:
 		"affix_name": skill.name,
 		"description_text": skill.description,
 		"clear_hints": true,
-		"skip_lid_animation": true
+		"skip_lid_animation": true,
+		"item_type": - 1 # 技能选择模式，不触发quest slot高亮
 	}
 	
 	if slot.has_method("refresh_slot_data"):
@@ -275,7 +279,7 @@ func _reveal_skill_slot(slot: Control, skill: SkillData, index: int) -> void:
 		"item_data": skill,
 		"id": skill.id,
 		"icon": skill.icon,
-		"rarity": 0 # 技能统一使用普通背景色或特定颜色
+		"rarity": - 1 # 技能使用特殊值 -1，表示使用机器色背景
 	}
 	
 	# 3. 播放揭示动画
@@ -378,6 +382,32 @@ func _close_all_slots_and_refresh() -> void:
 		controller.pool_controller.play_all_refresh_animations(PoolSystem.current_pools, -1)
 	else:
 		PoolSystem.refresh_pools()
+
+
+## 清除所有 lottery slot 的 hover 状态和视觉效果
+func _clear_all_slot_hover_states() -> void:
+	for i in range(3):
+		var slot = _get_lottery_slot(i)
+		if not slot:
+			continue
+		
+		# 清除 hover 视觉效果
+		if slot.has_method("set_hover_action_state"):
+			slot.set_hover_action_state(0) # HoverType.NONE
+		
+		# 清除高亮效果
+		if slot.has_method("set_highlight"):
+			slot.set_highlight(false)
+		
+		# 重置内部 hover 状态变量
+		if "_current_hover_type" in slot:
+			slot._current_hover_type = 0 # HoverType.NONE
+		if "_is_hovered" in slot:
+			slot._is_hovered = false
+		
+		# 清除当前奖池物品类型，防止触发quest slot高亮
+		if "current_pool_item_type" in slot:
+			slot.current_pool_item_type = -1
 
 
 ## 辅助: 获取 LotterySlot 节点

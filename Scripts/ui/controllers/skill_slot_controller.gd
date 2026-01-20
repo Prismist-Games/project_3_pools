@@ -103,7 +103,7 @@ func refresh_slots(skills: Array, animated: bool = true) -> void:
 			
 			# 设置 Tooltip 到 Input Area
 			if input_area:
-				input_area.tooltip_text = "%s: %s" % [tr(skill.name), tr(skill.description)]
+				input_area.tooltip_text = Constants.process_tooltip_text("%s: %s" % [tr(skill.name), tr(skill.description)])
 			
 			# 槽位升起
 			if animated:
@@ -181,7 +181,7 @@ func update_slot_skill(index: int, skill: SkillData) -> void:
 			icon_node.setup(skill)
 	
 	if input_area and skill:
-		input_area.tooltip_text = "%s: %s" % [tr(skill.name), tr(skill.description)]
+		input_area.tooltip_text = Constants.process_tooltip_text("%s: %s" % [tr(skill.name), tr(skill.description)])
 
 
 ## 获取空槽位索引 (-1 表示全满)

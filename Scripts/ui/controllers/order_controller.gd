@@ -136,6 +136,42 @@ func play_open_sequence(index: int) -> void:
 	if slot.has_method("set_refresh_visual"):
 		slot.set_refresh_visual(false)
 
+
+## 批量播放所有普通订单的刷新动画（用于时代切换）
+func play_refresh_all_normal_sequence() -> void:
+	# 1. 同时关闭所有普通订单的盖子
+	var close_tasks: Array = []
+	for i in range(1, 5):
+		var slot = _get_slot_node(i)
+		if slot and slot.anim_player.has_animation("lid_close"):
+			slot.anim_player.play("lid_close")
+			close_tasks.append(slot.anim_player)
+	
+	# 等待所有关盖动画完成
+	if not close_tasks.is_empty():
+		EventBus.game_event.emit(&"order_lid_closed", null)
+		for ap in close_tasks:
+			if ap.is_playing():
+				await ap.animation_finished
+	
+	# 2. 更新显示数据
+	update_orders_display(OrderSystem.current_orders)
+	
+	# 3. 同时打开所有普通订单的盖子
+	var open_tasks: Array = []
+	for i in range(1, 5):
+		var slot = _get_slot_node(i)
+		if slot and slot.anim_player.has_animation("lid_open"):
+			slot.anim_player.play("lid_open")
+			open_tasks.append(slot.anim_player)
+	
+	# 等待所有开盖动画完成
+	if not open_tasks.is_empty():
+		EventBus.game_event.emit(&"order_lid_opened", null)
+		for ap in open_tasks:
+			if ap.is_playing():
+				await ap.animation_finished
+
 # --- Helpers ---
 
 func get_slot_node(index: int) -> Control:

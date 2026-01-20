@@ -8,7 +8,7 @@ extends "res://scripts/ui/state/ui_state.gd"
 func enter(_payload: Dictionary = {}) -> void:
 	# UI State Machine is now the source of truth for UI Mode
 	# 清理可能残留的选择状态
-	InventorySystem.multi_selected_indices.clear()
+	InventorySystem.selected_indices_for_order = []
 
 func can_transition_to(_next_state: StringName) -> bool:
 	# Idle 状态可以转换到任何状态

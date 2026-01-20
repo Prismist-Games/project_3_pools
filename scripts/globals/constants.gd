@@ -66,6 +66,15 @@ func type_to_icon(type: ItemType) -> Texture2D:
 		ItemType.TRAPEZOID: return preload("res://assets/sprites/icons/category_trapezoid.png")
 		_: return null
 
+func type_to_silhouette_icon(type: ItemType) -> Texture2D:
+	match type:
+		ItemType.TRIANGLE: return preload("res://assets/sprites/icons/silhouette_triangle.png")
+		ItemType.RECTANGLE: return preload("res://assets/sprites/icons/silhouette_rectangle.png")
+		ItemType.CIRCLE: return preload("res://assets/sprites/icons/silhouette_circle.png")
+		ItemType.STAR: return preload("res://assets/sprites/icons/silhouette_star.png")
+		ItemType.TRAPEZOID: return preload("res://assets/sprites/icons/silhouette_trapezoid.png")
+		_: return null
+
 
 func rarity_id(rarity: int) -> StringName:
 	match rarity:
@@ -143,7 +152,8 @@ enum UIMode {
 	NORMAL, ## 整理模式
 	SUBMIT, ## 提交模式
 	RECYCLE, ## 回收模式
-	REPLACE ## 以旧换新模式
+	REPLACE, ## 以旧换新模式
+	LOCKED ## 锁定模式 (精准选择/有的放矢)
 }
 
 ## UX 规范颜色 (针对白色背景优化)
@@ -189,3 +199,11 @@ func pick_weighted_index(weights: PackedFloat32Array, rng: RandomNumberGenerator
 		if roll <= acc:
 			return i
 	return max(weights.size() - 1, 0)
+
+
+## 处理 Tooltip 中的 BBCode，将 60px 的图标缩小为 16px
+func process_tooltip_text(text: String) -> String:
+	# 替换所有 [img=60] 为 [img=16]
+	# 增加容错：同时也替换 [img]...[/img] 中可能存在的尺寸标识，或者直接强制尺寸
+	# 简单替换 CSV 中的标准格式即可满足用户需求
+	return text.replace("[img=60]", "[img=16]")

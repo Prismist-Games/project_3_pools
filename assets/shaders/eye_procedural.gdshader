@@ -12,6 +12,11 @@ uniform float pupil_scale : hint_range(0.0, 2.0) = 1.0; // 0.0 隐藏瞳孔
 uniform vec4 pupil_color : source_color = vec4(0.0, 0.0, 0.0, 1.0); // 纯色模式或纹理着色
 uniform vec4 pupil_outline_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
 uniform float pupil_outline_thickness : hint_range(0.0, 0.1) = 0.0;
+varying vec4 vertex_color; 
+
+void vertex() {
+	vertex_color = COLOR;
+}
 
 float sdf_circle(vec2 p, float r) {
     return length(p) - r;
@@ -132,5 +137,5 @@ void fragment() {
         }
     }
     
-    COLOR = final_color;
+    COLOR = final_color * vertex_color;
 }

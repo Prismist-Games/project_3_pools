@@ -1,0 +1,1770 @@
+[gd_scene load_steps=113 format=3 uid="uid://3vd6vr0ax1kf"]
+
+[ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="1_ebw2t"]
+[ext_resource type="AudioStream" uid="uid://bmus83sm4cx3t" path="res://assets/audio/sfx/381588__dorianmastin__snd_impactheavywall01.wav" id="2_lqq6t"]
+[ext_resource type="Shader" uid="uid://di45w4y74m5hy" path="res://assets/shaders/circle.gdshader" id="2_w2h5l"]
+[ext_resource type="AudioStream" uid="uid://hp7wuy3elrv2" path="res://assets/audio/sfx/381591__dorianmastin__snd_impactheavywall04.wav" id="3_ur5vm"]
+[ext_resource type="Texture2D" uid="uid://ciklekvdp5hak" path="res://assets/sprites/the_rabbit/the_rabbit_left_arm.png" id="4_46y0v"]
+[ext_resource type="Texture2D" uid="uid://deairpal3cmlr" path="res://assets/sprites/the_rabbit/the_rabbit_left_thumb.png" id="5_jxp4i"]
+[ext_resource type="Texture2D" uid="uid://bsdf5iwmcegpx" path="res://assets/sprites/the_rabbit/the_rabbit_left_palm.png" id="6_850ru"]
+[ext_resource type="Texture2D" uid="uid://bjlpf6bxe6kb1" path="res://assets/sprites/the_rabbit/the_rabbit_wand_stick.PNG" id="7_6vnu0"]
+[ext_resource type="Texture2D" uid="uid://bwjokbfgqmqme" path="res://assets/sprites/the_rabbit/the_rabbit_wand_head.PNG" id="8_w2h5l"]
+[ext_resource type="Texture2D" uid="uid://byiuktv7nng2h" path="res://assets/sprites/the_rabbit/the_rabbit_wand_head_outline.png" id="9_5yfxn"]
+[ext_resource type="Texture2D" uid="uid://bgwtasnffh6qw" path="res://assets/sprites/the_rabbit/the_rabbit_wand_head_fill.png" id="10_ot72n"]
+[ext_resource type="Texture2D" uid="uid://blfi1cynn45pb" path="res://assets/sprites/the_rabbit/the_rabbit_wand_face.png" id="11_st8ik"]
+[ext_resource type="Texture2D" uid="uid://bta1pq0iskiiy" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_1.png" id="12_umjhq"]
+[ext_resource type="Texture2D" uid="uid://ba8n4bffxpxgp" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_2.png" id="13_3qq8w"]
+[ext_resource type="Texture2D" uid="uid://ctkkq7iwtmubj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_3.png" id="14_13ief"]
+[ext_resource type="Texture2D" uid="uid://dfn54hrs485jj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_4.png" id="15_3mcda"]
+[ext_resource type="Texture2D" uid="uid://da0ig7cexq40g" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_5.png" id="16_a6r3l"]
+[ext_resource type="Texture2D" uid="uid://c3wdngblnif68" path="res://assets/sprites/the_rabbit/era_2/wave(1).png" id="17_xlv0a"]
+[ext_resource type="Texture2D" uid="uid://b85krq2sfurx5" path="res://assets/sprites/the_rabbit/era_2/wave(2).png" id="18_yqfta"]
+[ext_resource type="Texture2D" uid="uid://0vwnhohd4j0k" path="res://assets/sprites/the_rabbit/era_2/wave(3).png" id="19_gt52d"]
+[ext_resource type="Texture2D" uid="uid://b4dm727yibi4s" path="res://assets/sprites/the_rabbit/era_2/wave(4).png" id="20_tm5p4"]
+[ext_resource type="Texture2D" uid="uid://cwryr678h14u5" path="res://assets/sprites/the_rabbit/era_2/wave(5).png" id="21_vvgcj"]
+[ext_resource type="Texture2D" uid="uid://cx8hro6nq7pam" path="res://assets/sprites/the_rabbit/era_2/wave(6).png" id="22_nvwxn"]
+[ext_resource type="Texture2D" uid="uid://ctnuu5i04xvhc" path="res://assets/sprites/the_rabbit/era_2/wave(7).png" id="23_n0t2p"]
+[ext_resource type="Texture2D" uid="uid://ds3a5u41s5dum" path="res://assets/sprites/the_rabbit/era_2/wave(8).png" id="24_t5cyk"]
+[ext_resource type="Texture2D" uid="uid://kra6y6l46fby" path="res://assets/sprites/the_rabbit/era_2/wave(9).png" id="25_ipfyu"]
+[ext_resource type="Texture2D" uid="uid://bh1nmjji7itpo" path="res://assets/sprites/the_rabbit/era_3/era_3_face.png" id="26_thfw6"]
+[ext_resource type="Texture2D" uid="uid://cvhc3ippt2qmj" path="res://assets/sprites/the_rabbit/era_4/randomness(1).png" id="27_dxnu1"]
+[ext_resource type="Texture2D" uid="uid://dwbx5hd22gsbp" path="res://assets/sprites/the_rabbit/era_4/randomness(2).png" id="28_ttw73"]
+[ext_resource type="Texture2D" uid="uid://elvah0lsdf57" path="res://assets/sprites/the_rabbit/era_4/randomness(3).png" id="29_j8vrf"]
+[ext_resource type="Texture2D" uid="uid://d3d0d8nih1731" path="res://assets/sprites/the_rabbit/era_4/randomness(4).png" id="30_q1d64"]
+[ext_resource type="Texture2D" uid="uid://cf8mmyjn0spry" path="res://assets/sprites/the_rabbit/era_4/randomness(5).png" id="31_hcex4"]
+[ext_resource type="Texture2D" uid="uid://bfwgung7one3h" path="res://assets/sprites/the_rabbit/era_4/randomness(6).png" id="32_8duux"]
+[ext_resource type="Texture2D" uid="uid://yind51uubggi" path="res://assets/sprites/the_rabbit/era_4/randomness(7).png" id="33_3buoq"]
+[ext_resource type="FontFile" uid="uid://bpg3iakb3o07a" path="res://assets/fonts/51282.otf" id="33_ykwlt"]
+[ext_resource type="Texture2D" uid="uid://bywujqvscsdqs" path="res://assets/sprites/the_rabbit/era_4/randomness(8).png" id="34_qrata"]
+[ext_resource type="Texture2D" uid="uid://c1jjbr0aavdqn" path="res://assets/sprites/the_rabbit/era_4/randomness(9).png" id="35_j2xhi"]
+[ext_resource type="Texture2D" uid="uid://q5f4wrwbsyga" path="res://assets/sprites/the_rabbit/era_4/randomness(10).png" id="36_m63oq"]
+[ext_resource type="Texture2D" uid="uid://yg7xwbf07xpb" path="res://assets/sprites/the_rabbit/era_4/randomness(11).png" id="37_e1j7n"]
+[ext_resource type="Texture2D" uid="uid://dgwh6jt3m78qv" path="res://assets/sprites/the_rabbit/the_rabbit_left_fingers.png" id="38_ub6cc"]
+[ext_resource type="Texture2D" uid="uid://cgiluolu8nixl" path="res://assets/sprites/the_rabbit/the_rabbit_left_foot.png" id="39_3r2og"]
+[ext_resource type="Texture2D" uid="uid://pu4fbtq6iil2" path="res://assets/sprites/the_rabbit/the_rabbit_left_leg.png" id="40_njse0"]
+[ext_resource type="Texture2D" uid="uid://ca5ud3ae3x378" path="res://assets/sprites/the_rabbit/the_rabbit_right_foot.png" id="41_sg7hg"]
+[ext_resource type="Texture2D" uid="uid://b0qmpkep8t4hu" path="res://assets/sprites/the_rabbit/the_rabbit_right_leg.png" id="42_0w7rg"]
+[ext_resource type="Texture2D" uid="uid://dj5be2vipyhi4" path="res://assets/sprites/the_rabbit/the_rabbit_head_left.png" id="43_35g6m"]
+[ext_resource type="Texture2D" uid="uid://0fvod413bhf0" path="res://assets/sprites/the_rabbit/the_rabbit_left_ear.png" id="44_53uja"]
+[ext_resource type="Texture2D" uid="uid://dy6qxp86y1vw3" path="res://assets/sprites/the_rabbit/the_rabbit_left_ear_inner.png" id="45_vo3o8"]
+[ext_resource type="Texture2D" uid="uid://b067gbir0lby" path="res://assets/sprites/the_rabbit/the_rabbit_head_mid.png" id="46_x386s"]
+[ext_resource type="Texture2D" uid="uid://du7f02gcpaycx" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear.png" id="47_ghteq"]
+[ext_resource type="Texture2D" uid="uid://c5i1aenksh4av" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear_inner.png" id="48_ykwlt"]
+[ext_resource type="Texture2D" uid="uid://hoc6uaci42sv" path="res://assets/sprites/the_rabbit/the_rabbit_head_right.png" id="49_dwwk5"]
+[ext_resource type="Texture2D" uid="uid://b7q2v5u4k6akt" path="res://assets/sprites/the_rabbit/the_rabbit_mustache_left.png" id="50_rq0qo"]
+[ext_resource type="Texture2D" uid="uid://cgehbcf1mmosn" path="res://assets/sprites/the_rabbit/the_rabbit_mustache_right.png" id="51_nrbtq"]
+[ext_resource type="Texture2D" uid="uid://ce882nggx5db7" path="res://assets/sprites/the_rabbit/the_rabbit_right_arm.png" id="52_urenr"]
+[ext_resource type="Texture2D" uid="uid://bsrjw1go3ivse" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_all_handle.png" id="53_tjuw6"]
+[ext_resource type="Texture2D" uid="uid://d2ab00eoch5f4" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_all_stick.png" id="54_thllp"]
+[ext_resource type="Texture2D" uid="uid://dokmgcwoitk6l" path="res://assets/sprites/the_rabbit/the_rabbit_right_hand.png" id="55_y04aq"]
+[ext_resource type="Shader" uid="uid://cjhdeyga11esx" path="res://assets/shaders/eye_procedural.gdshader" id="56_hdjkt"]
+[ext_resource type="Texture2D" uid="uid://c1v0nvxbrf6c" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_fill.png" id="57_e6v53"]
+[ext_resource type="Texture2D" uid="uid://defnrkt223vrw" path="res://assets/sprites/the_rabbit/the_rabbit_left_eye_fill.png" id="58_01eq4"]
+[ext_resource type="Texture2D" uid="uid://dpf1mwji6h4d" path="res://assets/sprites/the_rabbit/the_rabbit_nose.png" id="59_t7ncb"]
+[ext_resource type="Texture2D" uid="uid://c6edx6vdhm54e" path="res://assets/sprites/the_rabbit/the_rabbit_nose_wrinkle.png" id="60_cgrpx"]
+[ext_resource type="Texture2D" uid="uid://bs0iwes1533y3" path="res://assets/sprites/frames/rabbit_popup_button_disabled.png" id="64_jxp4i"]
+[ext_resource type="Texture2D" uid="uid://b7qsbdjotcn0r" path="res://assets/sprites/frames/rabbit_popup_button.png" id="73_gb3ry"]
+[ext_resource type="Texture2D" uid="uid://hrp7bsul1woh" path="res://assets/sprites/frames/rabbit_popup_button_pressed.png" id="74_q1c26"]
+[ext_resource type="Texture2D" uid="uid://c4l4gf83h8vwl" path="res://assets/sprites/frames/rabbit_popup_button_hover.png" id="75_q7fno"]
+[ext_resource type="Script" uid="uid://enjh7xmiqi1c" path="res://scripts/ui/menu_controller.gd" id="76_menu_controller"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5yfxn"]
+shader = ExtResource("2_w2h5l")
+shader_parameter/circle_size = 0.4470000212325
+shader_parameter/outline_width = 0.0800000038
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/ratio_width = 1.0
+shader_parameter/ratio_height = 1.0
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_017ef"]
+animation = &"rabbit_eyes_rolling"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_u8s40"]
+animation = &"rabbit_idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_otpb1"]
+animation = &"rabbit_impatient"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8y6ih"]
+animation = &"rabbit_knock_machine"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ccvlu"]
+animation = &"rabbit_nose_poking"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_50t6p"]
+animation = &"rabbit_shocked"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_otpb1"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_017ef"]
+xfade_time = 0.5
+switch_mode = 1
+advance_mode = 2
+advance_condition = &"is_low_gold"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u8s40"]
+xfade_time = 0.2
+switch_mode = 1
+advance_mode = 2
+advance_condition = &"recycle_lid_closed"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8y6ih"]
+xfade_time = 0.2
+switch_mode = 1
+advance_mode = 2
+advance_condition = &"pool_clicked"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ccvlu"]
+xfade_time = 0.2
+switch_mode = 1
+advance_mode = 2
+advance_condition = &"is_submitting"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ivmbw"]
+priority = 0
+advance_mode = 2
+advance_condition = &"is_low_gold"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tiwwg"]
+xfade_time = 0.2
+priority = 0
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"is_low_gold"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_caxmy"]
+xfade_time = 0.3
+priority = 0
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"is_low_gold"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_65xho"]
+xfade_time = 0.2
+priority = 0
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"is_low_gold"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_00smp"]
+xfade_time = 0.5
+switch_mode = 1
+advance_mode = 2
+advance_expression = "is_low_gold == false"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jptrp"]
+xfade_time = 0.2
+switch_mode = 1
+advance_mode = 2
+advance_condition = &"pool_clicked"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7v8nc"]
+xfade_time = 0.2
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q6adl"]
+xfade_time = 0.2
+switch_mode = 1
+advance_mode = 2
+advance_condition = &"recycle_lid_closed"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_f3s7l"]
+xfade_time = 0.2
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fs1h7"]
+xfade_time = 0.2
+switch_mode = 1
+advance_mode = 2
+advance_condition = &"is_submitting"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5v8qp"]
+xfade_time = 0.3
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_50t6p"]
+xfade_time = 0.1
+priority = 0
+switch_mode = 1
+advance_mode = 2
+advance_condition = &"order_success"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2a6p6"]
+xfade_time = 0.2
+priority = 2
+switch_mode = 1
+advance_mode = 2
+advance_condition = &"exit_submitting"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yytn1"]
+xfade_time = 0.2
+switch_mode = 1
+advance_mode = 2
+advance_condition = &"exit_submitting & is_low_gold"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_otpb1"]
+states/End/position = Vector2(1173, 35.5)
+states/Start/position = Vector2(446.5, -250.30501)
+states/rabbit_eyes_rolling/node = SubResource("AnimationNodeAnimation_017ef")
+states/rabbit_eyes_rolling/position = Vector2(-102.50006, 336.0225)
+states/rabbit_idle/node = SubResource("AnimationNodeAnimation_u8s40")
+states/rabbit_idle/position = Vector2(251.65988, -62.30313)
+states/rabbit_impatient/node = SubResource("AnimationNodeAnimation_otpb1")
+states/rabbit_impatient/position = Vector2(628.36, -63.22735)
+states/rabbit_knock_machine/node = SubResource("AnimationNodeAnimation_8y6ih")
+states/rabbit_knock_machine/position = Vector2(302.49994, 338.08374)
+states/rabbit_nose_poking/node = SubResource("AnimationNodeAnimation_ccvlu")
+states/rabbit_nose_poking/position = Vector2(642.81976, 337.0531)
+states/rabbit_shocked/node = SubResource("AnimationNodeAnimation_50t6p")
+states/rabbit_shocked/position = Vector2(956.31976, 336.53778)
+transitions = ["Start", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_otpb1"), "rabbit_idle", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_017ef"), "rabbit_impatient", "rabbit_knock_machine", SubResource("AnimationNodeStateMachineTransition_u8s40"), "rabbit_impatient", "rabbit_eyes_rolling", SubResource("AnimationNodeStateMachineTransition_8y6ih"), "rabbit_impatient", "rabbit_nose_poking", SubResource("AnimationNodeStateMachineTransition_ccvlu"), "Start", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_ivmbw"), "rabbit_knock_machine", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_tiwwg"), "rabbit_shocked", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_caxmy"), "rabbit_eyes_rolling", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_65xho"), "rabbit_impatient", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_00smp"), "rabbit_idle", "rabbit_eyes_rolling", SubResource("AnimationNodeStateMachineTransition_jptrp"), "rabbit_eyes_rolling", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_7v8nc"), "rabbit_idle", "rabbit_knock_machine", SubResource("AnimationNodeStateMachineTransition_q6adl"), "rabbit_knock_machine", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_f3s7l"), "rabbit_idle", "rabbit_nose_poking", SubResource("AnimationNodeStateMachineTransition_fs1h7"), "rabbit_shocked", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_5v8qp"), "rabbit_nose_poking", "rabbit_shocked", SubResource("AnimationNodeStateMachineTransition_50t6p"), "rabbit_nose_poking", "rabbit_idle", SubResource("AnimationNodeStateMachineTransition_2a6p6"), "rabbit_nose_poking", "rabbit_impatient", SubResource("AnimationNodeStateMachineTransition_yytn1")]
+graph_offset = Vector2(-272.38043, -81.71272)
+
+[sub_resource type="Animation" id="Animation_8y6ih"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TheRabbitLeftArm:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TheRabbitRightEar:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.031703457]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TheRabbitLeftEar:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.031002952]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TheRabbitMustacheLeft:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.08134746]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TheRabbitMustacheRight:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.06733266]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.5]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.5]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("TheRabbitLeftFoot:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("TheRabbitNose:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19.5, -307.5)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("TheRabbitNoseWrinkle:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("TheRabbitNoseWrinkle:rotation")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0061147586]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("TheRabbitNoseWrinkle:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-76, -478)]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("TheRabbitLeftEar:position")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19.5, -307.5)]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("TheRabbitRightEar:position")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19.5, -307.5)]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 0)]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 0)]
+}
+tracks/16/type = "value"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("TheRabbitLeftArm:position")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19.5, -307.5)]
+}
+tracks/17/type = "value"
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_color")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.1882353, 0.1882353, 0.1882353, 1)]
+}
+tracks/18/type = "value"
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_color")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.18, 0.18, 0.18, 1)]
+}
+tracks/19/type = "value"
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_outline_color")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+tracks/20/type = "value"
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_outline_color")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+tracks/21/type = "value"
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/path = NodePath("../../The Machine:position")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(3750, 1488)]
+}
+tracks/22/type = "value"
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/path = NodePath(".:position")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/23/type = "value"
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/path = NodePath("TheRabbitHeadLeft:position")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19.5, -307.5)]
+}
+tracks/24/type = "value"
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/path = NodePath("TheRabbitHeadMid:position")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19.5, -307.5)]
+}
+tracks/25/type = "value"
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/path = NodePath("TheRabbitHeadRight:position")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19.5, -307.5)]
+}
+
+[sub_resource type="Animation" id="Animation_tiwwg"]
+resource_name = "rabbit_eyes_rolling"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35, 0.3501, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 0.4, 2.5, 0.5, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -6), Vector2(0, 6), Vector2(0, -1.5), Vector2(0, 0.4), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.35, 0.3501, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 0.4, 2.5, 0.5, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -6), Vector2(0, 6), Vector2(0, -1.5), Vector2(0, 0.4), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_u8s40"]
+resource_name = "rabbit_idle"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TheRabbitLeftArm:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1.2311467, 1),
+"update": 0,
+"values": [0.04014257279586978, 0.1950028]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TheRabbitRightEar:rotation")
+tracks/1/interp = 4
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.031703457, -0.012102209]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TheRabbitLeftEar:rotation")
+tracks/2/interp = 4
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-0.016999675, 0.031002952]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TheRabbitMustacheLeft:rotation")
+tracks/3/interp = 4
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-0.08134746, 0.06981317007977318]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TheRabbitMustacheRight:rotation")
+tracks/4/interp = 4
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.03490658503988659, -0.06981317007977318]
+}
+
+[sub_resource type="Animation" id="Animation_ccvlu"]
+resource_name = "rabbit_impatient"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.2000000095, 0.250000011875]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.2000000095, 0.250000011875]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = false
+tracks/2/path = NodePath("TheRabbitLeftArm:rotation")
+tracks/2/interp = 3
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [-0.17453292, -0.2617994, -0.17453292]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TheRabbitLeftFoot:rotation")
+tracks/3/interp = 4
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(2.0000007, 0.6155723),
+"update": 0,
+"values": [-0.33276048, 0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.2, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.2, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_2a6p6"]
+resource_name = "rabbit_knock_machine"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TheRabbitLeftArm:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.45, 0.55, 0.65, 0.8),
+"transitions": PackedFloat32Array(1, 0.5, 2, 1, 0.5, 2, 1, 1),
+"update": 0,
+"values": [0.0, -0.9, 0.2, 0.0, -0.9, 0.3, 0.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../The Machine:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.25, 0.3, 0.55, 0.6, 0.65, 1),
+"transitions": PackedFloat32Array(1, 0.2, 1, 1, 0.2, 1, 1, 1),
+"update": 0,
+"values": [Vector2(3750, 1488), Vector2(3750, 1488), Vector2(3750, 1515), Vector2(3750, 1488), Vector2(3750, 1488), Vector2(3750, 1520), Vector2(3750, 1488), Vector2(3750, 1488)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.25, 0.3, 0.55, 0.6, 0.65, 1),
+"transitions": PackedFloat32Array(1, 0.5, 1, 1, 0.5, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, 15), Vector2(0, -8), Vector2(0, 0), Vector2(0, 20), Vector2(0, 0), Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TheRabbitLeftEar:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.55, 0.65, 0.75),
+"transitions": PackedFloat32Array(1, 0.5, 1, 1, 0.5, 1, 1),
+"update": 0,
+"values": [0.031002952, 0.031, -0.1, 0.031, 0.031, -0.15, 0.031]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TheRabbitRightEar:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.55, 0.65, 0.75),
+"transitions": PackedFloat32Array(1, 0.5, 1, 1, 0.5, 1, 1),
+"update": 0,
+"values": [0.031703457, 0.032, 0.08, 0.032, 0.032, 0.1, 0.032]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("TheRabbitMustacheLeft:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.35, 0.55, 0.7),
+"transitions": PackedFloat32Array(1, 0.5, 1, 0.5, 1),
+"update": 0,
+"values": [-0.08134746, -0.15, -0.081, -0.18, -0.081]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("TheRabbitMustacheRight:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.35, 0.55, 0.7),
+"transitions": PackedFloat32Array(1, 0.5, 1, 0.5, 1),
+"update": 0,
+"values": [0.06733266, 0.15, 0.067, 0.18, 0.067]
+}
+tracks/7/type = "audio"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("AudioStreamPlayer")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("2_lqq6t")
+}],
+"times": PackedFloat32Array(0.2)
+}
+tracks/7/use_blend = true
+tracks/8/type = "audio"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("AudioStreamPlayer")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("3_ur5vm")
+}],
+"times": PackedFloat32Array(0.55)
+}
+tracks/8/use_blend = true
+
+[sub_resource type="Animation" id="Animation_ivmbw"]
+resource_name = "rabbit_nose_poking"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TheRabbitNose:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(21, -295)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TheRabbitNoseWrinkle:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TheRabbitNoseWrinkle:rotation")
+tracks/2/interp = 4
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.006114755]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TheRabbitNoseWrinkle:position")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-96, -524)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TheRabbitLeftEar:position")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.4352752, 1),
+"update": 0,
+"values": [Vector2(19.5, -307.5), Vector2(7, -283)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("TheRabbitRightEar:position")
+tracks/5/interp = 2
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.43527517, 1),
+"update": 0,
+"values": [Vector2(19.5, -307.5), Vector2(44, -282.21)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 1), Vector2(0, 1.2)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
+tracks/7/interp = 2
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 1), Vector2(0, 1.2)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("TheRabbitHeadLeft:position")
+tracks/8/interp = 2
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(20, -360)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("TheRabbitHeadMid:position")
+tracks/9/interp = 2
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19, -399)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("TheRabbitHeadRight:position")
+tracks/10/interp = 2
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(20, -378)]
+}
+
+[sub_resource type="Animation" id="Animation_50t6p"]
+resource_name = "rabbit_shocked"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TheRabbitLeftArm:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 1.8, 2),
+"transitions": PackedFloat32Array(1, 0.5, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(19.5, -307.5), Vector2(32, -630), Vector2(10, 50), Vector2(12, 40), Vector2(12, 40), Vector2(19.5, -307.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TheRabbitLeftArm:rotation")
+tracks/1/interp = 4
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 1.8, 2),
+"transitions": PackedFloat32Array(1, 0.5, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0698132, -0.29147, 0.1, 0.08, 0.08, 0.0698132]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.95, 0.95, 0.95, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_color")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.95, 0.95, 0.95, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_outline_color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.79, 0.79, 0.79, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_outline_color")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.79, 0.79, 0.79, 1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0.1, 0.1), Vector2(-0.07, -0.04), Vector2(0.06, -0.1), Vector2(-0.06, 0.08), Vector2(0.08, -0.05), Vector2(-0.05, 0.1), Vector2(0.04, -0.08), Vector2(-0.08, 0.05), Vector2(0.05, -0.05), Vector2(0, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0.1, 0.1), Vector2(-0.07, -0.04), Vector2(0.06, -0.1), Vector2(-0.06, 0.08), Vector2(0.08, -0.05), Vector2(-0.05, 0.1), Vector2(0.04, -0.08), Vector2(-0.08, 0.05), Vector2(0.05, -0.05), Vector2(0, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("TheRabbitMustacheLeft:rotation")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [-0.1, -0.25, -0.2, -0.25, -0.2, -0.25, -0.2, -0.25, -0.2, -0.25, -0.2, -0.25, -0.2, -0.25, -0.2, -0.25, -0.2, -0.1]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("TheRabbitMustacheRight:rotation")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.1, 0.25, 0.2, 0.25, 0.2, 0.25, 0.2, 0.25, 0.2, 0.25, 0.2, 0.25, 0.2, 0.25, 0.2, 0.25, 0.2, 0.1]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("TheRabbitNose:position")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(19.5, -307.5), Vector2(22, -305), Vector2(17, -308), Vector2(22, -305), Vector2(17, -308), Vector2(22, -305), Vector2(17, -308), Vector2(22, -305), Vector2(17, -308), Vector2(22, -305), Vector2(17, -308), Vector2(22, -305), Vector2(17, -308), Vector2(22, -305), Vector2(17, -308), Vector2(22, -305), Vector2(19.5, -307.5), Vector2(19.5, -307.5)]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("TheRabbitLeftEar:rotation")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0, -0.05, -0.02, -0.05, -0.02, -0.05, -0.02, -0.05, -0.02, -0.05, -0.02, -0.05, -0.02, -0.05, -0.02, -0.05, -0.02, 0]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("TheRabbitRightEar:rotation")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0, 0.05, 0.02, 0.05, 0.02, 0.05, 0.02, 0.05, 0.02, 0.05, 0.02, 0.05, 0.02, 0.05, 0.02, 0.05, 0.02, 0]
+}
+
+[sub_resource type="Animation" id="Animation_caxmy"]
+resource_name = "rabbit_starring"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TheRabbitRightEyeFill:material:shader_parameter/pupil_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TheRabbitLeftEyeFill:material:shader_parameter/pupil_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8y6ih"]
+_data = {
+&"RESET": SubResource("Animation_8y6ih"),
+&"rabbit_eyes_rolling": SubResource("Animation_tiwwg"),
+&"rabbit_idle": SubResource("Animation_u8s40"),
+&"rabbit_impatient": SubResource("Animation_ccvlu"),
+&"rabbit_knock_machine": SubResource("Animation_2a6p6"),
+&"rabbit_nose_poking": SubResource("Animation_ivmbw"),
+&"rabbit_shocked": SubResource("Animation_50t6p"),
+&"rabbit_starring": SubResource("Animation_caxmy")
+}
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_np3ll"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("17_xlv0a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_yqfta")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_gt52d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_tm5p4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_vvgcj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_nvwxn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_n0t2p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_t5cyk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_ipfyu")
+}],
+"loop": true,
+"name": &"wave",
+"speed": 10.0
+}]
+
+[sub_resource type="Animation" id="Animation_qhr86"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Era_3_face:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_vpvb0"]
+resource_name = "era_3_rotation"
+length = 3.0
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Era_3_face:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.2831855]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qhr86"]
+_data = {
+&"RESET": SubResource("Animation_qhr86"),
+&"era_3_rotation": SubResource("Animation_vpvb0")
+}
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oa7gp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("27_dxnu1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_ttw73")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_j8vrf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_q1d64")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_hcex4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_8duux")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_3buoq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_qrata")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_j2xhi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_m63oq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_e1j7n")
+}],
+"loop": true,
+"name": &"randomness",
+"speed": 10.0
+}]
+
+[sub_resource type="Animation" id="Animation_22g54"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [6.2831855]
+}
+
+[sub_resource type="Animation" id="Animation_wr5f3"]
+resource_name = "era_4_rotation"
+length = 5.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.283185307179586]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_22g54"]
+_data = {
+&"RESET": SubResource("Animation_22g54"),
+&"era_4_rotation": SubResource("Animation_wr5f3")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u4yck"]
+shader = ExtResource("56_hdjkt")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_thickness = 0.10000000475
+shader_parameter/pupil_texture = ExtResource("57_e6v53")
+shader_parameter/use_pupil_texture = true
+shader_parameter/pupil_offset = Vector2(1, 0)
+shader_parameter/pupil_scale = 0.5
+shader_parameter/pupil_color = Color(0.18, 0.18, 0.18, 1)
+shader_parameter/pupil_outline_color = Color(0, 0, 0, 1)
+shader_parameter/pupil_outline_thickness = 0.10000000149012
+
+[node name="Menu" type="Control"]
+z_index = 1000
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("76_menu_controller")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+clip_children = 2
+material = SubResource("ShaderMaterial_5yfxn")
+layout_mode = 0
+offset_left = -6545.0
+offset_top = -6507.0
+offset_right = 10548.0
+offset_bottom = 10586.0
+pivot_offset = Vector2(7885, 7944)
+color = Color(0.9882353, 0.4392157, 0.3529412, 1)
+
+[node name="The Rabbit" type="Node2D" parent="."]
+position = Vector2(3677, 6694)
+scale = Vector2(7, 7)
+
+[node name="MascotVisuals" type="Node2D" parent="The Rabbit"]
+
+[node name="TheRabbitAnimator" type="Node" parent="The Rabbit/MascotVisuals" node_paths=PackedStringArray("anim_tree")]
+script = ExtResource("1_ebw2t")
+anim_tree = NodePath("../AnimationTree")
+
+[node name="AnimationTree" type="AnimationTree" parent="The Rabbit/MascotVisuals"]
+tree_root = SubResource("AnimationNodeStateMachine_otpb1")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/exit_submitting = false
+"parameters/conditions/exit_submitting & is_low_gold" = false
+parameters/conditions/is_low_gold = false
+parameters/conditions/is_submitting = false
+parameters/conditions/order_success = false
+parameters/conditions/pool_clicked = false
+parameters/conditions/recycle_lid_closed = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/MascotVisuals"]
+libraries = {
+&"": SubResource("AnimationLibrary_8y6ih")
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="The Rabbit/MascotVisuals"]
+volume_db = -10.0
+
+[node name="TheRabbitLeftArm" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
+self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+position = Vector2(19.5, -307.5)
+texture = ExtResource("4_46y0v")
+offset = Vector2(441.5, 72.5)
+region_enabled = true
+region_rect = Rect2(1312, 1424, 1184, 672)
+
+[node name="TheRabbitLeftThumb" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm"]
+self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
+texture = ExtResource("5_jxp4i")
+offset = Vector2(953.5, -115)
+region_enabled = true
+region_rect = Rect2(2192, 1348, 448, 449)
+
+[node name="TheRabbitLeftPalm" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm"]
+self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
+texture = ExtResource("6_850ru")
+offset = Vector2(1026, -63.5)
+region_enabled = true
+region_rect = Rect2(2310, 1370, 357, 508)
+
+[node name="TheRabbitWandStick" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm"]
+self_modulate = Color(0.13333334, 0.7529412, 0.9843137, 1)
+texture = ExtResource("7_6vnu0")
+offset = Vector2(924, 238)
+region_enabled = true
+region_rect = Rect2(2206, 911, 361, 2029)
+
+[node name="TheRabbitWandHead" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick"]
+self_modulate = Color(0.99607843, 0.90588236, 0.2901961, 1)
+texture = ExtResource("8_w2h5l")
+offset = Vector2(1052.5, -853.5)
+region_enabled = true
+region_rect = Rect2(2202, 521, 626, 626)
+
+[node name="TheRabbitWandFace" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick"]
+position = Vector2(1048.5, -852.5)
+texture = ExtResource("9_5yfxn")
+
+[node name="TheRabbitWandFaceFill" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace"]
+clip_children = 2
+texture = ExtResource("10_ot72n")
+
+[node name="Era_1" type="Node2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
+position = Vector2(2, -5)
+
+[node name="Era_1_face" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
+position = Vector2(0, -1)
+texture = ExtResource("11_st8ik")
+
+[node name="TheRabbitWandGem1" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
+self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+position = Vector2(-1048.5, 852.5)
+texture = ExtResource("12_umjhq")
+offset = Vector2(1053, -977.5)
+region_enabled = true
+region_rect = Rect2(2457, 597, 117, 226)
+
+[node name="TheRabbitWandGem2" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
+self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+position = Vector2(-1048.5, 852.5)
+texture = ExtResource("13_3qq8w")
+offset = Vector2(1168, -874.5)
+region_enabled = true
+region_rect = Rect2(2525, 751, 211, 124)
+
+[node name="TheRabbitWandGem3" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
+self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+position = Vector2(-1048.5, 852.5)
+texture = ExtResource("14_13ief")
+offset = Vector2(932, -884)
+region_enabled = true
+region_rect = Rect2(2284, 752, 221, 103)
+
+[node name="TheRabbitWandGem4" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
+self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+position = Vector2(-1048.5, 852.5)
+texture = ExtResource("15_3mcda")
+offset = Vector2(986, -757)
+region_enabled = true
+region_rect = Rect2(2387, 840, 123, 181)
+
+[node name="TheRabbitWandGem5" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
+self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+position = Vector2(-1048.5, 852.5)
+texture = ExtResource("16_a6r3l")
+offset = Vector2(1120.5, -756)
+region_enabled = true
+region_rect = Rect2(2517, 840, 132, 183)
+
+[node name="Era_2" type="Node2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
+
+[node name="Era_2_face" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_2"]
+modulate = Color(0.85882354, 0.6431373, 0.9254902, 1)
+texture = ExtResource("10_ot72n")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_2"]
+sprite_frames = SubResource("SpriteFrames_np3ll")
+animation = &"wave"
+autoplay = "wave"
+frame_progress = 0.23792309
+
+[node name="Era_3" type="Node2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
+visible = false
+
+[node name="Era_3_fill" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_3"]
+modulate = Color(0.2, 0.6039216, 0.5019608, 1)
+scale = Vector2(1.0000001, 1.0000001)
+texture = ExtResource("10_ot72n")
+
+[node name="Era_3_face" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_3"]
+position = Vector2(3.963745, -0.48706055)
+scale = Vector2(1.165, 1.165)
+texture = ExtResource("26_thfw6")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_3"]
+libraries = {
+&"": SubResource("AnimationLibrary_qhr86")
+}
+autoplay = "era_3_rotation"
+
+[node name="Era_4" type="Node2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
+
+[node name="Era_4_face" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_4"]
+modulate = Color(0.5058824, 0.827451, 0.44313726, 1)
+texture = ExtResource("10_ot72n")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_4"]
+rotation = 6.2831855
+sprite_frames = SubResource("SpriteFrames_oa7gp")
+animation = &"randomness"
+autoplay = "randomness"
+frame_progress = 0.9680881
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_4"]
+libraries = {
+&"": SubResource("AnimationLibrary_22g54")
+}
+autoplay = "era_4_rotation"
+
+[node name="TheRabbitLeftFingers" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm"]
+self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
+texture = ExtResource("38_ub6cc")
+offset = Vector2(955.5, -39)
+region_enabled = true
+region_rect = Rect2(2235, 1411, 366, 475)
+
+[node name="TheRabbitLeftFoot" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
+self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
+position = Vector2(30, 972)
+texture = ExtResource("39_3r2og")
+offset = Vector2(331, -232.5)
+region_enabled = true
+region_rect = Rect2(1336, 2389, 936, 691)
+
+[node name="TheRabbitLeftLeg" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftFoot"]
+self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+position = Vector2(-10.5, -1279.5)
+texture = ExtResource("40_njse0")
+offset = Vector2(311, 836.5)
+region_enabled = true
+region_rect = Rect2(1295, 2192, 957, 664)
+
+[node name="TheRabbitRightFoot" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
+self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
+position = Vector2(19.5, -309.5)
+texture = ExtResource("41_sg7hg")
+offset = Vector2(-483, 1144)
+region_enabled = true
+region_rect = Rect2(442, 2557, 1075, 549)
+
+[node name="TheRabbitRightLeg" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitRightFoot"]
+self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+texture = ExtResource("42_0w7rg")
+offset = Vector2(-523, 801.5)
+region_enabled = true
+region_rect = Rect2(449, 2110, 981, 758)
+
+[node name="TheRabbitHeadLeft" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
+self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+position = Vector2(19.5, -307.5)
+texture = ExtResource("43_35g6m")
+offset = Vector2(125, -464)
+region_enabled = true
+region_rect = Rect2(1131, 687, 913, 1073)
+
+[node name="TheRabbitLeftEar" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
+self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+position = Vector2(19.5, -307.5)
+rotation = 0.031002952
+texture = ExtResource("44_53uja")
+offset = Vector2(300, -903)
+region_enabled = true
+region_rect = Rect2(1477, 279, 571, 1011)
+
+[node name="TheRabbitLeftEarInner" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftEar"]
+texture = ExtResource("45_vo3o8")
+offset = Vector2(310.5, -919.5)
+region_enabled = true
+region_rect = Rect2(1576, 382, 394, 772)
+
+[node name="TheRabbitHeadMid" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
+self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+position = Vector2(19.5, -307.5)
+rotation = -0.0029281678
+texture = ExtResource("46_x386s")
+offset = Vector2(-107, -683)
+region_enabled = true
+region_rect = Rect2(900, 652, 911, 705)
+
+[node name="TheRabbitRightEar" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
+self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+position = Vector2(19.5, -307.5)
+rotation = 0.031703457
+texture = ExtResource("47_ghteq")
+offset = Vector2(-685.5, -975)
+region_enabled = true
+region_rect = Rect2(500, 279, 554, 867)
+
+[node name="TheRabbitRightEarInner" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitRightEar"]
+texture = ExtResource("48_ykwlt")
+offset = Vector2(-677, -826.5)
+region_enabled = true
+region_rect = Rect2(599, 396, 373, 930)
+
+[node name="TheRabbitHeadRight" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
+self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+position = Vector2(19.5, -307.5)
+texture = ExtResource("49_dwwk5")
+offset = Vector2(-521.5, -512.5)
+region_enabled = true
+region_rect = Rect2(540, 786, 802, 778)
+
+[node name="TheRabbitMustacheLeft" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
+self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
+position = Vector2(19.5, -307.5)
+rotation = -0.08134746
+texture = ExtResource("50_rq0qo")
+offset = Vector2(250.5, -73)
+region_enabled = true
+region_rect = Rect2(1245, 1347, 936, 535)
+
+[node name="TheRabbitMustacheRight" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
+self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
+position = Vector2(19.5, -307.5)
+rotation = 0.06733266
+texture = ExtResource("51_nrbtq")
+offset = Vector2(-604, -121.5)
+region_enabled = true
+region_rect = Rect2(367, 1327, 983, 478)
+
+[node name="TheRabbitRightArm" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
+self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+position = Vector2(19.5, -307.5)
+texture = ExtResource("52_urenr")
+offset = Vector2(-890, 400)
+region_enabled = true
+region_rect = Rect2(237, 1770, 671, 635)
+
+[node name="TheRabbitRefreshAll" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
+self_modulate = Color(0.9411765, 0.36078432, 0.38039216, 1)
+position = Vector2(19.5, -307.5)
+texture = ExtResource("53_tjuw6")
+offset = Vector2(697, 496)
+region_enabled = true
+region_rect = Rect2(2072, 2059, 175, 249)
+
+[node name="TheRabbitRefreshAllStick" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitRefreshAll"]
+texture = ExtResource("54_thllp")
+offset = Vector2(469.5, 492.5)
+region_enabled = true
+region_rect = Rect2(1758, 2101, 348, 158)
+
+[node name="Input Area" type="Control" parent="The Rabbit/MascotVisuals/TheRabbitRefreshAll"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 524.5
+offset_top = 379.25
+offset_right = 778.5
+offset_bottom = 616.25
+
+[node name="TheRabbitRightHand" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
+self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
+z_index = 2
+position = Vector2(19.5, -307.5)
+texture = ExtResource("55_y04aq")
+offset = Vector2(-847.5, 639.5)
+region_enabled = true
+region_rect = Rect2(378, 2088, 474, 478)
+
+[node name="TheRabbitLeftEyeFill" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+material = SubResource("ShaderMaterial_u4yck")
+position = Vector2(168, -718)
+texture = ExtResource("58_01eq4")
+
+[node name="TheRabbitRightEyeFill" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+material = SubResource("ShaderMaterial_u4yck")
+position = Vector2(-347, -719)
+rotation = -0.05119752
+texture = ExtResource("57_e6v53")
+
+[node name="TheRabbitNose" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
+self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
+z_index = 2
+position = Vector2(19.5, -307.5)
+texture = ExtResource("59_t7ncb")
+offset = Vector2(-107.5, -227)
+region_enabled = true
+region_rect = Rect2(1291, 1397, 128, 127)
+
+[node name="TheRabbitNoseWrinkle" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
+position = Vector2(-76, -478)
+rotation = 0.0061147586
+texture = ExtResource("60_cgrpx")
+offset = Vector2(7.6047363, -126.03711)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(2998, 1689)
+zoom = Vector2(0.32, 0.32)
+editor_draw_limits = true
+editor_draw_drag_margin = true
+
+[node name="Button_ZH" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 0
+offset_left = 2218.0
+offset_top = 1537.0
+offset_right = 2902.6106
+offset_bottom = 1852.0
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("73_gb3ry")
+texture_pressed = ExtResource("74_q1c26")
+texture_hover = ExtResource("75_q7fno")
+texture_disabled = ExtResource("64_jxp4i")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Button_ZH"]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 33.0
+offset_right = 619.8108
+offset_bottom = 283.0
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("33_ykwlt")
+theme_override_font_sizes/normal_font_size = 132
+text = "简体中文"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button_EN" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 0
+offset_left = 3206.0
+offset_top = 1537.0
+offset_right = 3890.6106
+offset_bottom = 1852.0
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("73_gb3ry")
+texture_pressed = ExtResource("74_q1c26")
+texture_hover = ExtResource("75_q7fno")
+texture_disabled = ExtResource("64_jxp4i")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Button_EN"]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 33.0
+offset_right = 619.8108
+offset_bottom = 283.0
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("33_ykwlt")
+theme_override_font_sizes/normal_font_size = 117
+text = "ENGLISH"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1

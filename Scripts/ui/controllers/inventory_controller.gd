@@ -248,7 +248,9 @@ func update_selection(index: int) -> void:
 		var slot = get_slot_node(i)
 		var should_be_selected = (i == index)
 		if slot and slot._is_selected != should_be_selected:
-			slot.set_selected(should_be_selected)
+			# 检测"放回原位"：当前槽位从选中变为未选中，且新选中索引为 -1
+			var is_drop_in_place = slot._is_selected and not should_be_selected and index == -1
+			slot.set_selected(should_be_selected, is_drop_in_place)
 			# Re-apply badge if deselected
 			if not should_be_selected and InventorySystem.inventory.size() > i:
 				var item = InventorySystem.inventory[i]
@@ -266,7 +268,8 @@ func update_multi_selection(indices: Array[int]) -> void:
 				slot.set_selected(true)
 			else:
 				if slot._is_selected:
-					slot.set_selected(false)
+					# 取消选中时使用瞬间恢复（物品回到原位）
+					slot.set_selected(false, true)
 					# Re-apply badge
 					if InventorySystem.inventory.size() > i:
 						var item = InventorySystem.inventory[i]
@@ -424,6 +427,12 @@ func _on_slot_mouse_entered(index: int) -> void:
 
 
 func _on_slot_mouse_exited(index: int) -> void:
+	# ERA3: 先清除同名物品的高亮（如果之前有设置）
+	var item = InventorySystem.inventory[index] if index < InventorySystem.inventory.size() else null
+	var pending = InventorySystem.pending_item
+	if item and pending and InventorySystem.would_exceed_type_limit(pending):
+		_clear_hover_state_for_same_name_items(item.item_data.id)
+	
 	_hovered_slot_index = -1
 	
 	# 通知slot不再被hover（会自动清除hover视觉效果）
@@ -474,6 +483,11 @@ func _update_slot_hover_action_state(index: int) -> void:
 		else:
 			# 不能合成，替换 = 回收
 			hover_type = ItemSlotUI.HoverType.RECYCLABLE
+			
+			# ERA3: 种类限制模式下，高亮所有同名物品
+			if InventorySystem.would_exceed_type_limit(pending):
+				_set_hover_state_for_same_name_items(target_item.item_data.id, ItemSlotUI.HoverType.RECYCLABLE, index)
+				return # 已在辅助方法中设置了所有状态，直接返回
 	
 	# 3. 选中item物品时 hover 在可合成的另一个 item slot 上 -> 可合成
 	elif has_selection and selected_idx != index and target_item != null:
@@ -482,6 +496,24 @@ func _update_slot_hover_action_state(index: int) -> void:
 			hover_type = ItemSlotUI.HoverType.MERGEABLE
 	
 	slot.set_hover_action_state(hover_type)
+
+
+## ERA3: 为所有同名物品设置hover状态
+func _set_hover_state_for_same_name_items(item_id: StringName, hover_type: ItemSlotUI.HoverType, _hovered_index: int) -> void:
+	var indices = InventorySystem.get_indices_by_name(item_id)
+	for idx in indices:
+		var s = get_slot_node(idx) as ItemSlotUI
+		if s:
+			s.set_hover_action_state(hover_type)
+
+
+## ERA3: 清除所有同名物品的hover状态
+func _clear_hover_state_for_same_name_items(item_id: StringName) -> void:
+	var indices = InventorySystem.get_indices_by_name(item_id)
+	for idx in indices:
+		var s = get_slot_node(idx) as ItemSlotUI
+		if s:
+			s.set_hover_action_state(ItemSlotUI.HoverType.NONE)
 
 
 ## 刷新当前被hover的slot的状态（当游戏状态变化时调用）

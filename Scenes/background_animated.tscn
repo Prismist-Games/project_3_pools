@@ -1,0 +1,587 @@
+[gd_scene load_steps=61 format=3 uid="uid://bjo7bnb5dpi7w"]
+
+[ext_resource type="Texture2D" uid="uid://bprtu4q6lify4" path="res://assets/sprites/city_bg/蓝蓝天.png" id="2_3agmw"]
+[ext_resource type="Texture2D" uid="uid://dc7coucih34ai" path="res://assets/sprites/city_bg/黑天.png" id="3_xvhlv"]
+[ext_resource type="Texture2D" uid="uid://corealqu7vor0" path="res://assets/sprites/city_bg/星星.png" id="4_eojs8"]
+[ext_resource type="Texture2D" uid="uid://bkqwxl75hwhrs" path="res://assets/sprites/city_bg/蓝天.png" id="5_rk1d7"]
+[ext_resource type="Texture2D" uid="uid://q6364f2dwx3q" path="res://assets/sprites/background/背景-4.png" id="6_70wxu"]
+[ext_resource type="Texture2D" uid="uid://cv32cj6ieg6h4" path="res://assets/sprites/background/背景-2.png" id="7_arxqr"]
+[ext_resource type="Texture2D" uid="uid://d5cfbyoxnec7" path="res://assets/sprites/background/背景-1.png" id="8_v0nl0"]
+[ext_resource type="Texture2D" uid="uid://yq4g7rr8qqwd" path="res://assets/sprites/background/背景-3.png" id="9_ic2l0"]
+[ext_resource type="Texture2D" uid="uid://cfqybxqdg26wt" path="res://assets/sprites/shooting_star/star-1.png" id="10_30pou"]
+[ext_resource type="Texture2D" uid="uid://dyx7bj267u0ep" path="res://assets/sprites/shooting_star/star-2.png" id="11_xai7a"]
+[ext_resource type="Texture2D" uid="uid://c3wrlcxob46ao" path="res://assets/sprites/shooting_star/star-3.png" id="12_jac82"]
+[ext_resource type="Texture2D" uid="uid://xtt0q48gd5d4" path="res://assets/sprites/shooting_star/star-4.png" id="13_w5e5t"]
+[ext_resource type="Texture2D" uid="uid://cmn0ck4rg1wif" path="res://assets/sprites/shooting_star/star-5.png" id="14_1hri5"]
+[ext_resource type="Texture2D" uid="uid://dw2gp7dj5pk2h" path="res://assets/sprites/shooting_star/star-6.png" id="15_ucmob"]
+[ext_resource type="Texture2D" uid="uid://q5hrw4p7c3sk" path="res://assets/sprites/shooting_star/star-7.png" id="16_sdl56"]
+[ext_resource type="Texture2D" uid="uid://q3i5ao7illvp" path="res://assets/sprites/shooting_star/star-8.png" id="17_6gykx"]
+[ext_resource type="Texture2D" uid="uid://dk35g4u4pmu24" path="res://assets/sprites/shooting_star/star-9.png" id="18_m3ns4"]
+[ext_resource type="Texture2D" uid="uid://b8lpytbrdhxwl" path="res://assets/sprites/shooting_star/star-10.png" id="19_c0mr1"]
+[ext_resource type="Texture2D" uid="uid://dkvp2w8cjj61i" path="res://assets/sprites/shooting_star/star-11.png" id="20_mkb5g"]
+[ext_resource type="Texture2D" uid="uid://rsko1fp65yh2" path="res://assets/sprites/shooting_star/star-12.png" id="21_w5b5x"]
+[ext_resource type="Texture2D" uid="uid://bcskst365iqgg" path="res://assets/sprites/shooting_star/star-13.png" id="22_skpgy"]
+[ext_resource type="Texture2D" uid="uid://kx4gcqh1vsvk" path="res://assets/sprites/shooting_star/star-14.png" id="23_6c5bw"]
+[ext_resource type="Texture2D" uid="uid://d2y80oe3yvfdp" path="res://assets/sprites/shooting_star/star-15.png" id="24_am225"]
+[ext_resource type="Texture2D" uid="uid://bs6o45mabkert" path="res://assets/sprites/shooting_star/star-16.png" id="25_46gh2"]
+[ext_resource type="Texture2D" uid="uid://bcfn05acf0l25" path="res://assets/sprites/shooting_star/star-17.png" id="26_q5lop"]
+[ext_resource type="Texture2D" uid="uid://dqeh4ue34ils" path="res://assets/sprites/shooting_star/star-18.png" id="27_vavsk"]
+[ext_resource type="Texture2D" uid="uid://ln16uqo4o83f" path="res://assets/sprites/shooting_star/star-19.png" id="28_k2lye"]
+[ext_resource type="Texture2D" uid="uid://b2u12kgd0w3r8" path="res://assets/sprites/shooting_star/star-20.png" id="29_5x2wx"]
+[ext_resource type="Texture2D" uid="uid://c1bjkkms67x2p" path="res://assets/sprites/city_bg/黑.png" id="30_utpsi"]
+[ext_resource type="Texture2D" uid="uid://wrs1iey376d" path="res://assets/sprites/city_bg/灰.png" id="31_rbd3v"]
+[ext_resource type="Texture2D" uid="uid://b0wjt3bx2e4ey" path="res://assets/sprites/city_bg/白.png" id="32_b7jjn"]
+
+[sub_resource type="Animation" id="Animation_yytn1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(3000, -30)]
+}
+
+[sub_resource type="Animation" id="Animation_7v8nc"]
+resource_name = "new_animation"
+length = 30.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 30),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-3000, -30), Vector2(3000, -30)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_g7jj0"]
+_data = {
+&"RESET": SubResource("Animation_yytn1"),
+&"new_animation": SubResource("Animation_7v8nc")
+}
+
+[sub_resource type="Animation" id="Animation_odbqu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../流星:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [19]
+}
+
+[sub_resource type="Animation" id="Animation_4q382"]
+resource_name = "new_animation"
+length = 480.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(240, 240.43333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../流星:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(239.96666, 240, 240.03334, 240.06668, 240.1, 240.13335, 240.16667, 240.20001, 240.23335, 240.26668, 240.30002, 240.33334, 240.36668, 240.40001, 240.43335, 240.46667, 240.50002, 240.53334, 240.56668, 240.6, 240.63335),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5oxjh"]
+_data = {
+&"RESET": SubResource("Animation_odbqu"),
+&"bluesky": SubResource("Animation_4q382")
+}
+
+[sub_resource type="Animation" id="Animation_xtmvk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("云4:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(3422, -377.5)]
+}
+
+[sub_resource type="Animation" id="Animation_tbeue"]
+resource_name = "云4"
+length = 15.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("云4:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(3422, -377.5), Vector2(-3772, -377.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rb7q3"]
+_data = {
+&"RESET": SubResource("Animation_xtmvk"),
+&"云4": SubResource("Animation_tbeue")
+}
+
+[sub_resource type="Animation" id="Animation_beipi"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(4839, -1091.5)]
+}
+
+[sub_resource type="Animation" id="Animation_nohjd"]
+resource_name = "云2"
+length = 50.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 50),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(4839, -1091.5), Vector2(-3806, -1091.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xtmvk"]
+_data = {
+&"RESET": SubResource("Animation_beipi"),
+&"云2": SubResource("Animation_nohjd")
+}
+
+[sub_resource type="Animation" id="Animation_rlgvj"]
+length = 50.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../云2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 50),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(4839, -1091.5), Vector2(-4405, -1091.5)]
+}
+
+[sub_resource type="Animation" id="Animation_rb7q3"]
+resource_name = "云1"
+length = 26.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 26),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(3597, -1276.5), Vector2(-3460, -1276.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x2iqi"]
+_data = {
+&"RESET": SubResource("Animation_rlgvj"),
+&"云1": SubResource("Animation_rb7q3")
+}
+
+[sub_resource type="Animation" id="Animation_1chke"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../云3:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(3696, -806.5)]
+}
+
+[sub_resource type="Animation" id="Animation_40vo1"]
+resource_name = "云3"
+length = 20.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../云3:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 20),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(3696, -806.5), Vector2(-3696, -806.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hnnim"]
+_data = {
+&"RESET": SubResource("Animation_1chke"),
+&"云3": SubResource("Animation_40vo1")
+}
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ourjd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_30pou")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_xai7a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_jac82")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_w5e5t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_1hri5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_ucmob")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_sdl56")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_6gykx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_m3ns4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_c0mr1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_mkb5g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_w5b5x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_skpgy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_6c5bw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_am225")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_46gh2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_q5lop")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_vavsk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_k2lye")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_5x2wx")
+}],
+"loop": false,
+"name": &"流星",
+"speed": 19.0
+}]
+
+[sub_resource type="Animation" id="Animation_5v8qp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(3000, -30)]
+}
+
+[sub_resource type="Animation" id="Animation_g7jj0"]
+resource_name = "黑"
+length = 360.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 360),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(3000, -30), Vector2(-3000, -30)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_v12rw"]
+_data = {
+&"RESET": SubResource("Animation_5v8qp"),
+&"黑": SubResource("Animation_g7jj0")
+}
+
+[sub_resource type="Animation" id="Animation_jptrp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(3000, -30)]
+}
+
+[sub_resource type="Animation" id="Animation_00smp"]
+resource_name = "new_animation"
+length = 230.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 230),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(3000, -30), Vector2(-3000, -30)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7v8nc"]
+_data = {
+&"RESET": SubResource("Animation_jptrp"),
+&"new_animation": SubResource("Animation_00smp")
+}
+
+[sub_resource type="Animation" id="Animation_fs1h7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(3000, -30)]
+}
+
+[sub_resource type="Animation" id="Animation_q6adl"]
+resource_name = "new_animation"
+
+[sub_resource type="Animation" id="Animation_f3s7l"]
+resource_name = "白"
+length = 100.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 100),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(3000, -30), Vector2(-3000, -30)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yytn1"]
+_data = {
+&"RESET": SubResource("Animation_fs1h7"),
+&"new_animation": SubResource("Animation_q6adl"),
+&"白": SubResource("Animation_f3s7l")
+}
+
+[node name="Background" type="Node2D"]
+position = Vector2(3001, 1689.25)
+
+[node name="蓝蓝天" type="Sprite2D" parent="."]
+position = Vector2(-1, -1.75)
+scale = Vector2(3, 3)
+texture = ExtResource("2_3agmw")
+
+[node name="黑天" type="Sprite2D" parent="."]
+position = Vector2(-1, -1.75)
+scale = Vector2(3, 3)
+texture = ExtResource("3_xvhlv")
+
+[node name="星星" type="Sprite2D" parent="."]
+position = Vector2(3000, -30)
+scale = Vector2(6, 6)
+texture = ExtResource("4_eojs8")
+
+[node name="star" type="AnimationPlayer" parent="星星"]
+libraries = {
+&"": SubResource("AnimationLibrary_g7jj0")
+}
+autoplay = "new_animation"
+
+[node name="蓝天" type="Sprite2D" parent="."]
+position = Vector2(-1, -1.75)
+scale = Vector2(3, 3)
+texture = ExtResource("5_rk1d7")
+
+[node name="蓝天流星" type="AnimationPlayer" parent="蓝天"]
+libraries = {
+&"": SubResource("AnimationLibrary_5oxjh")
+}
+
+[node name="云4" type="Sprite2D" parent="蓝天"]
+position = Vector2(3422, -377.5)
+scale = Vector2(0.58130455, 0.5277778)
+texture = ExtResource("6_70wxu")
+
+[node name="云之动画4" type="AnimationPlayer" parent="蓝天/云4"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_rb7q3")
+}
+autoplay = "云4"
+
+[node name="云2" type="Sprite2D" parent="蓝天"]
+position = Vector2(4839, -1091.5)
+scale = Vector2(0.7287552, 0.7619048)
+texture = ExtResource("7_arxqr")
+
+[node name="云之动画2" type="AnimationPlayer" parent="蓝天/云2"]
+libraries = {
+&"": SubResource("AnimationLibrary_xtmvk")
+}
+
+[node name="云1" type="Sprite2D" parent="蓝天"]
+position = Vector2(3597, -1276.5)
+scale = Vector2(0.525015, 0.5795305)
+texture = ExtResource("8_v0nl0")
+
+[node name="云之动画1" type="AnimationPlayer" parent="蓝天/云1"]
+libraries = {
+&"": SubResource("AnimationLibrary_x2iqi")
+}
+
+[node name="云3" type="Sprite2D" parent="蓝天"]
+position = Vector2(3696, -806.5)
+scale = Vector2(0.58130455, 0.5277778)
+texture = ExtResource("9_ic2l0")
+
+[node name="云之动画3" type="AnimationPlayer" parent="蓝天/云3"]
+root_node = NodePath("../../云1")
+libraries = {
+&"": SubResource("AnimationLibrary_hnnim")
+}
+
+[node name="流星" type="AnimatedSprite2D" parent="."]
+position = Vector2(-794.0001, -722.25)
+scale = Vector2(0.78332585, 0.7591726)
+sprite_frames = SubResource("SpriteFrames_ourjd")
+animation = &"流星"
+frame = 19
+
+[node name="黑" type="Sprite2D" parent="."]
+position = Vector2(3000, -30)
+scale = Vector2(6, 6)
+texture = ExtResource("30_utpsi")
+
+[node name="黑" type="AnimationPlayer" parent="黑"]
+libraries = {
+&"": SubResource("AnimationLibrary_v12rw")
+}
+autoplay = "黑"
+
+[node name="灰" type="Sprite2D" parent="."]
+position = Vector2(3000, -30)
+scale = Vector2(6, 6)
+texture = ExtResource("31_rbd3v")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="灰"]
+libraries = {
+&"": SubResource("AnimationLibrary_7v8nc")
+}
+autoplay = "new_animation"
+
+[node name="白" type="Sprite2D" parent="."]
+position = Vector2(3000, -30)
+scale = Vector2(6, 6)
+texture = ExtResource("32_b7jjn")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="白"]
+libraries = {
+&"": SubResource("AnimationLibrary_yytn1")
+}
+autoplay = "白"

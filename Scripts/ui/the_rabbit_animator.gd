@@ -66,6 +66,7 @@ var _trig_pool_clicked: bool = false
 var _trig_recycle_lid_closed: bool = false
 
 var _has_recycled_items: bool = false # 追踪回收周期内是否有物品成功回收
+var _era_nodes: Array[Node2D] = []
 
 # ... existing code ...
 
@@ -80,6 +81,10 @@ func _ready() -> void:
 		GameManager.gold_changed.connect(_on_gold_changed)
 		# 初始化金币状态
 		_on_gold_changed(GameManager.gold)
+	
+	if EraManager:
+		EraManager.era_changed.connect(_update_era_visuals)
+		_update_era_visuals(EraManager.current_era_index)
 	
 	EventBus.order_completed.connect(func(_ctx):
 		_trig_order_success = true
@@ -173,6 +178,19 @@ func _find_required_nodes() -> void:
 	
 	# print("[RabbitAnimator] Left Eye Fill found: ", _left_eye_fill != null)
 	# print("[RabbitAnimator] Right Eye Fill found: ", _right_eye_fill != null)
+
+	# 时代视觉组件 (在 WandFaceFill 下)
+	var wand_fill = p.find_child("TheRabbitWandFaceFill", true, false)
+	if wand_fill:
+		for i in range(1, 5):
+			# 优先尝试 PascalCase (Era_X)，回退到 snake_case (era_x)
+			var node = wand_fill.get_node_or_null("Era_" + str(i))
+			if not node:
+				node = wand_fill.get_node_or_null("era_" + str(i))
+			
+			if node:
+				_era_nodes.append(node)
+		print("[RabbitAnimator] Era visual nodes found: ", _era_nodes.size())
 
 func _cache_initial_transforms() -> void:
 	_init_eye_materials()
@@ -317,3 +335,14 @@ func _tween_eye_offset(target: Vector2, duration: float) -> void:
 		if eye and eye.material:
 			var tween = create_tween()
 			tween.tween_property(eye.material, "shader_parameter/pupil_offset", target, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+# --- 时代视觉更新 ---
+
+func _update_era_visuals(era_index: int) -> void:
+	if _era_nodes.is_empty():
+		return
+		
+	for i in range(_era_nodes.size()):
+		if _era_nodes[i]:
+			_era_nodes[i].visible = (i == era_index)
+	
+	print("[RabbitAnimator] Era visuals updated to Index: ", era_index)
