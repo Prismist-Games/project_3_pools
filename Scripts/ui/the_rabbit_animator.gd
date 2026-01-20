@@ -158,15 +158,15 @@ func _on_game_event(event_id: StringName, _payload: Variant) -> void:
 	if event_id == &"recycle_lid_closed":
 		# 只有在本次回收周期中有物品由于操作被成功回收（发出 item_recycled 信号）时，才触发“敲击机器”动画
 		if _has_recycled_items:
-			_trig_recycle_lid_closed = true
-			if anim_tree:
+			_has_recycled_items = false
+			if _playback:
+				_playback.travel(STATE_RABBIT_KNOCK_MACHINE)
+			elif anim_tree:
 				anim_tree.set("parameters/conditions/recycle_lid_closed", true)
-			print("[RabbitAnimator] Trigger: knock machine")
-		# else:
-			# print("[RabbitAnimator] Lid closed ignored: No items recycled")
-		
-		# 周期结束重置
-		_has_recycled_items = false
+		else:
+			# 如果只是正常的开关盖子（无回收行为），则不重置 _has_recycled_items 
+			# 以免由于动画冲突导致在该周期内应有的回收反馈丢失
+			pass
 
 
 func _find_required_nodes() -> void:

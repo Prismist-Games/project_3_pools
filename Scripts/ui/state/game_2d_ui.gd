@@ -366,6 +366,7 @@ func _on_vfx_queue_finished() -> void:
 					if item:
 						var value = Constants.rarity_recycle_value(item.rarity)
 						switch_controller.show_recycle_preview(value)
+	
 
 func _refresh_all() -> void:
 	# 初始化时直接设置金币显示，不播放动画
@@ -609,8 +610,18 @@ func _on_item_slot_mouse_exited(_index: int) -> void:
 
 func _on_recycle_switch_mouse_entered() -> void:
 	_is_mouse_on_recycle_switch = true
-	
-	if not state_machine or state_machine.get_ui_mode() != Constants.UIMode.NORMAL: return
+	_update_recycle_switch_interaction()
+
+func _update_recycle_switch_interaction() -> void:
+	# 如果 UI 被锁定或正在播放特效，保持当前状态，不进行自动开闭
+	if is_ui_locked() or _is_vfx_processing:
+		return
+		
+	if not _is_mouse_on_recycle_switch:
+		return
+		
+	if not state_machine or state_machine.get_ui_mode() != Constants.UIMode.NORMAL:
+		return
 	
 	var selected_idx = InventorySystem.selected_slot_index
 	var has_pending = not InventorySystem.pending_items.is_empty()
@@ -623,7 +634,10 @@ func _on_recycle_switch_mouse_entered() -> void:
 		elif selected_idx != -1:
 			var item = InventorySystem.inventory[selected_idx]
 			if item: value = Constants.rarity_recycle_value(item.rarity)
+			
 		switch_controller.show_recycle_preview(value)
+	else:
+		switch_controller.hide_recycle_preview()
 
 func _on_recycle_switch_mouse_exited() -> void:
 	_is_mouse_on_recycle_switch = false
@@ -699,6 +713,10 @@ func _handle_single_item_recycle(selected_idx: int) -> void:
 			vfx_manager.enqueue(task)
 	
 	unlock_ui("recycle")
+	
+	# 关键修复：解锁后延迟触发关盖检查，因为之前信号处理时 UI 还在锁定状态
+	call_deferred("_update_recycle_switch_interaction")
+
 
 func _handle_cancel() -> void:
 	# 1. 如果处于非 NORMAL 模式，强制回退到 Idle

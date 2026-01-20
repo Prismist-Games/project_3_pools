@@ -162,6 +162,8 @@ func show_recycle_preview(value: int) -> void:
 	
 	if not _recycle_is_on:
 		_recycle_is_on = true
+		_has_recycled_since_open = false
+		_recycle_lid_closed_emitted = false
 		EventBus.game_event.emit(&"switch_on", null)
 		
 	update_recycle_label(value)
