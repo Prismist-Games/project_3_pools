@@ -41,7 +41,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(3000, -30)]
+"values": [Vector2(-3000, -1182.25)]
 }
 
 [sub_resource type="Animation" id="Animation_7v8nc"]
@@ -58,7 +58,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 30),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-3000, -30), Vector2(3000, -30)]
+"values": [Vector2(-3000, -1182.25), Vector2(3000, -1182.25)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g7jj0"]
@@ -140,7 +140,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(2988.9692, -223.68822)]
+"values": [Vector2(-1000, -55.5)]
 }
 
 [sub_resource type="Animation" id="Animation_yelt0"]
@@ -157,7 +157,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 150),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-2975, -223.68822), Vector2(2988.9692, -223.68822)]
+"values": [Vector2(-1000, -55.499985), Vector2(992.5, -55.5)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xtal7"]
@@ -362,7 +362,7 @@ scale = Vector2(3, 3)
 texture = ExtResource("3_xvhlv")
 
 [node name="星星" type="Sprite2D" parent="."]
-position = Vector2(3000, -30)
+position = Vector2(-3000, -1182.25)
 scale = Vector2(3, 3)
 texture = ExtResource("4_eojs8")
 
@@ -384,7 +384,7 @@ libraries = {
 autoplay = "bluesky"
 
 [node name="Cloud" type="Sprite2D" parent="蓝天"]
-position = Vector2(2988.9692, -223.68822)
+position = Vector2(-1000, -55.5)
 scale = Vector2(0.6538727, 0.65387285)
 texture = ExtResource("25_m01df")
 

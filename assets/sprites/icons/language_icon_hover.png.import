@@ -2,22 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1ybcwymejujy"
-path.s3tc="res://.godot/imported/ground_baked.PNG-0ff809ebf8e57a743b7899031522b97e.s3tc.ctex"
-path.etc2="res://.godot/imported/ground_baked.PNG-0ff809ebf8e57a743b7899031522b97e.etc2.ctex"
+uid="uid://dkiduci7dgu3v"
+path="res://.godot/imported/language_icon_hover.png-a8d49cb881ad40db7c61db9f35f228dc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/ground_baked.PNG"
-dest_files=["res://.godot/imported/ground_baked.PNG-0ff809ebf8e57a743b7899031522b97e.s3tc.ctex", "res://.godot/imported/ground_baked.PNG-0ff809ebf8e57a743b7899031522b97e.etc2.ctex"]
+source_file="res://assets/sprites/icons/language_icon_hover.png"
+dest_files=["res://.godot/imported/language_icon_hover.png-a8d49cb881ad40db7c61db9f35f228dc.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=3
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

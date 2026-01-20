@@ -45,7 +45,8 @@ var era_label: Control = null
 # Cancel 按钮节点引用
 @onready var cancel_root: Node2D = find_child("Cancel", true)
 
-@onready var language_switch: Button = get_node_or_null("Language Switch")
+@onready var language_switch: TextureButton = find_child("Language Switch", true)
+@onready var tutorial_button: TextureButton = find_child("Tutorial Button", true)
 
 # --- ERA_3 DLC 面板节点引用 ---
 @onready var dlc_panel: Node2D = find_child("The Machine DLC", true)
@@ -128,6 +129,11 @@ func _ready() -> void:
 	EventBus.modal_requested.connect(_on_modal_requested)
 	EventBus.game_event.connect(_on_game_event)
 	EventBus.item_recycled.connect(_on_item_recycled)
+
+	if language_switch:
+		language_switch.pressed.connect(_on_language_switch_pressed)
+	if tutorial_button:
+		tutorial_button.pressed.connect(_on_tutorial_button_pressed)
 	
 	# ERA_3: 监听时代切换，控制 DLC 面板显示
 	EraManager.era_changed.connect(_on_era_changed)
@@ -141,9 +147,6 @@ func _ready() -> void:
 	
 	# 6. 初始化 DLC 面板状态（根据当前时代）
 	_update_dlc_panel_visibility()
-	
-	if language_switch:
-		language_switch.pressed.connect(_on_language_switch_pressed)
 
 	# 7. 初始化 Era Popup
 	_init_era_popup()
@@ -165,6 +168,9 @@ func _init_era_popup() -> void:
 
 func _on_language_switch_pressed() -> void:
 	LocaleManager.toggle_locale()
+
+func _on_tutorial_button_pressed() -> void:
+	show_tutorial_slideshow()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED:
@@ -243,14 +249,22 @@ func _init_controllers() -> void:
 	inventory_controller.slot_unhovered.connect(_on_item_slot_unhovered)
 
 func _on_menu_transition_finished() -> void:
+	# 延迟一小会儿弹出，确保转场动画彻底结束，视觉更舒适
+	await get_tree().create_timer(0.2).timeout
+	
+	show_tutorial_slideshow()
+
+	# 第一次退出教程后，触发第一时代 (era1) 的 modal
+	tutorial_slideshow.tutorial_closed.connect(func():
+		_show_era_popup(0) # 0 代表 Era 1
+	, CONNECT_ONE_SHOT)
+
+func show_tutorial_slideshow() -> void:
 	if tutorial_slideshow == null:
 		tutorial_slideshow = tutorial_slideshow_scene.instantiate()
 		add_child(tutorial_slideshow)
 	
-	# 延迟一小会儿弹出，确保转场动画彻底结束，视觉更舒适
-	get_tree().create_timer(0.2).timeout.connect(func():
-		tutorial_slideshow.show_tutorial()
-	)
+	tutorial_slideshow.show_tutorial()
 
 ## 初始化状态机
 func _init_state_machine() -> void:

@@ -2,20 +2,22 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bdvxak6mqassm"
-path="res://.godot/imported/language_icon.png-e78192e3fa2505b9126dfde4868c45a9.ctex"
+uid="uid://db6sd5xoohnbh"
+path.s3tc="res://.godot/imported/shadow_the_machine.png-605f9b71ac34b46196b8aa9724990b2a.s3tc.ctex"
+path.etc2="res://.godot/imported/shadow_the_machine.png-605f9b71ac34b46196b8aa9724990b2a.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://assets/sprites/icons/language_icon.png"
-dest_files=["res://.godot/imported/language_icon.png-e78192e3fa2505b9126dfde4868c45a9.ctex"]
+source_file="res://assets/sprites/shadow_the_machine.png"
+dest_files=["res://.godot/imported/shadow_the_machine.png-605f9b71ac34b46196b8aa9724990b2a.s3tc.ctex", "res://.godot/imported/shadow_the_machine.png-605f9b71ac34b46196b8aa9724990b2a.etc2.ctex"]
 
 [params]
 
-compress/mode=3
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

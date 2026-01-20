@@ -2,20 +2,22 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bdvxak6mqassm"
-path="res://.godot/imported/language_icon.png-e78192e3fa2505b9126dfde4868c45a9.ctex"
+uid="uid://c8lfi83r0gc3d"
+path.s3tc="res://.godot/imported/shadow_the_rabbit.png-a56d37819bfda283245e6580c23df56a.s3tc.ctex"
+path.etc2="res://.godot/imported/shadow_the_rabbit.png-a56d37819bfda283245e6580c23df56a.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://assets/sprites/icons/language_icon.png"
-dest_files=["res://.godot/imported/language_icon.png-e78192e3fa2505b9126dfde4868c45a9.ctex"]
+source_file="res://assets/sprites/shadow_the_rabbit.png"
+dest_files=["res://.godot/imported/shadow_the_rabbit.png-a56d37819bfda283245e6580c23df56a.s3tc.ctex", "res://.godot/imported/shadow_the_rabbit.png-a56d37819bfda283245e6580c23df56a.etc2.ctex"]
 
 [params]
 
-compress/mode=3
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
