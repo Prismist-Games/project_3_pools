@@ -67,6 +67,7 @@ mouse_filter = 2
 theme_override_fonts/normal_font = ExtResource("6_nydnh")
 theme_override_font_sizes/normal_font_size = 24
 text = "BTN_PREVIOUS"
+scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -92,6 +93,7 @@ mouse_filter = 2
 theme_override_fonts/normal_font = ExtResource("6_nydnh")
 theme_override_font_sizes/normal_font_size = 24
 text = "BTN_NEXT"
+scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 

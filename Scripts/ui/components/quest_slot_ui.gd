@@ -136,7 +136,8 @@ func _update_requirements(reqs: Array[Dictionary], req_states: Array) -> void:
 	if not grid: return
 
 	for i in range(4):
-		var req_node = grid.get_node_or_null(item_root_prefix + str(i))
+		# 1. 改为使用 find_child 增加对层级变化的鲁棒性
+		var req_node = grid.find_child(item_root_prefix + str(i), true)
 		if not req_node: continue
 		
 		if i < reqs.size():
@@ -220,6 +221,8 @@ func _update_icon_saturation(icon: Sprite2D, is_satisfied: bool) -> void:
 			shader_material = shader_material.duplicate() as ShaderMaterial
 			shader_material.resource_local_to_scene = true
 			icon.material = shader_material
+			# 初始化时确保描边宽度为 0
+			shader_material.set_shader_parameter("width", 0.0)
 		shader_material.set_shader_parameter("saturation", 1.0 if is_satisfied else 0.0)
 
 ## =====================================================================

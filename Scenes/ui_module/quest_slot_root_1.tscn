@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://05ku7kwq0dxp"]
+[gd_scene load_steps=32 format=3 uid="uid://05ku7kwq0dxp"]
 
 [ext_resource type="Script" uid="uid://con7nyakgbhan" path="res://scripts/ui/components/quest_slot_ui.gd" id="1_cf02l"]
 [ext_resource type="Texture2D" uid="uid://bk6w30hxghp51" path="res://assets/sprites/quest_slots/基地-7.png" id="2_5cnt1"]
@@ -10,11 +10,11 @@
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="8_uawe1"]
 [ext_resource type="FontFile" uid="uid://bpg3iakb3o07a" path="res://assets/fonts/51282.otf" id="9_x1b4l"]
 [ext_resource type="Texture2D" uid="uid://nju4di4bai4r" path="res://assets/sprites/icons/items/item_shape_centered.png" id="10_8oyay"]
-[ext_resource type="Texture2D" uid="uid://djo0fcuw1ico0" path="res://assets/sprites/light_1.png" id="10_4304g"]
-[ext_resource type="Texture2D" uid="uid://cuq30wijqs4vm" path="res://assets/sprites/light_2.png" id="11_ywy2p"]
+[ext_resource type="Shader" uid="uid://cjs8tedhdkq2m" path="res://assets/shaders/desaturate.gdshader" id="10_cm3rb"]
+[ext_resource type="Texture2D" uid="uid://davbf6tu8eie1" path="res://assets/sprites/quest_slots/quality_label.PNG" id="11_8oyay"]
 [ext_resource type="Texture2D" uid="uid://h5k15o8ewu4i" path="res://assets/sprites/icons/item_rarity_glow.PNG" id="12_xy8au"]
 [ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="13_n0e4s"]
-[ext_resource type="Texture2D" uid="uid://bkthx68vhcd00" path="res://assets/sprites/quest_slots/基地-10.png" id="14_tqhba"]
+[ext_resource type="Texture2D" uid="uid://ccgio8dnutusa" path="res://assets/sprites/quest_slots/quest_slot_door.PNG" id="14_5cnt1"]
 [ext_resource type="Texture2D" uid="uid://b83tw66bk1v5s" path="res://assets/sprites/quest_slots/基地-6.png" id="15_vvcjj"]
 [ext_resource type="Texture2D" uid="uid://beldg0xqocq2k" path="res://assets/sprites/quest_slots/基地-5.png" id="16_6ixpp"]
 [ext_resource type="Texture2D" uid="uid://catqi262iinqu" path="res://assets/sprites/quest_slots/正常按钮.png" id="17_cf02l"]
@@ -24,20 +24,14 @@
 [ext_resource type="Texture2D" uid="uid://cndfk2veulvf7" path="res://assets/sprites/quest_slots/1.png" id="22_xy8au"]
 [ext_resource type="Texture2D" uid="uid://bq06dygb38pu3" path="res://assets/sprites/quest_slots/2.png" id="23_8oyay"]
 
-[sub_resource type="Shader" id="Shader_5cnt1"]
-code = "shader_type canvas_item;
-
-uniform float saturation;
-
-void fragment() {
-    vec4 tex_color = texture(TEXTURE, UV);
-
-    COLOR.rgb = mix(vec3(dot(tex_color.rgb, vec3(0.299, 0.587, 0.114))), tex_color.rgb, saturation);
-	COLOR.a = tex_color.a;
-}"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xy8au"]
-shader = SubResource("Shader_5cnt1")
+shader = ExtResource("10_cm3rb")
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/width = 20.00000095
+shader_parameter/pattern = 0
+shader_parameter/inside = false
+shader_parameter/add_margins = false
+shader_parameter/number_of_images = Vector2(1, 1)
 shader_parameter/saturation = 1.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cm3rb"]
@@ -254,9 +248,9 @@ scroll_active = false
 vertical_alignment = 1
 
 [node name="Quest Slot Items Grid" type="HBoxContainer" parent="Quest Slot_mask"]
-offset_left = -186.0
+offset_left = -147.0
 offset_top = 23.75
-offset_right = 1014.0
+offset_right = 1053.0
 offset_bottom = 63.75
 scale = Vector2(0.5, 0.5)
 theme_override_constants/separation = 325
@@ -267,112 +261,104 @@ layout_mode = 2
 
 [node name="Item_icon" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0"]
 material = SubResource("ShaderMaterial_xy8au")
-scale = Vector2(0.75, 0.75)
+position = Vector2(0, -17.5)
+scale = Vector2(0.9, 0.9)
 texture = SubResource("AtlasTexture_cm3rb")
-
-[node name="Item_requirement" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -28.666672)
-scale = Vector2(2.75, 2.75)
-texture = ExtResource("10_4304g")
-
-[node name="Item_requirement_beam" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon/Item_requirement"]
-texture = ExtResource("11_ywy2p")
 
 [node name="Item_rarity" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 show_behind_parent = true
 texture = ExtResource("12_xy8au")
 
-[node name="Item_status" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0/Item_icon"]
-position = Vector2(128, -107.333336)
+[node name="Item_status" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0"]
+position = Vector2(104.399994, -134.5)
+scale = Vector2(1.3499999, 1.3499999)
 texture = ExtResource("13_n0e4s")
+
+[node name="Item_requirement" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_0"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+position = Vector2(0, 172.5)
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("11_8oyay")
 
 [node name="Quest Slot Item_root_1" type="Control" parent="Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
 
 [node name="Item_icon" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1"]
 material = SubResource("ShaderMaterial_xy8au")
-scale = Vector2(0.75, 0.75)
+position = Vector2(0, -17.5)
+scale = Vector2(0.9, 0.9)
 texture = SubResource("AtlasTexture_cm3rb")
-
-[node name="Item_requirement" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -28.666672)
-scale = Vector2(2.75, 2.75)
-texture = ExtResource("10_4304g")
-
-[node name="Item_requirement_beam" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon/Item_requirement"]
-texture = ExtResource("11_ywy2p")
 
 [node name="Item_rarity" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 show_behind_parent = true
 texture = ExtResource("12_xy8au")
 
-[node name="Item_status" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1/Item_icon"]
-position = Vector2(128, -107.333336)
+[node name="Item_status" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1"]
+position = Vector2(104.399994, -134.5)
+scale = Vector2(1.3499999, 1.3499999)
 texture = ExtResource("13_n0e4s")
+
+[node name="Item_requirement" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_1"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+position = Vector2(0, 172.5)
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("11_8oyay")
 
 [node name="Quest Slot Item_root_2" type="Control" parent="Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
 
 [node name="Item_icon" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2"]
 material = SubResource("ShaderMaterial_xy8au")
-scale = Vector2(0.75, 0.75)
+position = Vector2(0, -17.5)
+scale = Vector2(0.9, 0.9)
 texture = SubResource("AtlasTexture_cm3rb")
-
-[node name="Item_requirement" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -28.666672)
-scale = Vector2(2.75, 2.75)
-texture = ExtResource("10_4304g")
-
-[node name="Item_requirement_beam" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon/Item_requirement"]
-texture = ExtResource("11_ywy2p")
 
 [node name="Item_rarity" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 show_behind_parent = true
 texture = ExtResource("12_xy8au")
 
-[node name="Item_status" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2/Item_icon"]
-position = Vector2(128, -107.333336)
+[node name="Item_status" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2"]
+position = Vector2(104.399994, -134.5)
+scale = Vector2(1.3499999, 1.3499999)
 texture = ExtResource("13_n0e4s")
+
+[node name="Item_requirement" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_2"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+position = Vector2(0, 172.5)
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("11_8oyay")
 
 [node name="Quest Slot Item_root_3" type="Control" parent="Quest Slot_mask/Quest Slot Items Grid"]
 layout_mode = 2
 
 [node name="Item_icon" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3"]
 material = SubResource("ShaderMaterial_xy8au")
-scale = Vector2(0.75, 0.75)
+position = Vector2(0, -17.5)
+scale = Vector2(0.9, 0.9)
 texture = SubResource("AtlasTexture_cm3rb")
-
-[node name="Item_requirement" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -28.666672)
-scale = Vector2(2.75, 2.75)
-texture = ExtResource("10_4304g")
-
-[node name="Item_requirement_beam" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon/Item_requirement"]
-texture = ExtResource("11_ywy2p")
 
 [node name="Item_rarity" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 show_behind_parent = true
 texture = ExtResource("12_xy8au")
 
-[node name="Item_status" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3/Item_icon"]
-position = Vector2(128, -107.333336)
+[node name="Item_status" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3"]
+position = Vector2(104.399994, -134.5)
+scale = Vector2(1.3499999, 1.3499999)
 texture = ExtResource("13_n0e4s")
 
+[node name="Item_requirement" type="Sprite2D" parent="Quest Slot_mask/Quest Slot Items Grid/Quest Slot Item_root_3"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+position = Vector2(0, 172.5)
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("11_8oyay")
+
 [node name="Quest Slot_lid" type="Sprite2D" parent="Quest Slot_mask"]
-self_modulate = Color(1, 0.79607844, 0.03137255, 1)
-texture = ExtResource("14_tqhba")
+texture = ExtResource("14_5cnt1")
+offset = Vector2(0, -26.175)
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="."]
 self_modulate = Color(0.99607843, 0.90588236, 0.2901961, 1)

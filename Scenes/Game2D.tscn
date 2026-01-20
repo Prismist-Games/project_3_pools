@@ -23,13 +23,14 @@
 [ext_resource type="Texture2D" uid="uid://ct1fu4kglmejc" path="res://assets/sprites/the_machine/the_machine_top_front.png" id="14_8sogx"]
 [ext_resource type="Texture2D" uid="uid://cmkaptn0k1n1x" path="res://assets/sprites/the_machine_switch/基地-4.png" id="15_0dgko"]
 [ext_resource type="Texture2D" uid="uid://dw0b4i78tkpru" path="res://assets/sprites/the_machine_switch/基地-7.png" id="15_fvhsr"]
-[ext_resource type="Texture2D" uid="uid://dwq0bu4hxfo5j" path="res://assets/sprites/the_machine/the_machine_side.png" id="15_phh48"]
 [ext_resource type="Texture2D" uid="uid://bfeh4pui1k6k1" path="res://assets/sprites/the_machine_switch/基地-3.png" id="16_2v31b"]
 [ext_resource type="Texture2D" uid="uid://d30sfg17qmuxb" path="res://assets/sprites/the_machine/the_machine_side_outline.png" id="16_aagg1"]
 [ext_resource type="Texture2D" uid="uid://bugs5jj4i014q" path="res://assets/sprites/the_machine_switch/基地-6.png" id="17_d4ujc"]
 [ext_resource type="Texture2D" uid="uid://dscqm4kp5fmva" path="res://assets/sprites/the_machine/the_machine_front.png" id="17_tmso7"]
+[ext_resource type="Texture2D" uid="uid://bnx44ify6toae" path="res://assets/sprites/the_machine/the_machine_side_fill.png" id="17_ug1ds"]
 [ext_resource type="Texture2D" uid="uid://w68mqbo8q5e2" path="res://assets/sprites/the_machine/the_machine_front_outline.png" id="18_2kwm8"]
 [ext_resource type="Texture2D" uid="uid://dpqibsn4l8hxe" path="res://assets/sprites/the_machine_switch/Recycle_background_shade.png" id="18_8y6ih"]
+[ext_resource type="Texture2D" uid="uid://e6388ffoqam7" path="res://assets/sprites/the_machine/the_machine_side_pattern.png" id="18_simg3"]
 [ext_resource type="Texture2D" uid="uid://lw48pfhb1slm" path="res://assets/sprites/the_machine_switch/Recycle_background_outline.png" id="18_u8s40"]
 [ext_resource type="Texture2D" uid="uid://tyc42trcd2xq" path="res://assets/sprites/the_machine_switch/基地-5.png" id="18_xqbja"]
 [ext_resource type="Script" uid="uid://ip5lr6ojc1cq" path="res://scripts/ui/utils/switch_background_follow.gd" id="19_ue141"]
@@ -56,6 +57,8 @@
 [ext_resource type="Texture2D" uid="uid://c5hf5dhl1twpv" path="res://assets/sprites/the_machine_dlc/dlc_screen_fill.png" id="42_p2bqf"]
 [ext_resource type="PackedScene" uid="uid://basts7bbr2vav" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
+[ext_resource type="Shader" uid="uid://cjs8tedhdkq2m" path="res://assets/shaders/desaturate.gdshader" id="53_simg3"]
+[ext_resource type="Texture2D" uid="uid://davbf6tu8eie1" path="res://assets/sprites/quest_slots/quality_label.PNG" id="54_ug1ds"]
 [ext_resource type="Texture2D" uid="uid://dueqqf84ep58p" path="res://assets/sprites/frames/rabbit_popup.png" id="72_d4tgn"]
 [ext_resource type="Texture2D" uid="uid://b7qsbdjotcn0r" path="res://assets/sprites/frames/rabbit_popup_button.png" id="73_1wqh7"]
 [ext_resource type="Texture2D" uid="uid://hrp7bsul1woh" path="res://assets/sprites/frames/rabbit_popup_button_pressed.png" id="74_1wndc"]
@@ -63,10 +66,8 @@
 [ext_resource type="Texture2D" uid="uid://bdvxak6mqassm" path="res://assets/sprites/icons/language_icon.png" id="78_vjbw4"]
 [ext_resource type="Texture2D" uid="uid://dgoq2kyyp1gpg" path="res://assets/sprites/icons/language_icon_pressed.png" id="79_fn8r1"]
 [ext_resource type="Texture2D" uid="uid://dkiduci7dgu3v" path="res://assets/sprites/icons/language_icon_hover.png" id="80_ug1ds"]
-[ext_resource type="Texture2D" uid="uid://djo0fcuw1ico0" path="res://assets/sprites/light_1.png" id="81_6sdua"]
 [ext_resource type="Texture2D" uid="uid://da0dc46kmohlc" path="res://assets/sprites/icons/tutorial_icon.png" id="81_simg3"]
 [ext_resource type="Texture2D" uid="uid://f0cw0uydojp2" path="res://assets/sprites/icons/tutorial_icon_pressed.png" id="82_3ih7i"]
-[ext_resource type="Texture2D" uid="uid://cuq30wijqs4vm" path="res://assets/sprites/light_2.png" id="82_4tp6t"]
 [ext_resource type="Texture2D" uid="uid://bi2ifququatll" path="res://assets/sprites/icons/tutorial_icon_hovered.png" id="83_nbd70"]
 [ext_resource type="Texture2D" uid="uid://h5k15o8ewu4i" path="res://assets/sprites/icons/item_rarity_glow.PNG" id="83_taegb"]
 [ext_resource type="PackedScene" uid="uid://05ku7kwq0dxp" path="res://scenes/ui_module/quest_slot_root_1.tscn" id="87_n6ers"]
@@ -292,25 +293,19 @@ shader_parameter/screen_curvature = 0.05
 shader_parameter/jitter_intensity = 0.002
 shader_parameter/noise_intensity = 0.05
 
-[sub_resource type="Shader" id="Shader_taegb"]
-code = "shader_type canvas_item;
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_simg3"]
+shader = ExtResource("53_simg3")
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/width = 20.00000095
+shader_parameter/pattern = 0
+shader_parameter/inside = false
+shader_parameter/add_margins = false
+shader_parameter/number_of_images = Vector2(1, 1)
+shader_parameter/saturation = 1.0
 
-uniform float saturation;
-
-void fragment() {
-    vec4 tex_color = texture(TEXTURE, UV);
-
-    COLOR.rgb = mix(vec3(dot(tex_color.rgb, vec3(0.299, 0.587, 0.114))), tex_color.rgb, saturation);
-	COLOR.a = tex_color.a;
-}"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_m40pb"]
-shader = SubResource("Shader_taegb")
-shader_parameter/saturation = 0.0
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_amd4b"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ih7i"]
 atlas = ExtResource("94_m40pb")
-region = Rect2(1500, 500, 500, 500)
+region = Rect2(1500, 1500, 500, 500)
 
 [sub_resource type="Animation" id="Animation_8ocj1"]
 length = 0.001
@@ -723,17 +718,19 @@ region_rect = Rect2(687, 359, 2243, 134)
 
 [node name="TheMachineSide" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(481.25, 220.25)
-texture = ExtResource("15_phh48")
-offset = Vector2(-1462.5, 51)
-region_enabled = true
-region_rect = Rect2(222, 355, 430, 2767)
-
-[node name="TheMachineSideOutline" type="Sprite2D" parent="The Machine/TheMachineSide"]
+position = Vector2(-980, 274)
 texture = ExtResource("16_aagg1")
-offset = Vector2(-1463.5, 54)
-region_enabled = true
-region_rect = Rect2(209, 338, 454, 2807)
+
+[node name="TheMachineSideFill" type="Sprite2D" parent="The Machine/TheMachineSide"]
+self_modulate = Color(0.05490196, 0.3529412, 0.28627452, 1)
+show_behind_parent = true
+clip_children = 2
+position = Vector2(1, -3)
+texture = ExtResource("17_ug1ds")
+
+[node name="TheMachineSidePattern" type="Sprite2D" parent="The Machine/TheMachineSide/TheMachineSideFill"]
+visible = false
+texture = ExtResource("18_simg3")
 
 [node name="TheMachineFront" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
@@ -1332,55 +1329,51 @@ alignment = 2
 layout_mode = 2
 
 [node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0"]
-material = SubResource("ShaderMaterial_m40pb")
-scale = Vector2(0.75, 0.75)
-texture = SubResource("AtlasTexture_amd4b")
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -28.667)
-scale = Vector2(2.75, 2.75)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_requirement_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon/Item_requirement"]
-texture = ExtResource("82_4tp6t")
+material = SubResource("ShaderMaterial_simg3")
+position = Vector2(0, -17.5)
+scale = Vector2(0.9, 0.9)
+texture = SubResource("AtlasTexture_3ih7i")
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 show_behind_parent = true
 texture = ExtResource("83_taegb")
 
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
-position = Vector2(128, -107.333336)
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0"]
+position = Vector2(104.399994, -134.5)
+scale = Vector2(1.3499999, 1.3499999)
 texture = ExtResource("87_u8s40")
+
+[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+position = Vector2(0, 172.5)
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("54_ug1ds")
 
 [node name="Main Quest Slot Item_root_1" type="Control" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid"]
 layout_mode = 2
 
 [node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1"]
-material = SubResource("ShaderMaterial_m40pb")
-scale = Vector2(0.75, 0.75)
-texture = SubResource("AtlasTexture_amd4b")
-
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
-modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
-show_behind_parent = true
-position = Vector2(16, -28.667)
-scale = Vector2(2.75, 2.75)
-texture = ExtResource("81_6sdua")
-
-[node name="Item_requirement_beam" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon/Item_requirement"]
-texture = ExtResource("82_4tp6t")
+material = SubResource("ShaderMaterial_simg3")
+position = Vector2(0, -17.5)
+scale = Vector2(0.9, 0.9)
+texture = SubResource("AtlasTexture_3ih7i")
 
 [node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 show_behind_parent = true
 texture = ExtResource("83_taegb")
 
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
-position = Vector2(128, -107.333336)
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1"]
+position = Vector2(104.399994, -134.5)
+scale = Vector2(1.3499999, 1.3499999)
 texture = ExtResource("87_u8s40")
+
+[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+position = Vector2(0, 172.5)
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("54_ug1ds")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask"]
 modulate = Color(1, 0.79607844, 0.03137255, 1)

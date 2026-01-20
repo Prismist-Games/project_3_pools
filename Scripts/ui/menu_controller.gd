@@ -2,8 +2,11 @@ extends Control
 
 @onready var button_zh: TextureButton = $Button_ZH
 @onready var button_en: TextureButton = $Button_EN
+@onready var credit_button: TextureButton = $"Credit Button"
+@onready var back_button: TextureButton = $"Back Button"
 @onready var color_rect: ColorRect = $ColorRect
 @onready var the_rabbit: Node2D = $"The Rabbit"
+@onready var camera: Camera2D = $Camera2D
 
 var target_scene_path: String = "res://scenes/Game2D.tscn"
 var loading_started: bool = false
@@ -18,6 +21,8 @@ func _ready() -> void:
 	
 	button_zh.pressed.connect(_on_language_selected.bind("zh"))
 	button_en.pressed.connect(_on_language_selected.bind("en"))
+	credit_button.pressed.connect(_on_credit_button_pressed)
+	back_button.pressed.connect(_on_back_button_pressed)
 
 func _on_language_selected(locale: String) -> void:
 	if loading_started:
@@ -30,6 +35,8 @@ func _on_language_selected(locale: String) -> void:
 	var tween_buttons: Tween = create_tween().set_parallel(true)
 	tween_buttons.tween_property(button_zh, "scale", Vector2.ZERO, 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 	tween_buttons.tween_property(button_en, "scale", Vector2.ZERO, 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	tween_buttons.tween_property(credit_button, "scale", Vector2.ZERO, 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	tween_buttons.tween_property(back_button, "scale", Vector2.ZERO, 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 	
 	# 2. 开始后台加载
 	ResourceLoader.load_threaded_request(target_scene_path)
@@ -86,3 +93,13 @@ func _start_transition_sequence() -> void:
 		EventBus.menu_transition_finished.emit()
 		queue_free()
 	)
+
+
+func _on_credit_button_pressed() -> void:
+	var tween_credit: Tween = create_tween()
+	tween_credit.tween_property(camera, "position:y", 5059.0, 1.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+
+
+func _on_back_button_pressed() -> void:
+	var tween_back: Tween = create_tween()
+	tween_back.tween_property(camera, "position:y", 1689.0, 1.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)

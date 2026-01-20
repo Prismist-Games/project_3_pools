@@ -49,6 +49,9 @@ func advance_to_next_era() -> void:
 	var max_era_index = 3 # 0-based, so 4 eras total
 	if current_era_index < max_era_index:
 		start_era(current_era_index + 1)
+	else:
+		# 所有时代已完成，触发游戏结束
+		EventBus.game_event.emit(&"game_ended", null)
 
 
 func _apply_era_reset() -> void:

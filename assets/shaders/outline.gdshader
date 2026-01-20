@@ -1,13 +1,11 @@
 shader_type canvas_item;
 
-uniform vec4 line_color : source_color = vec4(1.0);
-uniform float width : hint_range(0, 50) = 0.0;
+uniform vec4 color : source_color = vec4(1.0);
+uniform float width : hint_range(0, 50) = 1.0;
 uniform int pattern : hint_range(0, 2) = 0; // diamond, circle, square
 uniform bool inside = false;
 uniform bool add_margins = true; // only useful when inside is false
 uniform vec2 number_of_images = vec2(1.0); // number of horizontal and vertical images in the sprite sheet
-
-uniform float saturation : hint_range(0, 1) = 1.0;
 
 varying flat vec4 modulate;
 
@@ -18,7 +16,7 @@ void vertex() {
 		if ((UV.x <= 0.0 || UV.x >= 1.0) && (UV.y <= 0.0 || UV.y >= 1.0)) {
 			VERTEX += (UV * 2.0 - 1.0) * width;
 		} else {
-			VERTEX += sign(VERTEX) * width;
+			VERTEX += sign(VERTEX) * width; // replace sign(VERTEX) by (sign(VERTEX) * 2.0 - 1.0) if your AnimatedSprite2D isn't Centered
 		}
 	}
 }
@@ -62,20 +60,14 @@ void fragment() {
 		if (uv != clamp(uv, image_top_left, image_bottom_right)) {
 			COLOR.a = 0.0;
 		} else {
-			COLOR = texture(TEXTURE, uv);
+			COLOR = texture(TEXTURE, uv) * modulate;
 		}
 	} else {
-		COLOR = texture(TEXTURE, uv);
+		COLOR = texture(TEXTURE, uv) * modulate;
 	}
-    
-    // 1. Applying desaturation logic
-    vec4 tex_color = COLOR;
-    COLOR.rgb = mix(vec3(dot(tex_color.rgb, vec3(0.299, 0.587, 0.114))), tex_color.rgb, saturation);
-    COLOR *= modulate;
 	
-	// 2. Applying outline logic
 	if ((COLOR.a > 0.0) == inside && hasContraryNeighbour(uv, TEXTURE_PIXEL_SIZE, image_top_left, image_bottom_right, TEXTURE)) {
-		COLOR.rgb = inside ? mix(COLOR.rgb, line_color.rgb * modulate.rgb, line_color.a * modulate.a) : line_color.rgb;
-		COLOR.a += (1.0 - COLOR.a) * line_color.a * modulate.a;
+		COLOR.rgb = inside ? mix(COLOR.rgb, color.rgb * modulate.rgb, color.a * modulate.a) : color.rgb;
+		COLOR.a += (1.0 - COLOR.a) * color.a * modulate.a;
 	}
 }

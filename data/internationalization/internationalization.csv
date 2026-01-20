@@ -132,7 +132,7 @@ BTN_CONFIRM_SUBMIT,Confirm Submit,确认提交
 BTN_RECYCLE_MODE,Recycle Mode,回收模式
 BTN_CONFIRM_RECYCLE,Confirm Recycle,确认回收
 BTN_CANCEL,Cancel,取消
-BTN_CONTINUE,BRING IT ON,来吧
+BTN_CONTINUE,Good,行
 BTN_PREVIOUS,PREV,上一页
 BTN_NEXT,NEXT,下一页
 
@@ -176,6 +176,7 @@ MODAL_ERA_1,[font_size=100][color=gold]VANILLA ERA[/color][/font_size]\n\nThe mo
 MODAL_ERA_2,[font_size=100][color=gold]VOLATILE ERA[/color][/font_size]\n\nPrices become extremely unstable. Pool costs will fluctuate randomly after each draw.,[font_size=100][color=gold]波动时代[/color][/font_size]\n\n价格变得及其不稳定，每次抽奖后，奖池的金币消耗会随机变化。
 MODAL_ERA_3,[font_size=100][color=gold]MODERN ERA[/color][/font_size]\n\nStricter standards and limits. Your inventory can only hold 7 different item types.,[font_size=100][color=gold]摩登时代[/color][/font_size]\n\n更严格的标准和限制，你的背包中只能保留7种不同名称的道具。
 MODAL_ERA_4,[font_size=100][color=gold]DECAY ERA[/color][/font_size]\n\nAll items have an expiry date. Expired items become junk and can only be recycled.,[font_size=100][color=gold]变质时代[/color][/font_size]\n\n所有物品都有保质期，逾期的物品会变成废品，只能用于回收。
+MODAL_ERA_ENDING,[font_size=100][color=gold]THE END[/color][/font_size]\n\nThanks for playing this prototype! We will continue to improve the game based on your feedback. Still a lot of work to do! See you in the near future!,[font_size=100][color=gold]游戏结束[/color][/font_size]\n\n感谢你游玩这个小原型！我们会基于你的反馈继续完善这个作品。还有很多工作，期待日后再见！
 
 # =====================================================================
 # Pool Card (奖池卡片)
