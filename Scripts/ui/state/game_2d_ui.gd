@@ -45,6 +45,16 @@ var era_label: Control = null
 @onready var dlc_label: RichTextLabel = find_child("DLC Label", true)
 @onready var dlc_animation_player: AnimationPlayer = null # 延迟获取，因为它是dlc_panel的子节点
 
+# --- ERA Popup 节点引用 ---
+@onready var screen_mask: Control = find_child("Screen Mask", true)
+@onready var popup_window: Control = find_child("Popup Window", true)
+@onready var popup_button: BaseButton = find_child("Popup_button", true)
+@onready var popup_label: RichTextLabel = find_child("Popup_RichTextLabel", true)
+
+# --- 教程幻灯片 ---
+@onready var tutorial_slideshow_scene: PackedScene = preload("res://scenes/ui/tutorial_slideshow.tscn")
+var tutorial_slideshow: CanvasLayer = null
+
 # --- 子控制器 ---
 const QuestIconHighlighterScript = preload("res://scripts/ui/controllers/quest_icon_highlighter.gd")
 
@@ -127,14 +137,26 @@ func _ready() -> void:
 	if language_switch:
 		language_switch.pressed.connect(_on_language_switch_pressed)
 
-func _on_language_switch_pressed() -> void:
-	var current_locale = TranslationServer.get_locale()
-	var new_locale = "en" if current_locale.begins_with("zh") else "zh"
-	TranslationServer.set_locale(new_locale)
+	# 7. 初始化 Era Popup
+	_init_era_popup()
 	
-	# Godot 会自动发出 NOTIFICATION_TRANSLATION_CHANGED
-	# 我们在 _notification 中处理强制刷新
-	print("[Game2DUI] 语言切换至: %s" % new_locale)
+	# 8. 监听转场结束（用于显示教程）
+	EventBus.menu_transition_finished.connect(_on_menu_transition_finished)
+
+func _init_era_popup() -> void:
+	if screen_mask:
+		screen_mask.visible = false
+		screen_mask.modulate.a = 0
+	
+	if popup_window:
+		# 强制设置初始位置到隐藏位置
+		popup_window.position.y = -4000
+	
+	if popup_button:
+		popup_button.pressed.connect(_hide_era_popup)
+
+func _on_language_switch_pressed() -> void:
+	LocaleManager.toggle_locale()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED:
@@ -212,6 +234,21 @@ func _init_controllers() -> void:
 	inventory_controller.slot_hovered.connect(_on_item_slot_hovered)
 	inventory_controller.slot_unhovered.connect(_on_item_slot_unhovered)
 
+func _on_menu_transition_finished() -> void:
+	if tutorial_slideshow == null:
+		tutorial_slideshow = tutorial_slideshow_scene.instantiate()
+		add_child(tutorial_slideshow)
+		
+		# 第一次退出教程后，触发第一时代 (era1) 的 modal
+		tutorial_slideshow.tutorial_closed.connect(func():
+			_show_era_popup(0) # 0 代表 Era 1
+		, CONNECT_ONE_SHOT)
+	
+	# 延迟一小会儿弹出，确保转场动画彻底结束，视觉更舒适
+	get_tree().create_timer(0.2).timeout.connect(func():
+		tutorial_slideshow.show_tutorial()
+	)
+
 ## 初始化状态机
 func _init_state_machine() -> void:
 	const UIStateInitializerScript = preload("res://scripts/ui/state/ui_state_initializer.gd")
@@ -282,6 +319,12 @@ func _handle_rabbit_dialog(from_state: StringName, to_state: StringName) -> void
 	# 如果进入对话状态，显示对话框
 	elif is_dialog_state:
 		var dialog_type = RabbitDialogController.state_to_dialog_type(to_state)
+		
+		# ERA_3: 如果是 Replacing 状态且是因为种类超出限制，则显示专用对话
+		if to_state == &"Replacing" and InventorySystem.pending_item != null:
+			if InventorySystem.would_exceed_type_limit(InventorySystem.pending_item):
+				dialog_type = RabbitDialogController.DialogType.ERA3_TYPE_FULL
+				
 		rabbit_dialog_controller.show_dialog(dialog_type)
 
 ## VFX 队列开始回调
@@ -367,16 +410,20 @@ func _update_ui_mode_display() -> void:
 	var mode = state_machine.get_ui_mode()
 	var has_pending = not InventorySystem.pending_items.is_empty()
 	
-	# 背包格锁定逻辑：UI 锁、有待定项、或者非正常模式均锁
-	var inventory_locked = is_ui_locked() or has_pending or mode != Constants.UIMode.NORMAL
+	# 背包格锁定逻辑：UI 锁、有待定项、或者非正常模式（但以旧换新模式除外）均锁
+	var inventory_locked = is_ui_locked() or has_pending
+	# 只有在非 NORMAL 且非 REPLACE 模式下才强制锁定背包
+	if mode != Constants.UIMode.NORMAL and mode != Constants.UIMode.REPLACE:
+		inventory_locked = true
+	
 	inventory_controller.set_slots_locked(inventory_locked)
 	
 	# 奖池锁定逻辑：UI 锁、有待定项、或者非正常模式均锁
 	var pool_locked = is_ui_locked() or has_pending or mode != Constants.UIMode.NORMAL
 	pool_controller.set_slots_locked(pool_locked)
 	
-	# 订单锁定逻辑：UI 锁即锁
-	order_controller.set_slots_locked(is_ui_locked())
+	# 订单锁定逻辑：UI 锁或非正常模式均锁
+	order_controller.set_slots_locked(is_ui_locked() or mode != Constants.UIMode.NORMAL)
 	
 	# 回收盖子展示逻辑：处于回收模式，或者有回收动画正在飞行中，或者正在执行回收锁
 	var recycle_active = (mode == Constants.UIMode.RECYCLE) or _ui_locks.has("recycle")
@@ -560,7 +607,7 @@ func _handle_cancel() -> void:
 		changed = true
 	
 	if not InventorySystem.multi_selected_indices.is_empty():
-		InventorySystem.multi_selected_indices.clear()
+		InventorySystem.selected_indices_for_order = []
 		changed = true
 	
 	if changed:
@@ -638,6 +685,8 @@ func _on_item_moved(source_idx: int, target_idx: int) -> void:
 			"item": item,
 			"start_pos": inventory_controller.get_slot_global_position(source_idx),
 			"end_pos": inventory_controller.get_slot_global_position(target_idx),
+			"start_scale": inventory_controller.get_slot_global_scale(source_idx),
+			"end_scale": inventory_controller.get_slot_global_scale(target_idx),
 			"source_slot_node": source_node,
 			"target_slot_node": target_node,
 			"is_merge": is_merge,
@@ -757,12 +806,20 @@ func _on_item_swapped(idx1: int, idx2: int) -> void:
 	if node2: node2.is_vfx_target = true
 	
 	if vfx_manager:
+		# idx1 是发起方（选中状态，Scale较大），idx2 是目标方（正常状态，Scale正常）
+		# 我们希望两个物品落地时都恢复到正常 Scale，所以使用 idx2 的 Scale 作为基准 end_scale
+		var normal_scale = inventory_controller.get_slot_global_scale(idx2)
+		
 		vfx_manager.enqueue({
 			"type": "swap",
 			"item1": item1,
 			"item2": item2,
 			"pos1": inventory_controller.get_slot_global_position(idx1),
 			"pos2": inventory_controller.get_slot_global_position(idx2),
+			"scale1": inventory_controller.get_slot_global_scale(idx1),
+			"scale2": normal_scale,
+			"end_scale1": normal_scale,
+			"end_scale2": normal_scale,
 			"slot1_node": node1,
 			"slot2_node": node2,
 			"idx1": idx1,
@@ -904,8 +961,61 @@ func _on_item_recycled(slot_index: int, item: ItemInstance) -> void:
 # --- ERA_3: DLC 面板管理 ---
 
 func _on_era_changed(era_index: int) -> void:
+	# 时代切换时显示全屏弹窗（从第二时代开始，即 era_index >= 1）
+	if era_index >= 1:
+		_show_era_popup(era_index)
+	
 	# 异步处理时代切换，包括动画播放
 	_handle_era_transition(era_index)
+
+
+## 显示时代切换弹窗
+func _show_era_popup(era_index: int) -> void:
+	if not popup_window or not screen_mask:
+		return
+	
+	# 更新文本
+	if popup_label:
+		var key = "MODAL_ERA_%d" % (era_index + 1)
+		popup_label.text = key
+	
+	# 锁定交互
+	lock_ui("era_popup")
+	
+	# 显示 Mask
+	screen_mask.visible = true
+	var mask_tween = create_tween()
+	mask_tween.tween_property(screen_mask, "modulate:a", 1.0, 0.3)
+	
+	# 弹出 Window (从 -4000 到 -700)
+	var win_tween = create_tween()
+	win_tween.set_trans(Tween.TRANS_BACK)
+	win_tween.set_ease(Tween.EASE_OUT)
+	win_tween.tween_property(popup_window, "position:y", -700.0, 0.6)
+
+
+## 隐藏时代切换弹窗
+func _hide_era_popup() -> void:
+	if not popup_window or not screen_mask:
+		unlock_ui("era_popup")
+		return
+	
+	# 隐藏 Window (从 -700 到 -4000)
+	var win_tween = create_tween()
+	win_tween.set_trans(Tween.TRANS_BACK)
+	win_tween.set_ease(Tween.EASE_IN)
+	win_tween.tween_property(popup_window, "position:y", -4000.0, 0.5)
+	
+	# 延迟隐藏 Mask
+	await win_tween.finished
+	
+	var mask_tween = create_tween()
+	mask_tween.tween_property(screen_mask, "modulate:a", 0.0, 0.3)
+	await mask_tween.finished
+	screen_mask.visible = false
+	
+	# 解锁交互
+	unlock_ui("era_popup")
 
 
 ## 处理时代切换（包括动画播放）

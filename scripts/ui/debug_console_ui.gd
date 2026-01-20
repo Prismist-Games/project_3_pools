@@ -26,6 +26,8 @@ extends PanelContainer
 @onready var item_rarity_option: OptionButton = %ItemRarityOption
 @onready var item_sterile_toggle: CheckButton = %ItemSterileToggle
 
+@onready var show_tutorial_button: Button = %ShowTutorialButton
+
 
 var _is_updating: bool = false # 防止循环更新
 
@@ -152,6 +154,9 @@ func _connect_signals() -> void:
 	
 	# 监听金币变化
 	GameManager.gold_changed.connect(_on_game_manager_gold_changed)
+	
+	# 教程测试按钮
+	show_tutorial_button.pressed.connect(_on_show_tutorial_pressed)
 
 
 func _sync_from_unlock_manager() -> void:
@@ -444,3 +449,26 @@ func _on_add_skill_pressed() -> void:
 		print("[DebugConsole] 已添加技能: %s" % selected_skill.name)
 	else:
 		print("[DebugConsole] 添加技能失败 (可能已满): %s" % selected_skill.name)
+
+
+var _tutorial_instance: Node = null
+
+func _on_show_tutorial_pressed() -> void:
+	"""点击显示教程按钮"""
+	if _tutorial_instance and is_instance_valid(_tutorial_instance):
+		print("[DebugConsole] 教程已在显示中")
+		return
+	
+	var tutorial_scene = preload("res://scenes/ui/tutorial_slideshow.tscn")
+	_tutorial_instance = tutorial_scene.instantiate()
+	get_tree().root.add_child(_tutorial_instance)
+	_tutorial_instance.show_tutorial()
+	_tutorial_instance.tutorial_closed.connect(_on_tutorial_closed)
+	print("[DebugConsole] 已打开教程")
+
+
+func _on_tutorial_closed() -> void:
+	if _tutorial_instance:
+		_tutorial_instance.queue_free()
+		_tutorial_instance = null
+	print("[DebugConsole] 教程已关闭")

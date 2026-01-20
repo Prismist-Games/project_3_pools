@@ -264,7 +264,7 @@ func _on_submit_switch_input(event: InputEvent) -> void:
 			# 使用 get_ui_mode() 代替 GameManager 检查
 			if game_ui.state_machine.get_ui_mode() == Constants.UIMode.NORMAL:
 				game_ui.state_machine.transition_to(&"Submitting")
-				InventorySystem.multi_selected_indices.clear()
+				InventorySystem.selected_indices_for_order = []
 				# 清除单项选中状态，因为提交与整理是不同操作
 				if InventorySystem.selected_slot_index != -1:
 					InventorySystem.selected_slot_index = -1
@@ -303,7 +303,7 @@ func _on_recycle_switch_input(event: InputEvent) -> void:
 				else:
 					# Enter multi-recycle mode
 					game_ui.state_machine.transition_to(&"Recycling")
-					InventorySystem.multi_selected_indices.clear()
+					InventorySystem.selected_indices_for_order = []
 					# 清除单项选中状态，因为批量回收与整理是不同操作
 					if InventorySystem.selected_slot_index != -1:
 						InventorySystem.selected_slot_index = -1

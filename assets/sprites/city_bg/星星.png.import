@@ -2,7 +2,7 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://corealqu7vor0"
+uid="uid://bbbih7po115qr"
 path.s3tc="res://.godot/imported/星星.png-b1389136bdd497563725a1719410452c.s3tc.ctex"
 path.etc2="res://.godot/imported/星星.png-b1389136bdd497563725a1719410452c.etc2.ctex"
 metadata={
@@ -38,5 +38,5 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
-process/size_limit=2000
+process/size_limit=0
 detect_3d/compress_to=1

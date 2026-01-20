@@ -9,14 +9,15 @@ extends Node
 
 ## 对话类型枚举
 enum DialogType {
-	SKILL_SELECT,       ## 选技能：请选择需要的技能（右键取消）
-	SKILL_FULL,         ## 技能满：请选择需要替换的技能
-	TARGETED,           ## 有的放矢：请选择想要的道具类型（右键取消）
-	TRADE_IN,           ## 以旧换新：请选择要置换的道具
-	PRECISE,            ## 精准的：请选择一个道具
-	INVENTORY_FULL,     ## 背包满：请选择替换一样包内道具，或回收当前奖品
-	RECYCLE,            ## 回收模式：请选择要回收的道具（右键取消）
-	SUBMIT,             ## 提交模式：请选择要提交的道具（右键取消）
+	SKILL_SELECT, ## 选技能：请选择需要的技能（右键取消）
+	SKILL_FULL, ## 技能满：请选择需要替换的技能
+	TARGETED, ## 有的放矢：请选择想要的道具类型（右键取消）
+	TRADE_IN, ## 以旧换新：请选择要置换的道具
+	PRECISE, ## 精准的：请选择一个道具
+	INVENTORY_FULL, ## 背包满：请选择替换一样包内道具，或回收当前奖品
+	ERA3_TYPE_FULL, ## 种类满 (ERA3)：道具种类多！请替换背包内的道具，或回收当前奖品
+	RECYCLE, ## 回收模式：请选择要回收的道具（右键取消）
+	SUBMIT, ## 提交模式：请选择要提交的道具（右键取消）
 }
 
 ## 对话文本 KEY 映射
@@ -27,6 +28,7 @@ const DIALOG_KEYS: Dictionary = {
 	DialogType.TRADE_IN: "DIALOG_TRADE_IN",
 	DialogType.PRECISE: "DIALOG_PRECISE",
 	DialogType.INVENTORY_FULL: "DIALOG_INVENTORY_FULL",
+	DialogType.ERA3_TYPE_FULL: "DIALOG_ERA3_TYPE_FULL",
 	DialogType.RECYCLE: "DIALOG_RECYCLE",
 	DialogType.SUBMIT: "DIALOG_SUBMIT",
 }

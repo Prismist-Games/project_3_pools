@@ -35,6 +35,12 @@ const BADGE_HIDE_ROTATION_RIGHT: float = deg_to_rad(90.0) # 右侧角标隐藏�
 const BADGE_HIDE_ROTATION_LEFT: float = deg_to_rad(-90.0) # 左侧角标隐藏位 -90°
 const BADGE_ANIMATION_DURATION: float = 1.0
 
+## Lid 动画配置
+const LID_OPEN_Y: float = -341.5
+const LID_CLOSE_Y: float = -39.5
+const LID_ANIMATION_DURATION: float = 0.3
+const SELECTION_ANIM_DURATION: float = 0.2
+
 ## Hover 图标素材
 var _recycle_hover_texture: Texture2D = preload("res://assets/sprites/the_machine_switch/Recycle_icon.png")
 var _merge_hover_texture: Texture2D = preload("res://assets/sprites/icons/upgrade_icon_hover.png")
@@ -57,6 +63,7 @@ var _current_item: ItemInstance = null # 当前物品实例，用于获取 rarit
 var _rarity_rotation_tween: Tween = null # rarity 旋转动画
 var _rarity_scale_tween: Tween = null # rarity 缩放动画
 var _rarity_original_scale: Vector2 = Vector2.ONE # rarity 原始缩放
+var _lid_tween: Tween = null # lid 开关动画
 
 func _ready() -> void:
 	super._ready()
@@ -86,9 +93,9 @@ func _ready() -> void:
 
 func setup(index: int) -> void:
 	slot_index = index
-	# 背包格初始状态是开启的
-	if anim_player.has_animation("lid_open"):
-		anim_player.play("lid_open")
+	# 背包格初始状态是开启的（盖子在上方）
+	if lid:
+		lid.position.y = LID_OPEN_Y
 	
 	# 如果 ready 没跑或者是动态生成的，这里保个底
 	if icon_display and _icon_original_scale == Vector2.ONE:
@@ -147,6 +154,12 @@ func update_display(item: ItemInstance) -> void:
 		affix_display.visible = false
 		led_display.modulate = Color(0.5, 0.5, 0.5, 0.5) # Grayed out
 		
+		# 重置绝育效果
+		if icon_display and icon_display.material:
+			var mat = icon_display.material as ShaderMaterial
+			if mat:
+				mat.set_shader_parameter("saturation", 1.0)
+		
 		# 背景颜色渐变到空槽颜色
 		if backgrounds:
 			_animate_background_color(Constants.COLOR_BG_SLOT_EMPTY)
@@ -167,8 +180,12 @@ func update_display(item: ItemInstance) -> void:
 	if item_shadow:
 		item_shadow.visible = not _is_selected # 选中时不显示阴影
 	
-	# Affix display logic based on item properties
-	affix_display.visible = item.sterile
+	# 绝育的不再使用 item_affix 作为显示，而是使用 shader
+	affix_display.visible = false
+	if icon_display and icon_display.material:
+		var mat = icon_display.material as ShaderMaterial
+		if mat:
+			mat.set_shader_parameter("saturation", 0.0 if item.sterile else 1.0)
 	
 	# ERA_4: 过期物品视觉标识
 	if item.is_expired:
@@ -280,19 +297,40 @@ func _animate_selection(active: bool) -> void:
 			_selection_tween.kill()
 			_selection_tween = null
 		
-		# 复位图标
+		# 复位图标 - 平滑播放恢复动画
 		if icon_display and icon_display.top_level:
-			# 立即设置位置和缩放（无动画），避免 top_level 切换时抽搐
-			icon_display.scale = _icon_original_scale
+			# 创建恢复动画 (Tween)
+			var closing_tween = create_tween().set_parallel(true)
+			closing_tween.tween_property(icon_display, "scale", _icon_original_scale, SELECTION_ANIM_DURATION) \
+				.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 			
-			# 关闭 top_level 并恢复局部位置
-			icon_display.top_level = false
-			icon_display.z_index = 0
-			icon_display.position = _icon_original_position
-		
-		# 恢复阴影
-		if item_shadow:
-			item_shadow.visible = icon_display.texture != null
+			# 计算目标全局位置：回到其原本在 Slot 中的位置
+			# 使用 get_parent().global_position 是最健壮的，因为 top_level 不改变 parent 引用
+			if icon_display.get_parent():
+				var target_global_pos = icon_display.get_parent().to_global(_icon_original_position)
+				closing_tween.tween_property(icon_display, "global_position", target_global_pos, SELECTION_ANIM_DURATION) \
+					.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+			
+			closing_tween.set_parallel(false)
+			closing_tween.tween_callback(func():
+				# Callback 中再次检查，防止在动画过程中 slot 状态发生改变
+				if is_instance_valid(icon_display) and not _is_selected:
+					icon_display.top_level = false
+					icon_display.z_index = 0
+					icon_display.position = _icon_original_position
+					icon_display.scale = _icon_original_scale
+					# 恢复阴影
+					if item_shadow:
+						item_shadow.visible = icon_display.texture != null
+			)
+		else:
+			# 后备方案：如果没有处于 top_level 状态，直接同步复位比例和位置
+			if icon_display:
+				icon_display.scale = _icon_original_scale
+				icon_display.position = _icon_original_position
+			# 恢复阴影
+			if item_shadow:
+				item_shadow.visible = icon_display.texture != null
 
 ## 更新 rarity 显示（选中时显示并旋转，非选中时隐藏）
 func _update_rarity_display() -> void:
@@ -634,3 +672,39 @@ func _play_trash_transformation_animation(new_texture: Texture2D) -> void:
 		if item_shadow:
 			item_shadow.visible = not _is_selected
 	)
+
+## 播放提交时的关闭动画（取消选中 -> 盖子下落）
+## 返回动画时长，以便调用者等待
+func play_submit_close() -> float:
+	set_selected(false)
+	
+	if not lid:
+		return SELECTION_ANIM_DURATION
+	
+	# 杀掉之前的 lid tween
+	if _lid_tween and _lid_tween.is_valid():
+		_lid_tween.kill()
+	
+	_lid_tween = create_tween()
+	# 等待取消选择动画完成
+	_lid_tween.tween_property(lid, "position:y", LID_CLOSE_Y, LID_ANIMATION_DURATION) \
+		.set_delay(SELECTION_ANIM_DURATION) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
+	return SELECTION_ANIM_DURATION + LID_ANIMATION_DURATION
+
+## 播放提交后的开盖动画（盖子上升）
+## 返回动画时长
+func play_submit_open() -> float:
+	if not lid:
+		return 0.0
+	
+	# 杀掉之前的 lid tween
+	if _lid_tween and _lid_tween.is_valid():
+		_lid_tween.kill()
+	
+	_lid_tween = create_tween()
+	_lid_tween.tween_property(lid, "position:y", LID_OPEN_Y, LID_ANIMATION_DURATION) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	
+	return LID_ANIMATION_DURATION
