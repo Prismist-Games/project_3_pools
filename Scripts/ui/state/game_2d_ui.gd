@@ -971,6 +971,9 @@ func _on_game_event(event_id: StringName, payload: Variant) -> void:
 				}
 				state_machine.transition_to(&"TradeIn", trade_in_payload)
 				
+	elif event_id == &"game_ended":
+		_show_ending_popup()
+		
 	elif event_id == &"order_refresh_requested":
 		var index = payload.get_value("index", -1) if payload is ContextProxy else -1
 		if index != -1 and not is_ui_locked():
@@ -1097,6 +1100,30 @@ func _show_era_popup(era_index: int) -> void:
 	mask_tween.tween_property(screen_mask, "modulate:a", 1.0, 0.3)
 	
 	# 弹出 Window (从 -4000 到 -700)
+	var win_tween = create_tween()
+	win_tween.set_trans(Tween.TRANS_BACK)
+	win_tween.set_ease(Tween.EASE_OUT)
+	win_tween.tween_property(popup_window, "position:y", -700.0, 0.6)
+
+
+## 显示游戏结束弹窗
+func _show_ending_popup() -> void:
+	if not popup_window or not screen_mask:
+		return
+	
+	# 更新文本为游戏结束
+	if popup_label:
+		popup_label.text = "MODAL_ERA_ENDING"
+	
+	# 锁定交互
+	lock_ui("era_popup")
+	
+	# 显示 Mask
+	screen_mask.visible = true
+	var mask_tween = create_tween()
+	mask_tween.tween_property(screen_mask, "modulate:a", 1.0, 0.3)
+	
+	# 弹出 Window
 	var win_tween = create_tween()
 	win_tween.set_trans(Tween.TRANS_BACK)
 	win_tween.set_ease(Tween.EASE_OUT)

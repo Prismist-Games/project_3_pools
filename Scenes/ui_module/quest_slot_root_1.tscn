@@ -24,20 +24,25 @@
 [ext_resource type="Texture2D" uid="uid://cndfk2veulvf7" path="res://assets/sprites/quest_slots/1.png" id="22_xy8au"]
 [ext_resource type="Texture2D" uid="uid://bq06dygb38pu3" path="res://assets/sprites/quest_slots/2.png" id="23_8oyay"]
 
-[sub_resource type="Shader" id="Shader_5cnt1"]
+[sub_resource type="Shader" id="Shader_xy8au"]
 code = "shader_type canvas_item;
 
 uniform float saturation;
+varying vec4 vertex_color; 
+
+void vertex() {
+	vertex_color = COLOR;
+}
 
 void fragment() {
     vec4 tex_color = texture(TEXTURE, UV);
 
-    COLOR.rgb = mix(vec3(dot(tex_color.rgb, vec3(0.299, 0.587, 0.114))), tex_color.rgb, saturation);
-	COLOR.a = tex_color.a;
+    COLOR.rgb = mix(vec3(dot(tex_color.rgb, vec3(0.299, 0.587, 0.114))), tex_color.rgb, saturation) * vertex_color.rgb;
+	COLOR.a *= vertex_color.a;
 }"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xy8au"]
-shader = SubResource("Shader_5cnt1")
+shader = SubResource("Shader_xy8au")
 shader_parameter/saturation = 1.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cm3rb"]

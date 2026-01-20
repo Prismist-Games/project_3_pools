@@ -1,4 +1,4 @@
-[gd_scene load_steps=120 format=3 uid="uid://3vd6vr0ax1kf"]
+[gd_scene load_steps=121 format=3 uid="uid://3vd6vr0ax1kf"]
 
 [ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="1_ebw2t"]
 [ext_resource type="AudioStream" uid="uid://bmus83sm4cx3t" path="res://assets/audio/sfx/381588__dorianmastin__snd_impactheavywall01.wav" id="2_lqq6t"]
@@ -63,7 +63,6 @@
 [ext_resource type="Texture2D" uid="uid://dpf1mwji6h4d" path="res://assets/sprites/the_rabbit/the_rabbit_nose.png" id="59_t7ncb"]
 [ext_resource type="Texture2D" uid="uid://c6edx6vdhm54e" path="res://assets/sprites/the_rabbit/the_rabbit_nose_wrinkle.png" id="60_cgrpx"]
 [ext_resource type="Texture2D" uid="uid://bs0iwes1533y3" path="res://assets/sprites/frames/rabbit_popup_button_disabled.png" id="64_jxp4i"]
-[ext_resource type="Texture2D" uid="uid://bnmndyyedxnqj" path="res://assets/sprites/Prismist_logo.png" id="68_5yfxn"]
 [ext_resource type="Texture2D" uid="uid://da0dc46kmohlc" path="res://assets/sprites/icons/tutorial_icon.png" id="69_umjhq"]
 [ext_resource type="Texture2D" uid="uid://f0cw0uydojp2" path="res://assets/sprites/icons/tutorial_icon_pressed.png" id="70_3qq8w"]
 [ext_resource type="Texture2D" uid="uid://b08yirongk8d1" path="res://assets/sprites/frames/close_normal.png" id="71_3mcda"]
@@ -71,7 +70,9 @@
 [ext_resource type="Texture2D" uid="uid://caqk17r36ehhe" path="res://assets/sprites/frames/close_pressed.png" id="72_a6r3l"]
 [ext_resource type="Texture2D" uid="uid://b7qsbdjotcn0r" path="res://assets/sprites/frames/rabbit_popup_button.png" id="73_gb3ry"]
 [ext_resource type="Texture2D" uid="uid://wwpvtmt73qbb" path="res://assets/sprites/frames/close_hover.png" id="73_xlv0a"]
+[ext_resource type="Texture2D" uid="uid://ddimsrm1dmnb6" path="res://assets/sprites/Prismist_logo_white.png" id="74_3mcda"]
 [ext_resource type="Texture2D" uid="uid://hrp7bsul1woh" path="res://assets/sprites/frames/rabbit_popup_button_pressed.png" id="74_q1c26"]
+[ext_resource type="FontFile" uid="uid://bma1qpwpxk5rj" path="res://assets/fonts/Supreme-Regular.otf" id="75_a6r3l"]
 [ext_resource type="Texture2D" uid="uid://c4l4gf83h8vwl" path="res://assets/sprites/frames/rabbit_popup_button_hover.png" id="75_q7fno"]
 [ext_resource type="Script" uid="uid://enjh7xmiqi1c" path="res://scripts/ui/menu_controller.gd" id="76_menu_controller"]
 
@@ -1804,7 +1805,6 @@ editor_draw_limits = true
 editor_draw_drag_margin = true
 
 [node name="Camera2D2" type="Camera2D" parent="."]
-visible = false
 position = Vector2(2998, 5059)
 zoom = Vector2(0.32, 0.32)
 editor_draw_limits = true
@@ -1812,9 +1812,9 @@ editor_draw_drag_margin = true
 
 [node name="Whats this_zh" type="RichTextLabel" parent="."]
 layout_mode = 0
-offset_top = 3708.0
+offset_top = 4051.0
 offset_right = 2396.0
-offset_bottom = 4842.0
+offset_bottom = 5185.0
 theme_override_fonts/normal_font = ExtResource("33_ykwlt")
 theme_override_font_sizes/normal_font_size = 150
 bbcode_enabled = true
@@ -1828,9 +1828,9 @@ horizontal_alignment = 1
 [node name="Whats this_en" type="RichTextLabel" parent="."]
 layout_mode = 0
 offset_left = 3603.0
-offset_top = 3708.0
+offset_top = 4051.0
 offset_right = 5999.0
-offset_bottom = 4880.0
+offset_bottom = 5223.0
 theme_override_fonts/normal_font = ExtResource("33_ykwlt")
 theme_override_font_sizes/normal_font_size = 125
 bbcode_enabled = true
@@ -1842,17 +1842,18 @@ scroll_active = false
 horizontal_alignment = 1
 
 [node name="Studio Icon" type="Sprite2D" parent="."]
-position = Vector2(3012.5, 5879.5)
-texture = ExtResource("68_5yfxn")
+position = Vector2(3012.5, 5591.5)
+texture = ExtResource("74_3mcda")
 
 [node name="Credits" type="RichTextLabel" parent="."]
 layout_mode = 0
-offset_left = 2763.5
-offset_top = 6180.5
-offset_right = 3235.5
-offset_bottom = 7314.5
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 72
+offset_left = 2804.0
+offset_top = 5888.0
+offset_right = 3195.0
+offset_bottom = 6343.0
+theme_override_constants/paragraph_separation = 25
+theme_override_fonts/normal_font = ExtResource("75_a6r3l")
+theme_override_font_sizes/normal_font_size = 52
 bbcode_enabled = true
 text = "BLAER ZHANG
 BULK FIREWORK
