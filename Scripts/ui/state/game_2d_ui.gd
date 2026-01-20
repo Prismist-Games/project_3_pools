@@ -238,6 +238,11 @@ func _on_menu_transition_finished() -> void:
 	if tutorial_slideshow == null:
 		tutorial_slideshow = tutorial_slideshow_scene.instantiate()
 		add_child(tutorial_slideshow)
+		
+		# 第一次退出教程后，触发第一时代 (era1) 的 modal
+		tutorial_slideshow.tutorial_closed.connect(func():
+			_show_era_popup(0) # 0 代表 Era 1
+		, CONNECT_ONE_SHOT)
 	
 	# 延迟一小会儿弹出，确保转场动画彻底结束，视觉更舒适
 	get_tree().create_timer(0.2).timeout.connect(func():
