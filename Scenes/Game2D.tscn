@@ -1,14 +1,13 @@
-[gd_scene load_steps=97 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=104 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://rg8ahiwfwlxb" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
 [ext_resource type="PackedScene" uid="uid://dcrc7hmw85gqq" path="res://scenes/animated_sprites/background_animated.tscn" id="2_u8s40"]
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="3_4wmcb"]
-[ext_resource type="Texture2D" uid="uid://b1yj0xa4wnuyv" path="res://assets/sprites/background/房子.png" id="3_amd4b"]
-[ext_resource type="Texture2D" uid="uid://br8q0rg28wtw" path="res://assets/sprites/ground_rendered.PNG" id="4_1wndc"]
+[ext_resource type="Texture2D" uid="uid://drar66ltod0v3" path="res://assets/sprites/wall_with_floor.PNG" id="3_ug1ds"]
 [ext_resource type="Texture2D" uid="uid://b4qoptplb61wr" path="res://assets/sprites/the_machine/the_machine_display_outline.png" id="4_6b2j4"]
 [ext_resource type="Texture2D" uid="uid://c4wpgax5wfhpa" path="res://assets/sprites/the_machine/the_machine_legacy_fill.png" id="5_0dgko"]
-[ext_resource type="Texture2D" uid="uid://db6sd5xoohnbh" path="res://assets/sprites/shadow_the_machine.png" id="5_n1634"]
+[ext_resource type="Texture2D" uid="uid://bvxij02pow2i8" path="res://assets/sprites/shadow_the_machine.png" id="5_n1634"]
 [ext_resource type="Texture2D" uid="uid://usox228a20t7" path="res://assets/sprites/the_machine/the_machine_legacy_outline.png" id="6_2v31b"]
 [ext_resource type="Texture2D" uid="uid://c8lfi83r0gc3d" path="res://assets/sprites/shadow_the_rabbit.png" id="6_s7ywr"]
 [ext_resource type="Texture2D" uid="uid://58c1gxlj405r" path="res://assets/sprites/the_machine/the_machine_slot_mask.png" id="7_d4ujc"]
@@ -61,8 +60,14 @@
 [ext_resource type="Texture2D" uid="uid://b7qsbdjotcn0r" path="res://assets/sprites/frames/rabbit_popup_button.png" id="73_1wqh7"]
 [ext_resource type="Texture2D" uid="uid://hrp7bsul1woh" path="res://assets/sprites/frames/rabbit_popup_button_pressed.png" id="74_1wndc"]
 [ext_resource type="Texture2D" uid="uid://c4l4gf83h8vwl" path="res://assets/sprites/frames/rabbit_popup_button_hover.png" id="75_n1634"]
+[ext_resource type="Texture2D" uid="uid://bdvxak6mqassm" path="res://assets/sprites/icons/language_icon.png" id="78_vjbw4"]
+[ext_resource type="Texture2D" uid="uid://dgoq2kyyp1gpg" path="res://assets/sprites/icons/language_icon_pressed.png" id="79_fn8r1"]
+[ext_resource type="Texture2D" uid="uid://dkiduci7dgu3v" path="res://assets/sprites/icons/language_icon_hover.png" id="80_ug1ds"]
 [ext_resource type="Texture2D" uid="uid://djo0fcuw1ico0" path="res://assets/sprites/light_1.png" id="81_6sdua"]
+[ext_resource type="Texture2D" uid="uid://da0dc46kmohlc" path="res://assets/sprites/icons/tutorial_icon.png" id="81_simg3"]
+[ext_resource type="Texture2D" uid="uid://f0cw0uydojp2" path="res://assets/sprites/icons/tutorial_icon_pressed.png" id="82_3ih7i"]
 [ext_resource type="Texture2D" uid="uid://cuq30wijqs4vm" path="res://assets/sprites/light_2.png" id="82_4tp6t"]
+[ext_resource type="Texture2D" uid="uid://bi2ifququatll" path="res://assets/sprites/icons/tutorial_icon_hovered.png" id="83_nbd70"]
 [ext_resource type="Texture2D" uid="uid://h5k15o8ewu4i" path="res://assets/sprites/icons/item_rarity_glow.PNG" id="83_taegb"]
 [ext_resource type="PackedScene" uid="uid://05ku7kwq0dxp" path="res://scenes/ui_module/quest_slot_root_1.tscn" id="87_n6ers"]
 [ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="87_u8s40"]
@@ -77,6 +82,7 @@
 [ext_resource type="Texture2D" uid="uid://ue7e5frhr0kh" path="res://assets/sprites/frames/mini.png" id="102_u4yck"]
 [ext_resource type="Texture2D" uid="uid://djaip0chmnewr" path="res://assets/sprites/frames/popup.png" id="103_otpb1"]
 [ext_resource type="Script" uid="uid://con7nyakgbhan" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
+[ext_resource type="AudioStream" uid="uid://b31klj7kmpl5w" path="res://assets/audio/Loop_bpm156.ogg" id="114_bgm"]
 
 [sub_resource type="Shader" id="Shader_2kwm8"]
 code = "shader_type canvas_item;
@@ -557,21 +563,21 @@ metadata/_edit_lock_ = true
 [node name="Background" type="Node2D" parent="."]
 position = Vector2(3001, 1689.25)
 
-[node name="房子" type="Sprite2D" parent="Background"]
-position = Vector2(-5, 0)
-texture = ExtResource("3_amd4b")
-
-[node name="Background_floor" type="Sprite2D" parent="Background"]
+[node name="wall&floor" type="Sprite2D" parent="Background"]
 clip_children = 2
-position = Vector2(0, 1273.75)
-texture = ExtResource("4_1wndc")
+position = Vector2(-5, 0)
+texture = ExtResource("3_ug1ds")
 
-[node name="Shadow_the_machine" type="Sprite2D" parent="Background/Background_floor"]
-position = Vector2(-439, -461)
+[node name="Shadow_the_machine" type="Sprite2D" parent="Background/wall&floor"]
+modulate = Color(1, 1, 1, 0.7254902)
+position = Vector2(89, 741.75)
+scale = Vector2(1.01, 1.01)
 texture = ExtResource("5_n1634")
 
-[node name="Shadow_the_rabbit" type="Sprite2D" parent="Background/Background_floor"]
-position = Vector2(-2300, -292)
+[node name="Shadow_the_rabbit" type="Sprite2D" parent="Background/wall&floor"]
+modulate = Color(1, 1, 1, 0.7254902)
+position = Vector2(-2293, 937.75)
+scale = Vector2(1.05, 1.05)
 texture = ExtResource("6_s7ywr")
 
 [node name="The Machine" type="Node2D" parent="."]
@@ -1002,10 +1008,10 @@ clip_children = 2
 texture = ExtResource("21_ue141")
 
 [node name="Money_label" type="RichTextLabel" parent="The Machine/TheMachineDisplay/TheMachineDisplayFill"]
-offset_left = -254.5
-offset_top = -76.5
-offset_right = 253.5
-offset_bottom = 60.5
+offset_left = -254.0
+offset_top = -76.0
+offset_right = 254.0
+offset_bottom = 61.0
 theme_override_colors/default_color = Color(1, 0.8862745, 0, 1)
 theme_override_font_sizes/normal_font_size = 100
 bbcode_enabled = true
@@ -1257,8 +1263,8 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="The Rabbit" type="Node2D" parent="."]
-position = Vector2(1434, 1998)
-scale = Vector2(1.05, 1.05)
+position = Vector2(1401, 1979)
+scale = Vector2(1.1, 1.1)
 
 [node name="MascotVisuals" parent="The Rabbit" instance=ExtResource("39_aagg1")]
 
@@ -1417,8 +1423,8 @@ texture = ExtResource("102_u4yck")
 
 [node name="Dialog Box" type="Sprite2D" parent="The Rabbit/QuestSystem"]
 z_index = 10
-position = Vector2(-1040.9524, 539.99994)
-scale = Vector2(0.9523812, 0.9523812)
+position = Vector2(-963.63635, 588.18176)
+scale = Vector2(0.9090909, 0.9090909)
 texture = ExtResource("101_6kw3k")
 offset = Vector2(1035, 366)
 
@@ -1438,8 +1444,8 @@ vertical_alignment = 1
 visible_characters_behavior = 1
 
 [node name="Cancel" type="Node2D" parent="The Rabbit/QuestSystem"]
-position = Vector2(1299.0477, 841.9048)
-scale = Vector2(0.9523812, 0.9523812)
+position = Vector2(1269.9999, 820.9092)
+scale = Vector2(0.9090909, 0.9090909)
 
 [node name="Cancel_button" type="Sprite2D" parent="The Rabbit/QuestSystem/Cancel"]
 position = Vector2(-168, -355)
@@ -1727,10 +1733,10 @@ z_index = 999
 [node name="Screen Mask" type="ColorRect" parent="."]
 z_index = 10
 layout_mode = 0
-offset_left = -851.0
-offset_top = -608.0
-offset_right = 7007.0
-offset_bottom = 3900.0
+offset_left = -840.0
+offset_top = -525.0
+offset_right = 7018.0
+offset_bottom = 3983.0
 mouse_force_pass_scroll_events = false
 color = Color(0, 0, 0, 0.5019608)
 
@@ -1784,9 +1790,32 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Language Switch" type="Button" parent="."]
+[node name="Buttons_Hbox" type="HBoxContainer" parent="."]
 layout_mode = 0
-offset_right = 132.0
-offset_bottom = 153.0
-theme_override_font_sizes/font_size = 32
-text = "EN/ZH"
+offset_left = 5477.0
+offset_top = 35.0
+offset_right = 6124.0
+offset_bottom = 328.0
+scale = Vector2(0.75, 0.75)
+theme_override_constants/separation = 50
+
+[node name="Language Switch" type="TextureButton" parent="Buttons_Hbox"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("78_vjbw4")
+texture_pressed = ExtResource("79_fn8r1")
+texture_hover = ExtResource("80_ug1ds")
+stretch_mode = 3
+
+[node name="Tutorial Button" type="TextureButton" parent="Buttons_Hbox"]
+layout_mode = 2
+mouse_default_cursor_shape = 16
+texture_normal = ExtResource("81_simg3")
+texture_pressed = ExtResource("82_3ih7i")
+texture_hover = ExtResource("83_nbd70")
+stretch_mode = 3
+
+[node name="BGMPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("114_bgm")
+volume_db = -10.0
+autoplay = true

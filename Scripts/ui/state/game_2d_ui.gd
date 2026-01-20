@@ -6,6 +6,14 @@ extends Control
 
 # --- 节点引用 (根据 game2d-uiux-integration-spec.md) ---
 @onready var money_label: RichTextLabel = find_child("Money_label", true)
+@onready var money_icon: TextureRect = find_child("Money_icon", true)
+
+## 金币动画状态
+var _displayed_gold: int = 0 # 当前显示的金币数
+var _gold_tween: Tween = null # 数字滚动 tween
+const GOLD_ANIM_BASE_TIME: float = 0.3 # 最短动画时长
+const GOLD_ANIM_SCALE: float = 0.25 # 对数缩放因子
+const GOLD_ICON_MAX_COUNT: int = 5 # 最大飘散金币数
 
 @onready var game_theme: Theme = preload("res://data/game_theme.tres")
 
@@ -37,7 +45,8 @@ var era_label: Control = null
 # Cancel 按钮节点引用
 @onready var cancel_root: Node2D = find_child("Cancel", true)
 
-@onready var language_switch: Button = get_node_or_null("Language Switch")
+@onready var language_switch: TextureButton = find_child("Language Switch", true)
+@onready var tutorial_button: TextureButton = find_child("Tutorial Button", true)
 
 # --- ERA_3 DLC 面板节点引用 ---
 @onready var dlc_panel: Node2D = find_child("The Machine DLC", true)
@@ -120,6 +129,11 @@ func _ready() -> void:
 	EventBus.modal_requested.connect(_on_modal_requested)
 	EventBus.game_event.connect(_on_game_event)
 	EventBus.item_recycled.connect(_on_item_recycled)
+
+	if language_switch:
+		language_switch.pressed.connect(_on_language_switch_pressed)
+	if tutorial_button:
+		tutorial_button.pressed.connect(_on_tutorial_button_pressed)
 	
 	# ERA_3: 监听时代切换，控制 DLC 面板显示
 	EraManager.era_changed.connect(_on_era_changed)
@@ -133,9 +147,6 @@ func _ready() -> void:
 	
 	# 6. 初始化 DLC 面板状态（根据当前时代）
 	_update_dlc_panel_visibility()
-	
-	if language_switch:
-		language_switch.pressed.connect(_on_language_switch_pressed)
 
 	# 7. 初始化 Era Popup
 	_init_era_popup()
@@ -157,6 +168,9 @@ func _init_era_popup() -> void:
 
 func _on_language_switch_pressed() -> void:
 	LocaleManager.toggle_locale()
+
+func _on_tutorial_button_pressed() -> void:
+	show_tutorial_slideshow()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED:
@@ -235,19 +249,22 @@ func _init_controllers() -> void:
 	inventory_controller.slot_unhovered.connect(_on_item_slot_unhovered)
 
 func _on_menu_transition_finished() -> void:
+	# 延迟一小会儿弹出，确保转场动画彻底结束，视觉更舒适
+	await get_tree().create_timer(0.2).timeout
+	
+	show_tutorial_slideshow()
+
+	# 第一次退出教程后，触发第一时代 (era1) 的 modal
+	tutorial_slideshow.tutorial_closed.connect(func():
+		_show_era_popup(0) # 0 代表 Era 1
+	, CONNECT_ONE_SHOT)
+
+func show_tutorial_slideshow() -> void:
 	if tutorial_slideshow == null:
 		tutorial_slideshow = tutorial_slideshow_scene.instantiate()
 		add_child(tutorial_slideshow)
-		
-		# 第一次退出教程后，触发第一时代 (era1) 的 modal
-		tutorial_slideshow.tutorial_closed.connect(func():
-			_show_era_popup(0) # 0 代表 Era 1
-		, CONNECT_ONE_SHOT)
 	
-	# 延迟一小会儿弹出，确保转场动画彻底结束，视觉更舒适
-	get_tree().create_timer(0.2).timeout.connect(func():
-		tutorial_slideshow.show_tutorial()
-	)
+	tutorial_slideshow.show_tutorial()
 
 ## 初始化状态机
 func _init_state_machine() -> void:
@@ -351,7 +368,9 @@ func _on_vfx_queue_finished() -> void:
 						switch_controller.show_recycle_preview(value)
 
 func _refresh_all() -> void:
-	_on_gold_changed(GameManager.gold)
+	# 初始化时直接设置金币显示，不播放动画
+	_displayed_gold = GameManager.gold
+	money_label.text = str(GameManager.gold)
 
 	inventory_controller.update_all_slots(InventorySystem.inventory)
 	_on_skills_changed(SkillSystem.current_skills)
@@ -442,7 +461,88 @@ func _update_ui_mode_display() -> void:
 
 # --- 信号处理代理 ---
 func _on_gold_changed(val: int) -> void:
-	money_label.text = str(val)
+	var delta = val - _displayed_gold
+	if delta == 0:
+		# 无变化，直接设置（可能是初始化）
+		_displayed_gold = val
+		money_label.text = str(val)
+		return
+	
+	# 计算动画时长：base + log(|delta| + 1) * scale
+	var duration = GOLD_ANIM_BASE_TIME + log(absf(delta) + 1) * GOLD_ANIM_SCALE
+	duration = clampf(duration, 0.3, 1.5) # 限制在 0.3 - 1.5 秒
+	
+	# 停止之前的动画
+	if _gold_tween and _gold_tween.is_valid():
+		_gold_tween.kill()
+	
+	# 数字滚动动画
+	_gold_tween = create_tween()
+	_gold_tween.tween_method(_update_gold_display, _displayed_gold, val, duration)
+	_gold_tween.tween_callback(func(): _displayed_gold = val)
+	
+	# 金币增加时：生成飘散的金币图标
+	if delta > 0 and money_icon:
+		_spawn_floating_coins(delta, duration)
+
+
+## 更新金币显示文本（由 tween 调用）
+func _update_gold_display(value: int) -> void:
+	money_label.text = str(value)
+
+
+## 生成飘散的金币图标
+func _spawn_floating_coins(delta: int, duration: float) -> void:
+	# 根据金额决定生成数量：1-3 -> 1-2个，4-10 -> 2-3个，11+ -> 4-5个
+	var count: int
+	if delta <= 3:
+		count = clampi(delta, 1, 2)
+	elif delta <= 10:
+		count = randi_range(2, 3)
+	else:
+		count = randi_range(4, GOLD_ICON_MAX_COUNT)
+	
+	# 获取 money_icon 的父节点（用于生成克隆）
+	var parent = money_icon.get_parent()
+	if not parent:
+		return
+	
+	# 增大生成时间间隔，让金币更分散
+	var spawn_interval = 0.15 # 固定间隔 0.15 秒
+	
+	for i in range(count):
+		# 延迟生成
+		get_tree().create_timer(i * spawn_interval).timeout.connect(
+			func(): _create_single_floating_coin(parent, duration * 0.6)
+		)
+
+
+## 创建单个飘散的金币
+func _create_single_floating_coin(parent: Node, fly_duration: float) -> void:
+	if not money_icon:
+		return
+	
+	# 克隆 money_icon
+	var coin = TextureRect.new()
+	coin.texture = money_icon.texture
+	coin.custom_minimum_size = money_icon.custom_minimum_size
+	coin.size = money_icon.size
+	coin.stretch_mode = money_icon.stretch_mode
+	coin.modulate = Color.WHITE
+	
+	# 添加到父节点
+	parent.add_child(coin)
+	
+	# 设置初始位置（与原图标相同）
+	coin.global_position = money_icon.global_position
+	
+	# 飘散动画：直线向上移动 + 淡出
+	var tw = create_tween().set_parallel(true)
+	tw.tween_property(coin, "global_position:y", coin.global_position.y - 80, fly_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tw.tween_property(coin, "modulate:a", 0.0, fly_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	
+	# 动画结束后销毁
+	tw.chain().tween_callback(coin.queue_free)
 
 
 func _on_inventory_changed(inventory: Array) -> void:
@@ -495,7 +595,12 @@ func _on_item_slot_mouse_entered(index: int) -> void:
 		var target_item = InventorySystem.inventory[index]
 		if target_item != null:
 			if not InventorySystem.can_merge(InventorySystem.pending_item, target_item):
-				var value = Constants.rarity_recycle_value(target_item.rarity)
+				var value: int
+				# ERA3: 种类限制模式下，显示所有同名物品的总回收值
+				if InventorySystem.would_exceed_type_limit(InventorySystem.pending_item):
+					value = InventorySystem.get_total_recycle_value_for_name(target_item.item_data.id)
+				else:
+					value = Constants.rarity_recycle_value(target_item.rarity)
 				switch_controller.show_recycle_preview(value)
 
 func _on_item_slot_mouse_exited(_index: int) -> void:
@@ -964,6 +1069,10 @@ func _on_era_changed(era_index: int) -> void:
 	# 时代切换时显示全屏弹窗（从第二时代开始，即 era_index >= 1）
 	if era_index >= 1:
 		_show_era_popup(era_index)
+	
+	# 刷新所有普通订单（保留主线订单）并播放动画
+	OrderSystem.refresh_all_normal_orders()
+	order_controller.play_refresh_all_normal_sequence()
 	
 	# 异步处理时代切换，包括动画播放
 	_handle_era_transition(era_index)

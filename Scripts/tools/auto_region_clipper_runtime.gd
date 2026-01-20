@@ -35,7 +35,7 @@ func _process_scene(path: String) -> void:
 	
 	for node in all_nodes:
 		if node is Sprite2D:
-            # DEBUG PRINT
+			# DEBUG PRINT
 			# print("Checking sprite: ", node.name)
 			if _process_sprite(node):
 				nodes_modified += 1
@@ -64,7 +64,7 @@ func _process_sprite(sprite: Sprite2D) -> bool:
 	var texture_w = texture.get_width()
 	var texture_h = texture.get_height()
 	
-    # Basic check
+	# Basic check
 	if texture_w == 0: return false
 
 	var used_rect = Rect2()
@@ -97,7 +97,7 @@ func _process_sprite(sprite: Sprite2D) -> bool:
 			else:
 				# DEBUG
 				if "TheRabbit" in sprite.name:
-				    print("Failed to load source image for: ", sprite.name, " Path: ", abs_path)
+					print("Failed to load source image for: ", sprite.name, " Path: ", abs_path)
 				return false
 		else:
 			return false
@@ -123,7 +123,7 @@ func _process_sprite(sprite: Sprite2D) -> bool:
 			sprite.offset += used_rect.position
 		return true
 	else:
-	    # DEBUG
-	    if "TheRabbit" in sprite.name:
-	        print("Skipped ", sprite.name, " Ratio: ", ratio)
-	    return false
+		# DEBUG
+		if "TheRabbit" in sprite.name:
+			print("Skipped ", sprite.name, " Ratio: ", ratio)
+		return false

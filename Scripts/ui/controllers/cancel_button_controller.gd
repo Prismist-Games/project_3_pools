@@ -108,7 +108,7 @@ func show_cancel_button() -> void:
 		_cancel_input_area.mouse_filter = Control.MOUSE_FILTER_STOP
 	
 	# 播放 scale 从 0 到 1 的动画
-	_play_scale_animation(Vector2.ONE)
+	_play_scale_animation(Vector2.ONE * 0.909)
 
 
 ## 退出可取消状态时调用（非用户点击）：静默隐藏 Cancel 按钮
@@ -177,7 +177,7 @@ func _play_cancel_sequence() -> void:
 	# 3. Dialog scale 从 0 到 1，同时 visible_ratio 从 0 到 1
 	var tween2 = game_ui.create_tween() if game_ui else _cancel_root.create_tween()
 	tween2.set_parallel(true)
-	tween2.tween_property(_cancel_root, "scale", Vector2.ONE, SCALE_ANIMATION_DURATION) \
+	tween2.tween_property(_cancel_root, "scale", Vector2.ONE * 0.909, SCALE_ANIMATION_DURATION) \
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	if _cancel_dialog_label:
 		tween2.tween_property(_cancel_dialog_label, "visible_ratio", 1.0, DIALOG_VISIBLE_RATIO_DURATION) \

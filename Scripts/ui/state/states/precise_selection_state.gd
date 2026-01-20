@@ -154,6 +154,9 @@ func select_option(index: int) -> void:
 		# ERA_4: 抽奖后递减保质期
 		ShelfLifeEffect.trigger_shelf_life_decrement()
 		
+		# 通知技能系统（使用 no_auto 信号避免 InventorySystem 重复添加）
+		EventBus.item_obtained_no_auto.emit(item_instance)
+		
 		# 清除背包中的候选高亮
 		if controller and controller.inventory_controller:
 			controller.inventory_controller.refresh_upgradeable_badges([])

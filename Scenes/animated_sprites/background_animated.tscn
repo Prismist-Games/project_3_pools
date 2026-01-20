@@ -41,12 +41,12 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(3000, -30)]
+"values": [Vector2(-3000, -1182.25)]
 }
 
 [sub_resource type="Animation" id="Animation_7v8nc"]
 resource_name = "new_animation"
-length = 30.0
+length = 300.0
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -55,10 +55,10 @@ tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 30),
+"times": PackedFloat32Array(0, 300),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-3000, -30), Vector2(3000, -30)]
+"values": [Vector2(-3000, -1182.25), Vector2(3000, -1182.25)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g7jj0"]
@@ -133,31 +133,31 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(2988.9692, -223.68822)]
+"update": 1,
+"values": [-1000.0]
 }
 
 [sub_resource type="Animation" id="Animation_yelt0"]
 resource_name = "cloud"
-length = 150.0
+length = 300.0
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 150),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.0001, 300),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-2975, -223.68822), Vector2(2988.9692, -223.68822)]
+"values": [Vector2(-1000, -55.499985), -1000.0, 992.5]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xtal7"]
@@ -239,31 +239,31 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(3000, -30)]
+"update": 1,
+"values": [3000.0]
 }
 
 [sub_resource type="Animation" id="Animation_g7jj0"]
 resource_name = "黑"
-length = 360.0
+length = 460.0
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 360),
+"times": PackedFloat32Array(0, 460),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(3000, -30), Vector2(-3000, -30)]
+"values": [3000.0, -3000.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_v12rw"]
@@ -277,31 +277,31 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(3000, -30)]
+"update": 1,
+"values": [3000.0]
 }
 
 [sub_resource type="Animation" id="Animation_00smp"]
 resource_name = "new_animation"
-length = 230.0
+length = 330.0
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 230),
+"times": PackedFloat32Array(0, 330),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(3000, -30), Vector2(-3000, -30)]
+"values": [3000.0, -3000.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7v8nc"]
@@ -315,31 +315,31 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(3000, -30)]
+"update": 1,
+"values": [3000.0]
 }
 
 [sub_resource type="Animation" id="Animation_f3s7l"]
 resource_name = "白"
-length = 100.0
+length = 170.0
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 100),
+"times": PackedFloat32Array(0, 170),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(3000, -30), Vector2(-3000, -30)]
+"values": [3000.0, -3000.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_yytn1"]
@@ -362,7 +362,7 @@ scale = Vector2(3, 3)
 texture = ExtResource("3_xvhlv")
 
 [node name="星星" type="Sprite2D" parent="."]
-position = Vector2(3000, -30)
+position = Vector2(-3000, -1182.25)
 scale = Vector2(3, 3)
 texture = ExtResource("4_eojs8")
 
@@ -384,7 +384,7 @@ libraries = {
 autoplay = "bluesky"
 
 [node name="Cloud" type="Sprite2D" parent="蓝天"]
-position = Vector2(2988.9692, -223.68822)
+position = Vector2(-1000, -36.184937)
 scale = Vector2(0.6538727, 0.65387285)
 texture = ExtResource("25_m01df")
 
@@ -402,7 +402,7 @@ animation = &"流星"
 frame = 19
 
 [node name="黑" type="Sprite2D" parent="."]
-position = Vector2(3000, -30)
+position = Vector2(3000, 102.69519)
 scale = Vector2(3, 3)
 texture = ExtResource("30_utpsi")
 
@@ -413,7 +413,7 @@ libraries = {
 autoplay = "黑"
 
 [node name="灰" type="Sprite2D" parent="."]
-position = Vector2(3000, -30)
+position = Vector2(3000, 102.69519)
 scale = Vector2(3, 3)
 texture = ExtResource("31_rbd3v")
 
@@ -424,7 +424,7 @@ libraries = {
 autoplay = "new_animation"
 
 [node name="白" type="Sprite2D" parent="."]
-position = Vector2(3000, -30)
+position = Vector2(3000, 102.69519)
 scale = Vector2(3, 3)
 texture = ExtResource("32_b7jjn")
 

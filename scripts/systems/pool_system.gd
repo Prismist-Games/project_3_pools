@@ -58,7 +58,6 @@ func draw_from_pool(index: int) -> bool:
 	
 	# 1. 技能预处理（先于词缀,让技能如时来运转能设置 min_rarity）
 	EventBus.draw_requested.emit(ctx)
-	EventBus.game_event.emit(&"draw_requested", ctx)
 	
 	# 2. 词缀预处理（后于技能，能使用技能设置的参数）
 	pool.dispatch_affix_event(&"draw_requested", ctx)
@@ -82,7 +81,6 @@ func draw_from_pool(index: int) -> bool:
 	
 	# 5. 技能后处理
 	EventBus.draw_finished.emit(ctx)
-	EventBus.game_event.emit(&"draw_finished", ctx)
 	
 	return true
 

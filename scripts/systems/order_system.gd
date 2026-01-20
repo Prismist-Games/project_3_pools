@@ -75,6 +75,13 @@ func _add_refresh_to_all_orders() -> void:
 	EventBus.orders_updated.emit(current_orders)
 
 
+## 刷新所有普通订单（保留主线订单，用于时代切换等场景）
+func refresh_all_normal_orders() -> void:
+	for i in range(current_orders.size()):
+		var order = current_orders[i]
+		if order != null and not order.is_mainline:
+			current_orders[i] = _generate_normal_order()
+	EventBus.orders_updated.emit(current_orders)
 ## 预检查哪些订单会被提交（供 UI 使用，包含全局物品必要性检查）
 ## 返回会被提交的订单列表，如果返回空则表示不会进行任何提交
 func preview_submit(selected_indices: Array[int]) -> Array[OrderData]:
@@ -235,7 +242,6 @@ func _execute_submission(order: OrderData, items_to_consume: Array[ItemInstance]
 	
 	# 发出信号让技能系统进一步修改
 	EventBus.order_completed.emit(context)
-	EventBus.game_event.emit(&"order_completed", context)
 	
 	# 主线订单没有金币奖励，只有普通订单才发放金币
 	if not order.is_mainline:

@@ -11,6 +11,9 @@ signal draw_requested(context: RefCounted)
 signal draw_finished(context: RefCounted)
 
 signal item_obtained(item: RefCounted)
+## 物品获得信号（不触发InventorySystem自动添加）
+## 用于精准/有的放矢等已手动添加物品的场景，让技能系统响应但不重复添加
+signal item_obtained_no_auto(item: RefCounted)
 signal item_recycled(slot_index: int, item: RefCounted) # 用于批量回收时触发单独的回收动画
 
 signal pools_refreshed(pools: Array)

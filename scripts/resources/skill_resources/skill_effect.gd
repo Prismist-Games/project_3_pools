@@ -28,8 +28,8 @@ const TRIGGER_INSTANT = "instant"
 const TRIGGER_PENDING = "pending"
 ## 触发类型：激活（原色/存在的特效 -> 变黄 -> 消失）
 const TRIGGER_ACTIVATE = "activate"
-## 触发类型：取消待命（静默清除 pending 状态，不播放激活动画）
-const TRIGGER_CANCEL = "cancel"
+## 触发类型：取消激活（原色 -> 消失，不变黄）
+const TRIGGER_DEACTIVATE = "deactivate"
 
 ## 技能效果触发信号：用于通知 UI 播放特效
 signal triggered(type: String)
