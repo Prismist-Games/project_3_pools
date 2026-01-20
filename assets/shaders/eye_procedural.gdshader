@@ -54,9 +54,11 @@ void fragment() {
         float alpha_dl = texture(TEXTURE, uv - unit_offset * 0.707).a;
         alpha_diff += abs(alpha_center - alpha_ur) + abs(alpha_center - alpha_dl);
         
-        if (alpha_diff > 0.1) {
-            final_color = outline_color;
-        }
+        // 修复：更激进的去白边策略
+        // 1. 阈值上限降至 0.05，让边缘迅速变黑，不再与原色混合
+        // 2. 只有在非边缘区域 (diff 极小) 才保留原色
+        float outline_factor = smoothstep(0.001, 0.05, alpha_diff);
+        final_color.rgb = mix(final_color.rgb, outline_color.rgb, outline_factor);
         
         // ========== 绘制瞳孔 ==========
         if (pupil_scale > 0.001) {
