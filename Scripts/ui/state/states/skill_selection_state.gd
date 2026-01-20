@@ -234,20 +234,27 @@ func _setup_skill_display() -> void:
 		return
 	
 	# 并行执行所有槽位的揭示动画
+	var total_to_wait = 0
+	var sync_state = {"finished_count": 0}
+	
 	for i in range(3):
 		var slot = _get_lottery_slot(i)
 		if slot:
 			if i < selectable_skills.size():
+				total_to_wait += 1
+				slot.reveal_finished.connect(func(_idx): sync_state.finished_count += 1, CONNECT_ONE_SHOT)
 				_reveal_skill_slot(slot, selectable_skills[i], i)
 			else:
 				slot.close_lid()
 	
-	# 等待动画完成的大致时长 (推挤 + 开门揭示 + 停留)
-	# 0.4 (push) + 0.5 (shuffle) + 0.3 (reveal)
-	await controller.get_tree().create_timer(1.5).timeout
+	# 等待所有动画播放完成
+	while sync_state.finished_count < total_to_wait:
+		await controller.get_tree().process_frame
 	
 	if controller.pool_controller:
 		controller.pool_controller._is_animating_refresh = false
+	
+	controller.unlock_ui("skill_selection")
 
 
 ## 辅助：并行揭示单个技能槽位

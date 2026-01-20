@@ -6,6 +6,7 @@ signal hovered(pool_index: int, pool_item_type: int)
 signal unhovered(pool_index: int)
 signal item_hovered(item_id: StringName) # NEW: 针对抽奖结果中具体物品的高亮
 signal badge_refresh_requested(slot_index: int, item: ItemInstance) # NEW: 请求刷新角标状态
+signal reveal_finished(pool_index: int) # NEW: 揭示动画完成信号
 
 ## =====================================================================
 ## True Nodes (当前显示内容)
@@ -500,6 +501,8 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 			backgrounds.color = Constants.get_rarity_border_color(rarity_value)
 	elif backgrounds:
 		backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
+	
+	reveal_finished.emit(pool_index)
 
 
 ## 播放关盖序列（仅关盖和重置显示，刷新动画由 PoolController 统一处理）

@@ -145,7 +145,18 @@ func update_recycle_label(value: int) -> void:
 
 func show_recycle_preview(value: int) -> void:
 	# 先杀掉可能正在进行的关闭 Tween，防止其回调重置 label
+	# 关键修复：在 kill 之前，立即触发被 kill 的 tween 本应在完成时触发的回调
+	# 否则 recycle_lid_closed 事件会丢失，导致兔子动画延迟
 	if _recycle_tween:
+		if not _recycle_is_on and not _recycle_lid_closed_emitted:
+			_recycle_lid_closed_emitted = true
+			update_recycle_label(0)
+			clear_recycle_icon()
+			EventBus.game_event.emit(&"recycle_lid_closed", null)
+			
+			if _has_recycled_since_open:
+				EventBus.game_event.emit(&"recycle_processed", null)
+				_has_recycled_since_open = false
 		_recycle_tween.kill()
 		_recycle_tween = null
 	

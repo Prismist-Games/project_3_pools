@@ -192,36 +192,45 @@ func _setup_precise_display() -> void:
 		if slot.has_method("refresh_slot_data"):
 			slot.refresh_slot_data(selection_ui_config, true)
 		
-		# slot_0 和 slot_1 同时开始播放揭示动画 (开盖)
-		if i < mini(options.size(), 2):
+	# 【改动】等待所有揭示动画播放完成
+	var total_to_wait = 0
+	for i in range(mini(options.size(), 2)):
+		var slot = _get_slot(i)
+		if slot: total_to_wait += 1
+	
+	var sync_state = {"finished_count": 0}
+	for i in range(mini(options.size(), 2)):
+		var slot = _get_slot(i)
+		if slot:
+			slot.reveal_finished.connect(func(_idx): sync_state.finished_count += 1, CONNECT_ONE_SHOT)
 			var item = options[i]
-			# 允许播放完整的 reveal 序列（包含稀有度阶梯）
 			slot.play_reveal_sequence([item], false, false)
-			# 清空默认的池类型，防止触发类型高亮
+			# ... 其余逻辑保持不变 ...
 			slot.current_pool_item_type = -1
-			
-			# 【新增】设置角标状态
 			if controller.pool_controller:
 				if slot.has_method("update_status_badge"):
 					slot.update_status_badge(controller.pool_controller._calculate_badge_state(item))
 				if slot.has_method("set_upgradeable_badge"):
 					slot.set_upgradeable_badge(controller.pool_controller._calculate_upgradeable_state(item))
-			
-			# 为该 slot 单独连接 hover 信号，高亮特定物品
 			_connect_slot_hover(i, item.item_data.id)
 		else:
 			# slot_2 确保它是关着的
-			if slot.lid_sprite:
-				slot.lid_sprite.position.y = 0
-			slot.current_pool_item_type = -1
+			pass # 这部分移到了后面统一处理
+	
+	# 单独处理 slot_2 的初始状态
+	var slot_2 = _get_slot(2)
+	if slot_2:
+		if slot_2.lid_sprite:
+			slot_2.lid_sprite.position.y = 0
+		slot_2.current_pool_item_type = -1
 	
 	# 【优化】通知背包控制器，考虑当前的 options 进行角标高亮
 	if controller and controller.inventory_controller:
 		controller.inventory_controller.refresh_upgradeable_badges(options)
 	
-	# 等待所有动画播放完成（稀有度阶梯需要时间）
-	# 粗略估算：0.3s (pop) + 稀有度步进 (0.3s * n) + 揭示动画 (0.4s) + 停留 (0.3s)
-	await controller.get_tree().create_timer(1.8).timeout
+	# 等待所有动画完成
+	while sync_state.finished_count < total_to_wait:
+		await controller.get_tree().process_frame
 	
 	# 完成后解锁界面
 	if controller.pool_controller:

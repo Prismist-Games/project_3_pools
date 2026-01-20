@@ -301,13 +301,20 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 			var slot = _get_slot_node(index) as LotterySlotUI
 			
 			if event.pressed:
-				# 检查状态与锁定
+				# 1. 核心门控：UI 锁定中禁止一切点击
+				if game_ui and game_ui.is_ui_locked():
+					return
+				
+				# 2. 状态门控
 				if game_ui and game_ui.state_machine:
 					var state_name = game_ui.state_machine.get_current_state_name()
-					if state_name == &"PreciseSelection":
-						if index >= 2: return # 精准选择模式下屏蔽 Slot 2
-					elif game_ui.is_ui_locked():
-						return # 其他锁定状态下屏蔽所有输入
+					
+					# 精准选择模式下屏蔽 Slot 2
+					if state_name == &"PreciseSelection" and index >= 2:
+						return
+					
+					# 如果是技能选择或其他模态，仅允许处理逻辑内的点击 (由下面 release 逻辑处理)
+					# 这里 press 阶段仅做视觉同步
 				
 				# 鼠标按下：让lid复位
 				_pressed_slot_index = index
@@ -315,7 +322,14 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 					slot.handle_mouse_press()
 			else:
 				# 鼠标松开：确认抽奖行为
-				# Check logic via game_ui state machine
+				# 1. 核心门控：UI 锁定中禁止确认选择
+				if game_ui and game_ui.is_ui_locked():
+					_pressed_slot_index = -1
+					if slot and slot.has_method("handle_mouse_release"):
+						slot.handle_mouse_release()
+					return
+				
+				# 2. 状态机逻辑处理
 				if game_ui and game_ui.state_machine:
 					var state_name = game_ui.state_machine.get_current_state_name()
 					
