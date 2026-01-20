@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bbbih7po115qr"
-path.s3tc="res://.godot/imported/星星.png-b1389136bdd497563725a1719410452c.s3tc.ctex"
-path.etc2="res://.godot/imported/星星.png-b1389136bdd497563725a1719410452c.etc2.ctex"
+uid="uid://da0dc46kmohlc"
+path.s3tc="res://.godot/imported/tutorial_icon.png-04542e6a49427c75179a4cf251045357.s3tc.ctex"
+path.etc2="res://.godot/imported/tutorial_icon.png-04542e6a49427c75179a4cf251045357.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/city_bg/星星.png"
-dest_files=["res://.godot/imported/星星.png-b1389136bdd497563725a1719410452c.s3tc.ctex", "res://.godot/imported/星星.png-b1389136bdd497563725a1719410452c.etc2.ctex"]
+source_file="res://assets/sprites/icons/tutorial_icon.png"
+dest_files=["res://.godot/imported/tutorial_icon.png-04542e6a49427c75179a4cf251045357.s3tc.ctex", "res://.godot/imported/tutorial_icon.png-04542e6a49427c75179a4cf251045357.etc2.ctex"]
 
 [params]
 
