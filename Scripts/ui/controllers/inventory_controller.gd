@@ -248,7 +248,9 @@ func update_selection(index: int) -> void:
 		var slot = get_slot_node(i)
 		var should_be_selected = (i == index)
 		if slot and slot._is_selected != should_be_selected:
-			slot.set_selected(should_be_selected)
+			# 检测"放回原位"：当前槽位从选中变为未选中，且新选中索引为 -1
+			var is_drop_in_place = slot._is_selected and not should_be_selected and index == -1
+			slot.set_selected(should_be_selected, is_drop_in_place)
 			# Re-apply badge if deselected
 			if not should_be_selected and InventorySystem.inventory.size() > i:
 				var item = InventorySystem.inventory[i]
@@ -266,7 +268,8 @@ func update_multi_selection(indices: Array[int]) -> void:
 				slot.set_selected(true)
 			else:
 				if slot._is_selected:
-					slot.set_selected(false)
+					# 取消选中时使用瞬间恢复（物品回到原位）
+					slot.set_selected(false, true)
 					# Re-apply badge
 					if InventorySystem.inventory.size() > i:
 						var item = InventorySystem.inventory[i]

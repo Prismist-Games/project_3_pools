@@ -231,14 +231,14 @@ func _animate_background_color(target_color: Color) -> void:
 	t.tween_property(backgrounds, "color", target_color, 0.3) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
-func set_selected(selected: bool) -> void:
+func set_selected(selected: bool, instant: bool = false) -> void:
 	# 关键修复：如果状态没变，直接返回。防止全员刷新的信号导致所有格子抖动
 	if _is_selected == selected:
 		return
 		
 	_is_selected = selected
 	
-	_animate_selection(selected)
+	_animate_selection(selected, instant)
 	_update_rarity_display()
 	
 	if not selected:
@@ -252,7 +252,7 @@ func set_highlight(active: bool) -> void:
 		else:
 			backgrounds.modulate = Color.WHITE
 
-func _animate_selection(active: bool) -> void:
+func _animate_selection(active: bool, instant: bool = false) -> void:
 	if not icon_display: return
 	
 	if active:
@@ -276,10 +276,14 @@ func _animate_selection(active: bool) -> void:
 		if item_shadow:
 			item_shadow.visible = false
 		
-		# 1. 凸出效果
+		# 1. 凸出效果：先放大到极值，再平滑回弹到最终大小
 		var t_scale = create_tween()
-		t_scale.tween_property(icon_display, "scale", _icon_original_scale * 1.2, 0.2) \
-			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		var overshoot_scale = _icon_original_scale * 1.25 # 超调到 1.25 倍
+		var final_scale = _icon_original_scale * 1.15 # 最终保持 1.15 倍
+		t_scale.tween_property(icon_display, "scale", overshoot_scale, 0.12) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		t_scale.tween_property(icon_display, "scale", final_scale, 0.1) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		
 		# 2. 上下浮动 (循环) - 使用全局坐标
 		var base_y = saved_global_pos.y
@@ -297,15 +301,23 @@ func _animate_selection(active: bool) -> void:
 			_selection_tween.kill()
 			_selection_tween = null
 		
-		# 复位图标 - 平滑播放恢复动画
-		if icon_display and icon_display.top_level:
-			# 创建恢复动画 (Tween)
+		# 复位图标
+		if instant:
+			# 放回原位：跳过动画，直接恢复
+			if icon_display:
+				icon_display.top_level = false
+				icon_display.z_index = 0
+				icon_display.position = _icon_original_position
+				icon_display.scale = _icon_original_scale
+			if item_shadow:
+				item_shadow.visible = icon_display.texture != null
+		elif icon_display and icon_display.top_level:
+			# 移动到其他格子：播放平滑恢复动画
 			var closing_tween = create_tween().set_parallel(true)
 			closing_tween.tween_property(icon_display, "scale", _icon_original_scale, SELECTION_ANIM_DURATION) \
 				.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 			
 			# 计算目标全局位置：回到其原本在 Slot 中的位置
-			# 使用 get_parent().global_position 是最健壮的，因为 top_level 不改变 parent 引用
 			if icon_display.get_parent():
 				var target_global_pos = icon_display.get_parent().to_global(_icon_original_position)
 				closing_tween.tween_property(icon_display, "global_position", target_global_pos, SELECTION_ANIM_DURATION) \
