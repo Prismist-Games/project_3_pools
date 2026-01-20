@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://bnvb6m1kfg4yp"]
+[gd_scene load_steps=10 format=3 uid="uid://bnvb6m1kfg4yp"]
 
 [ext_resource type="Script" uid="uid://bciq252jrqg3b" path="res://scripts/ui/tutorial_slideshow.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://b7qsbdjotcn0r" path="res://assets/sprites/frames/rabbit_popup_button.png" id="2_wv367"]
 [ext_resource type="Texture2D" uid="uid://hrp7bsul1woh" path="res://assets/sprites/frames/rabbit_popup_button_pressed.png" id="3_gf3r0"]
 [ext_resource type="Texture2D" uid="uid://c4l4gf83h8vwl" path="res://assets/sprites/frames/rabbit_popup_button_hover.png" id="4_hrchn"]
 [ext_resource type="Texture2D" uid="uid://bs0iwes1533y3" path="res://assets/sprites/frames/rabbit_popup_button_disabled.png" id="5_peg8m"]
+[ext_resource type="FontFile" uid="uid://bpg3iakb3o07a" path="res://assets/fonts/51282.otf" id="6_nydnh"]
 [ext_resource type="Texture2D" uid="uid://b08yirongk8d1" path="res://assets/sprites/frames/close_normal.png" id="6_suhwm"]
 [ext_resource type="Texture2D" uid="uid://caqk17r36ehhe" path="res://assets/sprites/frames/close_pressed.png" id="7_nydnh"]
 [ext_resource type="Texture2D" uid="uid://wwpvtmt73qbb" path="res://assets/sprites/frames/close_hover.png" id="8_ede7g"]
@@ -33,21 +34,19 @@ stretch_mode = 5
 
 [node name="ButtonContainer" type="HBoxContainer" parent="Background"]
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -150.0
-offset_top = -80.0
-offset_right = 150.0
-offset_bottom = -30.0
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_bottom = 46.0
 grow_horizontal = 2
-grow_vertical = 0
-theme_override_constants/separation = 50
+grow_vertical = 2
+theme_override_constants/separation = 1550
+alignment = 1
 
 [node name="PrevButton" type="TextureButton" parent="Background/ButtonContainer"]
-custom_minimum_size = Vector2(120, 40)
+custom_minimum_size = Vector2(160, 40)
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
@@ -60,17 +59,19 @@ stretch_mode = 0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Background/ButtonContainer/PrevButton"]
 layout_mode = 0
-offset_left = 2.0
-offset_top = 1.0
-offset_right = 117.0
-offset_bottom = 47.0
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 135.0
+offset_bottom = 56.0
 mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("6_nydnh")
+theme_override_font_sizes/normal_font_size = 24
 text = "BTN_PREVIOUS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="NextButton" type="TextureButton" parent="Background/ButtonContainer"]
-custom_minimum_size = Vector2(120, 40)
+custom_minimum_size = Vector2(160, 40)
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
@@ -83,11 +84,13 @@ stretch_mode = 0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Background/ButtonContainer/NextButton"]
 layout_mode = 0
-offset_left = 2.0
-offset_top = 1.0
-offset_right = 117.0
-offset_bottom = 47.0
+offset_left = 21.0
+offset_top = 11.0
+offset_right = 136.0
+offset_bottom = 57.0
 mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("6_nydnh")
+theme_override_font_sizes/normal_font_size = 24
 text = "BTN_NEXT"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -97,10 +100,10 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -60.0
+offset_left = -93.0
 offset_top = 20.0
 offset_right = -22.0
-offset_bottom = 58.0
+offset_bottom = 91.0
 grow_horizontal = 0
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("6_suhwm")

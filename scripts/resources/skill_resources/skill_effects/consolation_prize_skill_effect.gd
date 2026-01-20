@@ -30,9 +30,13 @@ func _handle_item_obtained(item: ItemInstance) -> void:
 	
 	var state = SkillSystem.skill_state
 	
-	# 如果标记激活，先升级品质
-	if state.next_draw_guaranteed_rare:
-		state.next_draw_guaranteed_rare = false
+	# 使用独立标记检测安慰奖是否激活
+	if state.consolation_prize_active:
+		state.consolation_prize_active = false
+		# 同时清除共享标记（如果没有其他技能也在使用）
+		if not state.good_luck_active:
+			state.next_draw_guaranteed_rare = false
+			
 		if item.rarity < Constants.Rarity.RARE:
 			triggered.emit(TRIGGER_ACTIVATE)
 			item.rarity = Constants.Rarity.RARE
@@ -52,6 +56,7 @@ func _handle_item_obtained(item: ItemInstance) -> void:
 		# 检查是否达到阈值
 		if state.consecutive_commons >= threshold:
 			state.next_draw_guaranteed_rare = true
+			state.consolation_prize_active = true
 			triggered.emit(TRIGGER_PENDING)
 			state.consecutive_commons = 0
 	else:
@@ -60,6 +65,6 @@ func _handle_item_obtained(item: ItemInstance) -> void:
 
 
 func get_visual_state() -> String:
-	if SkillSystem.skill_state.next_draw_guaranteed_rare:
+	if SkillSystem.skill_state.consolation_prize_active:
 		return TRIGGER_PENDING
 	return ""

@@ -75,6 +75,15 @@ func _add_refresh_to_all_orders() -> void:
 	EventBus.orders_updated.emit(current_orders)
 
 
+## 刷新所有普通订单（保留主线订单，用于时代切换等场景）
+func refresh_all_normal_orders() -> void:
+	for i in range(current_orders.size()):
+		var order = current_orders[i]
+		if order != null and not order.is_mainline:
+			current_orders[i] = _generate_normal_order()
+	EventBus.orders_updated.emit(current_orders)
+
+
 func submit_order(index: int, selected_indices: Array[int] = []) -> bool:
 	if index != -1:
 		return _submit_single_order(index, selected_indices)

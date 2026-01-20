@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SoundBankEntry" load_steps=3 format=3 uid="uid://ckam84jbd7psu"]
+
+[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_7hg26"]
+[ext_resource type="AudioStream" uid="uid://brmihe0ggm3b7" path="res://assets/audio/sfx/cabinet_open.wav" id="2_7hg26"]
+
+[resource]
+script = ExtResource("1_7hg26")
+id = &"targeted_panel_opened"
+stream = ExtResource("2_7hg26")
+volume_db = -15.0

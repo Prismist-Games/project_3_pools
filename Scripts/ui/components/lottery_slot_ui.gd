@@ -504,6 +504,9 @@ func play_close_sequence() -> void:
 	item_queue_1_shadow.visible = false
 	item_queue_2.visible = false
 	item_queue_2_shadow.visible = false
+	
+	# 关键修复：关盖时隐藏所有角标，防止状态残留
+	_hide_all_badges()
 
 func play_draw_anim() -> void:
 	# 这个函数现在被 play_reveal_sequence 替代逻辑
