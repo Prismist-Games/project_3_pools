@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bvxij02pow2i8"
-path.s3tc="res://.godot/imported/shadow_the_machine.png-605f9b71ac34b46196b8aa9724990b2a.s3tc.ctex"
-path.etc2="res://.godot/imported/shadow_the_machine.png-605f9b71ac34b46196b8aa9724990b2a.etc2.ctex"
+uid="uid://drar66ltod0v3"
+path.s3tc="res://.godot/imported/wall_with_floor.PNG-f9ba159288a3de273472afc22157b0f8.s3tc.ctex"
+path.etc2="res://.godot/imported/wall_with_floor.PNG-f9ba159288a3de273472afc22157b0f8.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/shadow_the_machine.png"
-dest_files=["res://.godot/imported/shadow_the_machine.png-605f9b71ac34b46196b8aa9724990b2a.s3tc.ctex", "res://.godot/imported/shadow_the_machine.png-605f9b71ac34b46196b8aa9724990b2a.etc2.ctex"]
+source_file="res://assets/sprites/wall_with_floor.PNG"
+dest_files=["res://.godot/imported/wall_with_floor.PNG-f9ba159288a3de273472afc22157b0f8.s3tc.ctex", "res://.godot/imported/wall_with_floor.PNG-f9ba159288a3de273472afc22157b0f8.etc2.ctex"]
 
 [params]
 

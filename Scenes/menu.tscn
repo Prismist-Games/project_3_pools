@@ -1339,7 +1339,7 @@ offset_left = -6545.0
 offset_top = -6507.0
 offset_right = 10548.0
 offset_bottom = 10586.0
-pivot_offset = Vector2(7885, 7944)
+pivot_offset = Vector2(7850, 7897)
 color = Color(0.9882353, 0.4392157, 0.3529412, 1)
 
 [node name="The Rabbit" type="Node2D" parent="."]

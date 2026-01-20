@@ -1,14 +1,13 @@
 [gd_scene load_steps=104 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
-[ext_resource type="Script" uid="uid://rg8ahiwfwlxb" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
+[ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
 [ext_resource type="PackedScene" uid="uid://dcrc7hmw85gqq" path="res://scenes/animated_sprites/background_animated.tscn" id="2_u8s40"]
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="3_4wmcb"]
-[ext_resource type="Texture2D" uid="uid://b1yj0xa4wnuyv" path="res://assets/sprites/background/房子.png" id="3_amd4b"]
-[ext_resource type="Texture2D" uid="uid://br8q0rg28wtw" path="res://assets/sprites/ground_rendered.PNG" id="4_1wndc"]
+[ext_resource type="Texture2D" uid="uid://drar66ltod0v3" path="res://assets/sprites/wall_with_floor.PNG" id="3_ug1ds"]
 [ext_resource type="Texture2D" uid="uid://b4qoptplb61wr" path="res://assets/sprites/the_machine/the_machine_display_outline.png" id="4_6b2j4"]
 [ext_resource type="Texture2D" uid="uid://c4wpgax5wfhpa" path="res://assets/sprites/the_machine/the_machine_legacy_fill.png" id="5_0dgko"]
-[ext_resource type="Texture2D" uid="uid://db6sd5xoohnbh" path="res://assets/sprites/shadow_the_machine.png" id="5_n1634"]
+[ext_resource type="Texture2D" uid="uid://bvxij02pow2i8" path="res://assets/sprites/shadow_the_machine.png" id="5_n1634"]
 [ext_resource type="Texture2D" uid="uid://usox228a20t7" path="res://assets/sprites/the_machine/the_machine_legacy_outline.png" id="6_2v31b"]
 [ext_resource type="Texture2D" uid="uid://c8lfi83r0gc3d" path="res://assets/sprites/shadow_the_rabbit.png" id="6_s7ywr"]
 [ext_resource type="Texture2D" uid="uid://58c1gxlj405r" path="res://assets/sprites/the_machine/the_machine_slot_mask.png" id="7_d4ujc"]
@@ -33,7 +32,7 @@
 [ext_resource type="Texture2D" uid="uid://dpqibsn4l8hxe" path="res://assets/sprites/the_machine_switch/Recycle_background_shade.png" id="18_8y6ih"]
 [ext_resource type="Texture2D" uid="uid://lw48pfhb1slm" path="res://assets/sprites/the_machine_switch/Recycle_background_outline.png" id="18_u8s40"]
 [ext_resource type="Texture2D" uid="uid://tyc42trcd2xq" path="res://assets/sprites/the_machine_switch/基地-5.png" id="18_xqbja"]
-[ext_resource type="Script" uid="uid://ip5lr6ojc1cq" path="res://scripts/ui/utils/switch_background_follow.gd" id="19_ue141"]
+[ext_resource type="Script" uid="uid://cp4b85c6kcgdl" path="res://scripts/ui/utils/switch_background_follow.gd" id="19_ue141"]
 [ext_resource type="Texture2D" uid="uid://c1rw0mhgt1s1i" path="res://assets/sprites/the_machine/the_machine_display_fill.png" id="21_ue141"]
 [ext_resource type="Texture2D" uid="uid://bclpcjghycqdb" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="22_017ef"]
 [ext_resource type="Texture2D" uid="uid://d3xb6e3385m7k" path="res://assets/sprites/icons/coupon.png" id="25_ccvlu"]
@@ -564,21 +563,21 @@ metadata/_edit_lock_ = true
 [node name="Background" type="Node2D" parent="."]
 position = Vector2(3001, 1689.25)
 
-[node name="房子" type="Sprite2D" parent="Background"]
-position = Vector2(-5, 0)
-texture = ExtResource("3_amd4b")
-
-[node name="Background_floor" type="Sprite2D" parent="Background"]
+[node name="wall&floor" type="Sprite2D" parent="Background"]
 clip_children = 2
-position = Vector2(0, 1273.75)
-texture = ExtResource("4_1wndc")
+position = Vector2(-5, 0)
+texture = ExtResource("3_ug1ds")
 
-[node name="Shadow_the_machine" type="Sprite2D" parent="Background/Background_floor"]
-position = Vector2(-439, -461)
+[node name="Shadow_the_machine" type="Sprite2D" parent="Background/wall&floor"]
+modulate = Color(1, 1, 1, 0.7254902)
+position = Vector2(89, 741.75)
+scale = Vector2(1.01, 1.01)
 texture = ExtResource("5_n1634")
 
-[node name="Shadow_the_rabbit" type="Sprite2D" parent="Background/Background_floor"]
-position = Vector2(-2300, -292)
+[node name="Shadow_the_rabbit" type="Sprite2D" parent="Background/wall&floor"]
+modulate = Color(1, 1, 1, 0.7254902)
+position = Vector2(-2293, 937.75)
+scale = Vector2(1.05, 1.05)
 texture = ExtResource("6_s7ywr")
 
 [node name="The Machine" type="Node2D" parent="."]
@@ -1264,8 +1263,8 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="The Rabbit" type="Node2D" parent="."]
-position = Vector2(1434, 1998)
-scale = Vector2(1.05, 1.05)
+position = Vector2(1401, 1979)
+scale = Vector2(1.1, 1.1)
 
 [node name="MascotVisuals" parent="The Rabbit" instance=ExtResource("39_aagg1")]
 
@@ -1424,8 +1423,8 @@ texture = ExtResource("102_u4yck")
 
 [node name="Dialog Box" type="Sprite2D" parent="The Rabbit/QuestSystem"]
 z_index = 10
-position = Vector2(-1040.9524, 539.99994)
-scale = Vector2(0.9523812, 0.9523812)
+position = Vector2(-963.63635, 588.18176)
+scale = Vector2(0.9090909, 0.9090909)
 texture = ExtResource("101_6kw3k")
 offset = Vector2(1035, 366)
 
@@ -1445,8 +1444,8 @@ vertical_alignment = 1
 visible_characters_behavior = 1
 
 [node name="Cancel" type="Node2D" parent="The Rabbit/QuestSystem"]
-position = Vector2(1299.0477, 841.9048)
-scale = Vector2(0.9523812, 0.9523812)
+position = Vector2(1269.9999, 820.9092)
+scale = Vector2(0.9090909, 0.9090909)
 
 [node name="Cancel_button" type="Sprite2D" parent="The Rabbit/QuestSystem/Cancel"]
 position = Vector2(-168, -355)
@@ -1740,7 +1739,6 @@ offset_right = 7018.0
 offset_bottom = 3983.0
 mouse_force_pass_scroll_events = false
 color = Color(0, 0, 0, 0.5019608)
-metadata/_edit_lock_ = true
 
 [node name="Popup Window" type="TextureRect" parent="."]
 z_index = 11
@@ -1794,11 +1792,11 @@ vertical_alignment = 1
 
 [node name="Buttons_Hbox" type="HBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 76.0
-offset_top = 65.0
-offset_right = 723.0
-offset_bottom = 358.0
-scale = Vector2(0.5, 0.5)
+offset_left = 5477.0
+offset_top = 35.0
+offset_right = 6124.0
+offset_bottom = 328.0
+scale = Vector2(0.75, 0.75)
 theme_override_constants/separation = 50
 
 [node name="Language Switch" type="TextureButton" parent="Buttons_Hbox"]
