@@ -560,7 +560,8 @@ position = Vector2(-5, 0)
 texture = ExtResource("3_amd4b")
 
 [node name="Background_floor" type="Sprite2D" parent="Background"]
-position = Vector2(0, 1273.75)
+position = Vector2(36.00003, 1289.3276)
+scale = Vector2(3.413213, 2.9968257)
 texture = ExtResource("2_vave4")
 
 [node name="The Machine" type="Node2D" parent="."]
@@ -1716,10 +1717,10 @@ z_index = 999
 [node name="Screen Mask" type="ColorRect" parent="."]
 z_index = 10
 layout_mode = 0
-offset_left = -851.0
-offset_top = -608.0
-offset_right = 7007.0
-offset_bottom = 3900.0
+offset_left = -840.0
+offset_top = -525.0
+offset_right = 7018.0
+offset_bottom = 3983.0
 mouse_force_pass_scroll_events = false
 color = Color(0, 0, 0, 0.5019608)
 
