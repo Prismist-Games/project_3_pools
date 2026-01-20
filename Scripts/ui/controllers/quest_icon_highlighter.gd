@@ -7,9 +7,13 @@ extends RefCounted
 ## 采用绝对目标缩放值，防止快速移动鼠标时缩放累加。
 
 ## 高亮动画配置
-const HIGHLIGHT_SCALE: float = 1.35
-const NORMAL_SCALE: float = 1.0
-const ANIMATION_DURATION: float = 0.12
+const HIGHLIGHT_WIDTH: float = 15.0
+const NORMAL_WIDTH: float = 0.0
+const ANIMATION_DURATION: float = 0.05
+
+## 飘浮动画配置
+const FLOAT_AMPLITUDE: float = 36.0
+const FLOAT_CYCLE_TIME: float = 0.8
 
 ## 当前正在高亮的图标节点集合 (key: icon node, value: original scale)
 var _highlighted_icons: Dictionary = {}
@@ -122,7 +126,8 @@ func _get_matching_icons_from_slot(slot: Control, item_ids: Array[StringName], i
 		var req_item_id = req.get("item_id", &"")
 		
 		if req_item_id in item_ids:
-			var req_node = items_grid.get_node_or_null(item_root_prefix + str(i))
+			# 1. 改为使用 find_child 增加对层级变化的鲁棒性
+			var req_node = items_grid.find_child(item_root_prefix + str(i), true)
 			if req_node:
 				var icon = req_node.find_child("Item_icon", true)
 				if icon and icon.visible:
@@ -135,29 +140,41 @@ func _highlight_icon(icon: Node) -> void:
 	if not is_instance_valid(icon):
 		return
 	
-	# 记录原始缩放 (如果尚未记录)
-	if icon not in _highlighted_icons:
-		_highlighted_icons[icon] = icon.scale
-	
-	# 取消之前的动画
-	if _active_tweens.has(icon) and _active_tweens[icon] != null:
-		var old_tween: Tween = _active_tweens[icon]
-		if old_tween.is_valid():
-			old_tween.kill()
-	
-	# 计算目标缩放 (基于原始缩放)
-	var original_scale: Vector2 = _highlighted_icons[icon]
-	var target_scale: Vector2 = original_scale * HIGHLIGHT_SCALE
-	
-	# 创建放大动画
-	var tween = _create_tween_for_icon(icon)
-	if not tween:
+	var sprite = icon as Sprite2D
+	if not sprite:
 		return
+		
+	# 3. 运行时实例化一下所有shader，变local
+	if sprite.material is ShaderMaterial:
+		if not sprite.material.resource_local_to_scene:
+			sprite.material = sprite.material.duplicate()
+			sprite.material.resource_local_to_scene = true
 	
-	tween.tween_property(icon, "scale", target_scale, ANIMATION_DURATION) \
-		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	# 记录原始状态并启动动画
+	if icon not in _highlighted_icons:
+		_highlighted_icons[icon] = {
+			"original_y": sprite.position.y,
+			"float_tween": null
+		}
 	
-	_active_tweens[icon] = tween
+	# 创建描边动画
+	var tween = _create_tween_for_icon(icon)
+	if tween:
+		if sprite.material is ShaderMaterial:
+			tween.tween_property(sprite.material, "shader_parameter/width", HIGHLIGHT_WIDTH, ANIMATION_DURATION) \
+				.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		_active_tweens[icon] = tween
+	
+	# 2. 增加飘动动画: Item_icon 的 position:y 上下飘动
+	var float_tween = _create_tween_for_icon(icon)
+	if float_tween:
+		float_tween.set_loops()
+		var start_y = _highlighted_icons[icon]["original_y"]
+		float_tween.tween_property(sprite, "position:y", start_y - FLOAT_AMPLITUDE, FLOAT_CYCLE_TIME) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		float_tween.tween_property(sprite, "position:y", start_y, FLOAT_CYCLE_TIME) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		_highlighted_icons[icon]["float_tween"] = float_tween
 
 ## 内部：取消高亮单个图标
 func _unhighlight_icon(icon: Node) -> void:
@@ -166,26 +183,42 @@ func _unhighlight_icon(icon: Node) -> void:
 		_active_tweens.erase(icon)
 		return
 	
-	# 获取原始缩放
-	var original_scale: Vector2 = _highlighted_icons.get(icon, icon.scale / HIGHLIGHT_SCALE)
-	
-	# 取消之前的动画
+	var sprite = icon as Sprite2D
+	if not sprite:
+		_highlighted_icons.erase(icon)
+		_active_tweens.erase(icon)
+		return
+
+	# 取消之前的动画 (描边)
 	if _active_tweens.has(icon) and _active_tweens[icon] != null:
 		var old_tween: Tween = _active_tweens[icon]
 		if old_tween.is_valid():
 			old_tween.kill()
 	
+	# 停止飘动动画并复位位置
+	if _highlighted_icons.has(icon):
+		var data = _highlighted_icons[icon]
+		if data["float_tween"] and data["float_tween"].is_valid():
+			data["float_tween"].kill()
+		
+		var reset_tween = _create_tween_for_icon(icon)
+		if reset_tween:
+			reset_tween.tween_property(sprite, "position:y", data["original_y"], ANIMATION_DURATION) \
+				.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	
 	# 创建缩小动画
 	var tween = _create_tween_for_icon(icon)
 	if not tween:
 		# 无法创建动画，直接清理并设置最终值
-		icon.scale = original_scale
+		if sprite.material is ShaderMaterial:
+			sprite.material.set_shader_parameter("width", NORMAL_WIDTH)
 		_highlighted_icons.erase(icon)
 		_active_tweens.erase(icon)
 		return
 	
-	tween.tween_property(icon, "scale", original_scale, ANIMATION_DURATION) \
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	if sprite.material is ShaderMaterial:
+		tween.tween_property(sprite.material, "shader_parameter/width", NORMAL_WIDTH, ANIMATION_DURATION) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	
 	# 动画完成后清理
 	tween.finished.connect(func():
