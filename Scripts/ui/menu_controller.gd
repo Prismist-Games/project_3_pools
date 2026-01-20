@@ -39,8 +39,8 @@ func _on_language_selected(locale: String) -> void:
 	
 	# 3. 播放小兔子动画 (5秒)
 	var tween_rabbit: Tween = create_tween().set_parallel(true)
-	tween_rabbit.tween_property(the_rabbit, "scale", Vector2(1.05, 1.05), 3.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-	tween_rabbit.tween_property(the_rabbit, "position", Vector2(1434, 1998), 3.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	tween_rabbit.tween_property(the_rabbit, "scale", Vector2(1.1, 1.1), 3.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	tween_rabbit.tween_property(the_rabbit, "position", Vector2(1401, 1979), 3.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	
 	# 必须等待兔子动画播完
 	await tween_rabbit.finished

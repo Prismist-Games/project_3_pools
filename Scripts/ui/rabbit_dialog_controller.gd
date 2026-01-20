@@ -88,7 +88,7 @@ func show_dialog(dialog_type: DialogType) -> void:
 	_current_tween.set_trans(Tween.TRANS_BACK)
 	
 	# 1. 对话框 scale 从 0 到 1
-	_current_tween.tween_property(dialog_box, "scale", Vector2.ONE, show_scale_duration)
+	_current_tween.tween_property(dialog_box, "scale", Vector2.ONE * 0.909, show_scale_duration)
 	
 	# 2. 文字 visible_ratio 从 0 到 1
 	_current_tween.tween_property(dialog_label, "visible_ratio", 1.0, text_reveal_duration) \
