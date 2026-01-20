@@ -1,65 +1,80 @@
-[gd_scene load_steps=105 format=3 uid="uid://b2mfixaghaocc"]
+[gd_scene load_steps=113 format=3 uid="uid://3vd6vr0ax1kf"]
 
-[ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="1_fu8yu"]
-[ext_resource type="AudioStream" uid="uid://bmus83sm4cx3t" path="res://assets/audio/sfx/381588__dorianmastin__snd_impactheavywall01.wav" id="2_kmeeb"]
-[ext_resource type="Texture2D" uid="uid://ciklekvdp5hak" path="res://assets/sprites/the_rabbit/the_rabbit_left_arm.png" id="2_vpgxp"]
-[ext_resource type="AudioStream" uid="uid://hp7wuy3elrv2" path="res://assets/audio/sfx/381591__dorianmastin__snd_impactheavywall04.wav" id="3_cs4hr"]
-[ext_resource type="Texture2D" uid="uid://deairpal3cmlr" path="res://assets/sprites/the_rabbit/the_rabbit_left_thumb.png" id="3_kmeeb"]
-[ext_resource type="Texture2D" uid="uid://bsdf5iwmcegpx" path="res://assets/sprites/the_rabbit/the_rabbit_left_palm.png" id="4_cs4hr"]
-[ext_resource type="Texture2D" uid="uid://bjlpf6bxe6kb1" path="res://assets/sprites/the_rabbit/the_rabbit_wand_stick.PNG" id="5_nc5n7"]
-[ext_resource type="Texture2D" uid="uid://bwjokbfgqmqme" path="res://assets/sprites/the_rabbit/the_rabbit_wand_head.PNG" id="6_0fn5j"]
-[ext_resource type="Texture2D" uid="uid://blfi1cynn45pb" path="res://assets/sprites/the_rabbit/the_rabbit_wand_face.png" id="7_3jmwh"]
-[ext_resource type="Texture2D" uid="uid://bgwtasnffh6qw" path="res://assets/sprites/the_rabbit/the_rabbit_wand_head_fill.png" id="7_fu8yu"]
-[ext_resource type="Texture2D" uid="uid://bta1pq0iskiiy" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_1.png" id="8_28eyx"]
-[ext_resource type="Texture2D" uid="uid://byiuktv7nng2h" path="res://assets/sprites/the_rabbit/the_rabbit_wand_head_outline.png" id="8_vpgxp"]
-[ext_resource type="Texture2D" uid="uid://ba8n4bffxpxgp" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_2.png" id="9_f8iak"]
-[ext_resource type="Texture2D" uid="uid://ctkkq7iwtmubj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_3.png" id="10_hvtis"]
-[ext_resource type="Texture2D" uid="uid://dfn54hrs485jj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_4.png" id="11_1h5j5"]
-[ext_resource type="Texture2D" uid="uid://da0ig7cexq40g" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_5.png" id="12_eyh35"]
-[ext_resource type="Texture2D" uid="uid://dgwh6jt3m78qv" path="res://assets/sprites/the_rabbit/the_rabbit_left_fingers.png" id="13_24e80"]
-[ext_resource type="Texture2D" uid="uid://cgiluolu8nixl" path="res://assets/sprites/the_rabbit/the_rabbit_left_foot.png" id="14_3gjex"]
-[ext_resource type="Texture2D" uid="uid://pu4fbtq6iil2" path="res://assets/sprites/the_rabbit/the_rabbit_left_leg.png" id="15_7b3i6"]
-[ext_resource type="Texture2D" uid="uid://c3wdngblnif68" path="res://assets/sprites/the_rabbit/era_2/wave(1).png" id="15_eyh35"]
-[ext_resource type="Texture2D" uid="uid://b85krq2sfurx5" path="res://assets/sprites/the_rabbit/era_2/wave(2).png" id="16_24e80"]
-[ext_resource type="Texture2D" uid="uid://ca5ud3ae3x378" path="res://assets/sprites/the_rabbit/the_rabbit_right_foot.png" id="16_gfjcq"]
-[ext_resource type="Texture2D" uid="uid://0vwnhohd4j0k" path="res://assets/sprites/the_rabbit/era_2/wave(3).png" id="17_3gjex"]
-[ext_resource type="Texture2D" uid="uid://b0qmpkep8t4hu" path="res://assets/sprites/the_rabbit/the_rabbit_right_leg.png" id="17_7chr7"]
-[ext_resource type="Texture2D" uid="uid://b4dm727yibi4s" path="res://assets/sprites/the_rabbit/era_2/wave(4).png" id="18_7b3i6"]
-[ext_resource type="Texture2D" uid="uid://dj5be2vipyhi4" path="res://assets/sprites/the_rabbit/the_rabbit_head_left.png" id="18_o63xb"]
-[ext_resource type="Texture2D" uid="uid://cwryr678h14u5" path="res://assets/sprites/the_rabbit/era_2/wave(5).png" id="19_gfjcq"]
-[ext_resource type="Texture2D" uid="uid://0fvod413bhf0" path="res://assets/sprites/the_rabbit/the_rabbit_left_ear.png" id="19_hv4t5"]
-[ext_resource type="Texture2D" uid="uid://cx8hro6nq7pam" path="res://assets/sprites/the_rabbit/era_2/wave(6).png" id="20_7chr7"]
-[ext_resource type="Texture2D" uid="uid://dy6qxp86y1vw3" path="res://assets/sprites/the_rabbit/the_rabbit_left_ear_inner.png" id="20_8o365"]
-[ext_resource type="Texture2D" uid="uid://b067gbir0lby" path="res://assets/sprites/the_rabbit/the_rabbit_head_mid.png" id="21_np3ll"]
-[ext_resource type="Texture2D" uid="uid://ctnuu5i04xvhc" path="res://assets/sprites/the_rabbit/era_2/wave(7).png" id="21_o63xb"]
-[ext_resource type="Texture2D" uid="uid://du7f02gcpaycx" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear.png" id="22_8867w"]
-[ext_resource type="Texture2D" uid="uid://ds3a5u41s5dum" path="res://assets/sprites/the_rabbit/era_2/wave(8).png" id="22_hv4t5"]
-[ext_resource type="Texture2D" uid="uid://kra6y6l46fby" path="res://assets/sprites/the_rabbit/era_2/wave(9).png" id="23_8o365"]
-[ext_resource type="Texture2D" uid="uid://c5i1aenksh4av" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear_inner.png" id="23_ijiyn"]
-[ext_resource type="Texture2D" uid="uid://bh1nmjji7itpo" path="res://assets/sprites/the_rabbit/era_3/era_3_face.png" id="24_24e80"]
-[ext_resource type="Texture2D" uid="uid://hoc6uaci42sv" path="res://assets/sprites/the_rabbit/the_rabbit_head_right.png" id="24_vpvb0"]
-[ext_resource type="Texture2D" uid="uid://b7q2v5u4k6akt" path="res://assets/sprites/the_rabbit/the_rabbit_mustache_left.png" id="25_qhr86"]
-[ext_resource type="Texture2D" uid="uid://cvhc3ippt2qmj" path="res://assets/sprites/the_rabbit/era_4/randomness(1).png" id="25_vpvb0"]
-[ext_resource type="Texture2D" uid="uid://dwbx5hd22gsbp" path="res://assets/sprites/the_rabbit/era_4/randomness(2).png" id="26_qhr86"]
-[ext_resource type="Texture2D" uid="uid://cgehbcf1mmosn" path="res://assets/sprites/the_rabbit/the_rabbit_mustache_right.png" id="26_wr5f3"]
-[ext_resource type="Texture2D" uid="uid://ce882nggx5db7" path="res://assets/sprites/the_rabbit/the_rabbit_right_arm.png" id="27_22g54"]
-[ext_resource type="Texture2D" uid="uid://elvah0lsdf57" path="res://assets/sprites/the_rabbit/era_4/randomness(3).png" id="27_wr5f3"]
-[ext_resource type="Texture2D" uid="uid://bsrjw1go3ivse" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_all_handle.png" id="28_3luby"]
-[ext_resource type="Texture2D" uid="uid://d3d0d8nih1731" path="res://assets/sprites/the_rabbit/era_4/randomness(4).png" id="28_22g54"]
-[ext_resource type="Texture2D" uid="uid://cf8mmyjn0spry" path="res://assets/sprites/the_rabbit/era_4/randomness(5).png" id="29_3luby"]
-[ext_resource type="Texture2D" uid="uid://d2ab00eoch5f4" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_all_stick.png" id="29_cqiiw"]
-[ext_resource type="Texture2D" uid="uid://dokmgcwoitk6l" path="res://assets/sprites/the_rabbit/the_rabbit_right_hand.png" id="30_2b3qy"]
-[ext_resource type="Texture2D" uid="uid://bfwgung7one3h" path="res://assets/sprites/the_rabbit/era_4/randomness(6).png" id="30_cqiiw"]
-[ext_resource type="Texture2D" uid="uid://yind51uubggi" path="res://assets/sprites/the_rabbit/era_4/randomness(7).png" id="31_2b3qy"]
-[ext_resource type="Shader" uid="uid://cjhdeyga11esx" path="res://assets/shaders/eye_procedural.gdshader" id="31_wrirs"]
-[ext_resource type="Texture2D" uid="uid://bywujqvscsdqs" path="res://assets/sprites/the_rabbit/era_4/randomness(8).png" id="32_wrirs"]
-[ext_resource type="Texture2D" uid="uid://c1v0nvxbrf6c" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_fill.png" id="32_xscfi"]
-[ext_resource type="Texture2D" uid="uid://defnrkt223vrw" path="res://assets/sprites/the_rabbit/the_rabbit_left_eye_fill.png" id="33_d56hm"]
-[ext_resource type="Texture2D" uid="uid://c1jjbr0aavdqn" path="res://assets/sprites/the_rabbit/era_4/randomness(9).png" id="33_xscfi"]
-[ext_resource type="Texture2D" uid="uid://dpf1mwji6h4d" path="res://assets/sprites/the_rabbit/the_rabbit_nose.png" id="34_58itp"]
-[ext_resource type="Texture2D" uid="uid://q5f4wrwbsyga" path="res://assets/sprites/the_rabbit/era_4/randomness(10).png" id="34_d56hm"]
-[ext_resource type="Texture2D" uid="uid://yg7xwbf07xpb" path="res://assets/sprites/the_rabbit/era_4/randomness(11).png" id="35_58itp"]
-[ext_resource type="Texture2D" uid="uid://c6edx6vdhm54e" path="res://assets/sprites/the_rabbit/the_rabbit_nose_wrinkle.png" id="35_oa7gp"]
+[ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="1_ebw2t"]
+[ext_resource type="AudioStream" uid="uid://bmus83sm4cx3t" path="res://assets/audio/sfx/381588__dorianmastin__snd_impactheavywall01.wav" id="2_lqq6t"]
+[ext_resource type="Shader" uid="uid://di45w4y74m5hy" path="res://assets/shaders/circle.gdshader" id="2_w2h5l"]
+[ext_resource type="AudioStream" uid="uid://hp7wuy3elrv2" path="res://assets/audio/sfx/381591__dorianmastin__snd_impactheavywall04.wav" id="3_ur5vm"]
+[ext_resource type="Texture2D" uid="uid://ciklekvdp5hak" path="res://assets/sprites/the_rabbit/the_rabbit_left_arm.png" id="4_46y0v"]
+[ext_resource type="Texture2D" uid="uid://deairpal3cmlr" path="res://assets/sprites/the_rabbit/the_rabbit_left_thumb.png" id="5_jxp4i"]
+[ext_resource type="Texture2D" uid="uid://bsdf5iwmcegpx" path="res://assets/sprites/the_rabbit/the_rabbit_left_palm.png" id="6_850ru"]
+[ext_resource type="Texture2D" uid="uid://bjlpf6bxe6kb1" path="res://assets/sprites/the_rabbit/the_rabbit_wand_stick.PNG" id="7_6vnu0"]
+[ext_resource type="Texture2D" uid="uid://bwjokbfgqmqme" path="res://assets/sprites/the_rabbit/the_rabbit_wand_head.PNG" id="8_w2h5l"]
+[ext_resource type="Texture2D" uid="uid://byiuktv7nng2h" path="res://assets/sprites/the_rabbit/the_rabbit_wand_head_outline.png" id="9_5yfxn"]
+[ext_resource type="Texture2D" uid="uid://bgwtasnffh6qw" path="res://assets/sprites/the_rabbit/the_rabbit_wand_head_fill.png" id="10_ot72n"]
+[ext_resource type="Texture2D" uid="uid://blfi1cynn45pb" path="res://assets/sprites/the_rabbit/the_rabbit_wand_face.png" id="11_st8ik"]
+[ext_resource type="Texture2D" uid="uid://bta1pq0iskiiy" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_1.png" id="12_umjhq"]
+[ext_resource type="Texture2D" uid="uid://ba8n4bffxpxgp" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_2.png" id="13_3qq8w"]
+[ext_resource type="Texture2D" uid="uid://ctkkq7iwtmubj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_3.png" id="14_13ief"]
+[ext_resource type="Texture2D" uid="uid://dfn54hrs485jj" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_4.png" id="15_3mcda"]
+[ext_resource type="Texture2D" uid="uid://da0ig7cexq40g" path="res://assets/sprites/the_rabbit/the_rabbit_wand_gem_5.png" id="16_a6r3l"]
+[ext_resource type="Texture2D" uid="uid://c3wdngblnif68" path="res://assets/sprites/the_rabbit/era_2/wave(1).png" id="17_xlv0a"]
+[ext_resource type="Texture2D" uid="uid://b85krq2sfurx5" path="res://assets/sprites/the_rabbit/era_2/wave(2).png" id="18_yqfta"]
+[ext_resource type="Texture2D" uid="uid://0vwnhohd4j0k" path="res://assets/sprites/the_rabbit/era_2/wave(3).png" id="19_gt52d"]
+[ext_resource type="Texture2D" uid="uid://b4dm727yibi4s" path="res://assets/sprites/the_rabbit/era_2/wave(4).png" id="20_tm5p4"]
+[ext_resource type="Texture2D" uid="uid://cwryr678h14u5" path="res://assets/sprites/the_rabbit/era_2/wave(5).png" id="21_vvgcj"]
+[ext_resource type="Texture2D" uid="uid://cx8hro6nq7pam" path="res://assets/sprites/the_rabbit/era_2/wave(6).png" id="22_nvwxn"]
+[ext_resource type="Texture2D" uid="uid://ctnuu5i04xvhc" path="res://assets/sprites/the_rabbit/era_2/wave(7).png" id="23_n0t2p"]
+[ext_resource type="Texture2D" uid="uid://ds3a5u41s5dum" path="res://assets/sprites/the_rabbit/era_2/wave(8).png" id="24_t5cyk"]
+[ext_resource type="Texture2D" uid="uid://kra6y6l46fby" path="res://assets/sprites/the_rabbit/era_2/wave(9).png" id="25_ipfyu"]
+[ext_resource type="Texture2D" uid="uid://bh1nmjji7itpo" path="res://assets/sprites/the_rabbit/era_3/era_3_face.png" id="26_thfw6"]
+[ext_resource type="Texture2D" uid="uid://cvhc3ippt2qmj" path="res://assets/sprites/the_rabbit/era_4/randomness(1).png" id="27_dxnu1"]
+[ext_resource type="Texture2D" uid="uid://dwbx5hd22gsbp" path="res://assets/sprites/the_rabbit/era_4/randomness(2).png" id="28_ttw73"]
+[ext_resource type="Texture2D" uid="uid://elvah0lsdf57" path="res://assets/sprites/the_rabbit/era_4/randomness(3).png" id="29_j8vrf"]
+[ext_resource type="Texture2D" uid="uid://d3d0d8nih1731" path="res://assets/sprites/the_rabbit/era_4/randomness(4).png" id="30_q1d64"]
+[ext_resource type="Texture2D" uid="uid://cf8mmyjn0spry" path="res://assets/sprites/the_rabbit/era_4/randomness(5).png" id="31_hcex4"]
+[ext_resource type="Texture2D" uid="uid://bfwgung7one3h" path="res://assets/sprites/the_rabbit/era_4/randomness(6).png" id="32_8duux"]
+[ext_resource type="Texture2D" uid="uid://yind51uubggi" path="res://assets/sprites/the_rabbit/era_4/randomness(7).png" id="33_3buoq"]
+[ext_resource type="FontFile" uid="uid://bpg3iakb3o07a" path="res://assets/fonts/51282.otf" id="33_ykwlt"]
+[ext_resource type="Texture2D" uid="uid://bywujqvscsdqs" path="res://assets/sprites/the_rabbit/era_4/randomness(8).png" id="34_qrata"]
+[ext_resource type="Texture2D" uid="uid://c1jjbr0aavdqn" path="res://assets/sprites/the_rabbit/era_4/randomness(9).png" id="35_j2xhi"]
+[ext_resource type="Texture2D" uid="uid://q5f4wrwbsyga" path="res://assets/sprites/the_rabbit/era_4/randomness(10).png" id="36_m63oq"]
+[ext_resource type="Texture2D" uid="uid://yg7xwbf07xpb" path="res://assets/sprites/the_rabbit/era_4/randomness(11).png" id="37_e1j7n"]
+[ext_resource type="Texture2D" uid="uid://dgwh6jt3m78qv" path="res://assets/sprites/the_rabbit/the_rabbit_left_fingers.png" id="38_ub6cc"]
+[ext_resource type="Texture2D" uid="uid://cgiluolu8nixl" path="res://assets/sprites/the_rabbit/the_rabbit_left_foot.png" id="39_3r2og"]
+[ext_resource type="Texture2D" uid="uid://pu4fbtq6iil2" path="res://assets/sprites/the_rabbit/the_rabbit_left_leg.png" id="40_njse0"]
+[ext_resource type="Texture2D" uid="uid://ca5ud3ae3x378" path="res://assets/sprites/the_rabbit/the_rabbit_right_foot.png" id="41_sg7hg"]
+[ext_resource type="Texture2D" uid="uid://b0qmpkep8t4hu" path="res://assets/sprites/the_rabbit/the_rabbit_right_leg.png" id="42_0w7rg"]
+[ext_resource type="Texture2D" uid="uid://dj5be2vipyhi4" path="res://assets/sprites/the_rabbit/the_rabbit_head_left.png" id="43_35g6m"]
+[ext_resource type="Texture2D" uid="uid://0fvod413bhf0" path="res://assets/sprites/the_rabbit/the_rabbit_left_ear.png" id="44_53uja"]
+[ext_resource type="Texture2D" uid="uid://dy6qxp86y1vw3" path="res://assets/sprites/the_rabbit/the_rabbit_left_ear_inner.png" id="45_vo3o8"]
+[ext_resource type="Texture2D" uid="uid://b067gbir0lby" path="res://assets/sprites/the_rabbit/the_rabbit_head_mid.png" id="46_x386s"]
+[ext_resource type="Texture2D" uid="uid://du7f02gcpaycx" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear.png" id="47_ghteq"]
+[ext_resource type="Texture2D" uid="uid://c5i1aenksh4av" path="res://assets/sprites/the_rabbit/the_rabbit_right_ear_inner.png" id="48_ykwlt"]
+[ext_resource type="Texture2D" uid="uid://hoc6uaci42sv" path="res://assets/sprites/the_rabbit/the_rabbit_head_right.png" id="49_dwwk5"]
+[ext_resource type="Texture2D" uid="uid://b7q2v5u4k6akt" path="res://assets/sprites/the_rabbit/the_rabbit_mustache_left.png" id="50_rq0qo"]
+[ext_resource type="Texture2D" uid="uid://cgehbcf1mmosn" path="res://assets/sprites/the_rabbit/the_rabbit_mustache_right.png" id="51_nrbtq"]
+[ext_resource type="Texture2D" uid="uid://ce882nggx5db7" path="res://assets/sprites/the_rabbit/the_rabbit_right_arm.png" id="52_urenr"]
+[ext_resource type="Texture2D" uid="uid://bsrjw1go3ivse" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_all_handle.png" id="53_tjuw6"]
+[ext_resource type="Texture2D" uid="uid://d2ab00eoch5f4" path="res://assets/sprites/the_rabbit/the_rabbit_refresh_all_stick.png" id="54_thllp"]
+[ext_resource type="Texture2D" uid="uid://dokmgcwoitk6l" path="res://assets/sprites/the_rabbit/the_rabbit_right_hand.png" id="55_y04aq"]
+[ext_resource type="Shader" uid="uid://cjhdeyga11esx" path="res://assets/shaders/eye_procedural.gdshader" id="56_hdjkt"]
+[ext_resource type="Texture2D" uid="uid://c1v0nvxbrf6c" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_fill.png" id="57_e6v53"]
+[ext_resource type="Texture2D" uid="uid://defnrkt223vrw" path="res://assets/sprites/the_rabbit/the_rabbit_left_eye_fill.png" id="58_01eq4"]
+[ext_resource type="Texture2D" uid="uid://dpf1mwji6h4d" path="res://assets/sprites/the_rabbit/the_rabbit_nose.png" id="59_t7ncb"]
+[ext_resource type="Texture2D" uid="uid://c6edx6vdhm54e" path="res://assets/sprites/the_rabbit/the_rabbit_nose_wrinkle.png" id="60_cgrpx"]
+[ext_resource type="Texture2D" uid="uid://bs0iwes1533y3" path="res://assets/sprites/frames/rabbit_popup_button_disabled.png" id="64_jxp4i"]
+[ext_resource type="Texture2D" uid="uid://b7qsbdjotcn0r" path="res://assets/sprites/frames/rabbit_popup_button.png" id="73_gb3ry"]
+[ext_resource type="Texture2D" uid="uid://hrp7bsul1woh" path="res://assets/sprites/frames/rabbit_popup_button_pressed.png" id="74_q1c26"]
+[ext_resource type="Texture2D" uid="uid://c4l4gf83h8vwl" path="res://assets/sprites/frames/rabbit_popup_button_hover.png" id="75_q7fno"]
+[ext_resource type="Script" uid="uid://enjh7xmiqi1c" path="res://scripts/ui/menu_controller.gd" id="76_menu_controller"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5yfxn"]
+shader = ExtResource("2_w2h5l")
+shader_parameter/circle_size = 0.4470000212325
+shader_parameter/outline_width = 0.0800000038
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/ratio_width = 1.0
+shader_parameter/ratio_height = 1.0
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_017ef"]
 animation = &"rabbit_eyes_rolling"
@@ -789,7 +804,7 @@ tracks/7/keys = {
 "clips": [{
 "end_offset": 0.0,
 "start_offset": 0.0,
-"stream": ExtResource("2_kmeeb")
+"stream": ExtResource("2_lqq6t")
 }],
 "times": PackedFloat32Array(0.2)
 }
@@ -804,7 +819,7 @@ tracks/8/keys = {
 "clips": [{
 "end_offset": 0.0,
 "start_offset": 0.0,
-"stream": ExtResource("3_cs4hr")
+"stream": ExtResource("3_ur5vm")
 }],
 "times": PackedFloat32Array(0.55)
 }
@@ -1149,31 +1164,31 @@ _data = {
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("15_eyh35")
+"texture": ExtResource("17_xlv0a")
 }, {
 "duration": 1.0,
-"texture": ExtResource("16_24e80")
+"texture": ExtResource("18_yqfta")
 }, {
 "duration": 1.0,
-"texture": ExtResource("17_3gjex")
+"texture": ExtResource("19_gt52d")
 }, {
 "duration": 1.0,
-"texture": ExtResource("18_7b3i6")
+"texture": ExtResource("20_tm5p4")
 }, {
 "duration": 1.0,
-"texture": ExtResource("19_gfjcq")
+"texture": ExtResource("21_vvgcj")
 }, {
 "duration": 1.0,
-"texture": ExtResource("20_7chr7")
+"texture": ExtResource("22_nvwxn")
 }, {
 "duration": 1.0,
-"texture": ExtResource("21_o63xb")
+"texture": ExtResource("23_n0t2p")
 }, {
 "duration": 1.0,
-"texture": ExtResource("22_hv4t5")
+"texture": ExtResource("24_t5cyk")
 }, {
 "duration": 1.0,
-"texture": ExtResource("23_8o365")
+"texture": ExtResource("25_ipfyu")
 }],
 "loop": true,
 "name": &"wave",
@@ -1223,37 +1238,37 @@ _data = {
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("25_vpvb0")
+"texture": ExtResource("27_dxnu1")
 }, {
 "duration": 1.0,
-"texture": ExtResource("26_qhr86")
+"texture": ExtResource("28_ttw73")
 }, {
 "duration": 1.0,
-"texture": ExtResource("27_wr5f3")
+"texture": ExtResource("29_j8vrf")
 }, {
 "duration": 1.0,
-"texture": ExtResource("28_22g54")
+"texture": ExtResource("30_q1d64")
 }, {
 "duration": 1.0,
-"texture": ExtResource("29_3luby")
+"texture": ExtResource("31_hcex4")
 }, {
 "duration": 1.0,
-"texture": ExtResource("30_cqiiw")
+"texture": ExtResource("32_8duux")
 }, {
 "duration": 1.0,
-"texture": ExtResource("31_2b3qy")
+"texture": ExtResource("33_3buoq")
 }, {
 "duration": 1.0,
-"texture": ExtResource("32_wrirs")
+"texture": ExtResource("34_qrata")
 }, {
 "duration": 1.0,
-"texture": ExtResource("33_xscfi")
+"texture": ExtResource("35_j2xhi")
 }, {
 "duration": 1.0,
-"texture": ExtResource("34_d56hm")
+"texture": ExtResource("36_m63oq")
 }, {
 "duration": 1.0,
-"texture": ExtResource("35_58itp")
+"texture": ExtResource("37_e1j7n")
 }],
 "loop": true,
 "name": &"randomness",
@@ -1299,10 +1314,10 @@ _data = {
 }
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u4yck"]
-shader = ExtResource("31_wrirs")
+shader = ExtResource("56_hdjkt")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_thickness = 0.10000000475
-shader_parameter/pupil_texture = ExtResource("32_xscfi")
+shader_parameter/pupil_texture = ExtResource("57_e6v53")
 shader_parameter/use_pupil_texture = true
 shader_parameter/pupil_offset = Vector2(1, 0)
 shader_parameter/pupil_scale = 0.5
@@ -1310,13 +1325,34 @@ shader_parameter/pupil_color = Color(0.18, 0.18, 0.18, 1)
 shader_parameter/pupil_outline_color = Color(0, 0, 0, 1)
 shader_parameter/pupil_outline_thickness = 0.10000000149012
 
-[node name="MascotVisuals" type="Node2D"]
+[node name="Menu" type="Control"]
+z_index = 1000
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("76_menu_controller")
 
-[node name="TheRabbitAnimator" type="Node" parent="." node_paths=PackedStringArray("anim_tree")]
-script = ExtResource("1_fu8yu")
+[node name="ColorRect" type="ColorRect" parent="."]
+clip_children = 2
+material = SubResource("ShaderMaterial_5yfxn")
+layout_mode = 0
+offset_left = -6545.0
+offset_top = -6507.0
+offset_right = 10548.0
+offset_bottom = 10586.0
+pivot_offset = Vector2(7885, 7944)
+color = Color(0.9882353, 0.4392157, 0.3529412, 1)
+
+[node name="The Rabbit" type="Node2D" parent="."]
+position = Vector2(3677, 6694)
+scale = Vector2(7, 7)
+
+[node name="MascotVisuals" type="Node2D" parent="The Rabbit"]
+
+[node name="TheRabbitAnimator" type="Node" parent="The Rabbit/MascotVisuals" node_paths=PackedStringArray("anim_tree")]
+script = ExtResource("1_ebw2t")
 anim_tree = NodePath("../AnimationTree")
 
-[node name="AnimationTree" type="AnimationTree" parent="."]
+[node name="AnimationTree" type="AnimationTree" parent="The Rabbit/MascotVisuals"]
 tree_root = SubResource("AnimationNodeStateMachine_otpb1")
 anim_player = NodePath("../AnimationPlayer")
 parameters/conditions/exit_submitting = false
@@ -1327,290 +1363,301 @@ parameters/conditions/order_success = false
 parameters/conditions/pool_clicked = false
 parameters/conditions/recycle_lid_closed = false
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/MascotVisuals"]
 libraries = {
 &"": SubResource("AnimationLibrary_8y6ih")
 }
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="The Rabbit/MascotVisuals"]
 volume_db = -10.0
 
-[node name="TheRabbitLeftArm" type="Sprite2D" parent="."]
+[node name="TheRabbitLeftArm" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(19.5, -307.5)
-texture = ExtResource("2_vpgxp")
+texture = ExtResource("4_46y0v")
 offset = Vector2(441.5, 72.5)
 region_enabled = true
 region_rect = Rect2(1312, 1424, 1184, 672)
 
-[node name="TheRabbitLeftThumb" type="Sprite2D" parent="TheRabbitLeftArm"]
+[node name="TheRabbitLeftThumb" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm"]
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
-texture = ExtResource("3_kmeeb")
+texture = ExtResource("5_jxp4i")
 offset = Vector2(953.5, -115)
 region_enabled = true
 region_rect = Rect2(2192, 1348, 448, 449)
 
-[node name="TheRabbitLeftPalm" type="Sprite2D" parent="TheRabbitLeftArm"]
+[node name="TheRabbitLeftPalm" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm"]
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
-texture = ExtResource("4_cs4hr")
+texture = ExtResource("6_850ru")
 offset = Vector2(1026, -63.5)
 region_enabled = true
 region_rect = Rect2(2310, 1370, 357, 508)
 
-[node name="TheRabbitWandStick" type="Sprite2D" parent="TheRabbitLeftArm"]
+[node name="TheRabbitWandStick" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm"]
 self_modulate = Color(0.13333334, 0.7529412, 0.9843137, 1)
-texture = ExtResource("5_nc5n7")
+texture = ExtResource("7_6vnu0")
 offset = Vector2(924, 238)
 region_enabled = true
 region_rect = Rect2(2206, 911, 361, 2029)
 
-[node name="TheRabbitWandHead" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick"]
+[node name="TheRabbitWandHead" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick"]
 self_modulate = Color(0.99607843, 0.90588236, 0.2901961, 1)
-texture = ExtResource("6_0fn5j")
+texture = ExtResource("8_w2h5l")
 offset = Vector2(1052.5, -853.5)
 region_enabled = true
 region_rect = Rect2(2202, 521, 626, 626)
 
-[node name="TheRabbitWandFace" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick"]
+[node name="TheRabbitWandFace" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick"]
 position = Vector2(1048.5, -852.5)
-texture = ExtResource("8_vpgxp")
+texture = ExtResource("9_5yfxn")
 
-[node name="TheRabbitWandFaceFill" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace"]
+[node name="TheRabbitWandFaceFill" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace"]
 clip_children = 2
-texture = ExtResource("7_fu8yu")
+texture = ExtResource("10_ot72n")
 
-[node name="Era_1" type="Node2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
+[node name="Era_1" type="Node2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
 position = Vector2(2, -5)
 
-[node name="Era_1_face" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
+[node name="Era_1_face" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
 position = Vector2(0, -1)
-texture = ExtResource("7_3jmwh")
+texture = ExtResource("11_st8ik")
 
-[node name="TheRabbitWandGem1" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
+[node name="TheRabbitWandGem1" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(-1048.5, 852.5)
-texture = ExtResource("8_28eyx")
+texture = ExtResource("12_umjhq")
 offset = Vector2(1053, -977.5)
 region_enabled = true
 region_rect = Rect2(2457, 597, 117, 226)
 
-[node name="TheRabbitWandGem2" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
+[node name="TheRabbitWandGem2" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(-1048.5, 852.5)
-texture = ExtResource("9_f8iak")
+texture = ExtResource("13_3qq8w")
 offset = Vector2(1168, -874.5)
 region_enabled = true
 region_rect = Rect2(2525, 751, 211, 124)
 
-[node name="TheRabbitWandGem3" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
+[node name="TheRabbitWandGem3" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(-1048.5, 852.5)
-texture = ExtResource("10_hvtis")
+texture = ExtResource("14_13ief")
 offset = Vector2(932, -884)
 region_enabled = true
 region_rect = Rect2(2284, 752, 221, 103)
 
-[node name="TheRabbitWandGem4" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
+[node name="TheRabbitWandGem4" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(-1048.5, 852.5)
-texture = ExtResource("11_1h5j5")
+texture = ExtResource("15_3mcda")
 offset = Vector2(986, -757)
 region_enabled = true
 region_rect = Rect2(2387, 840, 123, 181)
 
-[node name="TheRabbitWandGem5" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
+[node name="TheRabbitWandGem5" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_1"]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(-1048.5, 852.5)
-texture = ExtResource("12_eyh35")
+texture = ExtResource("16_a6r3l")
 offset = Vector2(1120.5, -756)
 region_enabled = true
 region_rect = Rect2(2517, 840, 132, 183)
 
-[node name="Era_2" type="Node2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
+[node name="Era_2" type="Node2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
 
-[node name="Era_2_face" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_2"]
+[node name="Era_2_face" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_2"]
 modulate = Color(0.85882354, 0.6431373, 0.9254902, 1)
-texture = ExtResource("7_fu8yu")
+texture = ExtResource("10_ot72n")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_2"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_2"]
 sprite_frames = SubResource("SpriteFrames_np3ll")
 animation = &"wave"
 autoplay = "wave"
-frame_progress = 0.60365325
+frame_progress = 0.23792309
 
-[node name="Era_3" type="Node2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
+[node name="Era_3" type="Node2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
 visible = false
 
-[node name="Era_3_fill" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_3"]
+[node name="Era_3_fill" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_3"]
 modulate = Color(0.2, 0.6039216, 0.5019608, 1)
 scale = Vector2(1.0000001, 1.0000001)
-texture = ExtResource("7_fu8yu")
+texture = ExtResource("10_ot72n")
 
-[node name="Era_3_face" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_3"]
+[node name="Era_3_face" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_3"]
 position = Vector2(3.963745, -0.48706055)
 scale = Vector2(1.165, 1.165)
-texture = ExtResource("24_24e80")
+texture = ExtResource("26_thfw6")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_3"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_3"]
 libraries = {
 &"": SubResource("AnimationLibrary_qhr86")
 }
 autoplay = "era_3_rotation"
 
-[node name="Era_4" type="Node2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
+[node name="Era_4" type="Node2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
 
-[node name="Era_4_face" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_4"]
+[node name="Era_4_face" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_4"]
 modulate = Color(0.5058824, 0.827451, 0.44313726, 1)
-texture = ExtResource("7_fu8yu")
+texture = ExtResource("10_ot72n")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_4"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_4"]
 rotation = 6.2831855
 sprite_frames = SubResource("SpriteFrames_oa7gp")
 animation = &"randomness"
 autoplay = "randomness"
-frame_progress = 0.3338174
+frame_progress = 0.9680881
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_4"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_4"]
 libraries = {
 &"": SubResource("AnimationLibrary_22g54")
 }
 autoplay = "era_4_rotation"
 
-[node name="TheRabbitLeftFingers" type="Sprite2D" parent="TheRabbitLeftArm"]
+[node name="TheRabbitLeftFingers" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm"]
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
-texture = ExtResource("13_24e80")
+texture = ExtResource("38_ub6cc")
 offset = Vector2(955.5, -39)
 region_enabled = true
 region_rect = Rect2(2235, 1411, 366, 475)
 
-[node name="TheRabbitLeftFoot" type="Sprite2D" parent="."]
+[node name="TheRabbitLeftFoot" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
 position = Vector2(30, 972)
-texture = ExtResource("14_3gjex")
+texture = ExtResource("39_3r2og")
 offset = Vector2(331, -232.5)
 region_enabled = true
 region_rect = Rect2(1336, 2389, 936, 691)
 
-[node name="TheRabbitLeftLeg" type="Sprite2D" parent="TheRabbitLeftFoot"]
+[node name="TheRabbitLeftLeg" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftFoot"]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(-10.5, -1279.5)
-texture = ExtResource("15_7b3i6")
+texture = ExtResource("40_njse0")
 offset = Vector2(311, 836.5)
 region_enabled = true
 region_rect = Rect2(1295, 2192, 957, 664)
 
-[node name="TheRabbitRightFoot" type="Sprite2D" parent="."]
+[node name="TheRabbitRightFoot" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
 position = Vector2(19.5, -309.5)
-texture = ExtResource("16_gfjcq")
+texture = ExtResource("41_sg7hg")
 offset = Vector2(-483, 1144)
 region_enabled = true
 region_rect = Rect2(442, 2557, 1075, 549)
 
-[node name="TheRabbitRightLeg" type="Sprite2D" parent="TheRabbitRightFoot"]
+[node name="TheRabbitRightLeg" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitRightFoot"]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
-texture = ExtResource("17_7chr7")
+texture = ExtResource("42_0w7rg")
 offset = Vector2(-523, 801.5)
 region_enabled = true
 region_rect = Rect2(449, 2110, 981, 758)
 
-[node name="TheRabbitHeadLeft" type="Sprite2D" parent="."]
+[node name="TheRabbitHeadLeft" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(19.5, -307.5)
-texture = ExtResource("18_o63xb")
+texture = ExtResource("43_35g6m")
 offset = Vector2(125, -464)
 region_enabled = true
 region_rect = Rect2(1131, 687, 913, 1073)
 
-[node name="TheRabbitLeftEar" type="Sprite2D" parent="."]
+[node name="TheRabbitLeftEar" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(19.5, -307.5)
 rotation = 0.031002952
-texture = ExtResource("19_hv4t5")
+texture = ExtResource("44_53uja")
 offset = Vector2(300, -903)
 region_enabled = true
 region_rect = Rect2(1477, 279, 571, 1011)
 
-[node name="TheRabbitLeftEarInner" type="Sprite2D" parent="TheRabbitLeftEar"]
-texture = ExtResource("20_8o365")
+[node name="TheRabbitLeftEarInner" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftEar"]
+texture = ExtResource("45_vo3o8")
 offset = Vector2(310.5, -919.5)
 region_enabled = true
 region_rect = Rect2(1576, 382, 394, 772)
 
-[node name="TheRabbitHeadMid" type="Sprite2D" parent="."]
+[node name="TheRabbitHeadMid" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(19.5, -307.5)
 rotation = -0.0029281678
-texture = ExtResource("21_np3ll")
+texture = ExtResource("46_x386s")
 offset = Vector2(-107, -683)
 region_enabled = true
 region_rect = Rect2(900, 652, 911, 705)
 
-[node name="TheRabbitRightEar" type="Sprite2D" parent="."]
+[node name="TheRabbitRightEar" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(19.5, -307.5)
 rotation = 0.031703457
-texture = ExtResource("22_8867w")
+texture = ExtResource("47_ghteq")
 offset = Vector2(-685.5, -975)
 region_enabled = true
 region_rect = Rect2(500, 279, 554, 867)
 
-[node name="TheRabbitRightEarInner" type="Sprite2D" parent="TheRabbitRightEar"]
-texture = ExtResource("23_ijiyn")
+[node name="TheRabbitRightEarInner" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitRightEar"]
+texture = ExtResource("48_ykwlt")
 offset = Vector2(-677, -826.5)
 region_enabled = true
 region_rect = Rect2(599, 396, 373, 930)
 
-[node name="TheRabbitHeadRight" type="Sprite2D" parent="."]
+[node name="TheRabbitHeadRight" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(19.5, -307.5)
-texture = ExtResource("24_vpvb0")
+texture = ExtResource("49_dwwk5")
 offset = Vector2(-521.5, -512.5)
 region_enabled = true
 region_rect = Rect2(540, 786, 802, 778)
 
-[node name="TheRabbitMustacheLeft" type="Sprite2D" parent="."]
+[node name="TheRabbitMustacheLeft" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
 position = Vector2(19.5, -307.5)
 rotation = -0.08134746
-texture = ExtResource("25_qhr86")
+texture = ExtResource("50_rq0qo")
 offset = Vector2(250.5, -73)
 region_enabled = true
 region_rect = Rect2(1245, 1347, 936, 535)
 
-[node name="TheRabbitMustacheRight" type="Sprite2D" parent="."]
+[node name="TheRabbitMustacheRight" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
 position = Vector2(19.5, -307.5)
 rotation = 0.06733266
-texture = ExtResource("26_wr5f3")
+texture = ExtResource("51_nrbtq")
 offset = Vector2(-604, -121.5)
 region_enabled = true
 region_rect = Rect2(367, 1327, 983, 478)
 
-[node name="TheRabbitRightArm" type="Sprite2D" parent="."]
+[node name="TheRabbitRightArm" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 position = Vector2(19.5, -307.5)
-texture = ExtResource("27_22g54")
+texture = ExtResource("52_urenr")
 offset = Vector2(-890, 400)
 region_enabled = true
 region_rect = Rect2(237, 1770, 671, 635)
 
-[node name="TheRabbitRefreshAll" type="Sprite2D" parent="."]
+[node name="TheRabbitRefreshAll" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
 visible = false
 self_modulate = Color(0.9411765, 0.36078432, 0.38039216, 1)
 position = Vector2(19.5, -307.5)
-texture = ExtResource("28_3luby")
+texture = ExtResource("53_tjuw6")
 offset = Vector2(697, 496)
 region_enabled = true
 region_rect = Rect2(2072, 2059, 175, 249)
 
-[node name="TheRabbitRefreshAllStick" type="Sprite2D" parent="TheRabbitRefreshAll"]
-texture = ExtResource("29_cqiiw")
+[node name="TheRabbitRefreshAllStick" type="Sprite2D" parent="The Rabbit/MascotVisuals/TheRabbitRefreshAll"]
+texture = ExtResource("54_thllp")
 offset = Vector2(469.5, 492.5)
 region_enabled = true
 region_rect = Rect2(1758, 2101, 348, 158)
 
-[node name="Input Area" type="Control" parent="TheRabbitRefreshAll"]
+[node name="Input Area" type="Control" parent="The Rabbit/MascotVisuals/TheRabbitRefreshAll"]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 524.5
@@ -1618,40 +1665,106 @@ offset_top = 379.25
 offset_right = 778.5
 offset_bottom = 616.25
 
-[node name="TheRabbitRightHand" type="Sprite2D" parent="."]
+[node name="TheRabbitRightHand" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
 z_index = 2
 position = Vector2(19.5, -307.5)
-texture = ExtResource("30_2b3qy")
+texture = ExtResource("55_y04aq")
 offset = Vector2(-847.5, 639.5)
 region_enabled = true
 region_rect = Rect2(378, 2088, 474, 478)
 
-[node name="TheRabbitLeftEyeFill" type="Sprite2D" parent="."]
-z_index = 2
+[node name="TheRabbitLeftEyeFill" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
 material = SubResource("ShaderMaterial_u4yck")
 position = Vector2(168, -718)
-texture = ExtResource("33_d56hm")
+texture = ExtResource("58_01eq4")
 
-[node name="TheRabbitRightEyeFill" type="Sprite2D" parent="."]
-z_index = 2
+[node name="TheRabbitRightEyeFill" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
 material = SubResource("ShaderMaterial_u4yck")
 position = Vector2(-347, -719)
 rotation = -0.05119752
-texture = ExtResource("32_xscfi")
+texture = ExtResource("57_e6v53")
 
-[node name="TheRabbitNose" type="Sprite2D" parent="."]
+[node name="TheRabbitNose" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
+visible = false
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
 z_index = 2
 position = Vector2(19.5, -307.5)
-texture = ExtResource("34_58itp")
+texture = ExtResource("59_t7ncb")
 offset = Vector2(-107.5, -227)
 region_enabled = true
 region_rect = Rect2(1291, 1397, 128, 127)
 
-[node name="TheRabbitNoseWrinkle" type="Sprite2D" parent="."]
+[node name="TheRabbitNoseWrinkle" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
 visible = false
 position = Vector2(-76, -478)
 rotation = 0.0061147586
-texture = ExtResource("35_oa7gp")
+texture = ExtResource("60_cgrpx")
 offset = Vector2(7.6047363, -126.03711)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(2998, 1689)
+zoom = Vector2(0.32, 0.32)
+editor_draw_limits = true
+editor_draw_drag_margin = true
+
+[node name="Button_ZH" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 0
+offset_left = 2218.0
+offset_top = 1537.0
+offset_right = 2902.6106
+offset_bottom = 1852.0
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("73_gb3ry")
+texture_pressed = ExtResource("74_q1c26")
+texture_hover = ExtResource("75_q7fno")
+texture_disabled = ExtResource("64_jxp4i")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Button_ZH"]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 33.0
+offset_right = 619.8108
+offset_bottom = 283.0
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("33_ykwlt")
+theme_override_font_sizes/normal_font_size = 132
+text = "简体中文"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button_EN" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 0
+offset_left = 3206.0
+offset_top = 1537.0
+offset_right = 3890.6106
+offset_bottom = 1852.0
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("73_gb3ry")
+texture_pressed = ExtResource("74_q1c26")
+texture_hover = ExtResource("75_q7fno")
+texture_disabled = ExtResource("64_jxp4i")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Button_EN"]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 33.0
+offset_right = 619.8108
+offset_bottom = 283.0
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("33_ykwlt")
+theme_override_font_sizes/normal_font_size = 117
+text = "ENGLISH"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1

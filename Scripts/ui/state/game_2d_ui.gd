@@ -51,6 +51,10 @@ var era_label: Control = null
 @onready var popup_button: BaseButton = find_child("Popup_button", true)
 @onready var popup_label: RichTextLabel = find_child("Popup_RichTextLabel", true)
 
+# --- 教程幻灯片 ---
+@onready var tutorial_slideshow_scene: PackedScene = preload("res://scenes/ui/tutorial_slideshow.tscn")
+var tutorial_slideshow: CanvasLayer = null
+
 # --- 子控制器 ---
 const QuestIconHighlighterScript = preload("res://scripts/ui/controllers/quest_icon_highlighter.gd")
 
@@ -135,6 +139,9 @@ func _ready() -> void:
 
 	# 7. 初始化 Era Popup
 	_init_era_popup()
+	
+	# 8. 监听转场结束（用于显示教程）
+	EventBus.menu_transition_finished.connect(_on_menu_transition_finished)
 
 func _init_era_popup() -> void:
 	if screen_mask:
@@ -226,6 +233,16 @@ func _init_controllers() -> void:
 	
 	inventory_controller.slot_hovered.connect(_on_item_slot_hovered)
 	inventory_controller.slot_unhovered.connect(_on_item_slot_unhovered)
+
+func _on_menu_transition_finished() -> void:
+	if tutorial_slideshow == null:
+		tutorial_slideshow = tutorial_slideshow_scene.instantiate()
+		add_child(tutorial_slideshow)
+	
+	# 延迟一小会儿弹出，确保转场动画彻底结束，视觉更舒适
+	get_tree().create_timer(0.2).timeout.connect(func():
+		tutorial_slideshow.show_tutorial()
+	)
 
 ## 初始化状态机
 func _init_state_machine() -> void:

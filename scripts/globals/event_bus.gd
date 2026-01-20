@@ -25,3 +25,5 @@ signal game_event(event_id: StringName, context: RefCounted)
 
 ## UI 层弹窗请求：modal_id 用于区分弹窗类型，payload 为上下文/参数。
 signal modal_requested(modal_id: StringName, payload: RefCounted)
+## UI 层转场完成信号
+signal menu_transition_finished

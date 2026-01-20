@@ -35,6 +35,9 @@ region = Rect2(1500, 1500, 500, 500)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gntc1"]
 shader = ExtResource("10_yj02r")
+shader_parameter/silhouette_color = Color(0, 0, 0, 1)
+shader_parameter/is_enabled = false
+shader_parameter/saturation = 1.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_arr72"]
 atlas = ExtResource("11_o6rv1")

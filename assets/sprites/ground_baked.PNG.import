@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jrl0jqaelryy"
-path.s3tc="res://.godot/imported/影子.png-eb22ad87e1e8bd6772afd2b1297aa61c.s3tc.ctex"
-path.etc2="res://.godot/imported/影子.png-eb22ad87e1e8bd6772afd2b1297aa61c.etc2.ctex"
+uid="uid://1ybcwymejujy"
+path.s3tc="res://.godot/imported/ground_baked.PNG-0ff809ebf8e57a743b7899031522b97e.s3tc.ctex"
+path.etc2="res://.godot/imported/ground_baked.PNG-0ff809ebf8e57a743b7899031522b97e.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/background/影子.png"
-dest_files=["res://.godot/imported/影子.png-eb22ad87e1e8bd6772afd2b1297aa61c.s3tc.ctex", "res://.godot/imported/影子.png-eb22ad87e1e8bd6772afd2b1297aa61c.etc2.ctex"]
+source_file="res://assets/sprites/ground_baked.PNG"
+dest_files=["res://.godot/imported/ground_baked.PNG-0ff809ebf8e57a743b7899031522b97e.s3tc.ctex", "res://.godot/imported/ground_baked.PNG-0ff809ebf8e57a743b7899031522b97e.etc2.ctex"]
 
 [params]
 
