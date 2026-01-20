@@ -133,14 +133,14 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-1000, -55.5)]
+"update": 1,
+"values": [-1000.0]
 }
 
 [sub_resource type="Animation" id="Animation_yelt0"]
@@ -150,14 +150,14 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 300),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.0001, 300),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-1000, -55.499985), Vector2(992.5, -55.5)]
+"values": [Vector2(-1000, -55.499985), -1000.0, 992.5]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xtal7"]
@@ -239,14 +239,14 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(3000, -30)]
+"update": 1,
+"values": [3000.0]
 }
 
 [sub_resource type="Animation" id="Animation_g7jj0"]
@@ -256,14 +256,14 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 460),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(3000, -30), Vector2(-3000, -30)]
+"values": [3000.0, -3000.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_v12rw"]
@@ -277,14 +277,14 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(3000, -30)]
+"update": 1,
+"values": [3000.0]
 }
 
 [sub_resource type="Animation" id="Animation_00smp"]
@@ -294,14 +294,14 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 330),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(3000, -30), Vector2(-3000, -30)]
+"values": [3000.0, -3000.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7v8nc"]
@@ -315,14 +315,14 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(3000, -30)]
+"update": 1,
+"values": [3000.0]
 }
 
 [sub_resource type="Animation" id="Animation_f3s7l"]
@@ -332,14 +332,14 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:position:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 170),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(3000, -30), Vector2(-3000, -30)]
+"values": [3000.0, -3000.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_yytn1"]
@@ -373,7 +373,6 @@ libraries = {
 autoplay = "new_animation"
 
 [node name="蓝天" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0)
 position = Vector2(-1, -1.75)
 scale = Vector2(3, 3)
 texture = ExtResource("5_rk1d7")
@@ -385,7 +384,7 @@ libraries = {
 autoplay = "bluesky"
 
 [node name="Cloud" type="Sprite2D" parent="蓝天"]
-position = Vector2(-1000, -55.5)
+position = Vector2(-1000, -36.184937)
 scale = Vector2(0.6538727, 0.65387285)
 texture = ExtResource("25_m01df")
 
@@ -403,7 +402,7 @@ animation = &"流星"
 frame = 19
 
 [node name="黑" type="Sprite2D" parent="."]
-position = Vector2(3000, -30)
+position = Vector2(3000, 102.69519)
 scale = Vector2(3, 3)
 texture = ExtResource("30_utpsi")
 
@@ -414,7 +413,7 @@ libraries = {
 autoplay = "黑"
 
 [node name="灰" type="Sprite2D" parent="."]
-position = Vector2(3000, -30)
+position = Vector2(3000, 102.69519)
 scale = Vector2(3, 3)
 texture = ExtResource("31_rbd3v")
 
@@ -425,7 +424,7 @@ libraries = {
 autoplay = "new_animation"
 
 [node name="白" type="Sprite2D" parent="."]
-position = Vector2(3000, -30)
+position = Vector2(3000, 102.69519)
 scale = Vector2(3, 3)
 texture = ExtResource("32_b7jjn")
 
