@@ -761,7 +761,6 @@ func _handle_cancel_button(from_state: StringName, to_state: StringName) -> void
 		&"Recycling",
 		&"TradeIn",
 		&"TargetedSelection",
-		&"SkillSelection",
 	]
 	
 	var was_cancelable = from_state in CANCELABLE_STATES
