@@ -1,8 +1,8 @@
 [gd_scene load_steps=32 format=3 uid="uid://05ku7kwq0dxp"]
 
-[ext_resource type="Script" path="res://scripts/ui/components/quest_slot_ui.gd" id="1_cf02l"]
+[ext_resource type="Script" uid="uid://con7nyakgbhan" path="res://scripts/ui/components/quest_slot_ui.gd" id="1_cf02l"]
 [ext_resource type="Texture2D" uid="uid://bk6w30hxghp51" path="res://assets/sprites/quest_slots/基地-7.png" id="2_5cnt1"]
-[ext_resource type="Script" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="3_xy8au"]
+[ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="3_xy8au"]
 [ext_resource type="Texture2D" uid="uid://b6sygmv0sgt3g" path="res://assets/sprites/quest_slots/基地-3.png" id="4_8oyay"]
 [ext_resource type="Texture2D" uid="uid://cppyh38s818ov" path="res://assets/sprites/quest_slots/基地-2.png" id="5_cm3rb"]
 [ext_resource type="Texture2D" uid="uid://fb6h3kogm80w" path="res://assets/sprites/quest_slots/基地-4.png" id="6_cpuw7"]

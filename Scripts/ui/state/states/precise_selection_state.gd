@@ -183,15 +183,26 @@ func _setup_precise_display() -> void:
 		"skip_lid_animation": true # 关键：进入二选一时跳过盖子的推挤位移
 	}
 	
-	# 1. 所有槽位并行更新数据和开门动画
+	# 1. 先并行更新所有槽位的数据（带推挤动画）
+	# 使用同步计数器等待所有推挤动画完成
+	var refresh_sync_state = {"finished_count": 0, "total_count": 0}
 	for i in range(3):
 		var slot = _get_slot(i)
 		if not slot: continue
+		refresh_sync_state.total_count += 1
 		
-		# 关键优化：使用 instant=true 立即更新标签数据，避免 Push-Away 带来的延迟
+		# 使用 instant=false 启用推挤动画
 		if slot.has_method("refresh_slot_data"):
-			slot.refresh_slot_data(selection_ui_config, true)
-		
+			# 异步调用并在完成后递增计数器
+			var refresh_task = func():
+				await slot.refresh_slot_data(selection_ui_config, false)
+				refresh_sync_state.finished_count += 1
+			refresh_task.call()
+	
+	# 等待所有推挤动画完成
+	while refresh_sync_state.finished_count < refresh_sync_state.total_count:
+		await controller.get_tree().process_frame
+	
 	# 【改动】等待所有揭示动画播放完成
 	var total_to_wait = 0
 	for i in range(mini(options.size(), 2)):
