@@ -1006,9 +1006,9 @@ texture = ExtResource("21_ue141")
 
 [node name="Money_label" type="RichTextLabel" parent="The Machine/TheMachineDisplay/TheMachineDisplayFill"]
 offset_left = -254.0
-offset_top = -76.0
+offset_top = -100.0
 offset_right = 254.0
-offset_bottom = 61.0
+offset_bottom = 77.0
 theme_override_colors/default_color = Color(1, 0.8862745, 0, 1)
 theme_override_font_sizes/normal_font_size = 100
 bbcode_enabled = true
