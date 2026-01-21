@@ -1232,6 +1232,10 @@ func _play_era_3_begin_animation() -> void:
 	
 	# 播放动画
 	dlc_animation_player.play("era_3_begin")
+	
+	# 触发额外物品栏进入音效
+	EventBus.game_event.emit(&"dlc_panel_entered", null)
+	
 	await dlc_animation_player.animation_finished
 	
 	# 解锁交互
