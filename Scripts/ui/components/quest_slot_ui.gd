@@ -7,10 +7,13 @@ extends BaseSlotUI
 @onready var refresh_label: RichTextLabel = find_child("Refresh Count Label", true)
 @onready var refresh_button: TextureButton = find_child("Refresh Button", true)
 
+var background_setter: Node2D
+
 var order_index: int = -1
 var is_submit_mode: bool = false
 var _current_order: OrderData = null
 var _original_mouse_filter: Control.MouseFilter = Control.MOUSE_FILTER_STOP
+var _original_background_color: Color = Color.WHITE
 
 ## 突出动画相关
 const PROTRUDE_OFFSET: float = 100.0 # 向右突出的像素距离
@@ -20,6 +23,15 @@ var _original_position_x: float = 0.0
 
 ## Rarity 旋转动画相关（key: 需求索引, value: Tween）
 var _rarity_rotation_tweens: Dictionary = {}
+
+func _ready() -> void:
+	super._ready()
+	background_setter = find_child("Quest Slot_background", true)
+	if not background_setter:
+		background_setter = find_child("Main Quest Slot_background", true)
+		
+	if background_setter:
+		_original_background_color = background_setter.color
 
 func setup(index: int) -> void:
 	order_index = index
@@ -98,32 +110,45 @@ func update_order_display(order_data: OrderData, req_states: Array = []) -> void
 	
 	_update_requirements(order_data.requirements, req_states)
 	
-	# 在提交模式下，检测订单是否被满足并设置突出状态
+	# 1. 判定是否满足全部条件
+	var is_satisfied = false
 	if is_submit_mode:
-		var is_satisfied = _check_order_satisfied(order_data, req_states)
+		# 提交模式：根据当前已选中的物品判定
+		is_satisfied = _check_order_satisfied(order_data, req_states)
 		_set_protrude(is_satisfied)
-		
-		# 更新奖励显示：如果满足，根据选中物品计算预览奖励
-		if reward_label:
-			if is_satisfied:
-				var selected_items: Array[ItemInstance] = []
-				for idx in InventorySystem.multi_selected_indices:
-					if idx >= 0 and idx < InventorySystem.inventory.size():
-						var item = InventorySystem.inventory[idx]
-						if item:
-							selected_items.append(item)
-				
-				var preview = order_data.calculate_preview_rewards(selected_items)
-				if preview.gold != order_data.reward_gold:
-					reward_label.text = "%d[font_size=48]←%d[/font_size]" % [preview.gold, order_data.reward_gold]
-				else:
-					reward_label.text = str(order_data.reward_gold)
+	else:
+		# 非提交模式：根据背包中是否持有足够物品判定
+		is_satisfied = order_data.can_fulfill(InventorySystem.inventory)
+		_reset_protrude()
+	
+	# 2. 更新背景颜色
+	_update_background_color(is_satisfied)
+	
+	# 3. 更新奖励显示
+	if reward_label:
+		if is_submit_mode and is_satisfied:
+			var selected_items: Array[ItemInstance] = []
+			for idx in InventorySystem.multi_selected_indices:
+				if idx >= 0 and idx < InventorySystem.inventory.size():
+					var item = InventorySystem.inventory[idx]
+					if item:
+						selected_items.append(item)
+			
+			var preview = order_data.calculate_preview_rewards(selected_items)
+			if preview.gold != order_data.reward_gold:
+				reward_label.text = "%d[font_size=48]←%d[/font_size]" % [preview.gold, order_data.reward_gold]
 			else:
 				reward_label.text = str(order_data.reward_gold)
-	else:
-		_reset_protrude()
-		if reward_label:
+		else:
 			reward_label.text = str(order_data.reward_gold)
+
+func _update_background_color(satisfied: bool) -> void:
+	if not background_setter: return
+	
+	if satisfied:
+		background_setter.color = Color("#9ee967")
+	else:
+		background_setter.color = _original_background_color
 
 func _update_requirements(reqs: Array[Dictionary], req_states: Array) -> void:
 	# 适配不同名字的 Grid (Quest Slot Items Grid 或 Main Quest Slot Items Grid)
