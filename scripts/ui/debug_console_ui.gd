@@ -26,6 +26,9 @@ extends PanelContainer
 @onready var item_rarity_option: OptionButton = %ItemRarityOption
 @onready var item_sterile_toggle: CheckButton = %ItemSterileToggle
 
+@onready var force_draw_rarity_option: OptionButton = %ForceDrawRarityOption
+@onready var force_draw_rarity_toggle: CheckButton = %ForceDrawRarityToggle
+
 @onready var show_tutorial_button: Button = %ShowTutorialButton
 
 
@@ -81,6 +84,7 @@ func _setup_ui() -> void:
 	_setup_affix_toggles()
 	_setup_generation_ui()
 	_setup_skill_list()
+	_setup_force_draw_rarity()
 
 
 func _setup_generation_ui() -> void:
@@ -157,6 +161,9 @@ func _connect_signals() -> void:
 	
 	# 教程测试按钮
 	show_tutorial_button.pressed.connect(_on_show_tutorial_pressed)
+	
+	# 监听抽奖请求以强制品质
+	EventBus.draw_requested.connect(_on_draw_requested_for_force_rarity)
 
 
 func _sync_from_unlock_manager() -> void:
@@ -472,3 +479,23 @@ func _on_tutorial_closed() -> void:
 		_tutorial_instance.queue_free()
 		_tutorial_instance = null
 	print("[DebugConsole] 教程已关闭")
+
+## 强制抽奖品质功能
+
+func _setup_force_draw_rarity() -> void:
+	"""初始化强制抽奖品质下拉框"""
+	force_draw_rarity_option.clear()
+	for i in range(Constants.Rarity.MYTHIC + 1):
+		force_draw_rarity_option.add_item(Constants.rarity_display_name(i), i)
+	# 默认选中普通
+	force_draw_rarity_option.selected = Constants.Rarity.COMMON
+
+
+func _on_draw_requested_for_force_rarity(ctx: DrawContext) -> void:
+	"""在抽奖请求时强制设置品质（如果启用）"""
+	if not force_draw_rarity_toggle.button_pressed:
+		return
+	
+	var forced_rarity = force_draw_rarity_option.get_selected_id()
+	ctx.force_rarity = forced_rarity
+	print("[DebugConsole] 强制抽奖品质: %s" % Constants.rarity_display_name(forced_rarity))
