@@ -58,7 +58,7 @@ func update_pools_display(pools: Array) -> void:
 		return
 	
 	for i in range(3):
-		var slot = _get_slot_node(i)
+		var slot = get_slot_node(i)
 		if i < pools.size():
 			slot.update_pool_info(pools[i])
 			var hints = _calculate_order_hints(pools[i].item_type)
@@ -78,7 +78,7 @@ func play_all_refresh_animations(pools: Array, clicked_slot_idx: int = -1) -> vo
 	
 	# 1. 先让被点击的 slot 关盖 (不再强制检查 is_drawing，因为物品飞走后该状态可能已被重置)
 	if clicked_slot_idx >= 0 and clicked_slot_idx < _slots.size():
-		var clicked_slot = _get_slot_node(clicked_slot_idx)
+		var clicked_slot = get_slot_node(clicked_slot_idx)
 		if clicked_slot and clicked_slot.has_method("close_lid"):
 			await clicked_slot.close_lid()
 			
@@ -102,7 +102,7 @@ func play_all_refresh_animations(pools: Array, clicked_slot_idx: int = -1) -> vo
 		game_ui.lock_ui("pool_refresh")
 	
 	for i in range(3):
-		var slot = _get_slot_node(i)
+		var slot = get_slot_node(i)
 		if slot and i < pools.size() and slot.has_method("refresh_slot_data"):
 			state.pending += 1
 			# 先更新 order hints（仅更新 Pseudo 节点，避免动画前 True 节点瞬间跳变）
@@ -126,7 +126,7 @@ func play_all_refresh_animations(pools: Array, clicked_slot_idx: int = -1) -> vo
 ## 刷新所有奖池的订单 Hints（当订单改变时调用）
 func refresh_all_order_hints(animate: bool = true) -> void:
 	for i in range(_slots.size()):
-		var slot = _get_slot_node(i)
+		var slot = get_slot_node(i)
 		# 仅更新可见且未在抽奖状态的格子
 		if not slot or not slot.visible or slot.is_drawing:
 			continue
@@ -197,13 +197,13 @@ func _calculate_order_hints(pool_type: int) -> Dictionary:
 func update_pending_display(items: Array[ItemInstance], source_pool_idx: int) -> void:
 	if items.is_empty():
 		for i in range(3):
-			var slot = _get_slot_node(i)
+			var slot = get_slot_node(i)
 			if slot.has_method("update_pending_display"):
 				slot.update_pending_display([])
 		return
 	
 	if source_pool_idx != -1:
-		var slot = _get_slot_node(source_pool_idx)
+		var slot = get_slot_node(source_pool_idx)
 		if slot.has_method("update_pending_display"):
 			slot.update_pending_display(items)
 			
@@ -227,14 +227,14 @@ func update_pending_display(items: Array[ItemInstance], source_pool_idx: int) ->
 
 func set_slots_locked(locked: bool) -> void:
 	for i in range(3):
-		var slot = _get_slot_node(i)
+		var slot = get_slot_node(i)
 		if slot:
 			slot.is_locked = locked
 
 # --- Helpers ---
 
 func get_slot_snapshot(index: int) -> Dictionary:
-	var slot = _get_slot_node(index)
+	var slot = get_slot_node(index)
 	if not slot: return {}
 	
 	return {
@@ -242,9 +242,12 @@ func get_slot_snapshot(index: int) -> Dictionary:
 		"global_scale": slot.get_main_icon_global_scale()
 	}
 
-func _get_slot_node(index: int) -> Control:
+func get_slot_node(index: int) -> Control:
 	if index < 0 or index >= _slots.size(): return null
 	return _slots[index]
+
+func _get_slot_node(index: int) -> Control: # Backward compatibility
+	return get_slot_node(index)
 
 func _calculate_badge_state(item: ItemInstance) -> int:
 	# 与 InventoryController 保持一致的逻辑
@@ -300,7 +303,7 @@ func _calculate_upgradeable_state(item: ItemInstance) -> bool:
 func _on_slot_input(event: InputEvent, index: int) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			var slot = _get_slot_node(index) as LotterySlotUI
+			var slot = get_slot_node(index) as LotterySlotUI
 			
 			if event.pressed:
 				# 1. 核心门控：UI 锁定中禁止一切点击
@@ -409,7 +412,7 @@ func _on_slot_unhovered(pool_index: int) -> void:
 	_hovered_slot_index = -1
 	
 	# 清除hover视觉效果
-	var slot = _get_slot_node(pool_index) as LotterySlotUI
+	var slot = get_slot_node(pool_index) as LotterySlotUI
 	if slot:
 		slot.set_hover_action_state(LotterySlotUI.HoverType.NONE)
 	
@@ -429,7 +432,7 @@ func _on_slot_item_hovered(item_id: StringName) -> void:
 
 
 func _on_badge_refresh_requested(index: int, item: ItemInstance) -> void:
-	var slot = _get_slot_node(index)
+	var slot = get_slot_node(index)
 	if not slot: return
 	
 	# 如果没有传入具体物品，尝试从逻辑中获取（通常是 pending_items[0]）
@@ -458,7 +461,7 @@ func _on_badge_refresh_requested(index: int, item: ItemInstance) -> void:
 
 ## 更新指定lottery slot的hover可操作状态
 func _update_slot_hover_action_state(pool_index: int) -> void:
-	var slot = _get_slot_node(pool_index) as LotterySlotUI
+	var slot = get_slot_node(pool_index) as LotterySlotUI
 	if not slot:
 		return
 	
@@ -496,7 +499,7 @@ func get_hovered_slot_index() -> int:
 ## 处理全局鼠标松开事件（用于处理鼠标移出区域后松开的情况）
 func handle_global_mouse_release() -> void:
 	if _pressed_slot_index >= 0:
-		var slot = _get_slot_node(_pressed_slot_index) as LotterySlotUI
+		var slot = get_slot_node(_pressed_slot_index) as LotterySlotUI
 		if slot and slot.has_method("handle_mouse_release"):
 			slot.handle_mouse_release()
 		_pressed_slot_index = -1

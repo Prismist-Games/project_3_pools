@@ -387,7 +387,7 @@ func _update_recyclable_item_hover_state(is_hovering: bool) -> void:
 		# 获取pending物品所在的lottery slot
 		var source_pool_idx = game_ui.pending_source_pool_idx
 		if source_pool_idx >= 0:
-			var pool_slot = game_ui.pool_controller._get_slot_node(source_pool_idx) as LotterySlotUI
+			var pool_slot = game_ui.pool_controller.get_slot_node(source_pool_idx) as LotterySlotUI
 			if pool_slot:
 				if is_hovering:
 					pool_slot.set_hover_action_state(LotterySlotUI.HoverType.RECYCLABLE)

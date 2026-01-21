@@ -1010,7 +1010,13 @@ func _on_game_event(event_id: StringName, payload: Variant) -> void:
 
 # --- 订单图标高亮 (Hover) ---
 
-func _on_pool_slot_hovered(_pool_index: int, item_type: int) -> void:
+func _on_pool_slot_hovered(pool_index: int, item_type: int) -> void:
+	# 如果该槽位当前正显示着具体物品（如抽奖揭示后，或背包满时的待处理物品），
+	# 则不使用奖池类型的高亮逻辑，交给 _on_pool_item_hovered 处理。
+	var slot = pool_controller.get_slot_node(pool_index)
+	if slot and slot.is_drawing and slot._top_item_id != &"":
+		return
+		
 	# 高亮订单需求
 	if quest_icon_highlighter:
 		quest_icon_highlighter.highlight_by_pool_type(item_type)
@@ -1022,7 +1028,11 @@ func _on_pool_slot_unhovered(_pool_index: int) -> void:
 	inventory_controller.clear_highlights()
 
 func _on_pool_item_hovered(item_id: StringName) -> void:
-	# 高亮背包中同名物品
+	# 1. 高亮订单
+	if quest_icon_highlighter:
+		quest_icon_highlighter.highlight_by_item_id(item_id)
+		
+	# 2. 高亮背包中同名物品
 	inventory_controller.highlight_items_by_id(item_id)
 
 func _on_item_slot_hovered(_index: int, item_id: StringName) -> void:
