@@ -29,6 +29,9 @@ func _on_language_selected(locale: String) -> void:
 		return
 	loading_started = true
 	
+	# 触发按钮音效
+	EventBus.game_event.emit(&"button_click", null)
+	
 	TranslationServer.set_locale(locale)
 	
 	# 1. 按钮缩放至0
@@ -96,10 +99,16 @@ func _start_transition_sequence() -> void:
 
 
 func _on_credit_button_pressed() -> void:
+	# 触发按钮音效
+	EventBus.game_event.emit(&"button_click", null)
+	
 	var tween_credit: Tween = create_tween()
 	tween_credit.tween_property(camera, "position:y", 5059.0, 1.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
 
 
 func _on_back_button_pressed() -> void:
+	# 触发按钮音效
+	EventBus.game_event.emit(&"button_click", null)
+	
 	var tween_back: Tween = create_tween()
 	tween_back.tween_property(camera, "position:y", 1689.0, 1.0).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)

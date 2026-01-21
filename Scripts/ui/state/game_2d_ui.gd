@@ -167,9 +167,15 @@ func _init_era_popup() -> void:
 		popup_button.pressed.connect(_hide_era_popup)
 
 func _on_language_switch_pressed() -> void:
+	# 触发按钮音效
+	EventBus.game_event.emit(&"button_click", null)
+	
 	LocaleManager.toggle_locale()
 
 func _on_tutorial_button_pressed() -> void:
+	# 触发按钮音效
+	EventBus.game_event.emit(&"button_click", null)
+	
 	show_tutorial_slideshow()
 
 func _notification(what: int) -> void:
@@ -1117,6 +1123,9 @@ func _show_era_popup(era_index: int) -> void:
 	var mask_tween = create_tween()
 	mask_tween.tween_property(screen_mask, "modulate:a", 1.0, 0.3)
 	
+	# 触发时代面板出现音效
+	EventBus.game_event.emit(&"era_panel_opened", null)
+	
 	# 弹出 Window (从 -4000 到 -700)
 	var win_tween = create_tween()
 	win_tween.set_trans(Tween.TRANS_BACK)
@@ -1150,6 +1159,9 @@ func _show_ending_popup() -> void:
 
 ## 隐藏时代切换弹窗
 func _hide_era_popup() -> void:
+	# 触发按钮音效
+	EventBus.game_event.emit(&"button_click", null)
+	
 	if not popup_window or not screen_mask:
 		unlock_ui("era_popup")
 		return
