@@ -2,7 +2,6 @@
 
 [sub_resource type="AudioEffectPitchShift" id="AudioEffectPitchShift_j3pel"]
 resource_name = "PitchShift"
-oversampling = 32
 fft_size = 2
 
 [sub_resource type="AudioEffectLimiter" id="AudioEffectLimiter_j3pel"]
@@ -26,4 +25,4 @@ bus/2/send = &"Master"
 bus/2/effect/0/effect = SubResource("AudioEffectPitchShift_j3pel")
 bus/2/effect/0/enabled = true
 bus/2/effect/1/effect = SubResource("AudioEffectLimiter_j3pel")
-bus/2/effect/1/enabled = true
+bus/2/effect/1/enabled = false
