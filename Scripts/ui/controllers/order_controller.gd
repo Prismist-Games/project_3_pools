@@ -90,21 +90,29 @@ func _calculate_req_states(order: OrderData, is_submit_mode: bool) -> Array:
 	
 	for req in order.requirements:
 		var item_id = req.get("item_id", &"")
+		var min_rarity = req.get("min_rarity", 0)
+		
 		# 1. Owned Max Rarity
 		var owned_max_rarity = InventorySystem.get_max_rarity_for_item(item_id)
 		
-		# 2. Is Selected (for submit mode)
+		# 2. Is Selected (for submit mode) - 需要同时检查物品ID和品质
 		var is_selected = false
+		var is_quality_met = false # 选中物品的品质是否达到要求
 		if is_submit_mode:
 			for idx in selected_indices:
 				var item = InventorySystem.inventory[idx]
 				if item and item.item_data.id == item_id:
 					is_selected = true
-					break
+					# 检查品质是否达标
+					if item.rarity >= min_rarity:
+						is_quality_met = true
+						break # 找到品质达标的物品就停止
+			# 如果找到了物品但品质不达标，is_selected 仍为 true，但 is_quality_met 为 false
 		
 		states.append({
 			"owned_max_rarity": owned_max_rarity,
-			"is_selected": is_selected
+			"is_selected": is_selected,
+			"is_quality_met": is_quality_met # 新增：品质是否达标
 		})
 	return states
 

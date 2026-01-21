@@ -180,12 +180,13 @@ func _update_requirements(reqs: Array[Dictionary], req_states: Array) -> void:
 					_stop_rarity_rotation(i, rarity_sprite)
 			
 			# 更新状态图标（多选时的高亮/勾选）
+			# 绿色勾需要同时满足：物品被选中 + 品质达标
 			var status_sprite = req_node.find_child("Item_status", true)
 			if status_sprite:
-				var is_satisfied = state.get("is_selected", false)
+				var is_quality_met = state.get("is_quality_met", false)
 				
 				status_sprite.visible = is_submit_mode
-				status_sprite.texture = preload("res://assets/sprites/icons/tick_green.png") if is_satisfied else preload("res://assets/sprites/icons/tick_empty.png")
+				status_sprite.texture = preload("res://assets/sprites/icons/tick_green.png") if is_quality_met else preload("res://assets/sprites/icons/tick_empty.png")
 
 		else:
 			req_node.visible = false
@@ -234,20 +235,14 @@ func _check_order_satisfied(order: OrderData, req_states: Array) -> bool:
 	if not order or req_states.is_empty():
 		return false
 	
-	# 检查所有需求是否都被选中且品质达标
+	# 检查所有需求是否都品质达标
 	for i in range(order.requirements.size()):
 		if i >= req_states.size():
 			return false
 		
-		var req = order.requirements[i]
-		var min_rarity = req.get("min_rarity", 0)
 		var state = req_states[i]
-		var owned_max_rarity = state.get("owned_max_rarity", -1)
-		
-		# 必须同时满足：被选中 + 品质达标
-		if not state.get("is_selected", false):
-			return false
-		if owned_max_rarity < min_rarity:
+		# 使用 is_quality_met：物品被选中 + 品质达标
+		if not state.get("is_quality_met", false):
 			return false
 	
 	return true
