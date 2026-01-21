@@ -383,6 +383,7 @@ func _refresh_all() -> void:
 		
 	order_controller.update_orders_display(OrderSystem.current_orders)
 	_update_ui_mode_display()
+	_update_dlc_label()
 	
 	# 确保"有的放矢"面板初始隐藏（只设置 x 值，不触碰 y 值）
 	if targeted_panel:

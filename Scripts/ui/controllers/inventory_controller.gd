@@ -151,18 +151,21 @@ func update_slot(index: int, item: ItemInstance) -> void:
 	refresh_upgradeable_badges()
 
 func _calculate_badge_state(item: ItemInstance) -> int:
-	var badge_state = 0
-	# Access OrderSystem directly (Controller knows about Systems)
+	if not OrderSystem: return 0
+	
+	var max_required = -1
 	for order in OrderSystem.current_orders:
 		for req in order.requirements:
 			if req.get("item_id", &"") == item.item_data.id:
-				if item.rarity >= req.get("min_rarity", 0):
-					badge_state = 2
-					return 2 # Highest priority
-				else:
-					if badge_state < 1:
-						badge_state = 1
-	return badge_state
+				max_required = maxi(max_required, req.get("min_rarity", 0))
+	
+	if max_required == -1:
+		return 0
+	
+	# 只有满足所有订单中该物品最高的品质要求，才显示绿勾
+	if item.rarity >= max_required:
+		return 2
+	return 1
 
 
 ## 计算背包中所有可合成的物品索引（配对）

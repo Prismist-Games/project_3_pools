@@ -154,15 +154,15 @@ func _start_slot_refresh(slot: Control, pool_data: Variant, state: Dictionary) -
 func _calculate_order_hints(pool_type: int) -> Dictionary:
 	# 1. 收集所有订单需求的物品 ID 和对应的最低品质要求
 	# Dictionary[item_id: StringName] -> min_rarity: int (取所有订单中该物品的最低品质要求)
-	var required_items: Dictionary = {} # {item_id: min_rarity}
+	var required_items: Dictionary = {} # {item_id: max_required_rarity}
 	for order in OrderSystem.current_orders:
 		for req in order.requirements:
 			var id = req.get("item_id", &"")
 			var min_rarity = req.get("min_rarity", 0)
 			if id != &"":
-				# 如果该物品已存在，取更低的品质要求（更宽松）
+				# 改为取最高品质要求，确保只有满足最高要求时才消失
 				if id in required_items:
-					required_items[id] = min(required_items[id], min_rarity)
+					required_items[id] = maxi(required_items[id], min_rarity)
 				else:
 					required_items[id] = min_rarity
 	
@@ -247,20 +247,22 @@ func _get_slot_node(index: int) -> Control:
 	return _slots[index]
 
 func _calculate_badge_state(item: ItemInstance) -> int:
-	var badge_state = 0
 	# 与 InventoryController 保持一致的逻辑
 	if not OrderSystem: return 0
 	
+	var max_required = -1
 	for order in OrderSystem.current_orders:
 		for req in order.requirements:
 			if req.get("item_id", &"") == item.item_data.id:
-				if item.rarity >= req.get("min_rarity", 0):
-					badge_state = 2
-					return 2 # 最高优先级
-				else:
-					if badge_state < 1:
-						badge_state = 1
-	return badge_state
+				max_required = maxi(max_required, req.get("min_rarity", 0))
+	
+	if max_required == -1:
+		return 0
+	
+	# 只有满足该物品目前所有订单中最高的品质要求，才显示绿勾
+	if item.rarity >= max_required:
+		return 2
+	return 1
 
 func _calculate_upgradeable_state(item: ItemInstance) -> bool:
 	if not item or not InventorySystem: return false

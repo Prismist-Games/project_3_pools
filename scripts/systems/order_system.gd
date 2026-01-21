@@ -263,8 +263,12 @@ func _on_mainline_completed() -> void:
 	
 	EventBus.orders_updated.emit(current_orders)
 	
-	# 请求技能选择弹窗（复用奖池3选1 UI）
-	EventBus.modal_requested.emit(&"skill_selection", null)
+	# 如果是最后一个时代 (Era 4, 索引为 3)，直接触发游戏结束，不再选技能
+	if EraManager.current_era_index >= 3:
+		EraManager.advance_to_next_era()
+	else:
+		# 请求技能选择弹窗（复用奖池3选1 UI）
+		EventBus.modal_requested.emit(&"skill_selection", null)
 
 
 func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
