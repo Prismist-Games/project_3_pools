@@ -7,7 +7,6 @@ signal hover_state_changed(slot_index: int, is_hovered: bool)
 @onready var icon_display: Sprite2D = find_child("Item_icon", true)
 @onready var item_shadow: Sprite2D = find_child("Item_shadow", true)
 @onready var affix_display: Sprite2D = find_child("Item_affix", true)
-@onready var led_display: Sprite2D = find_child("Slot_led", true)
 @onready var backgrounds: Node2D = find_child("Item Slot_backgrounds", true)
 @onready var hover_icon: Sprite2D = find_child("Item_hover_icon", true)
 @onready var rarity_display: Sprite2D = find_child("Item_rarity", true)
@@ -152,7 +151,7 @@ func update_display(item: ItemInstance) -> void:
 		icon_display.texture = null
 		if item_shadow: item_shadow.visible = false
 		affix_display.visible = false
-		led_display.modulate = Color(0.5, 0.5, 0.5, 0.5) # Grayed out
+
 		
 		# 重置绝育效果
 		if icon_display and icon_display.material:
