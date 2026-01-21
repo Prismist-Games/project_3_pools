@@ -181,9 +181,8 @@ func setup(index: int) -> void:
 func _on_mouse_entered() -> void:
 	_is_hovered = true
 	
-	# 始终发射 hover 信号 (用于高亮订单图标，不受 is_locked/is_drawing 限制)
-	if current_pool_item_type > 0:
-		hovered.emit(pool_index, current_pool_item_type)
+	# 始终发射 hover 信号 (用于 Controller 追踪 hover 状态以及高亮订单图标)
+	hovered.emit(pool_index, current_pool_item_type)
 	
 	# 如果正在抽奖展示且有具体物品，发射物品高亮信号
 	if is_drawing and _top_item_id != &"":

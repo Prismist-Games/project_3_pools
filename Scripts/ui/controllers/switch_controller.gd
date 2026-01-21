@@ -267,6 +267,10 @@ func _on_submit_switch_input(event: InputEvent) -> void:
 		_refresh_switch_visual(submit_switch, _submit_is_on, _is_submit_hovered, _is_submit_pressed)
 		
 		if not event.pressed:
+			# 核心判定：松开时是否仍在该区域内
+			if not _is_submit_hovered:
+				return
+				
 			if not game_ui or not game_ui.state_machine: return
 			
 			# 如果 UI 已锁定，则忽略点击，防止重复触发
@@ -296,6 +300,10 @@ func _on_recycle_switch_input(event: InputEvent) -> void:
 		_refresh_switch_visual(recycle_switch, _recycle_is_on, _is_recycle_hovered, _is_recycle_pressed)
 
 		if not event.pressed:
+			# 核心判定：松开时是否仍在该区域内
+			if not _is_recycle_hovered:
+				return
+				
 			if not game_ui or not game_ui.state_machine: return
 
 			# 如果 UI 已锁定，则忽略点击，防止重复触发

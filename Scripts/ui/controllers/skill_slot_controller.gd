@@ -267,10 +267,11 @@ func _update_slot_input_state(index: int, y_pos: float) -> void:
 
 ## 输入处理
 func _on_slot_input(event: InputEvent, index: int) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		# 只有在 hover 启用时才响应点击
-		if _hover_enabled:
-			slot_clicked.emit(index)
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if not event.pressed:
+			# 核心判定：松开时是否仍在该格子区域内
+			if _hover_enabled and _current_hover_index == index:
+				slot_clicked.emit(index)
 
 
 func _on_slot_mouse_entered(index: int) -> void:

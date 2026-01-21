@@ -381,8 +381,15 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 					slot.handle_mouse_press()
 			else:
 				# 鼠标松开：确认点击行为
-				# 检查 UI 锁定（松开时也需要检查）
+				# 1. 检查 UI 锁定（松开时也需要检查）
 				if game_ui and game_ui.is_ui_locked():
+					_pressed_slot_index = -1
+					if slot and slot.has_method("handle_mouse_release"):
+						slot.handle_mouse_release()
+					return
+				
+				# 2. 核心判定：松开时是否仍在该格子区域内 (Unity style release-over-button)
+				if _hovered_slot_index != index:
 					_pressed_slot_index = -1
 					if slot and slot.has_method("handle_mouse_release"):
 						slot.handle_mouse_release()

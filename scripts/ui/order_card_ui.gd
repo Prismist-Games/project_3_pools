@@ -109,9 +109,11 @@ func setup(order: OrderData, index: int) -> void:
 
 
 func _on_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			submit_requested.emit(_index)
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if not event.pressed:
+			# 核心判定：松开时是否仍在该区域内
+			if Rect2(Vector2.ZERO, size).has_point(event.position):
+				submit_requested.emit(_index)
 
 
 func _on_refresh_button_pressed() -> void:

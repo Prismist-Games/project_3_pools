@@ -327,7 +327,8 @@ func _on_icon_input(event: InputEvent, index: int) -> void:
 		_play_icon_press(index)
 	else:
 		# 松开：确认选择 + icon 复位
-		if _pressed_icon_index == index:
+		# 核心判定：松开时必须仍在原本按下的图标区域内
+		if _pressed_icon_index == index and _hovered_icon_index == index:
 			_play_icon_release_and_confirm(index)
 		else:
 			# 如果松开位置不在同一个图标，仅复位之前按下的图标

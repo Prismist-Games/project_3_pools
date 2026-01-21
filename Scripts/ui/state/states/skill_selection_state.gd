@@ -26,8 +26,11 @@ var selected_skill: SkillData = null
 ## 是否在替换模式 (槽满后等待玩家选择替换槽位)
 var _in_replace_mode: bool = false
 
-## 是否已经做出选择
+## 是否已经在做出选择
 var _has_made_selection: bool = false
+
+## 当前 hover 的 lottery slot 索引 (-1 表示无)
+var _hovered_slot_index: int = -1
 
 ## 推挤动画时长
 const PUSH_DURATION: float = 0.4
@@ -349,20 +352,29 @@ func _disconnect_all_slot_inputs() -> void:
 
 ## Lottery slot 输入处理
 func _on_lottery_slot_input(event: InputEvent, index: int) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		# 如果已经在替换模式，点击开着的 lottery slot 应该无效（或者视为确认/取消，但目前需求是只能点击技能 slot）
-		if _in_replace_mode:
-			return
-		select_skill(index)
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if not event.pressed:
+			# 核心判定：松开时必须仍在原本按下的图标区域内
+			if _hovered_slot_index != index:
+				return
+				
+			# 如果已经在替换模式，点击开着的 lottery slot 应该无效
+			if _in_replace_mode:
+				return
+			select_skill(index)
 
 ## Lottery slot hover处理（变亮效果）
 func _on_slot_mouse_entered(index: int) -> void:
+	_hovered_slot_index = index
 	var slot = _get_lottery_slot(index)
 	if slot and slot.has_method("set_highlight"):
 		slot.set_highlight(true)
 
 ## Lottery slot unhover处理（取消变亮）
 func _on_slot_mouse_exited(index: int) -> void:
+	if _hovered_slot_index == index:
+		_hovered_slot_index = -1
+		
 	var slot = _get_lottery_slot(index)
 	if slot and slot.has_method("set_highlight"):
 		slot.set_highlight(false)

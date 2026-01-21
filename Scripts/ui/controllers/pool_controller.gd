@@ -307,8 +307,12 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 			
 			if event.pressed:
 				# 1. 核心门控：UI 锁定中禁止一切点击
+				# 允许在确认选择的状态下点击 (如 PreciseSelection, Modal)
 				if game_ui and game_ui.is_ui_locked():
-					return
+					var state_name = game_ui.state_machine.get_current_state_name()
+					var is_selection_mode = state_name == &"PreciseSelection" or state_name == &"Modal"
+					if not is_selection_mode:
+						return
 				
 				# 2. 状态门控
 				if game_ui and game_ui.state_machine:
@@ -326,15 +330,26 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 				if slot and slot.has_method("handle_mouse_press"):
 					slot.handle_mouse_press()
 			else:
-				# 鼠标松开：确认抽奖行为
+				# 鼠标松开：确认行为
 				# 1. 核心门控：UI 锁定中禁止确认选择
+				# 允许在确认选择的状态下松开 (如 PreciseSelection, Modal)
 				if game_ui and game_ui.is_ui_locked():
+					var state_name = game_ui.state_machine.get_current_state_name()
+					var is_selection_mode = state_name == &"PreciseSelection" or state_name == &"Modal"
+					if not is_selection_mode:
+						_pressed_slot_index = -1
+						if slot and slot.has_method("handle_mouse_release"):
+							slot.handle_mouse_release()
+						return
+				
+				# 2. 核心判定：松开时是否仍在该格子区域内 (Unity style release-over-button)
+				if _hovered_slot_index != index:
 					_pressed_slot_index = -1
 					if slot and slot.has_method("handle_mouse_release"):
 						slot.handle_mouse_release()
 					return
 				
-				# 2. 状态机逻辑处理
+				# 3. 状态机逻辑处理
 				if game_ui and game_ui.state_machine:
 					var state_name = game_ui.state_machine.get_current_state_name()
 					

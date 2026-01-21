@@ -7,6 +7,9 @@ var quest_slots_grid: VBoxContainer
 var main_quest_slot: Control
 var _slots: Array[Control] = [] # Stores normal quest slots (index 1 to 4)
 
+## 当前被hover的slot索引 (-100表示无, -1表示主线)
+var _hovered_slot_index: int = -100
+
 func setup(grid: VBoxContainer, main_slot: Control) -> void:
 	quest_slots_grid = grid
 	main_quest_slot = main_slot
@@ -27,6 +30,11 @@ func _init_slots() -> void:
 				if input_area.gui_input.is_connected(_on_slot_input):
 					input_area.gui_input.disconnect(_on_slot_input)
 				input_area.gui_input.connect(_on_slot_input.bind(i))
+				
+				if not input_area.mouse_entered.is_connected(_on_slot_mouse_entered):
+					input_area.mouse_entered.connect(_on_slot_mouse_entered.bind(i))
+				if not input_area.mouse_exited.is_connected(_on_slot_mouse_exited):
+					input_area.mouse_exited.connect(_on_slot_mouse_exited.bind(i))
 	
 	if main_quest_slot and main_quest_slot.has_method("setup"):
 		main_quest_slot.setup(0)
@@ -35,6 +43,11 @@ func _init_slots() -> void:
 			if input_area.gui_input.is_connected(_on_slot_input):
 				input_area.gui_input.disconnect(_on_slot_input)
 			input_area.gui_input.connect(_on_slot_input.bind(-1))
+			
+			if not input_area.mouse_entered.is_connected(_on_slot_mouse_entered):
+				input_area.mouse_entered.connect(_on_slot_mouse_entered.bind(-1))
+			if not input_area.mouse_exited.is_connected(_on_slot_mouse_exited):
+				input_area.mouse_exited.connect(_on_slot_mouse_exited.bind(-1))
 
 func update_orders_display(orders: Array) -> void:
 	var is_submit = false
@@ -190,11 +203,21 @@ func set_slots_locked(locked: bool) -> void:
 func _get_slot_node(index: int) -> Control:
 	return get_slot_node(index)
 
+func _on_slot_mouse_entered(index: int) -> void:
+	_hovered_slot_index = index
+
+func _on_slot_mouse_exited(_index: int) -> void:
+	_hovered_slot_index = -100
+
 # --- Input ---
 
 func _on_slot_input(event: InputEvent, index: int) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_LEFT:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if not event.pressed:
+			# 核心判定：松开时是否仍在该区域内
+			if _hovered_slot_index != index:
+				return
+				
 			# 检查 UI 锁定
 			if game_ui and game_ui.is_ui_locked():
 				return
@@ -202,8 +225,8 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 			if game_ui.state_machine and game_ui.state_machine.get_ui_mode() == Constants.UIMode.SUBMIT:
 				var order_idx = index - 1 if index != -1 else -1
 				_handle_smart_select_for_order(order_idx)
-		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			# 右键取消逻辑已移至 Game2DUI._input 全局处理
+		elif event.pressed:
+			# 可以在这里处理按下时的视觉反馈
 			pass
 
 func _handle_smart_select_for_order(order_index: int) -> void:

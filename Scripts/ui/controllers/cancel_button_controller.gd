@@ -246,11 +246,16 @@ func _on_input_area_input(event: InputEvent) -> void:
 		_is_pressed = true
 		_play_button_press_animation()
 	else:
-		# 松开：scale 复位并触发取消
-		if _is_pressed:
+		# 松开：确认判定
+		# 核心判定：原本在此处按下，且松开时仍在该区域内
+		if _is_pressed and _is_hovered:
 			_is_pressed = false
 			_play_button_release_animation()
 			trigger_cancel()
+		else:
+			# 如果在区域外松开，或者不是在此处按下的，仅复位视觉
+			_is_pressed = false
+			_play_button_release_animation()
 
 
 ## Hover 进入
@@ -268,7 +273,6 @@ func _on_input_area_mouse_exited() -> void:
 		return
 	
 	_is_hovered = false
-	_is_pressed = false # 如果鼠标移出，也清除按下状态
 	_update_hover_visual()
 	
 	# 如果在按下状态下移出，复位 scale
