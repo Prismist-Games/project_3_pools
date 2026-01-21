@@ -1,4 +1,4 @@
-[gd_scene load_steps=105 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=106 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://rg8ahiwfwlxb" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
@@ -295,13 +295,12 @@ shader_parameter/noise_intensity = 0.05
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_simg3"]
 shader = ExtResource("53_simg3")
-shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/fill_color = Color(1, 1, 1, 1)
 shader_parameter/width = 20.00000095
-shader_parameter/pattern = 0
-shader_parameter/inside = false
-shader_parameter/add_margins = false
+shader_parameter/threshold = 0.1
 shader_parameter/number_of_images = Vector2(1, 1)
-shader_parameter/saturation = 1.0
+shader_parameter/add_margins = false
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3ih7i"]
 atlas = ExtResource("94_m40pb")
@@ -649,6 +648,15 @@ _data = {
 [sub_resource type="AtlasTexture" id="AtlasTexture_jqdmi"]
 atlas = ExtResource("94_m40pb")
 region = Rect2(1500, 1500, 500, 500)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3ih7i"]
+shader = ExtResource("53_simg3")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/fill_color = Color(1, 1, 1, 1)
+shader_parameter/width = 1.10000005225
+shader_parameter/threshold = 0.0
+shader_parameter/number_of_images = Vector2(1, 1)
+shader_parameter/add_margins = true
 
 [node name="Game2D" type="Control"]
 layout_mode = 3
@@ -1859,6 +1867,7 @@ color = Color(0, 0, 0, 0.5019608)
 
 [node name="Popup Window" type="TextureRect" parent="."]
 z_index = 11
+material = SubResource("ShaderMaterial_3ih7i")
 layout_mode = 0
 offset_left = 1657.0
 offset_top = -707.0
