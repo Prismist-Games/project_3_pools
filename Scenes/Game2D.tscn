@@ -1,4 +1,4 @@
-[gd_scene load_steps=103 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=105 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
@@ -413,6 +413,110 @@ _data = {
 &"RESET": SubResource("Animation_017ef"),
 &"popup_in": SubResource("Animation_otpb1")
 }
+
+[sub_resource type="Shader" id="Shader_3ih7i"]
+code = "shader_type canvas_item;
+
+uniform float scanline_count : hint_range(0, 1800) = 50.0;
+uniform float scanline_alpha : hint_range(0, 1) = 0.5;
+uniform float scanline_speed : hint_range(-10.0, 10.0) = 1.0;  // New: Speed of scanline movement
+
+uniform float vignette_intensity : hint_range(0, 5) = 0.4;
+uniform float screen_curvature : hint_range(0, 0.1) = 0.05;
+
+uniform float jitter_intensity : hint_range(0, 0.1) = 0.0; // New: Jitter amount
+uniform float noise_intensity : hint_range(0, 1) = 0.0;     // New: Static noise amount
+
+// Helper function for pseudo-random numbers
+float random(vec2 uv) {
+    return fract(sin(dot(uv.xy, vec2(12.9898,78.233))) * 43758.5453123);
+}
+
+void fragment() {
+	vec2 uv = UV;
+	
+	// 1. Screen Curvature / Warp
+	// Distort UVs from center
+	vec2 center = vec2(0.5, 0.5);
+	vec2 offset = uv - center;
+	float dist_sq = dot(offset, offset);
+	// Basic barrel distortion
+	vec2 warped_uv = uv + offset * (dist_sq * screen_curvature);
+	
+	// If warped UV is outside [0,1], discard or mask (optional, but for overlay we might just want to let it vignette)
+	
+	// 2. Jitter
+	// Offset warped_uv slightly based on time
+	float time_step = floor(TIME * 60.0); // Jitter at 60fps intervals
+	vec2 jitter_offset = vec2(
+		random(vec2(time_step, 1.0)) - 0.5,
+		random(vec2(time_step, 2.0)) - 0.5
+	) * jitter_intensity;
+	
+	// Apply jitter to the texture look-up UVs (if we were warping the underlying texture)
+	// But since we are an OVERLAY, we aren't distorting the underlying texture directly unless we use SCREEN_TEXTURE.
+	// However, this shader is applied to a ColorRect on TOP of content.
+	// Standard approach for overlay is to just draw effects over the top.
+	// IF we want to distort the underlying text, we would need to use a BackBufferCopy or Screen reading shader.
+	// Given the instructions (\"add visual effects... to these screens\"), and previous setup involving ColorRect overlay:
+	// Let's stick to generating effects *on top* that simulate imperfections, 
+	// rather than warping the actual game text (which is safer for readability).
+	// BUT, \"Curvature\" usually implies geometric distortion.
+	// Since we are just a ColorRect overlay, we can use the curvature to curve the SCANLINES and VIGNETTE.
+	
+	// Use warped_uv for generating scanlines/vignette to match the curved look
+	
+	// 3. Scanlines with Roll
+	// Use warped_uv.y + TIME for movement
+	float scanline = sin((warped_uv.y + TIME * scanline_speed * 0.01) * scanline_count * 3.14159 * 2.0);
+	scanline = (scanline + 1.0) * 0.5;
+	
+	// 4. White Noise
+	float noise_val = random(warped_uv + vec2(TIME, TIME));
+	
+	// 5. Vignette (using warped coords)
+	float vig_dist = length(warped_uv - center);
+	float vig = smoothstep(0.4, 0.4 + 0.3, vig_dist) * vignette_intensity;
+
+	// Compose Color
+	// Start with black
+	vec3 dark_color = vec3(0.0);
+	
+	// Scanlines darken the screen
+	float sl_alpha = scanline * scanline_alpha;
+	
+	// Jitter effect on overlay: random flashes or horizontal offsets?
+	// Let's do a horizontal \"tearing\" scanline occasionall?
+	// Or just keep it simple: Jitter shifts the scanlines slightly.
+	
+	// Update alpha
+	float final_alpha = sl_alpha + vig;
+	
+	// Add noise (whitening)
+	vec3 noise_color = vec3(noise_val);
+	// Noise adds to color, doesn't just alpha blend black
+	
+	// Output
+	// We mix black overlay (scanlines/vignette) with white noise.
+	// This is an overlay, so COLOR.a determines how much we darken/lighten.
+	// Darkening: (0,0,0, alpha)
+	// Lightening: (1,1,1, alpha)
+	// We want mostly darkening, but noise adds light.
+	
+	COLOR.rgb = noise_color * noise_intensity;
+	COLOR.a = clamp(final_alpha + (noise_val * noise_intensity * 0.1), 0.0, 1.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nbd70"]
+shader = SubResource("Shader_3ih7i")
+shader_parameter/scanline_count = 25.0000011875
+shader_parameter/scanline_alpha = 0.15
+shader_parameter/scanline_speed = 10.0
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/screen_curvature = 0.05
+shader_parameter/jitter_intensity = 0.002
+shader_parameter/noise_intensity = 0.05
 
 [sub_resource type="Animation" id="Animation_6kw3k"]
 length = 0.001
@@ -1573,18 +1677,38 @@ texture = ExtResource("41_4tp6t")
 
 [node name="DLC Screen_fill" type="Sprite2D" parent="The Machine DLC/DLC Panel/DLC Screen"]
 self_modulate = Color(0, 0.627451, 0.9647059, 1)
+show_behind_parent = true
+clip_children = 2
 texture = ExtResource("42_p2bqf")
 
 [node name="DLC Label" type="RichTextLabel" parent="The Machine DLC/DLC Panel/DLC Screen/DLC Screen_fill"]
-offset_left = -221.0
-offset_top = -113.0
-offset_right = 202.0
-offset_bottom = 94.0
-theme_override_font_sizes/normal_font_size = 55
-text = "道具种类: 0 / 7"
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -490.0
+offset_top = -275.0
+offset_right = -67.0
+offset_bottom = -68.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/paragraph_separation = 30
+theme_override_font_sizes/normal_font_size = 60
+text = "道具种类
+0 / 7"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ScreenEffectOverlay" type="ColorRect" parent="The Machine DLC/DLC Panel/DLC Screen/DLC Screen_fill"]
+material = SubResource("ShaderMaterial_nbd70")
+offset_left = -282.0
+offset_top = -155.50003
+offset_right = 267.99994
+offset_bottom = 143.91397
+scale = Vector2(1, 0.985258)
+mouse_filter = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine DLC"]
 libraries = {

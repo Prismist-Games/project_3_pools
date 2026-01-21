@@ -181,9 +181,8 @@ func _update_requirements(reqs: Array[Dictionary], req_states: Array) -> void:
 			
 			var icon = req_node.find_child("Item_icon", true)
 			if icon and item_data:
-				icon.texture = item_data.icon
-				# 根据品质达标与否设置 shader 饱和度
-				_update_icon_saturation(icon, is_rarity_satisfied)
+				# 根据品质达标与否切换 sprite sheet（正常版 vs 描线版）
+				_update_icon_sprite(icon, item_data, is_rarity_satisfied)
 			
 			# A. 需求品质 (Item_requirement)
 			var req_sprite = req_node.find_child("Item_requirement", true)
@@ -205,12 +204,13 @@ func _update_requirements(reqs: Array[Dictionary], req_states: Array) -> void:
 					_stop_rarity_rotation(i, rarity_sprite)
 			
 			# 更新状态图标（多选时的高亮/勾选）
+			# 绿色勾需要同时满足：物品被选中 + 品质达标
 			var status_sprite = req_node.find_child("Item_status", true)
 			if status_sprite:
-				var is_satisfied = state.get("is_selected", false)
+				var is_quality_met = state.get("is_quality_met", false)
 				
 				status_sprite.visible = is_submit_mode
-				status_sprite.texture = preload("res://assets/sprites/icons/tick_green.png") if is_satisfied else preload("res://assets/sprites/icons/tick_empty.png")
+				status_sprite.texture = preload("res://assets/sprites/icons/tick_green.png") if is_quality_met else preload("res://assets/sprites/icons/tick_empty.png")
 
 		else:
 			req_node.visible = false
@@ -232,13 +232,21 @@ func update_submission_status(status_array: Array) -> void:
 			status_sprite.visible = false
 
 ## =====================================================================
-## Item Icon 饱和度控制
+## Item Icon Sprite 切换（品质不达标时使用描线版 sprite sheet）
 ## =====================================================================
 
-## 更新 Item_icon 的 shader 饱和度
-func _update_icon_saturation(icon: Sprite2D, is_satisfied: bool) -> void:
-	if not icon: return
+## 正常版和描线版 sprite sheet 的预加载
+const NORMAL_SPRITE_SHEET: Texture2D = preload("res://assets/sprites/icons/items/item_shape_centered.png")
+const NOMEET_SPRITE_SHEET: Texture2D = preload("res://assets/sprites/icons/items/items_shape_centered_nomeet.PNG")
+
+## 更新 Item_icon 的 sprite sheet（品质不达标时使用描线版）
+## [param icon]: 物品图标 Sprite2D
+## [param item_data]: 物品数据（用于获取正确的帧索引）
+## [param is_satisfied]: 品质是否达标
+func _update_icon_sprite(icon: Sprite2D, item_data: ItemData, is_satisfied: bool) -> void:
+	if not icon or not item_data: return
 	
+	# 确保 shader material 的 width 初始化为 0（描边宽度默认关闭）
 	var shader_material = icon.material as ShaderMaterial
 	if shader_material:
 		# 确保 material 是独立实例（避免共享 material 导致的问题）
@@ -248,7 +256,35 @@ func _update_icon_saturation(icon: Sprite2D, is_satisfied: bool) -> void:
 			icon.material = shader_material
 			# 初始化时确保描边宽度为 0
 			shader_material.set_shader_parameter("width", 0.0)
-		shader_material.set_shader_parameter("saturation", 1.0 if is_satisfied else 0.0)
+	
+	# 根据品质是否达标选择 sprite sheet
+	if is_satisfied:
+		icon.texture = item_data.icon # 使用原始图标（正常版）
+	else:
+		# 使用描线版 sprite sheet，需要获取帧索引来正确显示
+		# 由于 item_data.icon 是 AtlasTexture，我们需要使用相同的帧索引切换到描线版
+		_set_icon_from_nomeet_sheet(icon, item_data)
+
+
+## 从描线版 sprite sheet 设置图标（保持与原始图标相同的 region）
+func _set_icon_from_nomeet_sheet(icon: Sprite2D, item_data: ItemData) -> void:
+	if not item_data.icon: return
+	
+	# 获取原始图标的 AtlasTexture region 信息
+	var original_atlas: AtlasTexture = item_data.icon as AtlasTexture
+	if not original_atlas:
+		# 如果原始图标不是 AtlasTexture，直接使用描线版整张图（fallback）
+		icon.texture = NOMEET_SPRITE_SHEET
+		return
+	
+	# 创建新的 AtlasTexture，使用描线版 sprite sheet 但保持相同的 region
+	var nomeet_atlas := AtlasTexture.new()
+	nomeet_atlas.atlas = NOMEET_SPRITE_SHEET
+	nomeet_atlas.region = original_atlas.region
+	nomeet_atlas.margin = original_atlas.margin
+	nomeet_atlas.filter_clip = original_atlas.filter_clip
+	
+	icon.texture = nomeet_atlas
 
 ## =====================================================================
 ## 突出动画系统
@@ -259,20 +295,14 @@ func _check_order_satisfied(order: OrderData, req_states: Array) -> bool:
 	if not order or req_states.is_empty():
 		return false
 	
-	# 检查所有需求是否都被选中且品质达标
+	# 检查所有需求是否都品质达标
 	for i in range(order.requirements.size()):
 		if i >= req_states.size():
 			return false
 		
-		var req = order.requirements[i]
-		var min_rarity = req.get("min_rarity", 0)
 		var state = req_states[i]
-		var owned_max_rarity = state.get("owned_max_rarity", -1)
-		
-		# 必须同时满足：被选中 + 品质达标
-		if not state.get("is_selected", false):
-			return false
-		if owned_max_rarity < min_rarity:
+		# 使用 is_quality_met：物品被选中 + 品质达标
+		if not state.get("is_quality_met", false):
 			return false
 	
 	return true

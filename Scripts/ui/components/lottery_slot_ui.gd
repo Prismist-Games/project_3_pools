@@ -32,6 +32,16 @@ signal reveal_finished(pool_index: int) # NEW: 揭示动画完成信号
 @onready var description_label_pseudo: RichTextLabel = $"Lottery Slot_description_screen/Lottery Slot_description_screen_fill/Description Label/Description Label_psudo"
 
 ## =====================================================================
+## Screen Fill Nodes (用于金币不足警告效果)
+## =====================================================================
+@onready var top_screen_fill: Sprite2D = $"Lottery Slot_top_screen/Lottery Slot_top_screen_fill"
+@onready var description_screen_fill: Sprite2D = $"Lottery Slot_description_screen/Lottery Slot_description_screen_fill"
+@onready var right_screen_fill: Sprite2D = $"Lottery Slot_right_screen/Lottery Slot_right_screen_fill"
+
+## 金币不足警告色
+const INSUFFICIENT_GOLD_COLOR: Color = Color("e45453")
+
+## =====================================================================
 ## Item Display Nodes
 ## =====================================================================
 @onready var item_root: Node2D = find_child("Lottery Slot_item_root", true)
@@ -107,6 +117,9 @@ var _push_initial_positions: Dictionary = {}
 ## 记录当前显示的提示物品 ID 列表（用于判断是否需要推挤动画）
 var _current_hint_ids: Array[StringName] = []
 
+## 记录当前池子配置数据（用于金币变化时更新显示屏颜色）
+var _current_pool_data: Variant = null
+
 # 队列物品显示配置（可在编辑器中调整）
 @export var queue_1_offset: Vector2 = Vector2(-116, 7)
 @export var queue_1_scale: float = 0.75
@@ -138,6 +151,10 @@ func _ready() -> void:
 	
 	# 初始化角标为隐藏状态
 	_init_badges()
+	
+	# 连接金币变化信号，实时更新显示屏颜色
+	if not GameManager.gold_changed.is_connected(_on_gold_changed):
+		GameManager.gold_changed.connect(_on_gold_changed)
 
 func _store_push_initial_positions() -> void:
 	## 存储所有参与推挤动画的节点的初始位置
@@ -856,6 +873,10 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 	if not pool:
 		return
 	
+	# 保存当前池子数据（仅更新 True 节点时保存，用于金币变化时刷新显示）
+	if not target_pseudo:
+		_current_pool_data = pool
+	
 	# 选择目标节点
 	var target_lid_sprite: Sprite2D = lid_pseudo if target_pseudo else lid_sprite
 	var target_lid_icon: Sprite2D = lid_icon_pseudo if target_pseudo else lid_icon
@@ -906,6 +927,10 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 	if not target_pseudo and price_icon:
 		price_icon.texture = preload("res://assets/sprites/icons/money.png")
 		price_icon.visible = true # 强制保持可见
+	
+	# 金币不足警告：更新显示屏颜色 (仅更新 True 节点时执行，避免影响动画)
+	if not target_pseudo:
+		_update_screen_affordability(pool)
 	
 	# 更新词缀
 	if target_affix:
@@ -967,6 +992,45 @@ func refresh_hints_animated(display_items: Array[ItemData], satisfied_map: Dicti
 	_update_grid_icons(items_grid, display_items, satisfied_map)
 	items_grid.position = _push_initial_positions["grid_true"]
 	items_grid_pseudo.position = _push_initial_positions["grid_pseudo"]
+
+
+## 更新显示屏颜色以反映金币是否足够支付抽取价格
+## [param pool]: 奖池配置数据
+func _update_screen_affordability(pool: Variant) -> void:
+	if not pool:
+		return
+	
+	# 获取奖池价格
+	var gold_cost: int = 0
+	if "gold_cost" in pool:
+		gold_cost = pool.gold_cost
+	elif pool is Dictionary and pool.has("gold_cost"):
+		gold_cost = pool.get("gold_cost", 0)
+	
+	# 检测金币是否足够
+	var current_gold: int = GameManager.gold
+	var can_afford: bool = current_gold >= gold_cost
+	
+	# 正常颜色：
+	# - top_screen_fill: 黄绿色 #9ee967 (self_modulate)
+	# - description_screen_fill: 蓝色 #00a6ff (self_modulate)
+	# - right_screen_fill: 黄绿色 #9ee967 (modulate)
+	const NORMAL_GREEN_COLOR: Color = Color("9ee967") # 黄绿色
+	const NORMAL_BLUE_COLOR: Color = Color(0, 0.6509804, 1, 1) # 蓝色
+	
+	# 更新三块显示屏颜色
+	if top_screen_fill:
+		top_screen_fill.self_modulate = INSUFFICIENT_GOLD_COLOR if not can_afford else NORMAL_GREEN_COLOR
+	if description_screen_fill:
+		description_screen_fill.self_modulate = INSUFFICIENT_GOLD_COLOR if not can_afford else NORMAL_BLUE_COLOR
+	if right_screen_fill:
+		right_screen_fill.modulate = INSUFFICIENT_GOLD_COLOR if not can_afford else NORMAL_GREEN_COLOR
+
+
+## 金币变化回调：重新检测显示屏颜色
+func _on_gold_changed(_new_gold: int) -> void:
+	if _current_pool_data:
+		_update_screen_affordability(_current_pool_data)
 
 
 ## 检查传入的物品列表 ID 是否与当前显示的一致
