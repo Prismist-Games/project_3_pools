@@ -1,6 +1,5 @@
 shader_type canvas_item;
 
-// 外描边参数（保持不变）
 uniform vec4 line_color : source_color = vec4(1.0);
 uniform float width : hint_range(0, 50) = 0.0;
 uniform int pattern : hint_range(0, 2) = 0; // diamond, circle, square
@@ -8,12 +7,7 @@ uniform bool inside = false;
 uniform bool add_margins = true; // only useful when inside is false
 uniform vec2 number_of_images = vec2(1.0); // number of horizontal and vertical images in the sprite sheet
 
-// 描线效果参数（替代原置灰功能）
-uniform float saturation : hint_range(0, 1) = 1.0;  // 1.0 = 正常显示, 0.0 = 描线模式
-uniform bool preview_stroke_mode = false;  // 开关：勾选后强制显示描线效果（方便预览）
-uniform vec4 stroke_color : source_color = vec4(0.2, 0.2, 0.2, 1.0);  // 描线颜色（可调整）
-uniform vec4 fill_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);    // 填充颜色（可调整）
-uniform float stroke_threshold : hint_range(0.0, 1.0) = 0.3;  // 亮度阈值，低于此值视为描线（描边线通常很暗）
+uniform float saturation : hint_range(0, 1) = 1.0;
 
 varying flat vec4 modulate;
 
@@ -74,37 +68,12 @@ void fragment() {
 		COLOR = texture(TEXTURE, uv);
 	}
     
-    // 1. 描线模式效果（替代原置灰功能）
-    // saturation = 1.0 时显示原图，saturation = 0.0 时显示描线+填充效果
-    // preview_stroke_mode = true 时强制显示描线效果（用于预览）
+    // 1. Applying desaturation logic
     vec4 tex_color = COLOR;
-    
-    // 计算有效的 saturation 值（预览模式时强制为 0）
-    float effective_saturation = preview_stroke_mode ? 0.0 : saturation;
-    
-    if (effective_saturation < 1.0 && tex_color.a > 0.0) {
-        // 计算原始像素的亮度
-        float luminance = dot(tex_color.rgb, vec3(0.299, 0.587, 0.114));
-        
-        // 判断是否为描线区域（深色区域）
-        // 描线通常是图片中较暗的部分
-        bool is_stroke = luminance < stroke_threshold;
-        
-        // 根据 saturation 混合：saturation=1 显示原色，saturation=0 显示描线效果
-        vec3 stroke_effect;
-        if (is_stroke) {
-            stroke_effect = stroke_color.rgb;
-        } else {
-            stroke_effect = fill_color.rgb;
-        }
-        
-        // 使用 effective_saturation 作为混合因子
-        COLOR.rgb = mix(stroke_effect, tex_color.rgb, effective_saturation);
-    }
-    
+    COLOR.rgb = mix(vec3(dot(tex_color.rgb, vec3(0.299, 0.587, 0.114))), tex_color.rgb, saturation);
     COLOR *= modulate;
 	
-	// 2. 外描边逻辑（保持不变）
+	// 2. Applying outline logic
 	if ((COLOR.a > 0.0) == inside && hasContraryNeighbour(uv, TEXTURE_PIXEL_SIZE, image_top_left, image_bottom_right, TEXTURE)) {
 		COLOR.rgb = inside ? mix(COLOR.rgb, line_color.rgb * modulate.rgb, line_color.a * modulate.a) : line_color.rgb;
 		COLOR.a += (1.0 - COLOR.a) * line_color.a * modulate.a;
