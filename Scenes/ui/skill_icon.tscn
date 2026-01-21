@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://eau4q2x8g2u4"]
 
-[ext_resource type="Script" uid="uid://d1vjf642fqt10" path="res://scripts/ui/skill_icon_ui.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/ui/skill_icon_ui.gd" id="1_script"]
 
 [node name="SkillIcon" type="TextureRect"]
 custom_minimum_size = Vector2(40, 40)

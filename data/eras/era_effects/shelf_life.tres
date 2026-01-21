@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ShelfLifeEffect" load_steps=2 format=3 uid="uid://p4mxlf5dkjy"]
 
-[ext_resource type="Script" uid="uid://vqkmk4orh3tm" path="res://scripts/resources/era_effects/shelf_life_effect.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/era_effects/shelf_life_effect.gd" id="1"]
 
 [resource]
 script = ExtResource("1")

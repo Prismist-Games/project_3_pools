@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="EraConfig" load_steps=3 format=3 uid="uid://d21p8vd837yja"]
 
-[ext_resource type="Script" uid="uid://dm06bf5x3llkt" path="res://scripts/resources/era_config.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/era_config.gd" id="1"]
 [ext_resource type="Resource" uid="uid://cjvkg8akhdt5a" path="res://data/eras/era_effects/item_type_limit.tres" id="1_i80jv"]
 
 [resource]

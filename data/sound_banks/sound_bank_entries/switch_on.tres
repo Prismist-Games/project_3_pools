@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SoundBankEntry" load_steps=3 format=3 uid="uid://bolq3ka6gr76n"]
 
-[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_3oc5i"]
+[ext_resource type="Script" path="res://scripts/resources/sound_bank_entry.gd" id="1_3oc5i"]
 [ext_resource type="AudioStream" uid="uid://cwypdy3hg13qo" path="res://assets/audio/sfx/71775__lg__switch-23.wav" id="2_eexr0"]
 
 [resource]

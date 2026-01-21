@@ -7,26 +7,37 @@ extends Node
 ## - UI 只监听信号与转发输入，不直接耦合到具体系统实现。
 
 ## 约定：context 为 RefCounted（通常是自定义上下文对象），可被监听者原地改写。
+@warning_ignore("unused_signal")
 signal draw_requested(context: RefCounted)
+@warning_ignore("unused_signal")
 signal draw_finished(context: RefCounted)
 
+@warning_ignore("unused_signal")
 signal item_obtained(item: RefCounted)
 ## 物品获得信号（不触发InventorySystem自动添加）
 ## 用于精准/有的放矢等已手动添加物品的场景，让技能系统响应但不重复添加
+@warning_ignore("unused_signal")
 signal item_obtained_no_auto(item: RefCounted)
+@warning_ignore("unused_signal")
 signal item_recycled(slot_index: int, item: RefCounted) # 用于批量回收时触发单独的回收动画
 
+@warning_ignore("unused_signal")
 signal pools_refreshed(pools: Array)
+@warning_ignore("unused_signal")
 signal orders_updated(orders: Array)
 
+@warning_ignore("unused_signal")
 signal order_completed(context: RefCounted)
 
 ## 通用事件（可扩展）。
 ## - 新增事件无需在这里加 signal；直接 emit `game_event(event_id, context)` 即可。
 ## - SkillSystem 等可只监听这一条，达到“扩展不改核心逻辑”的目标。
+@warning_ignore("unused_signal")
 signal game_event(event_id: StringName, context: RefCounted)
 
 ## UI 层弹窗请求：modal_id 用于区分弹窗类型，payload 为上下文/参数。
+@warning_ignore("unused_signal")
 signal modal_requested(modal_id: StringName, payload: RefCounted)
 ## UI 层转场完成信号
+@warning_ignore("unused_signal")
 signal menu_transition_finished

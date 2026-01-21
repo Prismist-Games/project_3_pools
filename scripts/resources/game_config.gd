@@ -1,7 +1,6 @@
 extends Resource
 class_name GameConfig
 
-const EraConfig = preload("era_config.gd")
 
 # --- 基础经济配置 ---
 @export_group("Paths")

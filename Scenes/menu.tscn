@@ -1,6 +1,6 @@
 [gd_scene load_steps=121 format=3 uid="uid://3vd6vr0ax1kf"]
 
-[ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="1_ebw2t"]
+[ext_resource type="Script" path="res://scripts/ui/the_rabbit_animator.gd" id="1_ebw2t"]
 [ext_resource type="AudioStream" uid="uid://bmus83sm4cx3t" path="res://assets/audio/sfx/381588__dorianmastin__snd_impactheavywall01.wav" id="2_lqq6t"]
 [ext_resource type="Shader" uid="uid://di45w4y74m5hy" path="res://assets/shaders/circle.gdshader" id="2_w2h5l"]
 [ext_resource type="AudioStream" uid="uid://hp7wuy3elrv2" path="res://assets/audio/sfx/381591__dorianmastin__snd_impactheavywall04.wav" id="3_ur5vm"]
@@ -74,7 +74,7 @@
 [ext_resource type="Texture2D" uid="uid://hrp7bsul1woh" path="res://assets/sprites/frames/rabbit_popup_button_pressed.png" id="74_q1c26"]
 [ext_resource type="FontFile" uid="uid://bma1qpwpxk5rj" path="res://assets/fonts/Supreme-Regular.otf" id="75_a6r3l"]
 [ext_resource type="Texture2D" uid="uid://c4l4gf83h8vwl" path="res://assets/sprites/frames/rabbit_popup_button_hover.png" id="75_q7fno"]
-[ext_resource type="Script" uid="uid://enjh7xmiqi1c" path="res://scripts/ui/menu_controller.gd" id="76_menu_controller"]
+[ext_resource type="Script" path="res://scripts/ui/menu_controller.gd" id="76_menu_controller"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5yfxn"]
 shader = ExtResource("2_w2h5l")

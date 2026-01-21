@@ -1,8 +1,8 @@
 [gd_scene load_steps=44 format=3 uid="uid://basts7bbr2vav"]
 
-[ext_resource type="Script" uid="uid://c008hefncbbkm" path="res://scripts/ui/components/lottery_slot_ui.gd" id="1_1b0mf"]
+[ext_resource type="Script" path="res://scripts/ui/components/lottery_slot_ui.gd" id="1_1b0mf"]
 [ext_resource type="Texture2D" uid="uid://cpcef3r3dbaxq" path="res://assets/sprites/lottery_slots/基地-7.png" id="2_gntc1"]
-[ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="3_ba2ho"]
+[ext_resource type="Script" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="3_ba2ho"]
 [ext_resource type="Texture2D" uid="uid://b3avhgwq0587y" path="res://assets/sprites/lottery_slots/基地-1.png" id="4_662jj"]
 [ext_resource type="Texture2D" uid="uid://dpnahy8wmkeso" path="res://assets/sprites/lottery_slots/基地-2.png" id="5_drypt"]
 [ext_resource type="Texture2D" uid="uid://fjhknpwtlo4g" path="res://assets/sprites/lottery_slots/基地-3.png" id="6_7fxrg"]

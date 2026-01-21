@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://bnvb6m1kfg4yp"]
 
-[ext_resource type="Script" uid="uid://bciq252jrqg3b" path="res://scripts/ui/tutorial_slideshow.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/ui/tutorial_slideshow.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://b7qsbdjotcn0r" path="res://assets/sprites/frames/rabbit_popup_button.png" id="2_wv367"]
 [ext_resource type="Texture2D" uid="uid://hrp7bsul1woh" path="res://assets/sprites/frames/rabbit_popup_button_pressed.png" id="3_gf3r0"]
 [ext_resource type="Texture2D" uid="uid://c4l4gf83h8vwl" path="res://assets/sprites/frames/rabbit_popup_button_hover.png" id="4_hrchn"]

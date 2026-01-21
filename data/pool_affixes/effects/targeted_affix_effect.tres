@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="TargetedAffixEffect" load_steps=2 format=3 uid="uid://ctnrw643k7moc"]
 
-[ext_resource type="Script" uid="uid://b04wcgdj4uvrh" path="res://scripts/resources/pool_resources/pool_affix_effects/targeted_affix_effect.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/pool_resources/pool_affix_effects/targeted_affix_effect.gd" id="1"]
 
 [resource]
 script = ExtResource("1")

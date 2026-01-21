@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="PoolAffixData" load_steps=4 format=3 uid="uid://beiby1yxcy1f4"]
 
-[ext_resource type="Script" uid="uid://d1725wsbx1i5" path="res://scripts/resources/pool_resources/pool_affix_data.gd" id="1"]
-[ext_resource type="Script" uid="uid://6f2x8h4j1lal" path="res://scripts/resources/pool_resources/pool_affix_effect.gd" id="1_v0gia"]
+[ext_resource type="Script" path="res://scripts/resources/pool_resources/pool_affix_data.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/pool_resources/pool_affix_effect.gd" id="1_v0gia"]
 [ext_resource type="Resource" path="res://data/pool_affixes/effects/fragmented_affix_effect.tres" id="2"]
 
 [resource]

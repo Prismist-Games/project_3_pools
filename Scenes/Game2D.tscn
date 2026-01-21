@@ -57,7 +57,7 @@
 [ext_resource type="Texture2D" uid="uid://c5hf5dhl1twpv" path="res://assets/sprites/the_machine_dlc/dlc_screen_fill.png" id="42_p2bqf"]
 [ext_resource type="PackedScene" uid="uid://basts7bbr2vav" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
-[ext_resource type="Shader" uid="uid://cjs8tedhdkq2m" path="res://assets/shaders/desaturate.gdshader" id="53_simg3"]
+[ext_resource type="Shader" path="res://assets/shaders/desaturate.gdshader" id="53_simg3"]
 [ext_resource type="Texture2D" uid="uid://davbf6tu8eie1" path="res://assets/sprites/quest_slots/quality_label.PNG" id="54_ug1ds"]
 [ext_resource type="Texture2D" uid="uid://dueqqf84ep58p" path="res://assets/sprites/frames/rabbit_popup.png" id="72_d4tgn"]
 [ext_resource type="Texture2D" uid="uid://b7qsbdjotcn0r" path="res://assets/sprites/frames/rabbit_popup_button.png" id="73_1wqh7"]

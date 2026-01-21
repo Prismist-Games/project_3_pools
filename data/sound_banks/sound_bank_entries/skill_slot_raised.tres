@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SoundBankEntry" load_steps=3 format=3 uid="uid://n7h1rerqak2m"]
 
-[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_ac3e2"]
+[ext_resource type="Script" path="res://scripts/resources/sound_bank_entry.gd" id="1_ac3e2"]
 [ext_resource type="AudioStream" uid="uid://cn3ybin87bygs" path="res://assets/audio/sfx/skill_slot_raised.wav" id="2_ac3e2"]
 
 [resource]

@@ -32,6 +32,7 @@ const TRIGGER_ACTIVATE = "activate"
 const TRIGGER_DEACTIVATE = "deactivate"
 
 ## 技能效果触发信号：用于通知 UI 播放特效
+@warning_ignore("unused_signal")
 signal triggered(type: String)
 
 

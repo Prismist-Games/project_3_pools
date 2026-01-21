@@ -57,7 +57,7 @@ var _current_state_name: StringName = STATE_RABBIT_IDLE
 # AnimationTree 条件变量（持续状态）
 var _cond_is_submitting: bool = false
 var _cond_is_low_gold: bool = false
-var _cond_is_pool_hovered: bool = false
+
 
 # AnimationTree 触发器（一次性）
 var _trig_order_success: bool = false

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cx6r7q5x8g2u1"]
 
-[ext_resource type="Script" uid="uid://cu217gaoxga8o" path="res://scripts/ui/pool_card_ui.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/ui/pool_card_ui.gd" id="1_script"]
 
 [node name="PoolCard" type="PanelContainer"]
 custom_minimum_size = Vector2(200, 150)

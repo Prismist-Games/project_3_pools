@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SoundBankEntry" load_steps=3 format=3 uid="uid://dreqhtl7xdgg6"]
 
-[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_jipo4"]
+[ext_resource type="Script" path="res://scripts/resources/sound_bank_entry.gd" id="1_jipo4"]
 [ext_resource type="AudioStream" uid="uid://ubygcsyfv1ta" path="res://assets/audio/sfx/588507__tampajoey__slidingdoor.wav" id="2_jipo4"]
 
 [resource]

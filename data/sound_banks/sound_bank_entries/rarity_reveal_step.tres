@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SoundBankEntry" load_steps=3 format=3 uid="uid://vod2nxn11aws"]
 
-[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_piw5m"]
+[ext_resource type="Script" path="res://scripts/resources/sound_bank_entry.gd" id="1_piw5m"]
 [ext_resource type="AudioStream" uid="uid://bq6vmojwvy83e" path="res://assets/audio/sfx/118239__pierrecartoons1979__slot-machine-phrygian.wav" id="2_wrvqe"]
 
 [resource]
