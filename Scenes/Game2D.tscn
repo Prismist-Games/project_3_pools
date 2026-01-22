@@ -1838,7 +1838,6 @@ editor_draw_drag_margin = true
 z_index = 999
 
 [node name="Screen Mask" type="ColorRect" parent="."]
-visible = false
 z_index = 10
 layout_mode = 0
 offset_left = -840.0
@@ -1849,7 +1848,6 @@ mouse_force_pass_scroll_events = false
 color = Color(0, 0, 0, 0.5019608)
 
 [node name="Popup Window" type="TextureRect" parent="."]
-visible = false
 z_index = 11
 layout_mode = 0
 offset_left = 1657.0
