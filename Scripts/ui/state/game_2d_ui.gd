@@ -154,6 +154,23 @@ func _ready() -> void:
 	# 8. 监听转场结束（用于显示教程）
 	EventBus.menu_transition_finished.connect(_on_menu_transition_finished)
 
+# --- 视觉更新控制 ---
+var _suppress_immediate_updates: bool = false
+
+func set_updates_suppressed(suppressed: bool) -> void:
+	_suppress_immediate_updates = suppressed
+	# 如果取消抑制，可能需要刷新一次？通常由调用方控制，这里暂不自动刷新
+
+func _perform_inventory_update(inventory: Array) -> void:
+	inventory_controller.update_all_slots(inventory)
+	_update_dlc_label()
+
+func _perform_orders_update(orders: Array) -> void:
+	order_controller.update_orders_display(orders)
+	# 同步更新奖池显示中的需求图标，并带有推挤动画
+	if pool_controller:
+		pool_controller.refresh_all_order_hints(true)
+
 func _init_era_popup() -> void:
 	if screen_mask:
 		screen_mask.visible = false
@@ -357,6 +374,7 @@ func _on_vfx_queue_started() -> void:
 ## VFX 队列完成回调
 func _on_vfx_queue_finished() -> void:
 	_is_vfx_processing = false
+	_suppress_immediate_updates = false # 确保VFX结束后恢复正常更新
 	
 	if state_machine:
 		var current_state = state_machine.get_current_state_name()
@@ -553,8 +571,9 @@ func _create_single_floating_coin(parent: Node, fly_duration: float) -> void:
 
 
 func _on_inventory_changed(inventory: Array) -> void:
-	inventory_controller.update_all_slots(inventory)
-	_update_dlc_label() # ERA_3: 背包变化时更新种类计数
+	if _suppress_immediate_updates:
+		return
+	_perform_inventory_update(inventory)
 
 func _on_pending_queue_changed(items: Array[ItemInstance]) -> void:
 	if items.is_empty():
@@ -568,7 +587,7 @@ func _on_pending_queue_changed(items: Array[ItemInstance]) -> void:
 	_refresh_all_hovered_slot_states()
 	
 	# 刷新 upgradeable 角标（pending 物品可能与背包物品配对）
-	if inventory_controller:
+	if inventory_controller and not _suppress_immediate_updates:
 		inventory_controller.refresh_upgradeable_badges()
 
 func _on_skills_changed(skills: Array) -> void:
@@ -579,10 +598,9 @@ func _on_pools_refreshed(pools: Array) -> void:
 	pool_controller.update_pools_display(pools)
 
 func _on_orders_updated(orders: Array) -> void:
-	order_controller.update_orders_display(orders)
-	# 同步更新奖池显示中的需求图标，并带有推挤动画
-	if pool_controller:
-		pool_controller.refresh_all_order_hints(true)
+	if _suppress_immediate_updates:
+		return
+	_perform_orders_update(orders)
 
 func _on_multi_selection_changed(_indices: Array[int]) -> void:
 	# 刷新订单状态
@@ -848,7 +866,9 @@ func _on_item_added(_item: ItemInstance, index: int) -> void:
 			"target_scale": inventory_controller.get_slot_global_scale(index),
 			"target_slot_node": target_slot_node,
 			"source_lottery_slot": pool_slot,
-			"on_complete": func(): _on_inventory_changed(InventorySystem.inventory)
+			"on_complete": func():
+				_perform_inventory_update(InventorySystem.inventory)
+				_perform_orders_update(OrderSystem.current_orders)
 		}
 		
 		if vfx_manager:
@@ -902,7 +922,9 @@ func _on_item_replaced(index: int, _new_item: ItemInstance, old_item: ItemInstan
 			"is_replace": true,
 			"is_merge": old_item == null, # 如果 old_item 是 null，说明是从 _on_item_merged 调过来的，也就是合并
 			"source_lottery_slot": pool_slot,
-			"on_complete": func(): _on_inventory_changed(InventorySystem.inventory)
+			"on_complete": func():
+				_perform_inventory_update(InventorySystem.inventory)
+				_perform_orders_update(OrderSystem.current_orders)
 		}
 		
 		if vfx_manager:
@@ -1011,6 +1033,10 @@ func _on_game_event(event_id: StringName, payload: Variant) -> void:
 			var _new_order = OrderSystem.refresh_order(index)
 			order_controller.update_orders_display(OrderSystem.current_orders)
 			await order_controller.play_open_sequence(index)
+			
+			# 关键修复：刷新订单后，需同步更新背包中的角标状态（因为订单需求变了）
+			if inventory_controller:
+				inventory_controller.update_all_slots(InventorySystem.inventory)
 			
 			unlock_ui("order_refresh")
 

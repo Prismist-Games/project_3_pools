@@ -166,6 +166,10 @@ func _execute_trade_in_sequence(slot_index: int, item: ItemInstance) -> void:
 	if controller.vfx_manager:
 		controller.vfx_manager.is_paused = true # 确保产出的物品先别飞
 	
+	# 关键修复：防止角标在揭示序列之前显示
+	if lottery_slot:
+		lottery_slot._is_reveal_in_progress = true
+	
 	var captured_items: Array[ItemInstance] = []
 	var capture_fn = func(new_item: ItemInstance):
 		captured_items.append(new_item)
@@ -188,6 +192,9 @@ func _execute_trade_in_sequence(slot_index: int, item: ItemInstance) -> void:
 	if not display_items.is_empty():
 		# 关键修复：不要手动设置 is_drawing = true，否则 play_reveal_sequence 会跳过动画
 		await lottery_slot.play_reveal_sequence(display_items)
+	else:
+		# 没有物品显示，手动重置标志
+		lottery_slot._is_reveal_in_progress = false
 	
 	# 6. 开启 VFX 队列，让新物品从奖池飞向背包
 	if controller.vfx_manager:
