@@ -1160,7 +1160,7 @@ scale = Vector2(1, 0.985258)
 mouse_filter = 2
 
 [node name="TheMachineLegend" type="Sprite2D" parent="The Machine"]
-position = Vector2(622, 566)
+position = Vector2(668, 609)
 texture = ExtResource("6_2v31b")
 
 [node name="TheMachineLegendFill" type="Sprite2D" parent="The Machine/TheMachineLegend"]
@@ -1851,17 +1851,17 @@ color = Color(0, 0, 0, 0.5019608)
 z_index = 11
 layout_mode = 0
 offset_left = 1657.0
-offset_top = -707.0
+offset_top = -1110.0
 offset_right = 4372.0
-offset_bottom = 2768.0
+offset_bottom = 2365.0
 texture = ExtResource("72_d4tgn")
 
 [node name="Popup_RichTextLabel" type="RichTextLabel" parent="Popup Window"]
 layout_mode = 0
 offset_left = 487.0
-offset_top = 2189.0
+offset_top = 2592.0
 offset_right = 2219.0
-offset_bottom = 2735.0
+offset_bottom = 3138.0
 mouse_filter = 2
 theme_override_fonts/normal_font = ExtResource("91_036e7")
 theme_override_font_sizes/normal_font_size = 68
@@ -1874,9 +1874,9 @@ vertical_alignment = 1
 [node name="Popup_button" type="TextureButton" parent="Popup Window"]
 layout_mode = 0
 offset_left = 1062.0
-offset_top = 3037.0
+offset_top = 3440.0
 offset_right = 1630.0
-offset_bottom = 3300.0
+offset_bottom = 3703.0
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("73_1wqh7")
 texture_pressed = ExtResource("74_1wndc")

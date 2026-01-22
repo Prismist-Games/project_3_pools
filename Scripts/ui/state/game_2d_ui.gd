@@ -1127,11 +1127,11 @@ func _show_era_popup(era_index: int) -> void:
 	var mask_tween = create_tween()
 	mask_tween.tween_property(screen_mask, "modulate:a", 1.0, 0.3)
 	
-	# 弹出 Window (从 -4000 到 -700)
+	# 弹出 Window (从 -4000 到 -1110)
 	var win_tween = create_tween()
 	win_tween.set_trans(Tween.TRANS_BACK)
 	win_tween.set_ease(Tween.EASE_OUT)
-	win_tween.tween_property(popup_window, "position:y", -700.0, 0.6)
+	win_tween.tween_property(popup_window, "position:y", -1110.0, 0.6)
 
 
 ## 显示游戏结束弹窗
@@ -1155,7 +1155,7 @@ func _show_ending_popup() -> void:
 	var win_tween = create_tween()
 	win_tween.set_trans(Tween.TRANS_BACK)
 	win_tween.set_ease(Tween.EASE_OUT)
-	win_tween.tween_property(popup_window, "position:y", -700.0, 0.6)
+	win_tween.tween_property(popup_window, "position:y", -1110.0, 0.6)
 
 
 ## 隐藏时代切换弹窗

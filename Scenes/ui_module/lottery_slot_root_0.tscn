@@ -1,8 +1,8 @@
 [gd_scene load_steps=44 format=3 uid="uid://basts7bbr2vav"]
 
-[ext_resource type="Script" path="res://scripts/ui/components/lottery_slot_ui.gd" id="1_1b0mf"]
+[ext_resource type="Script" uid="uid://c008hefncbbkm" path="res://scripts/ui/components/lottery_slot_ui.gd" id="1_1b0mf"]
 [ext_resource type="Texture2D" uid="uid://cpcef3r3dbaxq" path="res://assets/sprites/lottery_slots/基地-7.png" id="2_gntc1"]
-[ext_resource type="Script" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="3_ba2ho"]
+[ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="3_ba2ho"]
 [ext_resource type="Texture2D" uid="uid://b3avhgwq0587y" path="res://assets/sprites/lottery_slots/基地-1.png" id="4_662jj"]
 [ext_resource type="Texture2D" uid="uid://dpnahy8wmkeso" path="res://assets/sprites/lottery_slots/基地-2.png" id="5_drypt"]
 [ext_resource type="Texture2D" uid="uid://fjhknpwtlo4g" path="res://assets/sprites/lottery_slots/基地-3.png" id="6_7fxrg"]
@@ -844,14 +844,16 @@ texture = ExtResource("21_4kg5p")
 self_modulate = Color(0, 0.6509804, 1, 1)
 show_behind_parent = true
 clip_children = 2
+position = Vector2(-7, -7.75)
+scale = Vector2(1.01, 1.01)
 texture = ExtResource("22_dg1ni")
 
 [node name="Description Label" type="RichTextLabel" parent="Lottery Slot_description_screen/Lottery Slot_description_screen_fill"]
 clip_contents = false
-offset_left = -394.0
-offset_top = -203.0
-offset_right = 368.0
-offset_bottom = 228.0
+offset_left = -383.1683
+offset_top = -193.31683
+offset_right = 378.8317
+offset_bottom = 237.68317
 mouse_filter = 2
 theme = SubResource("Theme_uwqtw")
 theme_override_colors/default_color = Color(0.9098039, 1, 1, 1)
@@ -879,10 +881,10 @@ vertical_alignment = 1
 
 [node name="ScreenEffectOverlay" type="ColorRect" parent="Lottery Slot_description_screen/Lottery Slot_description_screen_fill"]
 material = SubResource("ShaderMaterial_7jhwx")
-offset_left = -514.0
-offset_top = -315.75
-offset_right = 497.0
-offset_bottom = 336.25
+offset_left = -501.9802
+offset_top = -304.9505
+offset_right = 509.0198
+offset_bottom = 347.0495
 mouse_filter = 2
 
 [node name="Input Area" type="Control" parent="."]

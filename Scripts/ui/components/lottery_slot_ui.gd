@@ -75,7 +75,7 @@ const BADGE_ANIMATION_DURATION: float = 1.0
 
 ## Hover 图标素材（占位）
 var _recycle_hover_texture: Texture2D = preload("res://assets/sprites/the_machine_switch/Recycle_icon.png")
-var _merge_hover_texture: Texture2D = preload("res://assets/sprites/icons/upgrade.png")
+var _merge_hover_texture: Texture2D = preload("res://assets/sprites/icons/upgrade_icon_hover.png")
 
 ## Hover 状态类型 (与 ItemSlotUI 保持一致)
 enum HoverType {NONE, RECYCLABLE, MERGEABLE}
