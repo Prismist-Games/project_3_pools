@@ -1,9 +1,7 @@
-[gd_scene load_steps=48 format=3 uid="uid://dcrc7hmw85gqq"]
+[gd_scene load_steps=46 format=3 uid="uid://dcrc7hmw85gqq"]
 
-[ext_resource type="Texture2D" uid="uid://bprtu4q6lify4" path="res://assets/sprites/city_bg/蓝蓝天.png" id="2_3agmw"]
 [ext_resource type="Texture2D" uid="uid://dc7coucih34ai" path="res://assets/sprites/city_bg/黑天.png" id="3_xvhlv"]
 [ext_resource type="Texture2D" uid="uid://bbbih7po115qr" path="res://assets/sprites/city_bg/星星.png" id="4_eojs8"]
-[ext_resource type="Texture2D" uid="uid://bkqwxl75hwhrs" path="res://assets/sprites/city_bg/蓝天.png" id="5_rk1d7"]
 [ext_resource type="Texture2D" uid="uid://cfqybxqdg26wt" path="res://assets/sprites/shooting_star/star-1.png" id="10_30pou"]
 [ext_resource type="Texture2D" uid="uid://dyx7bj267u0ep" path="res://assets/sprites/shooting_star/star-2.png" id="11_xai7a"]
 [ext_resource type="Texture2D" uid="uid://c3wrlcxob46ao" path="res://assets/sprites/shooting_star/star-3.png" id="12_jac82"]
@@ -352,15 +350,18 @@ _data = {
 [node name="Background" type="Node2D"]
 position = Vector2(3001, 1689.25)
 
-[node name="蓝蓝天" type="Sprite2D" parent="."]
-position = Vector2(-1, -1.75)
-scale = Vector2(3, 3)
-texture = ExtResource("2_3agmw")
-
 [node name="黑天" type="Sprite2D" parent="."]
-position = Vector2(-1, -1.75)
+position = Vector2(0, -1191.25)
 scale = Vector2(3, 3)
 texture = ExtResource("3_xvhlv")
+
+[node name="黑天天" type="ColorRect" parent="黑天"]
+show_behind_parent = true
+offset_left = -1006.0
+offset_top = -175.66667
+offset_right = 1008.0
+offset_bottom = 855.6667
+color = Color(0.2784314, 0.3647059, 0.61960787, 1)
 
 [node name="星星" type="Sprite2D" parent="."]
 position = Vector2(-3000, -1182.25)
@@ -373,10 +374,14 @@ libraries = {
 }
 autoplay = "new_animation"
 
-[node name="蓝天" type="Sprite2D" parent="."]
-position = Vector2(-1, -1.75)
+[node name="蓝天" type="ColorRect" parent="."]
+modulate = Color(1, 1, 1, 0)
+offset_left = -3005.0
+offset_top = -1694.2501
+offset_right = -1003.9999
+offset_bottom = -554.9166
 scale = Vector2(3, 3)
-texture = ExtResource("5_rk1d7")
+color = Color(0.3882353, 0.6431373, 0.9372549, 1)
 
 [node name="蓝天流星" type="AnimationPlayer" parent="蓝天"]
 libraries = {
@@ -385,7 +390,7 @@ libraries = {
 autoplay = "bluesky"
 
 [node name="Cloud" type="Sprite2D" parent="蓝天"]
-position = Vector2(-1000, -36.184937)
+position = Vector2(-1000, 527.98175)
 scale = Vector2(0.6538727, 0.65387285)
 texture = ExtResource("25_m01df")
 
@@ -396,8 +401,8 @@ libraries = {
 autoplay = "cloud"
 
 [node name="流星" type="AnimatedSprite2D" parent="."]
-position = Vector2(-794, -722.25)
-scale = Vector2(0.78332585, 0.7591726)
+position = Vector2(-855, -724.25)
+scale = Vector2(2.129, 2.064)
 sprite_frames = SubResource("SpriteFrames_ourjd")
 animation = &"流星"
 frame = 19
