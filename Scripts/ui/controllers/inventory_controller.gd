@@ -180,6 +180,8 @@ func _calculate_upgradeable_indices(inventory: Array) -> Array[int]:
 		return result
 	
 	# 按 (item_id, rarity) 分组，记录每个组合的索引列表
+	# 按 (item_id -> rarity) 分组，记录每个组合的索引列表
+	# 优化：使用嵌套字典代替字符串拼接 Key，减少 GC
 	var groups: Dictionary = {}
 	
 	for i in range(inventory.size()):
@@ -197,18 +199,26 @@ func _calculate_upgradeable_indices(inventory: Array) -> Array[int]:
 		if item.is_expired:
 			continue
 		
-		var key = str(item.item_data.id) + "_" + str(item.rarity)
-		if not groups.has(key):
-			groups[key] = []
-		groups[key].append(i)
+		# 第一层 Key: Item ID (StringName)
+		var id = item.item_data.id
+		if not groups.has(id):
+			groups[id] = {}
+			
+		# 第二层 Key: Rarity (int)
+		var rarity = item.rarity
+		if not groups[id].has(rarity):
+			groups[id][rarity] = []
+			
+		groups[id][rarity].append(i)
 	
 	# 找出有 2 个或更多物品的组，它们可以合成
-	for key in groups:
-		var indices = groups[key]
-		if indices.size() >= 2:
-			for idx in indices:
-				if idx not in result:
-					result.append(idx)
+	for id in groups:
+		for rarity in groups[id]:
+			var indices = groups[id][rarity]
+			if indices.size() >= 2:
+				for idx in indices:
+					if idx not in result:
+						result.append(idx)
 	
 	return result
 
