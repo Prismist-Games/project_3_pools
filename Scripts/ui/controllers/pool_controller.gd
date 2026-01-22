@@ -281,6 +281,12 @@ func _calculate_upgradeable_state(item: ItemInstance) -> bool:
 	for inv_item in InventorySystem.inventory:
 		if inv_item == null:
 			continue
+		# 【修复】关键：排除自匹配。
+		# 在批量抽奖（如“稀碎的”）中，物品可能已在数据层进入背包。
+		# 我们必须确保是找到了“另一个”同名物品，而不是匹配到了由于数据提前同步而在背包里存在的“自己”。
+		if inv_item == item:
+			continue
+			
 		if inv_item.sterile:
 			continue
 		if inv_item.rarity >= Constants.Rarity.MYTHIC:
