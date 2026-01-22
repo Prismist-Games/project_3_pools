@@ -72,12 +72,12 @@ AFFIX_TRADE_IN,Trade-in,以旧换新
 AFFIX_VOLATILE,Volatile,波动的
 
 # Pool Affix Descriptions (奖池词缀描述)
-AFFIX_FRAGMENTED_DESC,Draw 3 items at once but all are  [img=60]res://assets/sprites/icons/rarity_common.png[/img]  quality.,一次抽取 3 个物品，但必定是 [img=60]res://assets/sprites/icons/rarity_common.png[/img] 品质。
+AFFIX_FRAGMENTED_DESC,Draw 3 items at once but all are  [img=60]res://assets/sprites/icons/rarity_common.png[/img]  quality.,一次抽取 3 件物品，但必定是 [img=60]res://assets/sprites/icons/rarity_common.png[/img] 品质。
 AFFIX_HARDENED_DESC,"Higher quality, but items are Sterile and cannot be merged.",物品的品质提升，但带有绝育效果，无法合成。
 AFFIX_PRECISE_DESC,Choose one from 2 different items.,从2个不同的候选物品中任选其一。
-AFFIX_PURIFIED_DESC,Guaranteed  [img=60]res://assets/sprites/icons/rarity_rare.png[/img]  quality or above.,保底抽出 [img=60]res://assets/sprites/icons/rarity_rare.png[/img] 及以上品质的物品。
-AFFIX_TARGETED_DESC,Choose item type before drawing.,指定一个物品抽取。
-AFFIX_TRADE_IN_DESC,"Consume 1 item to exchange for same quality item, small chance to upgrade.",使用背包内的 1 个物品随机置换同品质物品，极小几率提升品质。
+AFFIX_PURIFIED_DESC,Guaranteed  [img=60]res://assets/sprites/icons/rarity_rare.png[/img]  quality or above.,必定抽出 [img=60]res://assets/sprites/icons/rarity_rare.png[/img] 及以上品质的物品。
+AFFIX_TARGETED_DESC,Choose item type before drawing.,指定一种物品抽取。
+AFFIX_TRADE_IN_DESC,"Consume 1 item to exchange for same quality item, small chance to upgrade.",使用背包内的 1 件物品随机置换同品质物品，极小几率提升品质。
 AFFIX_VOLATILE_DESC,Only draws  [img=60]res://assets/sprites/icons/rarity_common.png[/img]  or  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  (high  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  chance).,仅会抽出 [img=60]res://assets/sprites/icons/rarity_common.png[/img] 或 [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]品质的物品，  ( [img=60]res://assets/sprites/icons/rarity_legendary.png[/img] 品质道具几率大幅提升)。
 
 # =====================================================================
@@ -109,7 +109,7 @@ SKILL_DESC_GOOD_LUCK_NEXT,After completing any order: next draw guaranteed  [img
 SKILL_DESC_HARD_ORDER_EXPERT,Completing orders requiring  [img=60]res://assets/sprites/icons/rarity_epic.png[/img]  + items: +10 Gold.,完成需要 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 以上品质物品的订单时，额外获得 10 金币。
 SKILL_DESC_LUCKY_7,When Gold ends in 7:  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  chance is doubled.,当前金币数量尾数为 7 时，抽到 [img=60]res://assets/sprites/icons/rarity_legendary.png[/img] 品质的概率翻倍。
 SKILL_DESC_NEGOTIATOR,When drawing or merging  [img=60]res://assets/sprites/icons/rarity_epic.png[/img]  + items: all orders gain 1 refresh.,抽到或合成 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 及以上品质物品时，所有订单获得 1 次刷新次数。
-SKILL_DESC_OCD,"When submitting: if all items are same type, reward is doubled.",提交订单时若所有物品为同一类型，则奖励翻倍。
+SKILL_DESC_OCD,"When submitting: if all items are same type, reward is doubled.",提交订单时若所有物品为同一形状，则奖励翻倍。
 SKILL_DESC_POVERTY_RELIEF,When Gold < 5: order reward +5.,持有金币 < 5 时，完成订单的金币奖励额外 +5。
 SKILL_DESC_TIME_FREEZE,When refreshing an order: 20% chance to not consume refresh count.,刷新单个订单时，20% 概率不消耗该订单的刷新次数。
 SKILL_DESC_VIP_DISCOUNT,"""Precise"" and ""Targeted"" pools cost 1 less Gold.","""精准""和""有的放矢""词缀的奖池金币消耗减少 1。"
@@ -142,11 +142,11 @@ UI_GOLD_DISPLAY,Gold: %d,金币: %d
 # =====================================================================
 # Dialog Messages (对话消息)
 # =====================================================================
-DIALOG_SKILL_SELECT,Choose a skill.,请选择需要的技能。
+DIALOG_SKILL_SELECT,Choose a skill.,请选择技能。
 DIALOG_SKILL_FULL,Skill slots full! Choose one to replace.,技能槽满！请选择需要替换的技能。
-DIALOG_TARGETED,Choose item type.,请选择想要的物品类型。
+DIALOG_TARGETED,Choose item type.,请选择一种物品。
 DIALOG_TRADE_IN,Choose an item to exchange.,请选择要置换的物品。
-DIALOG_PRECISE,Choose one item.,请选择一个物品。
+DIALOG_PRECISE,Choose one item.,请选择一件物品。
 DIALOG_INVENTORY_FULL,"Inventory full, Replace an item or recycle the new one.",背包已满，请替换一件背包内的物品，或回收当前奖品。
 DIALOG_ERA3_TYPE_FULL,"Too many item types, replace or recycle.",物品种类过多，请替换一种背包内的物品，或回收当前奖品。
 DIALOG_RECYCLE,Choose items to recycle.,请选择要回收的物品。
@@ -174,9 +174,9 @@ MODAL_CANCEL,Cancel,取消
 MODAL_ABANDON,Abandon,放弃
 MODAL_ERA_1,[font_size=100][color=gold]VANILLA ERA[/color][/font_size]\n\nThe most primal era. The best era. No special rules.,[font_size=100][color=gold]香草时代[/color][/font_size]\n\n最原始的时代，最好的时代，没有特殊规则。
 MODAL_ERA_2,[font_size=100][color=gold]VOLATILE ERA[/color][/font_size]\n\nPrices become extremely unstable. Pool costs will fluctuate randomly after each draw.,[font_size=100][color=gold]波动时代[/color][/font_size]\n\n价格变得及其不稳定，每次抽奖后，奖池的金币消耗会随机变化。
-MODAL_ERA_3,[font_size=100][color=gold]MODERN ERA[/color][/font_size]\n\nStricter standards and limits. Your inventory can only hold 7 different item types.,[font_size=100][color=gold]摩登时代[/color][/font_size]\n\n更严格的标准和限制，你的背包中只能保留7种不同名称的道具。
+MODAL_ERA_3,[font_size=100][color=gold]MODERN ERA[/color][/font_size]\n\nStricter standards and limits. Your inventory can only hold 7 different item types.,[font_size=100][color=gold]摩登时代[/color][/font_size]\n\n更严格的标准和限制，背包中只能保留7种不同种类的道具。
 MODAL_ERA_4,[font_size=100][color=gold]DECAY ERA[/color][/font_size]\n\nAll items have an expiry date. Expired items become junk and can only be recycled.,[font_size=100][color=gold]变质时代[/color][/font_size]\n\n所有物品都有保质期，逾期的物品会变成废品，只能用于回收。
-MODAL_ERA_ENDING,[font_size=100][color=gold]THE END[/color][/font_size]\n\nThanks for playing this prototype! We will continue to improve the game based on your feedback. Still a lot of work to do! See you in the near future!,[font_size=100][color=gold]游戏结束[/color][/font_size]\n\n感谢你游玩这个小原型！我们会基于你的反馈继续完善这个作品。还有很多工作，期待日后再见！
+MODAL_ERA_ENDING,[font_size=100][color=gold]THANKS FOR PLAYING[/color][/font_size]\n\nWe will continue to improve the game based on your feedback. See you in the near future!,[font_size=100][color=gold]感谢游玩[/color][/font_size]\n\n我们会基于你的反馈继续完善这个游戏，期待再见！
 
 # =====================================================================
 # Pool Card (奖池卡片)
@@ -195,7 +195,7 @@ LEGACY_TOOLTIP,Order Reward Boost,订单收益加成
 # =====================================================================
 # ERA_3 DLC Panel (第三时代 DLC 面板)
 # =====================================================================
-DLC_TYPE_COUNT,Item Types: %d / %d,道具种类: %d / %d
+DLC_TYPE_COUNT,Item Types: %d / %d,物品种类: %d / %d
 
 # =====================================================================
 # Cancel Dialogs (取消按钮对话)
