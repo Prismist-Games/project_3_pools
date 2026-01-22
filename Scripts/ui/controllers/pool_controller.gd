@@ -248,6 +248,7 @@ func _get_slot_node(index: int) -> Control:
 
 func _calculate_badge_state(item: ItemInstance) -> int:
 	var badge_state = 0
+	if item.is_expired: return 0
 	# 与 InventoryController 保持一致的逻辑
 	if not OrderSystem: return 0
 	
@@ -292,6 +293,9 @@ func _calculate_upgradeable_state(item: ItemInstance) -> bool:
 		if inv_item.rarity >= Constants.Rarity.MYTHIC:
 			continue
 		if inv_item.rarity >= UnlockManager.merge_limit:
+			continue
+		# 过期物品不可合成
+		if inv_item.is_expired:
 			continue
 		# 匹配同名同品质
 		if inv_item.item_data.id == item.item_data.id and inv_item.rarity == item.rarity:

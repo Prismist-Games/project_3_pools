@@ -152,6 +152,7 @@ func update_slot(index: int, item: ItemInstance) -> void:
 
 func _calculate_badge_state(item: ItemInstance) -> int:
 	var badge_state = 0
+	if item.is_expired: return 0
 	# Access OrderSystem directly (Controller knows about Systems)
 	for order in OrderSystem.current_orders:
 		for req in order.requirements:
@@ -188,6 +189,8 @@ func _calculate_upgradeable_indices(inventory: Array) -> Array[int]:
 			continue
 		if item.rarity >= UnlockManager.merge_limit:
 			continue
+		if item.is_expired:
+			continue
 		
 		var key = str(item.item_data.id) + "_" + str(item.rarity)
 		if not groups.has(key):
@@ -223,6 +226,8 @@ func _calculate_pending_upgradeable_indices(pending_item: ItemInstance, inventor
 		return result
 	if pending_item.rarity >= UnlockManager.merge_limit:
 		return result
+	if pending_item.is_expired:
+		return result
 	
 	# 在背包中找同名同品质的物品
 	for i in range(inventory.size()):
@@ -235,6 +240,8 @@ func _calculate_pending_upgradeable_indices(pending_item: ItemInstance, inventor
 		if item.rarity >= Constants.Rarity.MYTHIC:
 			continue
 		if item.rarity >= UnlockManager.merge_limit:
+			continue
+		if item.is_expired:
 			continue
 		# 匹配同名同品质
 		if item.item_data.id == pending_item.item_data.id and item.rarity == pending_item.rarity:
