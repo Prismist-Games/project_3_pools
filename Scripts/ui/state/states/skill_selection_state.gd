@@ -268,9 +268,6 @@ func _reveal_skill_slot(slot: Control, skill: SkillData, index: int) -> void:
 	
 	_clear_slot_hints(slot)
 	
-	if slot.price_icon:
-		slot.price_icon.visible = false
-		
 	var config = {
 		"price_text": "",
 		"affix_name": skill.name,

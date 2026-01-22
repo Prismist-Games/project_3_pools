@@ -965,11 +965,6 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 		target_price.text = cost_text
 		target_price.visible = true # 强制保持可见，即使文本为空
 	
-	# Price Icon 逻辑 (始终保持可见)
-	if not target_pseudo and price_icon:
-		price_icon.texture = preload("res://assets/sprites/icons/money.png")
-		price_icon.visible = true # 强制保持可见
-	
 	# 金币不足警告：更新显示屏颜色 (仅更新 True 节点时执行，避免影响动画)
 	if not target_pseudo:
 		_update_screen_affordability(pool)
