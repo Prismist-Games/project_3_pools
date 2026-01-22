@@ -22,6 +22,9 @@ var selected_slot_index: int = -1
 ## 是否已经做出了选择（防止重复点击）
 var _has_made_selection: bool = false
 
+## 揭示动画是否已完成（防止在动画期间选择）
+var _reveal_complete: bool = false
+
 ## Hover 信号连接引用（用于清理）
 var _hover_connections: Array[Dictionary] = []
 
@@ -30,6 +33,7 @@ func enter(payload: Dictionary = {}) -> void:
 	source_pool_index = payload.get("source_pool_index", -1)
 	selected_slot_index = -1
 	_has_made_selection = false
+	_reveal_complete = false
 	
 	if not controller:
 		push_error("[PreciseSelectionState] controller 未设置")
@@ -52,6 +56,7 @@ func exit() -> void:
 	if machine and machine.pending_state_name == &"Replacing":
 		# 只做基本清理
 		_has_made_selection = false
+		_reveal_complete = false
 		options.clear()
 		source_pool_index = -1
 		# 注意：不清除 selected_slot_index，Replacing 需要知道来源
@@ -85,6 +90,7 @@ func exit() -> void:
 		controller.pending_source_pool_idx = -1
 	
 	_has_made_selection = false
+	_reveal_complete = false
 	options.clear()
 	source_pool_index = -1
 	selected_slot_index = -1
@@ -97,6 +103,10 @@ func can_transition_to(_next_state: StringName) -> bool:
 
 ## 玩家选择其中一个选项
 func select_option(index: int) -> void:
+	# 阻止在揭示动画期间选择
+	if not _reveal_complete:
+		return
+	
 	if _has_made_selection:
 		return
 		
@@ -179,31 +189,17 @@ func _setup_precise_display() -> void:
 		"price_text": "",
 		"affix_name": "AFFIX_CHOOSE_ONE",
 		"description_text": "",
-		"clear_hints": true,
-		"skip_lid_animation": true # 关键：进入二选一时跳过盖子的推挤位移
+		"clear_hints": true
 	}
 	
-	# 1. 先并行更新所有槽位的数据（带推挤动画）
-	# 使用同步计数器等待所有推挤动画完成
-	var refresh_sync_state = {"finished_count": 0, "total_count": 0}
+	# 使用 instant=true 直接设置 UI（无推挤动画）
 	for i in range(3):
 		var slot = _get_slot(i)
 		if not slot: continue
-		refresh_sync_state.total_count += 1
-		
-		# 使用 instant=false 启用推挤动画
 		if slot.has_method("refresh_slot_data"):
-			# 异步调用并在完成后递增计数器
-			var refresh_task = func():
-				await slot.refresh_slot_data(selection_ui_config, false)
-				refresh_sync_state.finished_count += 1
-			refresh_task.call()
+			slot.refresh_slot_data(selection_ui_config, true)
 	
-	# 等待所有推挤动画完成
-	while refresh_sync_state.finished_count < refresh_sync_state.total_count:
-		await controller.get_tree().process_frame
-	
-	# 【改动】等待所有揭示动画播放完成
+	# 等待所有揭示动画播放完成
 	var total_to_wait = 0
 	for i in range(mini(options.size(), 2)):
 		var slot = _get_slot(i)
@@ -216,7 +212,6 @@ func _setup_precise_display() -> void:
 			slot.reveal_finished.connect(func(_idx): sync_state.finished_count += 1, CONNECT_ONE_SHOT)
 			var item = options[i]
 			slot.play_reveal_sequence([item], false, false)
-			# ... 其余逻辑保持不变 ...
 			slot.current_pool_item_type = -1
 			if controller.pool_controller:
 				if slot.has_method("update_status_badge"):
@@ -224,9 +219,6 @@ func _setup_precise_display() -> void:
 				if slot.has_method("set_upgradeable_badge"):
 					slot.set_upgradeable_badge(controller.pool_controller._calculate_upgradeable_state(item))
 			_connect_slot_hover(i, item.item_data.id)
-		else:
-			# slot_2 确保它是关着的
-			pass # 这部分移到了后面统一处理
 	
 	# 单独处理 slot_2 的初始状态
 	var slot_2 = _get_slot(2)
@@ -235,13 +227,16 @@ func _setup_precise_display() -> void:
 			slot_2.lid_sprite.position.y = 0
 		slot_2.current_pool_item_type = -1
 	
-	# 【优化】通知背包控制器，考虑当前的 options 进行角标高亮
+	# 通知背包控制器，考虑当前的 options 进行角标高亮
 	if controller and controller.inventory_controller:
 		controller.inventory_controller.refresh_upgradeable_badges(options)
 	
-	# 等待所有动画完成
+	# 等待所有揭示动画完成
 	while sync_state.finished_count < total_to_wait:
 		await controller.get_tree().process_frame
+	
+	# 揭示完成，允许玩家选择
+	_reveal_complete = true
 	
 	# 完成后解锁界面
 	if controller.pool_controller:
@@ -249,7 +244,6 @@ func _setup_precise_display() -> void:
 	
 	controller.unlock_ui("precise_selection")
 
-const PUSH_DURATION: float = 0.4
 
 ## 为特定 slot 连接 hover 信号
 func _connect_slot_hover(slot_index: int, item_id: StringName) -> void:
