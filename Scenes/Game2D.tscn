@@ -1833,7 +1833,6 @@ mouse_force_pass_scroll_events = false
 color = Color(0, 0, 0, 0.5019608)
 
 [node name="Popup Window" type="TextureRect" parent="."]
-visible = false
 z_index = 11
 layout_mode = 0
 offset_left = 1657.0
