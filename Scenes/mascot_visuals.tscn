@@ -1,6 +1,6 @@
 [gd_scene load_steps=105 format=3 uid="uid://b2mfixaghaocc"]
 
-[ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="1_fu8yu"]
+[ext_resource type="Script" uid="uid://cbgpwgg5nq1ds" path="res://scripts/ui/the_rabbit_animator.gd" id="1_fu8yu"]
 [ext_resource type="AudioStream" uid="uid://bmus83sm4cx3t" path="res://assets/audio/sfx/381588__dorianmastin__snd_impactheavywall01.wav" id="2_kmeeb"]
 [ext_resource type="Texture2D" uid="uid://ciklekvdp5hak" path="res://assets/sprites/the_rabbit/the_rabbit_left_arm.png" id="2_vpgxp"]
 [ext_resource type="AudioStream" uid="uid://hp7wuy3elrv2" path="res://assets/audio/sfx/381591__dorianmastin__snd_impactheavywall04.wav" id="3_cs4hr"]
@@ -51,7 +51,7 @@
 [ext_resource type="Texture2D" uid="uid://dokmgcwoitk6l" path="res://assets/sprites/the_rabbit/the_rabbit_right_hand.png" id="30_2b3qy"]
 [ext_resource type="Texture2D" uid="uid://civ4kyrhjhqsk" path="res://assets/sprites/the_rabbit/era_4/randomness(6).png" id="30_cqiiw"]
 [ext_resource type="Texture2D" uid="uid://dwjjehmoy0bsm" path="res://assets/sprites/the_rabbit/era_4/randomness(7).png" id="31_2b3qy"]
-[ext_resource type="Shader" uid="uid://cjhdeyga11esx" path="res://assets/shaders/eye_procedural.gdshader" id="31_wrirs"]
+[ext_resource type="Shader" uid="uid://c3t63kdutee44" path="res://assets/shaders/eye_procedural.gdshader" id="31_wrirs"]
 [ext_resource type="Texture2D" uid="uid://bkkaooxm634js" path="res://assets/sprites/the_rabbit/era_4/randomness(8).png" id="32_wrirs"]
 [ext_resource type="Texture2D" uid="uid://c1v0nvxbrf6c" path="res://assets/sprites/the_rabbit/the_rabbit_right_eye_fill.png" id="32_xscfi"]
 [ext_resource type="Texture2D" uid="uid://defnrkt223vrw" path="res://assets/sprites/the_rabbit/the_rabbit_left_eye_fill.png" id="33_d56hm"]
@@ -1333,7 +1333,7 @@ libraries = {
 }
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-volume_db = -15.0
+volume_db = -17.0
 
 [node name="TheRabbitLeftArm" type="Sprite2D" parent="."]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)

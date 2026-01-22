@@ -7,5 +7,5 @@
 script = ExtResource("1_7hg26")
 id = &"targeted_panel_opened"
 stream = ExtResource("2_7hg26")
-volume_db = -15.0
+volume_db = -5.0
 bus = "SFX"

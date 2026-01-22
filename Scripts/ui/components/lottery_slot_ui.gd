@@ -1056,12 +1056,14 @@ func _update_screen_affordability(pool: Variant) -> void:
 	const NORMAL_BLUE_COLOR: Color = Color(0, 0.6509804, 1, 1) # 蓝色
 	
 	# 更新三块显示屏颜色
+	var screen_color_change_tween: Tween = create_tween().set_parallel(true)
 	if top_screen_fill:
-		top_screen_fill.self_modulate = INSUFFICIENT_GOLD_COLOR if not can_afford else NORMAL_GREEN_COLOR
+		screen_color_change_tween.tween_property(top_screen_fill, "self_modulate", INSUFFICIENT_GOLD_COLOR if not can_afford else NORMAL_GREEN_COLOR, 1).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 	if description_screen_fill:
-		description_screen_fill.self_modulate = INSUFFICIENT_GOLD_COLOR if not can_afford else NORMAL_BLUE_COLOR
+		screen_color_change_tween.tween_property(description_screen_fill, "self_modulate", INSUFFICIENT_GOLD_COLOR if not can_afford else NORMAL_BLUE_COLOR, 1).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 	if right_screen_fill:
-		right_screen_fill.modulate = INSUFFICIENT_GOLD_COLOR if not can_afford else NORMAL_GREEN_COLOR
+		screen_color_change_tween.tween_property(right_screen_fill, "modulate", INSUFFICIENT_GOLD_COLOR if not can_afford else NORMAL_GREEN_COLOR, 1).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	await screen_color_change_tween.finished
 
 
 ## 金币变化回调：重新检测显示屏颜色
