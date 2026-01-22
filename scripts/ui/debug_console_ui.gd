@@ -29,6 +29,9 @@ extends PanelContainer
 @onready var force_draw_rarity_option: OptionButton = %ForceDrawRarityOption
 @onready var force_draw_rarity_toggle: CheckButton = %ForceDrawRarityToggle
 
+@onready var era_selector_option: OptionButton = %EraSelectorOption
+@onready var switch_era_button: Button = %SwitchEraButton
+
 @onready var show_tutorial_button: Button = %ShowTutorialButton
 
 
@@ -84,6 +87,7 @@ func _setup_ui() -> void:
 	_setup_affix_toggles()
 	_setup_generation_ui()
 	_setup_skill_list()
+	_setup_era_list()
 	_setup_force_draw_rarity()
 
 
@@ -161,6 +165,9 @@ func _connect_signals() -> void:
 	
 	# 教程测试按钮
 	show_tutorial_button.pressed.connect(_on_show_tutorial_pressed)
+	
+	# 时代切换按钮
+	switch_era_button.pressed.connect(_on_switch_era_pressed)
 	
 	# 监听抽奖请求以强制品质
 	EventBus.draw_requested.connect(_on_draw_requested_for_force_rarity)
@@ -499,3 +506,28 @@ func _on_draw_requested_for_force_rarity(ctx: DrawContext) -> void:
 	var forced_rarity = force_draw_rarity_option.get_selected_id()
 	ctx.force_rarity = forced_rarity
 	print("[DebugConsole] 强制抽奖品质: %s" % Constants.rarity_display_name(forced_rarity))
+
+
+func _setup_era_list() -> void:
+	"""初始化时代下拉框"""
+	era_selector_option.clear()
+	if not GameManager.game_config:
+		return
+		
+	var configs = GameManager.game_config.era_configs
+	for i in range(configs.size()):
+		var cfg = configs[i]
+		era_selector_option.add_item("时代 %d: %s" % [i + 1, cfg.era_name], i)
+	
+	# 默认选中当前时代
+	era_selector_option.selected = EraManager.current_era_index
+
+
+func _on_switch_era_pressed() -> void:
+	"""执行时代切换"""
+	var era_index = era_selector_option.get_selected_id()
+	print("[DebugConsole] 手动切换至时代 %d" % era_index)
+	EraManager.start_era(era_index)
+	
+	# 切换后同步一次 UI
+	_sync_from_unlock_manager()

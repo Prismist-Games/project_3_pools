@@ -60,12 +60,6 @@ var interaction_mode: InteractionMode = InteractionMode.NORMAL
 
 func _ready() -> void:
 	EventBus.item_obtained.connect(_on_item_obtained)
-	
-	# 如果 GameConfig 已经加载，初始化背包大小
-	# 注意：GameManager 初始化顺序可能在 InventorySystem 之后（Autoload 顺序）
-	# 所以这里不强求立即初始化，可以等待 GameManager 调用 initialize_inventory
-	if GameManager.game_config:
-		initialize_inventory(GameManager.game_config.inventory_size)
 
 # --- 初始化与大小管理 ---
 

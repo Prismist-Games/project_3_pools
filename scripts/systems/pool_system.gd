@@ -148,16 +148,19 @@ func _generate_normal_pool(excluded_types: Array[Constants.ItemType] = [], exclu
 	# 2. 随机选择词缀 (开局即拥有)
 	_assign_random_affix(pool, excluded_affixes)
 	
-	# 3. 计算费用
-	var initial_cost = 5
-	if GameManager.game_config != null:
-		initial_cost = GameManager.game_config.normal_draw_gold_cost
+	# 3. 计算费用 (如果没有词缀，默认费用为 0)
+	var base_cost = 0
 	
 	# ERA_2: 价格波动（通过效果系统）
 	var cfg = EraManager.current_config
 	if cfg:
 		var price_effect = cfg.get_effect_of_type("PriceFluctuationEffect")
 		if price_effect:
+			# 这里我们将默认费用（0）传给词缀，由词缀决定最终价格
+			pool.gold_cost = base_cost
+			if pool.affix_data != null:
+				pool.gold_cost = pool.affix_data.base_gold_cost
+				
 			price_effect.apply_to_pool(pool, GameManager.rng)
 			return pool
 	
@@ -165,7 +168,7 @@ func _generate_normal_pool(excluded_types: Array[Constants.ItemType] = [], exclu
 	if pool.affix_data != null:
 		pool.gold_cost = pool.affix_data.base_gold_cost
 	else:
-		pool.gold_cost = initial_cost
+		pool.gold_cost = base_cost
 			
 	return pool
 

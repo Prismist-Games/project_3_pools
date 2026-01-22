@@ -314,6 +314,32 @@ text = "全部解锁"
 layout_mode = 2
 text = "全部锁定"
 
+[node name="HSeparator12" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="EraTestLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "时代测试"
+
+[node name="EraRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/EraRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "目标时代"
+
+[node name="EraSelectorOption" type="OptionButton" parent="MarginContainer/ScrollContainer/VBoxContainer/EraRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SwitchEraButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "立即切换时代 (将重置金币/背包)"
+
 [node name="HSeparator10" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
