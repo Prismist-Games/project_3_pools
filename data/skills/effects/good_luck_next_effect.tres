@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="GoodLuckNextSkillEffect" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="GoodLuckNextSkillEffect" load_steps=2 format=3 uid="uid://bd6lxj4eaekop"]
 
-[ext_resource type="Script" path="res://scripts/resources/skill_resources/skill_effects/good_luck_next_skill_effect.gd" id="1"]
+[ext_resource type="Script" uid="uid://7tc3dfws1giw" path="res://scripts/resources/skill_resources/skill_effects/good_luck_next_skill_effect.gd" id="1"]
 
 [resource]
 script = ExtResource("1")

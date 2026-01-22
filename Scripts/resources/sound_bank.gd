@@ -19,18 +19,23 @@ func load_from_dir(path: String = "") -> void:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
-			if not dir.current_is_dir() and file_name.ends_with(".tres"):
-				# 尝试加载资源
-				var res_path = path + "/" + file_name
-				var res = load(res_path)
-				if res is SoundBankEntry:
-					# 检查 stream 是否有效
-					if not res.stream:
-						push_warning("SoundBank: Entry '%s' has no audio stream, skipping" % res.id)
-					elif not _has_entry(res):
-						entries.append(res)
-				elif res == null:
-					push_warning("SoundBank: Failed to load resource at '%s'" % res_path)
+			if not dir.current_is_dir():
+				# 处理导出后的 .remap 文件
+				if file_name.ends_with(".remap"):
+					file_name = file_name.trim_suffix(".remap")
+
+				if file_name.ends_with(".tres"):
+					# 尝试加载资源
+					var res_path = path + "/" + file_name
+					var res = load(res_path)
+					if res is SoundBankEntry:
+						# 检查 stream 是否有效
+						if not res.stream:
+							push_warning("SoundBank: Entry '%s' has no audio stream, skipping" % res.id)
+						elif not _has_entry(res):
+							entries.append(res)
+					elif res == null:
+						push_warning("SoundBank: Failed to load resource at '%s'" % res_path)
 			file_name = dir.get_next()
 		
 		# 排序以便于管理

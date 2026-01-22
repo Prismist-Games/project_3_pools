@@ -79,6 +79,9 @@ func is_showing() -> bool:
 
 ## 上一页按钮回调
 func _on_prev_pressed() -> void:
+	# 触发按钮音效
+	EventBus.game_event.emit(&"button_click", null)
+	
 	if current_slide_index <= 1:
 		return
 	
@@ -87,6 +90,9 @@ func _on_prev_pressed() -> void:
 
 ## 下一页按钮回调
 func _on_next_pressed() -> void:
+	# 触发按钮音效
+	EventBus.game_event.emit(&"button_click", null)
+	
 	if current_slide_index >= TOTAL_SLIDES:
 		return
 	
@@ -95,6 +101,9 @@ func _on_next_pressed() -> void:
 
 ## 关闭按钮回调
 func _on_close_pressed() -> void:
+	# 触发按钮音效
+	EventBus.game_event.emit(&"button_click", null)
+	
 	hide_tutorial()
 
 

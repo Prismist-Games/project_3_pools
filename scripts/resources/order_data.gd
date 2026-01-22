@@ -31,7 +31,7 @@ func can_fulfill(inventory: Array) -> bool:
 		
 		var found = false
 		for it in inventory:
-			if it != null and it.item_data.id == item_id and it.rarity >= min_rarity:
+			if it != null and not it.is_expired and it.item_data.id == item_id and it.rarity >= min_rarity:
 				found = true
 				break
 		
@@ -51,7 +51,7 @@ func get_fulfillment_items(inventory: Array) -> Array[ItemInstance]:
 		
 		var best_match: ItemInstance = null
 		for it in inventory:
-			if it != null and it.item_data.id == item_id and it.rarity >= min_rarity:
+			if it != null and not it.is_expired and it.item_data.id == item_id and it.rarity >= min_rarity:
 				if best_match == null or it.rarity > best_match.rarity:
 					best_match = it
 		
@@ -72,7 +72,7 @@ func find_smart_selection(inventory: Array) -> Array[int]:
 		var best_idx = -1
 		for i in range(inventory.size()):
 			var it = inventory[i]
-			if it != null and it.item_data.id == item_id and it.rarity >= min_rarity:
+			if it != null and not it.is_expired and it.item_data.id == item_id and it.rarity >= min_rarity:
 				if best_idx == -1 or it.rarity > inventory[best_idx].rarity:
 					best_idx = i
 		
@@ -99,7 +99,7 @@ func calculate_preview_rewards(selected_items: Array) -> Dictionary:
 		
 		var is_req_fulfilled = false
 		for it in selected_items:
-			if it != null and it.item_data.id == item_id and it.rarity >= min_rarity:
+			if it != null and not it.is_expired and it.item_data.id == item_id and it.rarity >= min_rarity:
 				is_req_fulfilled = true
 				break
 		

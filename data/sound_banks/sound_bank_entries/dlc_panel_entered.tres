@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SoundBankEntry" load_steps=3 format=3 uid="uid://d3w4mubaa7ncg"]
+
+[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1"]
+[ext_resource type="AudioStream" uid="uid://brmihe0ggm3b7" path="res://assets/audio/sfx/cabinet_open.wav" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"dlc_panel_entered"
+stream = ExtResource("2")
+volume_db = -15.0
+max_polyphony = 1
+bus = "SFX"

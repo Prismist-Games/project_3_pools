@@ -58,6 +58,7 @@ func exit() -> void:
 		
 	if controller:
 		controller.unlock_ui("draw")
+		controller.set_updates_suppressed(false)
 	pool_index = -1
 	is_draw_complete = false
 
@@ -95,6 +96,7 @@ func draw() -> void:
 	controller.pending_source_pool_idx = pool_index
 	
 	controller.lock_ui("draw")
+	controller.set_updates_suppressed(true) # 暂停立即UI刷新，转交给VFX Landing
 	
 	# 清除选中状态，因为抽奖操作与整理操作是不同的上下文
 	if InventorySystem.selected_slot_index != -1:
@@ -103,6 +105,9 @@ func draw() -> void:
 	# 关键修复：在此处暂停 VFX 队列，防止物品在盖子还没开时就飞走
 	if controller.vfx_manager:
 		controller.vfx_manager.is_paused = true
+	
+	# 关键修复：在抽奖之前设置揭示标志，防止角标在揭示完成前显示
+	slot._is_reveal_in_progress = true
 	
 	# 临时捕获所有获得的物品（包括直接进背包的）
 	var captured_items: Array[ItemInstance] = []
@@ -118,6 +123,9 @@ func draw() -> void:
 		if controller.vfx_manager:
 			controller.vfx_manager.is_paused = false
 		
+		# 重置揭示标志
+		slot._is_reveal_in_progress = false
+		
 		# 触发金币不足音效信号
 		EventBus.game_event.emit(&"gold_insufficient", null)
 		
@@ -125,6 +133,7 @@ func draw() -> void:
 		slot.play_shake()
 		controller.last_clicked_pool_idx = -1
 		controller.unlock_ui("draw")
+		controller.set_updates_suppressed(false)
 		
 		# 关键：清除 pool_index，防止 exit() 刷新奖池
 		pool_index = -1
@@ -138,6 +147,13 @@ func draw() -> void:
 	if machine.get_current_state_name() != &"Drawing":
 		# 词缀已处理流程（如 TradeIn），解锁 UI 并退出
 		controller.unlock_ui("draw")
+		controller.set_updates_suppressed(false)
+		
+		# [修复] 只有在非选择模式下才重置揭示标志，防止打断 PreciseSelection/TargetedSelection 初始化时的 reveal 状态
+		var next_state = machine.get_current_state_name()
+		if next_state not in [&"PreciseSelection", &"TargetedSelection"]:
+			slot._is_reveal_in_progress = false # 重置揭示标志
+			
 		if controller.vfx_manager:
 			controller.vfx_manager.is_paused = false
 		return
@@ -155,6 +171,12 @@ func draw() -> void:
 	# 如果 pending 为空，说明物品可能已经进背包了（VFX 正在播，但由于我们暂停了，它们还没动）
 	# 我们仍然开启盖子以显示内部或仅仅作为状态转换的视觉停留
 	await slot.play_reveal_sequence(display_items)
+
+	# [Reveal Phase End] 更新抽奖栏订单角标
+	if controller.pool_controller:
+		# 强制刷新即使是在 drawing 状态，以便显示 "Owned" 或更新 Check 状态
+		# 这里的刷新时机对应用户期望的“物品黑色覆盖被揭开的时刻”（即 reveal 动画刚播完）
+		controller.pool_controller.refresh_all_order_hints(true)
 	
 	# 盖子已经全开了，现在恢复 VFX 队列让物品飞出来
 	if controller.vfx_manager:

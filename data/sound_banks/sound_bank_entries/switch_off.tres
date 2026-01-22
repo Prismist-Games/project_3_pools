@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SoundBankEntry" load_steps=3 format=3 uid="uid://cxb8ga08tnoei"]
 
-[ext_resource type="Script" path="res://scripts/resources/sound_bank_entry.gd" id="1_c7mpf"]
+[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_c7mpf"]
 [ext_resource type="AudioStream" uid="uid://ckl6jeynut4qo" path="res://assets/audio/sfx/71684__lg__switch-09.wav" id="2_ltw7k"]
 
 [resource]
@@ -8,3 +8,4 @@ script = ExtResource("1_c7mpf")
 id = &"switch_off"
 stream = ExtResource("2_ltw7k")
 volume_db = -20.0
+bus = "SFX"

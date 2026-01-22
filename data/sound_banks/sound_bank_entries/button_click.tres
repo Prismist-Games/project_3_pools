@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SoundBankEntry" load_steps=4 format=3 uid="uid://dum68udd5tw7h"]
+
+[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1"]
+[ext_resource type="AudioStream" uid="uid://b7wquvymebfql" path="res://assets/audio/sfx/button_click.wav" id="2"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_whwk5"]
+streams_count = 1
+stream_0/stream = ExtResource("2")
+
+[resource]
+script = ExtResource("1")
+id = &"button_click"
+stream = SubResource("AudioStreamRandomizer_whwk5")
+volume_db = -15.0
+max_polyphony = 1
+bus = "SFX"

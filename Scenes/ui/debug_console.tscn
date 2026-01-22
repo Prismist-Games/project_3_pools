@@ -153,7 +153,41 @@ step = 10.0
 allow_greater = true
 allow_lesser = true
 
+[node name="HSeparator6" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
 
+[node name="ForceDrawRarityLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "强制抽奖品质"
+
+[node name="ForceDrawRarityRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/ForceDrawRarityRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "强制品质"
+
+[node name="ForceDrawRarityOption" type="OptionButton" parent="MarginContainer/ScrollContainer/VBoxContainer/ForceDrawRarityRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ForceDrawRarityEnableRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/ForceDrawRarityEnableRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "启用强制品质"
+
+[node name="ForceDrawRarityToggle" type="CheckButton" parent="MarginContainer/ScrollContainer/VBoxContainer/ForceDrawRarityEnableRow"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator11" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
 
 [node name="ActionsLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -279,6 +313,32 @@ text = "全部解锁"
 [node name="LockAllButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/QuickActions"]
 layout_mode = 2
 text = "全部锁定"
+
+[node name="HSeparator12" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="EraTestLabel" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "时代测试"
+
+[node name="EraRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/EraRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "目标时代"
+
+[node name="EraSelectorOption" type="OptionButton" parent="MarginContainer/ScrollContainer/VBoxContainer/EraRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SwitchEraButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "立即切换时代 (将重置金币/背包)"
 
 [node name="HSeparator10" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2

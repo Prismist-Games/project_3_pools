@@ -95,12 +95,22 @@ var _pending_pool_data: Variant = null # 挂起的新奖池数据，等待关盖
 var _pending_hints: Dictionary = {} # 暂存的新 hints 数据
 var _initial_transforms: Dictionary = {}
 
+## 当前显示的物品队列数据 (用于前进动画后刷新角标)
+var _current_items: Array = []
+
 ## 当前奖池物品类型 (用于 hover 高亮)
 var current_pool_item_type: int = -1
 
 ## 标记：是否处于以旧换新等待物品投入状态
 var is_waiting_for_trade_in: bool = false
 var _top_item_id: StringName = &"" # 当前排在首位的物品 ID
+
+## 标记：揭示序列是否正在进行中（用于延迟角标显示到真身揭开时刻）
+var _is_reveal_in_progress: bool = false
+
+## 角标请求追踪（用于取消过时的异步显示请求）
+var _status_badge_request_id: int = 0
+var _upgradeable_badge_request_id: int = 0
 
 ## =====================================================================
 ## Push-Away 动画配置
@@ -239,13 +249,11 @@ func get_main_icon_global_scale() -> Vector2:
 
 func hide_main_icon() -> void:
 	item_main.visible = false
-	# 同时隐藏所有角标（不播放动画）
-	if status_badge:
-		status_badge.rotation = BADGE_HIDE_ROTATION_RIGHT
-		_status_badge_visible = false
-	if upgradeable_badge:
-		upgradeable_badge.rotation = BADGE_HIDE_ROTATION_LEFT
-		_upgradeable_badge_visible = false
+	# 【优化】如果队列中没有后续物品了，才隐藏角标。
+	# 这样在“稀碎的”奖池中，角标可以直接从旧物品状态切换到新物品状态，而不需要先消失再出现。
+	# 注意：此时 _current_items 还包含正在飞走的这件物品 (index 0)
+	if _current_items.size() <= 1:
+		_hide_all_badges_instantly()
 
 func show_main_icon() -> void:
 	item_main.visible = true
@@ -333,6 +341,7 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 		return
 	
 	is_drawing = true
+	_is_reveal_in_progress = true # 揭示序列开始，延迟角标显示
 
 	# === 准备数据和稀有度检测 ===
 	var top_item = items[0] if not items.is_empty() else null
@@ -356,6 +365,7 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 			EventBus.game_event.emit(&"pool_lid_open", ContextProxy.new({"slot_index": pool_index}))
 			if anim_player.is_playing():
 				await anim_player.animation_finished
+		_is_reveal_in_progress = false # 技能模式下立即允许角标显示
 		return
 
 	# === 1. 初始状态设置 (常规揭示流程) ===
@@ -491,6 +501,9 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 			r_data.node.texture = r_data.real_icon
 		
 		# 放大
+		# 揭示序列核心完成，允许角标显示
+		_is_reveal_in_progress = false
+		
 		var tw_show = create_tween().set_parallel(true)
 		for r_data in reveal_items_data:
 			tw_show.tween_property(r_data.node, "scale", r_data.target_scale, 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
@@ -498,6 +511,23 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 		
 		# 触发获取物品的通用音效
 		# AudioManager.play_sfx(&"item_obtained") - Moved to VfxQueueManager
+	
+		# === [NEW] 揭示完成：立即刷新角标状态 ===
+		# 此时物品已显示真身，需要更新左上角的订单角标状态
+		# 注意：这里我们主动请求 Controller 刷新该 slot 的 hint
+		if not items.is_empty():
+			# 尝试获取 items[0] 的 ID
+			var revealed_item = items[0]
+			var _revealed_id = revealed_item.item_data.id if revealed_item is ItemInstance else revealed_item.get("id", &"")
+			
+			# 我们并不直接管理角标逻辑，而是发出信号让 Controller/System 知道“视觉数据”已更新
+			# 但由于 OrderHint 逻辑比较复杂且分散，这里我们通过发射 reveal_finished 信号
+			# 并让 Controller 监听该信号来触发特定的刷新逻辑，或者直接在这里如果能访问到 helper 的话...
+			# 最简单直接的：发射一个专门的信号
+			pass # 逻辑已移至 DrawingState.draw() 中的 await slot.play_reveal_sequence() 之后
+			
+			# 如果 DrawingState.draw() 中的刷新还不够及时（如需在停留期间就显示），可以在这里发射信号
+			# reveal_finished.emit(pool_index) # 这个信号在函数末尾才发，可能晚了点
 	
 		# === 6. 揭示后停留 ===
 		# 物品显形后，停留一段时间再进行后续流程（入包/Pending）
@@ -526,11 +556,14 @@ func play_close_sequence() -> void:
 	await close_lid()
 	
 	is_drawing = false
+	_is_reveal_in_progress = false # 确保揭示标志被重置
 	_pending_pool_data = null # 清除挂起数据，由 controller 统一刷新
 	
 	# 关盖后，确保背景色和物品显示重置
 	if backgrounds:
 		backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
+	
+	_current_items.clear()
 	
 	# 确保剪影 shader 被禁用
 	if item_main and item_main.material:
@@ -617,6 +650,8 @@ func update_pending_display(pending_list: Array) -> void:
 	update_queue_display(pending_list)
 
 func update_queue_display(items: Array) -> void:
+	_current_items = items.duplicate()
+	
 	# 硬编码位置偏移: Main (0, -26), Queue1 (+25, -30), Queue2 (+45, -34)
 	var base_pos = item_main.position
 	if _initial_transforms.is_empty():
@@ -747,12 +782,15 @@ func play_queue_advance_anim() -> void:
 	if item_main.material:
 		(item_main.material as ShaderMaterial).set_shader_parameter("saturation", q1_saturation)
 	
+	# 同步逻辑队列
+	if not _current_items.is_empty():
+		_current_items.pop_front()
+	
 	# 【优化】前进完成后，如果还有物品，请求刷新角标
 	if q1_texture != null:
-		# 我们需要找到对应的 ItemInstance 以传递给信号
-		# 注意：此时 InventorySystem 可能已经 pop 了，所以我们依赖传入的 texture 或者外部刷新
-		# 为了保险，直接发信号，让 Controller 处理
-		badge_refresh_requested.emit(pool_index, null)
+		# 我们现在可以传递真实的 ItemInstance
+		var next_item = _current_items[0] if not _current_items.is_empty() else null
+		badge_refresh_requested.emit(pool_index, next_item)
 	
 	if had_q2:
 		item_queue_1.texture = q2_texture
@@ -845,9 +883,13 @@ func refresh_slot_data(new_pool_data: Variant, is_instant: bool = false) -> void
 	if is_instant:
 		# 游戏初始化时直接设置 True Nodes
 		_update_visuals(new_pool_data, false) # false = targeting true nodes
+		_hide_all_badges_instantly()
 	else:
 		# 运行时刷新：设置 Pseudo Nodes 并播放动画
 		_update_visuals(new_pool_data, true) # true = targeting pseudo nodes
+		
+		# 关键修复：在刷新动画开始时，强制清理所有旧的角标（不播放动画，直接隐藏）
+		_hide_all_badges_instantly()
 		
 		# 检查是否跳过盖子位移动画 (PreciseSelection 需求)
 		var skip_lid := false
@@ -1175,14 +1217,19 @@ func _animate_badge_left(badge: Sprite2D, should_show: bool, tween_ref: Tween) -
 func update_status_badge(badge_state: int) -> void:
 	if not status_badge: return
 	
-	# 【优化】如果正在播放开盖动画，等待动画结束再显示角标
-	if anim_player.is_playing() and anim_player.current_animation == "lid_open":
-		await anim_player.animation_finished
-	
-	# 再次检查，防止动画期间状态已变
-	if not status_badge: return
-	
+	_status_badge_request_id += 1
+	var my_id = _status_badge_request_id
 	var should_show = badge_state > 0
+	
+	# 如果需要显示，则等待揭示揭晓；如果是隐藏，则立即执行
+	if should_show:
+		while _is_reveal_in_progress:
+			await get_tree().process_frame
+			# 如果在等待期间有了新请求，直接终止本轮过时逻辑
+			if _status_badge_request_id != my_id: return
+	
+	# 再次检查，防止动画期间状态已变或节点失效
+	if not status_badge or _status_badge_request_id != my_id: return
 	
 	# 更新纹理
 	if should_show:
@@ -1192,7 +1239,7 @@ func update_status_badge(badge_state: int) -> void:
 			2:
 				status_badge.texture = preload("res://assets/sprites/icons/tick_green.png")
 	
-	# 只在状态变化时播放动画
+	# 只在视觉状态变化时播放动画
 	if should_show != _status_badge_visible:
 		_status_badge_visible = should_show
 		_status_badge_tween = _animate_badge_right(status_badge, should_show, _status_badge_tween)
@@ -1202,12 +1249,18 @@ func update_status_badge(badge_state: int) -> void:
 func set_upgradeable_badge(should_show: bool) -> void:
 	if not upgradeable_badge: return
 	
-	# 【优化】如果正在播放开盖动画，等待动画结束再显示角标
-	if anim_player.is_playing() and anim_player.current_animation == "lid_open":
-		await anim_player.animation_finished
+	_upgradeable_badge_request_id += 1
+	var my_id = _upgradeable_badge_request_id
+	
+	# 如果需要显示，则等待揭示揭晓；如果是隐藏，则立即执行
+	if should_show:
+		while _is_reveal_in_progress:
+			await get_tree().process_frame
+			# 如果在等待期间有了新请求，直接终止本轮过时逻辑
+			if _upgradeable_badge_request_id != my_id: return
 	
 	# 再次检查
-	if not upgradeable_badge: return
+	if not upgradeable_badge or _upgradeable_badge_request_id != my_id: return
 	
 	# 只在状态变化时播放动画
 	if should_show != _upgradeable_badge_visible:
@@ -1217,6 +1270,10 @@ func set_upgradeable_badge(should_show: bool) -> void:
 
 ## 隐藏所有角标
 func _hide_all_badges() -> void:
+	# 取消任何正在等待揭示的角标请求
+	_status_badge_request_id += 1
+	_upgradeable_badge_request_id += 1
+	
 	if _status_badge_visible:
 		_status_badge_visible = false
 		_status_badge_tween = _animate_badge_right(status_badge, false, _status_badge_tween)
@@ -1224,6 +1281,24 @@ func _hide_all_badges() -> void:
 	if _upgradeable_badge_visible:
 		_upgradeable_badge_visible = false
 		_upgradeable_badge_tween = _animate_badge_left(upgradeable_badge, false, _upgradeable_badge_tween)
+
+## 瞬间隐藏所有角标（不播放动画）
+func _hide_all_badges_instantly() -> void:
+	# 取消任何正在等待揭示的角标请求
+	_status_badge_request_id += 1
+	_upgradeable_badge_request_id += 1
+	
+	if status_badge:
+		status_badge.rotation = BADGE_HIDE_ROTATION_RIGHT
+		_status_badge_visible = false
+	if _status_badge_tween and _status_badge_tween.is_valid():
+		_status_badge_tween.kill()
+		
+	if upgradeable_badge:
+		upgradeable_badge.rotation = BADGE_HIDE_ROTATION_LEFT
+		_upgradeable_badge_visible = false
+	if _upgradeable_badge_tween and _upgradeable_badge_tween.is_valid():
+		_upgradeable_badge_tween.kill()
 
 
 ## =====================================================================

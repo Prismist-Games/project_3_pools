@@ -70,9 +70,8 @@ func _load_resources() -> void:
 	all_pool_affixes.assign(_load_all_from_dir(game_config.pool_affixes_dir, "PoolAffixData"))
 
 func _initialize_game_state() -> void:
-	gold = game_config.starting_gold
-	
-	# 初始化背包空间 (直接设为 10)
+	# 基础数值初始化（后续由 EraManager 根据时代配置覆盖）
+	gold = 30
 	InventorySystem.initialize_inventory(10)
 	
 	# 加载音效库

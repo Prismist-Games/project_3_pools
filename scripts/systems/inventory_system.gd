@@ -60,12 +60,6 @@ var interaction_mode: InteractionMode = InteractionMode.NORMAL
 
 func _ready() -> void:
 	EventBus.item_obtained.connect(_on_item_obtained)
-	
-	# 如果 GameConfig 已经加载，初始化背包大小
-	# 注意：GameManager 初始化顺序可能在 InventorySystem 之后（Autoload 顺序）
-	# 所以这里不强求立即初始化，可以等待 GameManager 调用 initialize_inventory
-	if GameManager.game_config:
-		initialize_inventory(GameManager.game_config.inventory_size)
 
 # --- 初始化与大小管理 ---
 
@@ -245,6 +239,10 @@ func can_merge(item_a: ItemInstance, item_b: ItemInstance) -> bool:
 	if item_a.rarity >= UnlockManager.merge_limit:
 		return false
 		
+	# ERA_4: 垃圾袋（过期物品）不能合成
+	if item_a.is_expired or item_b.is_expired:
+		return false
+	
 	return true
 
 ## 执行合并
@@ -358,7 +356,7 @@ func remove_items(items_to_remove: Array[ItemInstance]) -> void:
 func has_item_data(item_data: ItemData) -> bool:
 	if item_data == null: return false
 	for it in inventory:
-		if it != null and it.item_data.id == item_data.id:
+		if it != null and not it.is_expired and it.item_data.id == item_data.id:
 			return true
 	return false
 
@@ -366,7 +364,7 @@ func has_item_data(item_data: ItemData) -> bool:
 func get_max_rarity_for_item(item_id: StringName) -> int:
 	var max_r = -1
 	for item in inventory:
-		if item != null and item.item_data.id == item_id:
+		if item != null and not item.is_expired and item.item_data.id == item_id:
 			if item.rarity > max_r:
 				max_r = item.rarity
 	return max_r
@@ -378,7 +376,7 @@ func get_max_rarity_for_item(item_id: StringName) -> int:
 func get_unique_item_names() -> Array[StringName]:
 	var names: Array[StringName] = []
 	for item in inventory:
-		if item != null and item.item_data.id not in names:
+		if item != null and not item.is_expired and item.item_data.id not in names:
 			names.append(item.item_data.id)
 	return names
 
@@ -400,7 +398,7 @@ func would_exceed_type_limit(new_item: ItemInstance) -> bool:
 func get_indices_by_name(item_id: StringName) -> Array[int]:
 	var indices: Array[int] = []
 	for i in range(inventory.size()):
-		if inventory[i] != null and inventory[i].item_data.id == item_id:
+		if inventory[i] != null and not inventory[i].is_expired and inventory[i].item_data.id == item_id:
 			indices.append(i)
 	return indices
 
@@ -409,6 +407,6 @@ func get_indices_by_name(item_id: StringName) -> Array[int]:
 func get_total_recycle_value_for_name(item_id: StringName) -> int:
 	var total: int = 0
 	for item in inventory:
-		if item != null and item.item_data.id == item_id:
+		if item != null and not item.is_expired and item.item_data.id == item_id:
 			total += Constants.rarity_recycle_value(item.rarity)
 	return total
