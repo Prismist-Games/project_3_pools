@@ -38,11 +38,18 @@ void fragment() {
         // 将 outline_thickness 映射到更有意义的像素范围 (0.04 * 100 = 4 像素)
         vec2 unit_offset = fw * outline_thickness * 100.0;
         
-        // 采样周围 4 个点 (或者 8 个点以获得更圆润的效果)
-        float alpha_right = texture(TEXTURE, uv + vec2(unit_offset.x, 0.0)).a;
-        float alpha_left  = texture(TEXTURE, uv - vec2(unit_offset.x, 0.0)).a;
-        float alpha_up    = texture(TEXTURE, uv + vec2(0.0, unit_offset.y)).a;
-        float alpha_down  = texture(TEXTURE, uv - vec2(0.0, unit_offset.y)).a;
+        // 辅助函数：安全采样（边界外返回 alpha=0，避免白边伪影）
+        // Windows GPU 驱动在边界外采样时可能返回不一致的值
+        vec2 uv_right = uv + vec2(unit_offset.x, 0.0);
+        vec2 uv_left  = uv - vec2(unit_offset.x, 0.0);
+        vec2 uv_up    = uv + vec2(0.0, unit_offset.y);
+        vec2 uv_down  = uv - vec2(0.0, unit_offset.y);
+        
+        // 边界检查：超出 [0,1] 范围的采样视为透明
+        float alpha_right = (uv_right.x >= 0.0 && uv_right.x <= 1.0) ? texture(TEXTURE, uv_right).a : 0.0;
+        float alpha_left  = (uv_left.x >= 0.0 && uv_left.x <= 1.0) ? texture(TEXTURE, uv_left).a : 0.0;
+        float alpha_up    = (uv_up.y >= 0.0 && uv_up.y <= 1.0) ? texture(TEXTURE, uv_up).a : 0.0;
+        float alpha_down  = (uv_down.y >= 0.0 && uv_down.y <= 1.0) ? texture(TEXTURE, uv_down).a : 0.0;
         
         float alpha_diff = abs(alpha_center - alpha_right) + 
                           abs(alpha_center - alpha_left) + 
@@ -50,8 +57,10 @@ void fragment() {
                           abs(alpha_center - alpha_down);
         
         // 增加 45 度角采样以增强稳定性（可选，如果需要更精致的边框）
-        float alpha_ur = texture(TEXTURE, uv + unit_offset * 0.707).a;
-        float alpha_dl = texture(TEXTURE, uv - unit_offset * 0.707).a;
+        vec2 uv_ur = uv + unit_offset * 0.707;
+        vec2 uv_dl = uv - unit_offset * 0.707;
+        float alpha_ur = (uv_ur.x >= 0.0 && uv_ur.x <= 1.0 && uv_ur.y >= 0.0 && uv_ur.y <= 1.0) ? texture(TEXTURE, uv_ur).a : 0.0;
+        float alpha_dl = (uv_dl.x >= 0.0 && uv_dl.x <= 1.0 && uv_dl.y >= 0.0 && uv_dl.y <= 1.0) ? texture(TEXTURE, uv_dl).a : 0.0;
         alpha_diff += abs(alpha_center - alpha_ur) + abs(alpha_center - alpha_dl);
         
         // 修复：更激进的去白边策略
