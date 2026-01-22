@@ -1,8 +1,8 @@
-[gd_scene load_steps=121 format=3 uid="uid://3vd6vr0ax1kf"]
+[gd_scene load_steps=123 format=3 uid="uid://3vd6vr0ax1kf"]
 
-[ext_resource type="Script" uid="uid://jx6gp48d2vkl" path="res://scripts/ui/the_rabbit_animator.gd" id="1_ebw2t"]
+[ext_resource type="Script" uid="uid://cbgpwgg5nq1ds" path="res://scripts/ui/the_rabbit_animator.gd" id="1_ebw2t"]
 [ext_resource type="AudioStream" uid="uid://bmus83sm4cx3t" path="res://assets/audio/sfx/381588__dorianmastin__snd_impactheavywall01.wav" id="2_lqq6t"]
-[ext_resource type="Shader" uid="uid://di45w4y74m5hy" path="res://assets/shaders/circle.gdshader" id="2_w2h5l"]
+[ext_resource type="Shader" uid="uid://brx7w8q0j4eej" path="res://assets/shaders/circle.gdshader" id="2_w2h5l"]
 [ext_resource type="AudioStream" uid="uid://hp7wuy3elrv2" path="res://assets/audio/sfx/381591__dorianmastin__snd_impactheavywall04.wav" id="3_ur5vm"]
 [ext_resource type="Texture2D" uid="uid://ciklekvdp5hak" path="res://assets/sprites/the_rabbit/the_rabbit_left_arm.png" id="4_46y0v"]
 [ext_resource type="Texture2D" uid="uid://deairpal3cmlr" path="res://assets/sprites/the_rabbit/the_rabbit_left_thumb.png" id="5_jxp4i"]
@@ -74,7 +74,9 @@
 [ext_resource type="Texture2D" uid="uid://hrp7bsul1woh" path="res://assets/sprites/frames/rabbit_popup_button_pressed.png" id="74_q1c26"]
 [ext_resource type="FontFile" uid="uid://bma1qpwpxk5rj" path="res://assets/fonts/Supreme-Regular.otf" id="75_a6r3l"]
 [ext_resource type="Texture2D" uid="uid://c4l4gf83h8vwl" path="res://assets/sprites/frames/rabbit_popup_button_hover.png" id="75_q7fno"]
-[ext_resource type="Script" uid="uid://enjh7xmiqi1c" path="res://scripts/ui/menu_controller.gd" id="76_menu_controller"]
+[ext_resource type="Script" uid="uid://dv8ug4hu6c2go" path="res://scripts/ui/menu_controller.gd" id="76_menu_controller"]
+[ext_resource type="Texture2D" uid="uid://0cayiigni4fj" path="res://assets/sprites/qq_logo.png" id="76_xlv0a"]
+[ext_resource type="Texture2D" uid="uid://d0j7onrnuncm1" path="res://assets/sprites/discord_logo.png" id="77_yqfta"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5yfxn"]
 shader = ExtResource("2_w2h5l")
@@ -1485,7 +1487,6 @@ modulate = Color(0.5058824, 0.827451, 0.44313726, 1)
 texture = ExtResource("10_ot72n")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="The Rabbit/MascotVisuals/TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_4"]
-rotation = 6.2831855
 sprite_frames = SubResource("SpriteFrames_oa7gp")
 animation = &"randomness"
 autoplay = "randomness"
@@ -1601,7 +1602,7 @@ region_rect = Rect2(540, 786, 802, 778)
 visible = false
 self_modulate = Color(0.90588236, 0.90588236, 0.90588236, 1)
 position = Vector2(19.5, -307.5)
-rotation = -0.08134746
+rotation = 6.201838
 texture = ExtResource("50_rq0qo")
 offset = Vector2(250.5, -73)
 region_enabled = true
@@ -1839,6 +1840,30 @@ TONY ZHENG"
 fit_content = true
 scroll_active = false
 horizontal_alignment = 3
+
+[node name="QQ Icon" type="Sprite2D" parent="."]
+position = Vector2(5819.5, 6558)
+texture = ExtResource("76_xlv0a")
+
+[node name="QQ LinkButton" type="LinkButton" parent="QQ Icon"]
+offset_left = -117.0
+offset_top = -139.0
+offset_right = 117.0
+offset_bottom = 138.0
+underline = 2
+uri = "https://qm.qq.com/q/KCECkcZ3eU"
+
+[node name="Discord Icon" type="Sprite2D" parent="."]
+position = Vector2(5522.5, 6598)
+texture = ExtResource("77_yqfta")
+
+[node name="Discord LinkButton" type="LinkButton" parent="Discord Icon"]
+offset_left = -117.0
+offset_top = -90.0
+offset_right = 116.0
+offset_bottom = 91.0
+underline = 2
+uri = "https://discord.gg/QvKK5rWdz3"
 
 [connection signal="pressed" from="Credit Button" to="." method="_on_credit_button_pressed"]
 [connection signal="pressed" from="Back Button" to="." method="_on_back_button_pressed"]
