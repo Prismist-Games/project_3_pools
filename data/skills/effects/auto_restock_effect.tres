@@ -1,7 +1,6 @@
-[gd_resource type="Resource" script_class="AutoRestockSkillEffect" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="AutoRestockSkillEffect" load_steps=2 format=3 uid="uid://bng4iyhwiqb8s"]
 
-[ext_resource type="Script" path="res://scripts/resources/skill_resources/skill_effects/auto_restock_skill_effect.gd" id="1"]
+[ext_resource type="Script" uid="uid://bano7k6l6ds22" path="res://scripts/resources/skill_resources/skill_effects/auto_restock_skill_effect.gd" id="1"]
 
 [resource]
 script = ExtResource("1")
-extra_items = 1

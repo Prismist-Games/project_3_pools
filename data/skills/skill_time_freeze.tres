@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SkillData" load_steps=5 format=3 uid="uid://vf42hjbsgdtu"]
 
-[ext_resource type="Resource" path="res://data/skills/effects/time_freeze_effect.tres" id="1"]
+[ext_resource type="Resource" uid="uid://b4l3g0in8q10c" path="res://data/skills/effects/time_freeze_effect.tres" id="1"]
 [ext_resource type="Script" uid="uid://chtekk8cofiub" path="res://scripts/resources/skill_resources/skill_effect.gd" id="1_1rexi"]
 [ext_resource type="Script" uid="uid://dlo38q68d6m5r" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://iodd5rcmjy1n" path="res://assets/sprites/icons/skills/时间冻结.png" id="3_kmfba"]

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SoundBankEntry" load_steps=3 format=3 uid="uid://np84v8sgsg6q"]
 
-[ext_resource type="Script" path="res://scripts/resources/sound_bank_entry.gd" id="1_d2goy"]
+[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_d2goy"]
 [ext_resource type="AudioStream" uid="uid://deyqiyapqlwli" path="res://assets/audio/sfx/270393__littlerobotsoundfactory__inventory_open_00.wav" id="2_d2goy"]
 
 [resource]
@@ -8,3 +8,4 @@ script = ExtResource("1_d2goy")
 id = &"item_selected"
 stream = ExtResource("2_d2goy")
 volume_db = -20.0
+bus = "SFX"

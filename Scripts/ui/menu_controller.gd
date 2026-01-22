@@ -21,8 +21,6 @@ func _ready() -> void:
 	
 	button_zh.pressed.connect(_on_language_selected.bind("zh"))
 	button_en.pressed.connect(_on_language_selected.bind("en"))
-	credit_button.pressed.connect(_on_credit_button_pressed)
-	back_button.pressed.connect(_on_back_button_pressed)
 
 func _on_language_selected(locale: String) -> void:
 	if loading_started:

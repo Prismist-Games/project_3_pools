@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dspkub6itnd41" path="res://assets/sprites/the_machine/闪屏幕.png" id="1_1826r"]
 [ext_resource type="Texture2D" uid="uid://xhob6f3ikg5j" path="res://assets/sprites/the_machine/闪屏幕2.png" id="2_oxewj"]
-[ext_resource type="Script" path="res://scripts/vfx/skill_activation_vfx.gd" id="3_script"]
+[ext_resource type="Script" uid="uid://fii2tylbk7sw" path="res://scripts/vfx/skill_activation_vfx.gd" id="3_script"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ccvlu"]
 animations = [{

@@ -250,6 +250,8 @@ func _get_slot_node(index: int) -> Control: # Backward compatibility
 	return get_slot_node(index)
 
 func _calculate_badge_state(item: ItemInstance) -> int:
+	var badge_state = 0
+	if item.is_expired: return 0
 	# 与 InventoryController 保持一致的逻辑
 	if not OrderSystem: return 0
 	
@@ -286,11 +288,20 @@ func _calculate_upgradeable_state(item: ItemInstance) -> bool:
 	for inv_item in InventorySystem.inventory:
 		if inv_item == null:
 			continue
+		# 【修复】关键：排除自匹配。
+		# 在批量抽奖（如“稀碎的”）中，物品可能已在数据层进入背包。
+		# 我们必须确保是找到了“另一个”同名物品，而不是匹配到了由于数据提前同步而在背包里存在的“自己”。
+		if inv_item == item:
+			continue
+			
 		if inv_item.sterile:
 			continue
 		if inv_item.rarity >= Constants.Rarity.MYTHIC:
 			continue
 		if inv_item.rarity >= UnlockManager.merge_limit:
+			continue
+		# 过期物品不可合成
+		if inv_item.is_expired:
 			continue
 		# 匹配同名同品质
 		if inv_item.item_data.id == item.item_data.id and inv_item.rarity == item.rarity:
@@ -450,13 +461,11 @@ func _on_badge_refresh_requested(index: int, item: ItemInstance) -> void:
 	var slot = get_slot_node(index)
 	if not slot: return
 	
-	# 如果没有传入具体物品，尝试从逻辑中获取（通常是 pending_items[0]）
+	# 如果传入了具体物品，或者这是一个通用的刷新请求
 	var target_item = item
-	if not target_item and InventorySystem and not InventorySystem.pending_items.is_empty():
-		# 只有当来源索引匹配时，才更新对应 slot
-		if index == game_ui.pending_source_pool_idx:
-			target_item = InventorySystem.pending_items[0]
 	
+	# 【修复】只有当没有指定物品且不是显式要求“清空”时，才尝试自动获取
+	# 注意：如果 play_queue_advance_anim 传了 null，说明真的没东西了，不该去 pending_items 里抓东西
 	if target_item and target_item is ItemInstance:
 		# 更新角标
 		var badge = _calculate_badge_state(target_item)
@@ -467,7 +476,7 @@ func _on_badge_refresh_requested(index: int, item: ItemInstance) -> void:
 		if slot.has_method("set_upgradeable_badge"):
 			slot.set_upgradeable_badge(is_upgradeable)
 	else:
-		# 没物品了，隐藏
+		# 没物品了，或者显式要求隐藏（item is null）
 		if slot.has_method("update_status_badge"):
 			slot.update_status_badge(0)
 		if slot.has_method("set_upgradeable_badge"):

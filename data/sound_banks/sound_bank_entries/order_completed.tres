@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SoundBankEntry" load_steps=3 format=3 uid="uid://bira48cjhkpkv"]
 
-[ext_resource type="Script" path="res://scripts/resources/sound_bank_entry.gd" id="1_mybj3"]
+[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_mybj3"]
 [ext_resource type="AudioStream" uid="uid://dutay0xnksxsx" path="res://assets/audio/sfx/order_completed.wav" id="2_tpju2"]
 
 [resource]
@@ -9,3 +9,4 @@ id = &"order_completed"
 stream = ExtResource("2_tpju2")
 volume_db = -20.0
 max_polyphony = 1
+bus = "SFX"

@@ -114,7 +114,7 @@ func _calculate_req_states(order: OrderData, is_submit_mode: bool) -> Array:
 		if is_submit_mode:
 			for idx in selected_indices:
 				var item = InventorySystem.inventory[idx]
-				if item and item.item_data.id == item_id:
+				if item and not item.is_expired and item.item_data.id == item_id:
 					is_selected = true
 					# 检查品质是否达标
 					if item.rarity >= min_rarity:
