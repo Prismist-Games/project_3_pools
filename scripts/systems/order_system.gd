@@ -22,6 +22,33 @@ func _on_game_event(event_id: StringName, _payload: RefCounted) -> void:
 		_add_refresh_to_all_orders()
 
 
+# --- Optimization: Requirement Cache ---
+var _cached_required_items: Dictionary = {} # {item_id: max_required_rarity}
+var _cache_dirty: bool = true
+
+func get_required_items() -> Dictionary:
+	if _cache_dirty:
+		_rebuild_cache()
+	return _cached_required_items
+
+func _rebuild_cache() -> void:
+	_cached_required_items.clear()
+	for order in current_orders:
+		for req in order.requirements:
+			var id = req.get("item_id", &"")
+			var rarity = req.get("min_rarity", 0)
+			if id != &"":
+				if id in _cached_required_items:
+					_cached_required_items[id] = maxi(_cached_required_items[id], rarity)
+				else:
+					_cached_required_items[id] = rarity
+	_cache_dirty = false
+
+func _mark_cache_dirty() -> void:
+	_cache_dirty = true
+# ---------------------------------------
+
+
 ## 初始化订单 (仅限系统初始化时使用，不再对玩家开放“全部刷新”功能)
 func initialize_orders() -> void:
 	current_orders.clear()
@@ -36,6 +63,7 @@ func initialize_orders() -> void:
 	# 2. 生成 1 个额外的主线订单
 	current_orders.append(_generate_mainline_order())
 	
+	_mark_cache_dirty()
 	EventBus.orders_updated.emit(current_orders)
 
 
@@ -63,6 +91,7 @@ func refresh_order(index: int) -> OrderData:
 			order.refresh_count -= 1
 		current_orders[index] = _generate_normal_order(order.refresh_count)
 		
+	_mark_cache_dirty()
 	EventBus.orders_updated.emit(current_orders)
 	return current_orders[index]
 
@@ -72,6 +101,7 @@ func _add_refresh_to_all_orders() -> void:
 	for order in current_orders:
 		if order != null and not order.is_mainline:
 			order.refresh_count += 1
+	_mark_cache_dirty()
 	EventBus.orders_updated.emit(current_orders)
 
 
@@ -81,6 +111,7 @@ func refresh_all_normal_orders() -> void:
 		var order = current_orders[i]
 		if order != null and not order.is_mainline:
 			current_orders[i] = _generate_normal_order()
+	_mark_cache_dirty()
 	EventBus.orders_updated.emit(current_orders)
 ## 预检查哪些订单会被提交（供 UI 使用，包含全局物品必要性检查）
 ## 返回会被提交的订单列表，如果返回空则表示不会进行任何提交
@@ -162,6 +193,7 @@ func _submit_single_order(index: int, selected_indices: Array[int]) -> bool:
 	else:
 		current_orders[index] = _generate_normal_order()
 		
+	_mark_cache_dirty()
 	EventBus.orders_updated.emit(current_orders)
 	return true
 
@@ -228,6 +260,7 @@ func _submit_all_satisfied(selected_indices: Array[int]) -> bool:
 	# 最后统一消耗选中的物品
 	InventorySystem.remove_items(selected_items)
 	
+	_mark_cache_dirty()
 	EventBus.orders_updated.emit(current_orders)
 	return true
 
@@ -261,6 +294,7 @@ func _on_mainline_completed() -> void:
 		if order != null and not order.is_mainline:
 			current_orders[i] = _generate_normal_order()
 	
+	_mark_cache_dirty()
 	EventBus.orders_updated.emit(current_orders)
 	
 	# 如果是最后一个时代 (Era 4, 索引为 3)，直接触发游戏结束，不再选技能

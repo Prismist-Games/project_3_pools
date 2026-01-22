@@ -153,18 +153,8 @@ func _start_slot_refresh(slot: Control, pool_data: Variant, state: Dictionary) -
 
 func _calculate_order_hints(pool_type: int) -> Dictionary:
 	# 1. 收集所有订单需求的物品 ID 和对应的最低品质要求
-	# Dictionary[item_id: StringName] -> min_rarity: int (取所有订单中该物品的最低品质要求)
-	var required_items: Dictionary = {} # {item_id: max_required_rarity}
-	for order in OrderSystem.current_orders:
-		for req in order.requirements:
-			var id = req.get("item_id", &"")
-			var min_rarity = req.get("min_rarity", 0)
-			if id != &"":
-				# 改为取最高品质要求，确保只有满足最高要求时才消失
-				if id in required_items:
-					required_items[id] = maxi(required_items[id], min_rarity)
-				else:
-					required_items[id] = min_rarity
+	# Optimization: Use cached requirements from OrderSystem
+	var required_items: Dictionary = OrderSystem.get_required_items()
 	
 	# 2. 获取该池子类型下的所有物品，并过滤出被订单要求的
 	var pool_items = GameManager.get_items_for_type(pool_type)
@@ -196,9 +186,10 @@ func _calculate_order_hints(pool_type: int) -> Dictionary:
 
 func update_pending_display(items: Array[ItemInstance], source_pool_idx: int) -> void:
 	if items.is_empty():
-		for i in range(3):
-			var slot = get_slot_node(i)
-			if slot.has_method("update_pending_display"):
+		# Optimization: Only clear the specific slot that had pending items
+		if source_pool_idx >= 0 and source_pool_idx < _slots.size():
+			var slot = get_slot_node(source_pool_idx)
+			if slot and slot.has_method("update_pending_display"):
 				slot.update_pending_display([])
 		return
 	
@@ -255,11 +246,12 @@ func _calculate_badge_state(item: ItemInstance) -> int:
 	# 与 InventoryController 保持一致的逻辑
 	if not OrderSystem: return 0
 	
-	var max_required = -1
-	for order in OrderSystem.current_orders:
-		for req in order.requirements:
-			if req.get("item_id", &"") == item.item_data.id:
-				max_required = maxi(max_required, req.get("min_rarity", 0))
+	# Optimization: Use cached requirements
+	var required_items = OrderSystem.get_required_items()
+	if not required_items.has(item.item_data.id):
+		return 0
+		
+	var max_required = required_items[item.item_data.id]
 	
 	if max_required == -1:
 		return 0

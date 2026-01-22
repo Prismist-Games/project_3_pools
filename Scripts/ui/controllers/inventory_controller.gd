@@ -156,11 +156,12 @@ func _calculate_badge_state(item: ItemInstance) -> int:
 	# Access OrderSystem directly (Controller knows about Systems)
 	if not OrderSystem: return 0
 	
-	var max_required = -1
-	for order in OrderSystem.current_orders:
-		for req in order.requirements:
-			if req.get("item_id", &"") == item.item_data.id:
-				max_required = maxi(max_required, req.get("min_rarity", 0))
+	# Optimization: Use cached requirements
+	var required_items = OrderSystem.get_required_items()
+	if not required_items.has(item.item_data.id):
+		return 0
+		
+	var max_required = required_items[item.item_data.id]
 	
 	if max_required == -1:
 		return 0
