@@ -487,7 +487,10 @@ func _update_slot_hover_action_state(pool_index: int) -> void:
 	
 	# pending时 hover 在已抽出物品（is_drawing）的 lottery slot -> 可回收
 	# 这里判断slot是否有物品显示（is_drawing 且有 _top_item_id）
-	if has_pending and slot.is_drawing and slot._top_item_id != &"":
+	# [修复] 如果物品还在揭示过程中，不允许回收操作（防止剧透和误操作）
+	var is_revealing = slot.get("_is_reveal_in_progress") if slot.get("_is_reveal_in_progress") != null else false
+	
+	if has_pending and slot.is_drawing and slot._top_item_id != &"" and not is_revealing:
 		# 在pending状态下hover lottery slot中的物品，显示可回收
 		hover_type = LotterySlotUI.HoverType.RECYCLABLE
 		

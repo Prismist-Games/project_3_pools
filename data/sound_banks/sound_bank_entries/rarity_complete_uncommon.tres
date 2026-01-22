@@ -1,12 +1,12 @@
 [gd_resource type="Resource" script_class="SoundBankEntry" load_steps=3 format=3 uid="uid://d0rn6i3o8use6"]
 
-[ext_resource type="Script" path="res://scripts/resources/sound_bank_entry.gd" id="1_ruh4h"]
+[ext_resource type="Script" uid="uid://dpaq4mbs6rlyp" path="res://scripts/resources/sound_bank_entry.gd" id="1_ruh4h"]
 [ext_resource type="AudioStream" uid="uid://bkqa5j3p2ewj4" path="res://assets/audio/sfx/uncommon_complete.wav" id="2_ruh4h"]
 
 [resource]
 script = ExtResource("1_ruh4h")
 id = &"rarity_complete_uncommon"
 stream = ExtResource("2_ruh4h")
-volume_db = -30.0
+volume_db = -23.0
 max_polyphony = 1
 bus = "SFX"
