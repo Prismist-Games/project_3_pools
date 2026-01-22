@@ -107,7 +107,7 @@ SKILL_DESC_CORNERS_CUTTING,"When generating new orders: 20% chance to reduce req
 SKILL_DESC_FRUGAL,When Gold < 10: draw cost -2 (min 1).,当前金币 < 10 时，抽奖金币消耗 -2（最低为 1）。
 SKILL_DESC_GOOD_LUCK_NEXT,After completing any order: next draw guaranteed  [img=60]res://assets/sprites/icons/rarity_rare.png[/img]  +.,完成任意订单后，下次抽取必定获得 [img=60]res://assets/sprites/icons/rarity_rare.png[/img] 品质以上物品。
 SKILL_DESC_HARD_ORDER_EXPERT,Completing orders requiring  [img=60]res://assets/sprites/icons/rarity_epic.png[/img]  + items: +10 Gold.,完成需要 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 以上品质物品的订单时，额外获得 10 金币。
-SKILL_DESC_LUCKY_7,When Gold ends in 7:  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  chance is doubled.,当前金币数量尾数为 7 时，抽到 [img=60]res://assets/sprites/icons/rarity_legendary.png[/img] 品质的概率翻倍。
+SKILL_DESC_LUCKY_7,When Gold is a multiple of 7 or ends in 7:  [img=60]res://assets/sprites/icons/rarity_epic.png[/img]  and  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  chance is doubled.,当前金币数量为7的倍数或尾数为7时，抽到 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 和 [img=60]res://assets/sprites/icons/rarity_legendary.png[/img] 品质的概率翻倍。
 SKILL_DESC_NEGOTIATOR,When drawing or merging  [img=60]res://assets/sprites/icons/rarity_epic.png[/img]  + items: all orders gain 1 refresh.,抽到或合成 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 及以上品质物品时，所有订单获得 1 次刷新次数。
 SKILL_DESC_OCD,"When submitting: if all items are same type, reward is doubled.",提交订单时若所有物品为同一形状，则奖励翻倍。
 SKILL_DESC_POVERTY_RELIEF,When Gold < 5: order reward +5.,持有金币 < 5 时，完成订单的金币奖励额外 +5。
