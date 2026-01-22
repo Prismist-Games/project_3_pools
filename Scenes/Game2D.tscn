@@ -1,4 +1,4 @@
-[gd_scene load_steps=105 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=104 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://bxtphnyw13y3l" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://cofq6ahy51bcy" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
@@ -28,7 +28,6 @@
 [ext_resource type="Texture2D" uid="uid://bugs5jj4i014q" path="res://assets/sprites/the_machine_switch/基地-6.png" id="17_d4ujc"]
 [ext_resource type="Texture2D" uid="uid://dscqm4kp5fmva" path="res://assets/sprites/the_machine/the_machine_front.png" id="17_tmso7"]
 [ext_resource type="Texture2D" uid="uid://bnx44ify6toae" path="res://assets/sprites/the_machine/the_machine_side_fill.png" id="17_ug1ds"]
-[ext_resource type="Texture2D" uid="uid://w68mqbo8q5e2" path="res://assets/sprites/the_machine/the_machine_front_outline.png" id="18_2kwm8"]
 [ext_resource type="Texture2D" uid="uid://dpqibsn4l8hxe" path="res://assets/sprites/the_machine_switch/Recycle_background_shade.png" id="18_8y6ih"]
 [ext_resource type="Texture2D" uid="uid://e6388ffoqam7" path="res://assets/sprites/the_machine/the_machine_side_pattern.png" id="18_simg3"]
 [ext_resource type="Texture2D" uid="uid://lw48pfhb1slm" path="res://assets/sprites/the_machine_switch/Recycle_background_outline.png" id="18_u8s40"]
@@ -685,23 +684,22 @@ position = Vector2(3750, 1488)
 
 [node name="TheMachineTopBehind" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(481.25, 220.25)
+position = Vector2(547, 282)
+scale = Vector2(1.05, 1.05)
 texture = ExtResource("11_h0822")
-offset = Vector2(245.5, -1254)
-region_enabled = true
-region_rect = Rect2(491, 347, 3308, 173)
+offset = Vector2(242.13, -1254)
 
 [node name="TheMachineTopOutlineBehind" type="Sprite2D" parent="The Machine/TheMachineTopBehind"]
+position = Vector2(-62.61914, -58.80945)
+scale = Vector2(0.9523811, 0.9523811)
 texture = ExtResource("12_lql4v")
 offset = Vector2(238.5, -1342)
-region_enabled = true
-region_rect = Rect2(477, 336, 3322, 19)
 
 [node name="TheMachineSlotOutlineBehind" type="Sprite2D" parent="The Machine/TheMachineTopBehind"]
+position = Vector2(-62.61914, -58.80945)
+scale = Vector2(0.9523811, 0.9523811)
 texture = ExtResource("13_7bc83")
 offset = Vector2(-91.5, -1269.5)
-region_enabled = true
-region_rect = Rect2(700, 358, 2216, 120)
 
 [node name="TheMachineSlot_0" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
@@ -714,8 +712,6 @@ show_behind_parent = true
 clip_children = 2
 texture = ExtResource("7_d4ujc")
 offset = Vector2(59, 51.5)
-region_enabled = true
-region_rect = Rect2(152, 162, 428, 227)
 
 [node name="Skill_icon" type="TextureRect" parent="The Machine/TheMachineSlot_0/TheMachineSlot_fill"]
 offset_left = -208.25
@@ -749,8 +745,6 @@ show_behind_parent = true
 clip_children = 2
 texture = ExtResource("7_d4ujc")
 offset = Vector2(59, 51.5)
-region_enabled = true
-region_rect = Rect2(152, 162, 428, 227)
 
 [node name="Skill_icon" type="TextureRect" parent="The Machine/TheMachineSlot_1/TheMachineSlot_fill"]
 offset_left = -208.25
@@ -783,8 +777,6 @@ show_behind_parent = true
 clip_children = 2
 texture = ExtResource("7_d4ujc")
 offset = Vector2(59, 51.5)
-region_enabled = true
-region_rect = Rect2(152, 162, 428, 227)
 
 [node name="Skill_icon" type="TextureRect" parent="The Machine/TheMachineSlot_2/TheMachineSlot_fill"]
 offset_left = -208.25
@@ -811,14 +803,10 @@ self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 position = Vector2(481.25, 220.25)
 texture = ExtResource("14_8sogx")
 offset = Vector2(333, -1244.5)
-region_enabled = true
-region_rect = Rect2(666, 356, 3133, 174)
 
 [node name="TheMachineSlotOutlineFront" type="Sprite2D" parent="The Machine/TheMachineTopFront"]
 texture = ExtResource("9_fvhsr")
 offset = Vector2(-91, -1261.5)
-region_enabled = true
-region_rect = Rect2(687, 359, 2243, 134)
 
 [node name="TheMachineSide" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
@@ -841,14 +829,6 @@ self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 position = Vector2(481.25, 220.25)
 texture = ExtResource("17_tmso7")
 offset = Vector2(329.5, 143.5)
-region_enabled = true
-region_rect = Rect2(659, 526, 3140, 2610)
-
-[node name="TheMachineFrontOutline" type="Sprite2D" parent="The Machine/TheMachineFront"]
-texture = ExtResource("18_2kwm8")
-offset = Vector2(328.5, 143)
-region_enabled = true
-region_rect = Rect2(657, 514, 3142, 2633)
 
 [node name="TheMachineSwitch_Recycle" type="Node2D" parent="The Machine"]
 position = Vector2(1478, 1270)
@@ -1106,6 +1086,8 @@ texture = ExtResource("4_6b2j4")
 self_modulate = Color(0.08235294, 0.53333336, 0.6313726, 1)
 show_behind_parent = true
 clip_children = 2
+position = Vector2(-8, -13)
+scale = Vector2(1.01, 1.01)
 texture = ExtResource("21_ue141")
 
 [node name="Money_label" type="RichTextLabel" parent="The Machine/TheMachineDisplay/TheMachineDisplayFill"]
@@ -1168,23 +1150,21 @@ scale = Vector2(1, 0.985258)
 mouse_filter = 2
 
 [node name="TheMachineLegend" type="Sprite2D" parent="The Machine"]
-position = Vector2(512.75, 662)
+position = Vector2(622, 566)
 texture = ExtResource("6_2v31b")
-offset = Vector2(142.5, -22.5)
 
 [node name="TheMachineLegendFill" type="Sprite2D" parent="The Machine/TheMachineLegend"]
 self_modulate = Color(0.61960787, 0.9137255, 0.40392157, 1)
 show_behind_parent = true
 clip_children = 2
-position = Vector2(5.25, 6)
+position = Vector2(-2.75, -13)
 texture = ExtResource("5_0dgko")
-offset = Vector2(138.5, -26)
 
 [node name="Legend Grid" type="HBoxContainer" parent="The Machine/TheMachineLegend/TheMachineLegendFill"]
-offset_left = -1005.25
-offset_top = -62.0
-offset_right = 1319.75
-offset_bottom = 12.0
+offset_left = -1141.25
+offset_top = -21.0
+offset_right = 1183.75
+offset_bottom = 53.0
 tooltip_text = "LEGACY_TOOLTIP"
 mouse_filter = 0
 mouse_default_cursor_shape = 16
@@ -1302,10 +1282,10 @@ vertical_alignment = 1
 
 [node name="ScreenEffectOverlay" type="ColorRect" parent="The Machine/TheMachineLegend/TheMachineLegendFill"]
 material = SubResource("ShaderMaterial_036e7")
-offset_left = -1085.0
-offset_top = -100.0
-offset_right = 1356.0
-offset_bottom = 35.0
+offset_left = -1221.0
+offset_top = -59.0
+offset_right = 1220.0
+offset_bottom = 76.0
 mouse_filter = 2
 
 [node name="Item Slots Grid" type="GridContainer" parent="The Machine"]
@@ -1858,6 +1838,7 @@ mouse_force_pass_scroll_events = false
 color = Color(0, 0, 0, 0.5019608)
 
 [node name="Popup Window" type="TextureRect" parent="."]
+visible = false
 z_index = 11
 layout_mode = 0
 offset_left = 1657.0
