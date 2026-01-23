@@ -1,4 +1,4 @@
-[gd_scene load_steps=107 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=102 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://rr7qyh0d2fdb" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://rg8ahiwfwlxb" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
@@ -82,8 +82,6 @@
 [ext_resource type="Texture2D" uid="uid://dq1iss2p4wdhw" path="res://assets/sprites/frames/框小.png" id="94_jqdmi"]
 [ext_resource type="Texture2D" uid="uid://nju4di4bai4r" path="res://assets/sprites/icons/items/item_shape_centered.png" id="94_m40pb"]
 [ext_resource type="Texture2D" uid="uid://wu4k3jwrgfaj" path="res://assets/sprites/frames/dialog.png" id="101_6kw3k"]
-[ext_resource type="Texture2D" uid="uid://ue7e5frhr0kh" path="res://assets/sprites/frames/mini.png" id="102_u4yck"]
-[ext_resource type="Texture2D" uid="uid://djaip0chmnewr" path="res://assets/sprites/frames/popup.png" id="103_otpb1"]
 [ext_resource type="Script" uid="uid://bwxgrdhgavm8e" path="res://scripts/ui/components/quest_slot_ui.gd" id="113_quest"]
 [ext_resource type="AudioStream" uid="uid://b31klj7kmpl5w" path="res://assets/audio/Loop_bpm156.ogg" id="114_bgm"]
 
@@ -358,62 +356,6 @@ _data = {
 &"RESET": SubResource("Animation_8ocj1"),
 &"lid_close": SubResource("Animation_jdak2"),
 &"lid_open": SubResource("Animation_jufyi")
-}
-
-[sub_resource type="Animation" id="Animation_017ef"]
-length = 0.001
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("QuestSystem/Popup_mini:position:x")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(2),
-"points": PackedFloat32Array(-614, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("QuestSystem/Popup:position:x")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(-6033, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-
-[sub_resource type="Animation" id="Animation_otpb1"]
-resource_name = "popup_in"
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("QuestSystem/Popup_mini:position:x")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(2, 0),
-"points": PackedFloat32Array(-614, -0.25242105, -8.511814, 0.1, 3.3720703, -1547, -0.13333334, 64.79761, 0, 0),
-"times": PackedFloat32Array(0, 0.3)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("QuestSystem/Popup:position:x")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(1, 0, 2),
-"points": PackedFloat32Array(-6033, 0, 0, 0, 0, -6033, 0, 0, 0.06666667, 376.00003, -764, -0.3, -465.2213, 0, 0),
-"times": PackedFloat32Array(0, 0.40000004, 0.90000004)
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_u8s40"]
-_data = {
-&"RESET": SubResource("Animation_017ef"),
-&"popup_in": SubResource("Animation_otpb1")
 }
 
 [sub_resource type="Shader" id="Shader_3ih7i"]
@@ -1489,12 +1431,6 @@ libraries = {
 &"": SubResource("AnimationLibrary_jdak2")
 }
 
-[node name="Popup_mini" type="Sprite2D" parent="The Rabbit/QuestSystem"]
-z_index = -1
-position = Vector2(-614, 0)
-scale = Vector2(0.9523812, 0.9523812)
-texture = ExtResource("102_u4yck")
-
 [node name="Dialog Box" type="Sprite2D" parent="The Rabbit/QuestSystem"]
 z_index = 10
 position = Vector2(-963.63635, 588.18176)
@@ -1553,37 +1489,6 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Popup" type="NinePatchRect" parent="The Rabbit/QuestSystem"]
-z_index = 10
-offset_left = -6033.0
-offset_top = -757.3812
-offset_right = -1497.0
-offset_bottom = 152.61877
-texture = ExtResource("103_otpb1")
-patch_margin_left = 100
-patch_margin_top = 100
-patch_margin_right = 100
-patch_margin_bottom = 100
-
-[node name="Popup Label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Popup"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -2050.0
-offset_top = -360.5
-offset_right = 2050.0
-offset_bottom = 360.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 125
-bbcode_enabled = true
-text = "asdofiasdflahjksd;lfj la;sdkfjlasdkjflkg lkfdgjdfklgd gdfjg klg dflgj dfg lkdfgj ldfkgj lkdf dflk jsdl jsdfl sdj fjweorjw woe rjeoir jweor  ioj weor oiwj e"
-scroll_active = false
-
 [node name="Quest Slots Grid" type="VBoxContainer" parent="The Rabbit/QuestSystem"]
 z_index = 1
 offset_left = -185.0
@@ -1603,12 +1508,6 @@ layout_mode = 2
 
 [node name="Quest Slot_root_4" parent="The Rabbit/QuestSystem/Quest Slots Grid" instance=ExtResource("87_n6ers")]
 layout_mode = 2
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/QuestSystem"]
-root_node = NodePath("../..")
-libraries = {
-&"": SubResource("AnimationLibrary_u8s40")
-}
 
 [node name="The Machine DLC" type="Node2D" parent="."]
 z_index = 3
@@ -1695,19 +1594,21 @@ libraries = {
 [node name="5 Choose 1" type="Sprite2D" parent="."]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 position = Vector2(4414, 1742)
+scale = Vector2(2, 2)
 texture = ExtResource("92_taegb")
 
 [node name="Pole" type="Sprite2D" parent="5 Choose 1"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 show_behind_parent = true
-position = Vector2(2002, 43)
+position = Vector2(1001, 21.5)
 texture = ExtResource("93_m40pb")
 
 [node name="Item Choice Grid" type="HBoxContainer" parent="5 Choose 1"]
-offset_left = -945.0
-offset_top = 29.0
-offset_right = 995.0
-offset_bottom = 333.0
+offset_left = -472.5
+offset_top = 14.5
+offset_right = 1467.5
+offset_bottom = 318.5
+scale = Vector2(0.5, 0.5)
 theme_override_constants/separation = 485
 
 [node name="Item Choice Root_0" type="Control" parent="5 Choose 1/Item Choice Grid"]
