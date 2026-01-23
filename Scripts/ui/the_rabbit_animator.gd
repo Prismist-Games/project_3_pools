@@ -38,16 +38,9 @@ var _blink_timer: float = 0.0
 @export var impatient_gold_threshold: int = 10
 
 
-@export_group("Eye Style", "squint_")
-@export var squint_eye_texture: Texture2D = preload("res://assets/sprites/the_rabbit/eye_shape_1.png") ## 眯眼时的眼眶形状纹理
-
-@export var squint_pupil_offset: Vector2 = Vector2.ZERO ## 眯眼时的瞳孔基准偏移 (建议 -0.05 到 0.05)
-
-
 var _left_eye_fill: Sprite2D
 var _right_eye_fill: Sprite2D
 
-var _default_eye_texture: Texture2D
 
 var _playback: AnimationNodeStateMachinePlayback
 var _current_state_name: StringName = STATE_RABBIT_IDLE
@@ -200,10 +193,6 @@ func _cache_initial_transforms() -> void:
 	_init_eye_materials()
 
 func _init_eye_materials() -> void:
-	# 捕获初始状态作为默认动画目标
-	if _left_eye_fill:
-		_default_eye_texture = _left_eye_fill.texture
-
 	# 确保材质实例独立 (Resource Local To Scene)
 	if _left_eye_fill and _left_eye_fill.material:
 		_left_eye_fill.material = _left_eye_fill.material.duplicate()
@@ -317,26 +306,12 @@ func reset_to_idle() -> void:
 
 # 奖池悬浮时：让兔子眼睛直视前方
 func _on_pool_hovered(_idx: int, _type: int) -> void:
-# 	_cond_is_pool_hovered = true
-# 	if anim_tree:
-# 		anim_tree.set("parameters/conditions/is_pool_hovered", true)
-	# _tween_eye_offset(Vector2.ZERO, 0.15)
 	pass
 
 ## 鼠标离开奖池：恢复默认状态
 func _on_pool_unhovered(_idx: int) -> void:
-	# _cond_is_pool_hovered = false
-	# if anim_tree:
-	# 	anim_tree.set("parameters/conditions/is_pool_hovered", false)
-	# _tween_eye_offset(Vector2.ZERO, 0.2)
 	pass
 
-## 平滑调整瞳孔偏移
-func _tween_eye_offset(target: Vector2, duration: float) -> void:
-	for eye in [_left_eye_fill, _right_eye_fill]:
-		if eye and eye.material:
-			var tween = create_tween()
-			tween.tween_property(eye.material, "shader_parameter/pupil_offset", target, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 # --- 时代视觉更新 ---
 
 func _update_era_visuals(era_index: int) -> void:
