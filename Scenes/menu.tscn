@@ -1795,11 +1795,11 @@ offset_bottom = 5855.0
 theme_override_fonts/normal_font = ExtResource("33_ykwlt")
 theme_override_font_sizes/normal_font_size = 150
 bbcode_enabled = true
-text = "[font_size=300]这是什么游戏?[/font_size]
+text = "[font_size=300]这是什么?[/font_size]
 
-《邦尼不对》是一次前途未卜的玩法实验。我们不会把它扩展成最终的成品，但期望你可以通过它帮助我们找到前进的方向。
+《邦尼不对》是一个前途未卜的早期玩法原型，你的反馈将帮助我们决定它会演变成一个怎样的游戏。
 
-欢迎你通过以下软件找到我们，留下你宝贵的想法。我们也会在那里公布项目的最新动态。"
+通过以下软件找到我们，留下你宝贵的想法。我们也会在那里公布项目的最新动态。"
 fit_content = true
 scroll_active = false
 horizontal_alignment = 1
@@ -1815,9 +1815,9 @@ theme_override_font_sizes/normal_font_size = 105
 bbcode_enabled = true
 text = "[font_size=300]WHAT THE?[/font_size]
 
-BUNNY'S BURDEN is an experimental gameplay prototype, with an uncertain future. We do not plan to expand it into a fully polished product, but we hope it can help us find the direction we should move toward next.
+BUNNY'S BURDEN is an experimental gameplay prototype, with an uncertain future. Your feedback will help us decide what game it will evolve into.
 
-You are welcome to find us through the platforms listed below and share your valuable thoughts with us. We will also be posting the latest updates on the project there."
+Find us through the platforms listed below and share your valuable thoughts with us. We will also be posting the latest updates on the project there."
 fit_content = true
 scroll_active = false
 horizontal_alignment = 1
@@ -1845,7 +1845,7 @@ scroll_active = false
 horizontal_alignment = 3
 
 [node name="QQ Icon" type="Sprite2D" parent="."]
-position = Vector2(5819.5, 6558)
+position = Vector2(3312, 6022)
 texture = ExtResource("76_xlv0a")
 
 [node name="QQ LinkButton" type="LinkButton" parent="QQ Icon"]
@@ -1855,9 +1855,10 @@ offset_right = 117.0
 offset_bottom = 138.0
 underline = 2
 uri = "https://qm.qq.com/q/KCECkcZ3eU"
+metadata/_edit_use_anchors_ = true
 
 [node name="Discord Icon" type="Sprite2D" parent="."]
-position = Vector2(5522.5, 6598)
+position = Vector2(2715.5, 6062)
 texture = ExtResource("77_yqfta")
 
 [node name="Discord LinkButton" type="LinkButton" parent="Discord Icon"]
