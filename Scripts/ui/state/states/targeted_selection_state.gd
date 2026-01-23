@@ -169,6 +169,11 @@ func select_item(index: int) -> void:
 		return
 	
 	_has_acted = true
+	
+	# 立即隐藏 Cancel 按钮，防止在动画期间再次点击取消
+	if controller and controller.cancel_button_controller:
+		controller.cancel_button_controller.hide_cancel_button_silent()
+		
 	var selected_data: ItemData = available_items[index]
 	
 	# 关键：设置 last_clicked_pool_idx 使 VFX 能从正确的 slot 飞出
