@@ -397,7 +397,9 @@ func _update_recyclable_item_hover_state(is_hovering: bool) -> void:
 		if source_pool_idx >= 0:
 			var pool_slot = game_ui.pool_controller.get_slot_node(source_pool_idx) as LotterySlotUI
 			if pool_slot:
-				if is_hovering:
+				# [修复] 如果物品还在揭示过程中，不允许显示回收视觉（防止剧透）
+				# 使用封装好的公共方法查询
+				if is_hovering and pool_slot.can_show_hover_visuals():
 					pool_slot.set_hover_action_state(LotterySlotUI.HoverType.RECYCLABLE)
 				else:
 					pool_slot.set_hover_action_state(LotterySlotUI.HoverType.NONE)
