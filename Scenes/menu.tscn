@@ -1321,9 +1321,9 @@ script = ExtResource("76_menu_controller")
 clip_children = 2
 material = SubResource("ShaderMaterial_5yfxn")
 layout_mode = 0
-offset_left = -6545.0
+offset_left = -6557.0
 offset_top = -6507.0
-offset_right = 10548.0
+offset_right = 10536.0
 offset_bottom = 10586.0
 pivot_offset = Vector2(7850, 7897)
 color = Color(0.9882353, 0.4392157, 0.3529412, 1)
@@ -1789,15 +1789,17 @@ editor_draw_drag_margin = true
 
 [node name="Whats this_zh" type="RichTextLabel" parent="."]
 layout_mode = 0
-offset_top = 4051.0
+offset_top = 3776.0
 offset_right = 2396.0
-offset_bottom = 5374.0
+offset_bottom = 5855.0
 theme_override_fonts/normal_font = ExtResource("33_ykwlt")
 theme_override_font_sizes/normal_font_size = 150
 bbcode_enabled = true
-text = "[font_size=300]这是什么游戏[/font_size]
+text = "[font_size=300]这是什么游戏?[/font_size]
 
-《邦尼不对》是一次实验性质的玩法尝试。它不会变成最终的成品，但我们期望它可以帮助我们找到前进的方向。"
+《邦尼不对》是一次前途未卜的玩法实验。我们不会把它扩展成最终的成品，但期望你可以通过它帮助我们找到前进的方向。
+
+欢迎你通过以下软件找到我们，留下你宝贵的想法。我们也会在那里公布项目的最新动态。"
 fit_content = true
 scroll_active = false
 horizontal_alignment = 1
@@ -1805,35 +1807,36 @@ horizontal_alignment = 1
 [node name="Whats this_en" type="RichTextLabel" parent="."]
 layout_mode = 0
 offset_left = 3603.0
-offset_top = 4051.0
+offset_top = 3776.0
 offset_right = 5999.0
-offset_bottom = 5223.0
+offset_bottom = 5883.0
 theme_override_fonts/normal_font = ExtResource("33_ykwlt")
-theme_override_font_sizes/normal_font_size = 125
+theme_override_font_sizes/normal_font_size = 105
 bbcode_enabled = true
 text = "[font_size=300]WHAT THE?[/font_size]
 
-BUNNY'S BURDEN is a game about both 6 and 7. Even though the answer is actually 42."
+BUNNY'S BURDEN is an experimental gameplay prototype, with an uncertain future. We do not plan to expand it into a fully polished product, but we hope it can help us find the direction we should move toward next.
+
+You are welcome to find us through the platforms listed below and share your valuable thoughts with us. We will also be posting the latest updates on the project there."
 fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 
 [node name="Studio Icon" type="Sprite2D" parent="."]
-position = Vector2(3012.5, 5591.5)
+position = Vector2(3012.5, 4512)
 texture = ExtResource("74_3mcda")
 
-[node name="Credits" type="RichTextLabel" parent="."]
-layout_mode = 0
-offset_left = 2804.0
-offset_top = 5888.0
-offset_right = 3195.0
-offset_bottom = 6343.0
+[node name="Credits" type="RichTextLabel" parent="Studio Icon"]
+offset_left = -197.5
+offset_top = 296.5
+offset_right = 171.5
+offset_bottom = 817.5
 theme_override_constants/paragraph_separation = 25
 theme_override_fonts/normal_font = ExtResource("75_a6r3l")
 theme_override_font_sizes/normal_font_size = 52
 bbcode_enabled = true
 text = "BLAER ZHANG
-BULK FIREWORK
+BULKFIREWORK
 HAOTIAN CHEN
 LINKE HUANG
 TONY ZHENG"
