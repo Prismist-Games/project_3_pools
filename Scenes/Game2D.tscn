@@ -608,7 +608,7 @@ position = Vector2(3001, 1689.25)
 
 [node name="wall&floor" type="Sprite2D" parent="Background"]
 clip_children = 2
-position = Vector2(5, 1049.75)
+position = Vector2(4.7683716e-07, 1049.75)
 scale = Vector2(2.38, 2.38)
 texture = ExtResource("3_ug1ds")
 
@@ -630,7 +630,7 @@ scale = Vector2(2.39, 2.39)
 texture = ExtResource("6_simg3")
 
 [node name="wall_with_floor_left" type="Sprite2D" parent="Background"]
-position = Vector2(-2935, -583.25)
+position = Vector2(-2928, -582.25)
 scale = Vector2(2.39, 2.39)
 texture = ExtResource("7_nbd70")
 
@@ -783,7 +783,7 @@ texture = ExtResource("17_ug1ds")
 
 [node name="TheMachineFront" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(809.17, 364.91)
+position = Vector2(808.00006, 364.91)
 scale = Vector2(3, 3)
 texture = ExtResource("17_tmso7")
 
