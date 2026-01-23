@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="SkillData" load_steps=5 format=3 uid="uid://b20i6bexkojx7"]
 
 [ext_resource type="Resource" uid="uid://btewir24ty3jt" path="res://data/skills/effects/big_order_expert_effect.tres" id="1"]
-[ext_resource type="Script" uid="uid://chtekk8cofiub" path="res://scripts/resources/skill_resources/skill_effect.gd" id="1_33v1j"]
-[ext_resource type="Script" uid="uid://dlo38q68d6m5r" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
+[ext_resource type="Script" uid="uid://bx0a7yoddneuc" path="res://scripts/resources/skill_resources/skill_effect.gd" id="1_33v1j"]
+[ext_resource type="Script" uid="uid://bmujciq40focn" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://s3rl36y1edr" path="res://assets/sprites/icons/skills/大订单专家.png" id="3_qoj5i"]
 
 [resource]

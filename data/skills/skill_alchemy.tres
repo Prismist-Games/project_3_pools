@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="SkillData" load_steps=5 format=3 uid="uid://cyef2veaunuho"]
 
 [ext_resource type="Resource" uid="uid://bb11em7gmrwt5" path="res://data/skills/effects/alchemy_effect.tres" id="1"]
-[ext_resource type="Script" uid="uid://chtekk8cofiub" path="res://scripts/resources/skill_resources/skill_effect.gd" id="1_dyr7b"]
-[ext_resource type="Script" uid="uid://dlo38q68d6m5r" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
+[ext_resource type="Script" uid="uid://bx0a7yoddneuc" path="res://scripts/resources/skill_resources/skill_effect.gd" id="1_dyr7b"]
+[ext_resource type="Script" uid="uid://bmujciq40focn" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://bn0a0rjntcb36" path="res://assets/sprites/icons/skills/焼金木.png" id="3_6rc4b"]
 
 [resource]

@@ -211,7 +211,18 @@ func select_item(index: int) -> void:
 	# 3. 获取 lottery slot 并播放开盖动画，展示生成的物品
 	var slot = _get_lottery_slot(source_pool_index)
 	if slot:
+		# 强制触发一次角标更新（内部会等待揭示结束后显示）
+		if controller.pool_controller:
+			if slot.has_method("update_status_badge"):
+				slot.update_status_badge(controller.pool_controller._calculate_badge_state(item_instance))
+			if slot.has_method("set_upgradeable_badge"):
+				slot.set_upgradeable_badge(controller.pool_controller._calculate_upgradeable_state(item_instance))
+		
 		await slot.play_reveal_sequence([item_instance])
+		
+		# [Reveal Phase End] 更新抽奖栏订单角标
+		if controller.pool_controller:
+			controller.pool_controller.refresh_all_order_hints(true)
 	
 	# 4. 正式入库：仅发出信号，由 InventorySystem 全局监听并处理添加
 	# 这保证了物品只被添加一次，且能正常触发技能等系统

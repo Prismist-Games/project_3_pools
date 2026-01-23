@@ -12,6 +12,7 @@ uniform float pupil_scale : hint_range(0.0, 2.0) = 1.0; // 0.0 隐藏瞳孔
 uniform vec4 pupil_color : source_color = vec4(0.0, 0.0, 0.0, 1.0); // 纯色模式或纹理着色
 uniform vec4 pupil_outline_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
 uniform float pupil_outline_thickness : hint_range(0.0, 0.1) = 0.0;
+uniform float eye_ver_squash : hint_range(0.01, 1.0) = 1.0;
 varying vec4 vertex_color; 
 
 void vertex() {
@@ -22,20 +23,23 @@ float sdf_circle(vec2 p, float r) {
     return length(p) - r;
 }
 
+vec4 sample_socket(vec2 uv, float squash, sampler2D tex) {
+    vec2 squashed_uv = uv;
+    squashed_uv.y = (uv.y - 0.5) / squash + 0.5;
+    if (squashed_uv.y < 0.0 || squashed_uv.y > 1.0) return vec4(0.0);
+    return texture(tex, squashed_uv);
+}
+
 void fragment() {
     vec2 uv = UV;
     
     // ========== 采样眼眶纹理 ==========
-    vec4 socket_sample = texture(TEXTURE, uv);
+    vec4 socket_sample = sample_socket(uv, eye_ver_squash, TEXTURE);
     vec4 final_color = socket_sample;
     
     // ========== 眼眶描边 ==========
-    // 允许向外描边，修复因内缩导致的白边问题
     {
         float alpha_center = socket_sample.a;
-        
-        // 使用 TEXTURE_PIXEL_SIZE 替代 fwidth，使描边宽度相对于纹理固定
-        // 这样可以防止描边随屏幕分辨率或缩放而改变粗细
         vec2 unit_offset = TEXTURE_PIXEL_SIZE * outline_thickness * 100.0;
         
         vec2 uv_right = uv + vec2(unit_offset.x, 0.0);
@@ -43,11 +47,10 @@ void fragment() {
         vec2 uv_up    = uv + vec2(0.0, unit_offset.y);
         vec2 uv_down  = uv - vec2(0.0, unit_offset.y);
         
-        // 边界检查：超出 [0,1] 范围的采样视为透明
-        float alpha_right = (uv_right.x >= 0.0 && uv_right.x <= 1.0) ? texture(TEXTURE, uv_right).a : 0.0;
-        float alpha_left  = (uv_left.x >= 0.0 && uv_left.x <= 1.0) ? texture(TEXTURE, uv_left).a : 0.0;
-        float alpha_up    = (uv_up.y >= 0.0 && uv_up.y <= 1.0) ? texture(TEXTURE, uv_up).a : 0.0;
-        float alpha_down  = (uv_down.y >= 0.0 && uv_down.y <= 1.0) ? texture(TEXTURE, uv_down).a : 0.0;
+        float alpha_right = sample_socket(uv_right, eye_ver_squash, TEXTURE).a;
+        float alpha_left  = sample_socket(uv_left, eye_ver_squash, TEXTURE).a;
+        float alpha_up    = sample_socket(uv_up, eye_ver_squash, TEXTURE).a;
+        float alpha_down  = sample_socket(uv_down, eye_ver_squash, TEXTURE).a;
         
         float alpha_diff = abs(alpha_center - alpha_right) + 
                           abs(alpha_center - alpha_left) + 
@@ -56,20 +59,18 @@ void fragment() {
         
         vec2 uv_ur = uv + unit_offset * 0.707;
         vec2 uv_dl = uv - unit_offset * 0.707;
-        float alpha_ur = (uv_ur.x >= 0.0 && uv_ur.x <= 1.0 && uv_ur.y >= 0.0 && uv_ur.y <= 1.0) ? texture(TEXTURE, uv_ur).a : 0.0;
-        float alpha_dl = (uv_dl.x >= 0.0 && uv_dl.x <= 1.0 && uv_dl.y >= 0.0 && uv_dl.y <= 1.0) ? texture(TEXTURE, uv_dl).a : 0.0;
+        float alpha_ur = sample_socket(uv_ur, eye_ver_squash, TEXTURE).a;
+        float alpha_dl = sample_socket(uv_dl, eye_ver_squash, TEXTURE).a;
         alpha_diff += abs(alpha_center - alpha_ur) + abs(alpha_center - alpha_dl);
         
         float outline_factor = smoothstep(0.001, 0.05, alpha_diff);
         
         if (outline_factor > 0.0) {
-            // 如果是在原本透明的区域（外部描边），直接使用描边颜色
             if (alpha_center < 0.01) {
                 final_color.rgb = outline_color.rgb;
             } else {
                 final_color.rgb = mix(final_color.rgb, outline_color.rgb, outline_factor);
             }
-            // 增强 Alpha 以显示外部描边
             final_color.a = max(final_color.a, outline_factor * outline_color.a);
         }
     }

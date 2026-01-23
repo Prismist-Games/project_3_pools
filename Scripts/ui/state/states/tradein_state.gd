@@ -194,8 +194,20 @@ func _execute_trade_in_sequence(slot_index: int, item: ItemInstance) -> void:
 		display_items = InventorySystem.pending_items.duplicate()
 	
 	if not display_items.is_empty():
+		var first_item = display_items[0]
+		# 强制触发一次角标更新（内部会等待揭示结束后显示）
+		if controller.pool_controller and first_item is ItemInstance:
+			if lottery_slot.has_method("update_status_badge"):
+				lottery_slot.update_status_badge(controller.pool_controller._calculate_badge_state(first_item))
+			if lottery_slot.has_method("set_upgradeable_badge"):
+				lottery_slot.set_upgradeable_badge(controller.pool_controller._calculate_upgradeable_state(first_item))
+		
 		# 关键修复：不要手动设置 is_drawing = true，否则 play_reveal_sequence 会跳过动画
 		await lottery_slot.play_reveal_sequence(display_items)
+		
+		# [Reveal Phase End] 更新抽奖栏订单角标
+		if controller.pool_controller:
+			controller.pool_controller.refresh_all_order_hints(true)
 	else:
 		# 没有物品显示，手动重置标志
 		lottery_slot._is_reveal_in_progress = false
