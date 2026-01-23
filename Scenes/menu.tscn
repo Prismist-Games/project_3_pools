@@ -1791,13 +1791,13 @@ editor_draw_drag_margin = true
 layout_mode = 0
 offset_top = 4051.0
 offset_right = 2396.0
-offset_bottom = 5185.0
+offset_bottom = 5374.0
 theme_override_fonts/normal_font = ExtResource("33_ykwlt")
 theme_override_font_sizes/normal_font_size = 150
 bbcode_enabled = true
 text = "[font_size=300]这是什么游戏[/font_size]
 
-《仓库兔》是一款我的问题。目前正处于问题阶段。解决问题不如解决提出问题的人。一定没问题的！"
+《邦尼不对》是一次实验性质的玩法尝试。它不会变成最终的成品，但我们期望它可以帮助我们找到前进的方向。"
 fit_content = true
 scroll_active = false
 horizontal_alignment = 1
@@ -1813,7 +1813,7 @@ theme_override_font_sizes/normal_font_size = 125
 bbcode_enabled = true
 text = "[font_size=300]WHAT THE?[/font_size]
 
-WAREHOUSE RABBIT is a game about both 6 and 7. Even though the answer is actually 42."
+BUNNY'S BURDEN is a game about both 6 and 7. Even though the answer is actually 42."
 fit_content = true
 scroll_active = false
 horizontal_alignment = 1

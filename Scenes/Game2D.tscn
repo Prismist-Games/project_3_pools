@@ -666,30 +666,34 @@ position = Vector2(3001, 1689.25)
 [node name="wall&floor" type="Sprite2D" parent="Background"]
 clip_children = 2
 position = Vector2(5, 1049.75)
+scale = Vector2(2.38, 2.38)
 texture = ExtResource("3_ug1ds")
 
 [node name="Shadow_the_machine" type="Sprite2D" parent="Background/wall&floor"]
 modulate = Color(1, 1, 1, 0.7254902)
-position = Vector2(79, -308)
-scale = Vector2(1.01, 1.01)
+position = Vector2(33.193237, -129.41174)
+scale = Vector2(1.2731091, 1.2731091)
 texture = ExtResource("5_n1634")
 
 [node name="Shadow_the_rabbit" type="Sprite2D" parent="Background/wall&floor"]
 modulate = Color(1, 1, 1, 0.7254902)
-position = Vector2(-2303, -112)
-scale = Vector2(1.05, 1.05)
+position = Vector2(-967.6469, -47.058838)
+scale = Vector2(1.3235292, 1.3235292)
 texture = ExtResource("6_s7ywr")
 
 [node name="wall_with_floor_right" type="Sprite2D" parent="Background"]
 position = Vector2(2833, -583.25)
+scale = Vector2(2.39, 2.39)
 texture = ExtResource("6_simg3")
 
 [node name="wall_with_floor_left" type="Sprite2D" parent="Background"]
 position = Vector2(-2935, -583.25)
+scale = Vector2(2.39, 2.39)
 texture = ExtResource("7_nbd70")
 
 [node name="wall_with_floor_up" type="Sprite2D" parent="Background"]
 position = Vector2(5, -1620.25)
+scale = Vector2(2.38, 2.38)
 texture = ExtResource("8_fx7i4")
 
 [node name="The Machine" type="Node2D" parent="."]
@@ -836,9 +840,9 @@ texture = ExtResource("17_ug1ds")
 
 [node name="TheMachineFront" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(479.67, 221.41)
+position = Vector2(809.17, 364.91)
+scale = Vector2(3, 3)
 texture = ExtResource("17_tmso7")
-offset = Vector2(329.5, 143.5)
 
 [node name="TheMachineSwitch_Recycle" type="Node2D" parent="The Machine"]
 position = Vector2(1478, 1270)
