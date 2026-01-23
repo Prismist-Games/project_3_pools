@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bw28ks8t1otq" path="res://assets/sprites/circle.png" id="9_arr72"]
 [ext_resource type="Texture2D" uid="uid://b4cuujipxrcyu" path="res://assets/sprites/lottery_slots/lottery_slot_lid_fill.png" id="10_4aaut"]
 [ext_resource type="Texture2D" uid="uid://bclpcjghycqdb" path="res://assets/sprites/the_machine_switch/Recycle_icon.png" id="10_gntc1"]
-[ext_resource type="Shader" uid="uid://bekyeolq5u2hf" path="res://assets/shaders/silhouette.gdshader" id="10_yj02r"]
+[ext_resource type="Shader" uid="uid://ddbschtplfiqo" path="res://assets/shaders/silhouette.gdshader" id="10_yj02r"]
 [ext_resource type="Texture2D" uid="uid://bv1rbyc0706kq" path="res://assets/sprites/icons/items/items_icon_centered.png" id="11_o6rv1"]
 [ext_resource type="Texture2D" uid="uid://u8vv873f380j" path="res://assets/sprites/lottery_slots/lottery_slot_lid_outline.png" id="12_p4alg"]
 [ext_resource type="Texture2D" uid="uid://fnqmsybn8c5r" path="res://assets/sprites/lottery_slots/基地-6.png" id="13_r08pi"]
@@ -28,7 +28,7 @@
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="20_ihuts"]
 [ext_resource type="Texture2D" uid="uid://grqi0oqjnrae" path="res://assets/sprites/the_machine/the_machine_description_display_outline.png" id="21_4kg5p"]
 [ext_resource type="Texture2D" uid="uid://cyo0chqrqd6p7" path="res://assets/sprites/the_machine/the_machine_description_display_fill.png" id="22_dg1ni"]
-[ext_resource type="Script" path="res://scripts/ui/utils/rich_text_auto_scaler.gd" id="26_o6rv1"]
+[ext_resource type="Script" uid="uid://d4mtxu0sy02g6" path="res://scripts/ui/utils/rich_text_auto_scaler.gd" id="26_o6rv1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_o6rv1"]
 atlas = ExtResource("8_arr72")
@@ -504,6 +504,7 @@ rotation = -3.1415927
 texture = ExtResource("15_7fxrg")
 
 [node name="Lottery Slot_lid" type="Sprite2D" parent="Lottery Slot_mask"]
+visible = false
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 texture = ExtResource("10_4aaut")
 

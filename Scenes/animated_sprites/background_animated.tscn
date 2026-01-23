@@ -375,7 +375,6 @@ libraries = {
 autoplay = "new_animation"
 
 [node name="蓝天" type="ColorRect" parent="."]
-modulate = Color(1, 1, 1, 0)
 offset_left = -3005.0
 offset_top = -1694.2501
 offset_right = -1003.9999
@@ -391,7 +390,7 @@ autoplay = "bluesky"
 
 [node name="Cloud" type="Sprite2D" parent="蓝天"]
 position = Vector2(-1000, 527.98175)
-scale = Vector2(0.6538727, 0.65387285)
+scale = Vector2(1.308, 1.308)
 texture = ExtResource("25_m01df")
 
 [node name="cloud" type="AnimationPlayer" parent="蓝天/Cloud"]

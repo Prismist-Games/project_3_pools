@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b2u12kgd0w3r8"
-path="res://.godot/imported/star-20.png-7d65c5195c551b44338911a4cba581df.ctex"
+path.s3tc="res://.godot/imported/star-20.png-7d65c5195c551b44338911a4cba581df.s3tc.ctex"
+path.etc2="res://.godot/imported/star-20.png-7d65c5195c551b44338911a4cba581df.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/shooting_star/star-20.png"
-dest_files=["res://.godot/imported/star-20.png-7d65c5195c551b44338911a4cba581df.ctex"]
+dest_files=["res://.godot/imported/star-20.png-7d65c5195c551b44338911a4cba581df.s3tc.ctex", "res://.godot/imported/star-20.png-7d65c5195c551b44338911a4cba581df.etc2.ctex"]
 
 [params]
 
-compress/mode=1
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

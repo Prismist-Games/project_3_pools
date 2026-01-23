@@ -1413,12 +1413,14 @@ modulate = Color(0.85882354, 0.6431373, 0.9254902, 1)
 texture = ExtResource("7_fu8yu")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_2"]
+scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_np3ll")
 animation = &"wave"
 autoplay = "wave"
-frame_progress = 0.60365325
+frame_progress = 0.27594176
 
 [node name="Era_3" type="Node2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
+visible = false
 
 [node name="Era_3_fill" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_3"]
 modulate = Color(0.2, 0.6039216, 0.5019608, 1)
@@ -1437,6 +1439,7 @@ libraries = {
 autoplay = "era_3_rotation"
 
 [node name="Era_4" type="Node2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill"]
+visible = false
 
 [node name="Era_4_face" type="Sprite2D" parent="TheRabbitLeftArm/TheRabbitWandStick/TheRabbitWandFace/TheRabbitWandFaceFill/Era_4"]
 modulate = Color(0.5058824, 0.827451, 0.44313726, 1)

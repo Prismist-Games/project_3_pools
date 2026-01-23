@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://db6dkxa4e1nhc"
-path="res://.godot/imported/wall_with_floor_down.png-e1922e377fafc754924b2afa2a7f430f.ctex"
+path.s3tc="res://.godot/imported/wall_with_floor_down.png-e1922e377fafc754924b2afa2a7f430f.s3tc.ctex"
+path.etc2="res://.godot/imported/wall_with_floor_down.png-e1922e377fafc754924b2afa2a7f430f.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/wall_with_floor/wall_with_floor_down.png"
-dest_files=["res://.godot/imported/wall_with_floor_down.png-e1922e377fafc754924b2afa2a7f430f.ctex"]
+dest_files=["res://.godot/imported/wall_with_floor_down.png-e1922e377fafc754924b2afa2a7f430f.s3tc.ctex", "res://.godot/imported/wall_with_floor_down.png-e1922e377fafc754924b2afa2a7f430f.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
