@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cbgpwgg5nq1ds" path="res://scripts/ui/the_rabbit_animator.gd" id="1_ebw2t"]
 [ext_resource type="AudioStream" uid="uid://bmus83sm4cx3t" path="res://assets/audio/sfx/381588__dorianmastin__snd_impactheavywall01.wav" id="2_lqq6t"]
-[ext_resource type="Shader" uid="uid://brx7w8q0j4eej" path="res://assets/shaders/circle.gdshader" id="2_w2h5l"]
+[ext_resource type="Shader" uid="uid://di45w4y74m5hy" path="res://assets/shaders/circle.gdshader" id="2_w2h5l"]
 [ext_resource type="AudioStream" uid="uid://hp7wuy3elrv2" path="res://assets/audio/sfx/381591__dorianmastin__snd_impactheavywall04.wav" id="3_ur5vm"]
 [ext_resource type="Texture2D" uid="uid://ciklekvdp5hak" path="res://assets/sprites/the_rabbit/the_rabbit_left_arm.png" id="4_46y0v"]
 [ext_resource type="Texture2D" uid="uid://deairpal3cmlr" path="res://assets/sprites/the_rabbit/the_rabbit_left_thumb.png" id="5_jxp4i"]
@@ -1302,7 +1302,7 @@ _data = {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u4yck"]
 shader = ExtResource("56_hdjkt")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_thickness = 0.10000000475
+shader_parameter/outline_thickness = 0.050000002375
 shader_parameter/pupil_texture = ExtResource("57_e6v53")
 shader_parameter/use_pupil_texture = true
 shader_parameter/pupil_offset = Vector2(1, 0)

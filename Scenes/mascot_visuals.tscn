@@ -1301,7 +1301,7 @@ _data = {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u4yck"]
 shader = ExtResource("31_wrirs")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_thickness = 0.10000000475
+shader_parameter/outline_thickness = 0.050000002375
 shader_parameter/pupil_texture = ExtResource("32_xscfi")
 shader_parameter/use_pupil_texture = true
 shader_parameter/pupil_offset = Vector2(1, 0)

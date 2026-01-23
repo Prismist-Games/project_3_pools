@@ -30,16 +30,14 @@ void fragment() {
     vec4 final_color = socket_sample;
     
     // ========== 眼眶描边 ==========
-    if (socket_sample.a > 0.01) {
+    // 允许向外描边，修复因内缩导致的白边问题
+    {
         float alpha_center = socket_sample.a;
         
-        // 使用 fwidth 获取 UV 随屏幕像素的变化率，实现恒定的像素级偏移
-        vec2 fw = fwidth(uv);
-        // 将 outline_thickness 映射到更有意义的像素范围 (0.04 * 100 = 4 像素)
-        vec2 unit_offset = fw * outline_thickness * 100.0;
+        // 使用 TEXTURE_PIXEL_SIZE 替代 fwidth，使描边宽度相对于纹理固定
+        // 这样可以防止描边随屏幕分辨率或缩放而改变粗细
+        vec2 unit_offset = TEXTURE_PIXEL_SIZE * outline_thickness * 100.0;
         
-        // 辅助函数：安全采样（边界外返回 alpha=0，避免白边伪影）
-        // Windows GPU 驱动在边界外采样时可能返回不一致的值
         vec2 uv_right = uv + vec2(unit_offset.x, 0.0);
         vec2 uv_left  = uv - vec2(unit_offset.x, 0.0);
         vec2 uv_up    = uv + vec2(0.0, unit_offset.y);
@@ -56,20 +54,29 @@ void fragment() {
                           abs(alpha_center - alpha_up) + 
                           abs(alpha_center - alpha_down);
         
-        // 增加 45 度角采样以增强稳定性（可选，如果需要更精致的边框）
         vec2 uv_ur = uv + unit_offset * 0.707;
         vec2 uv_dl = uv - unit_offset * 0.707;
         float alpha_ur = (uv_ur.x >= 0.0 && uv_ur.x <= 1.0 && uv_ur.y >= 0.0 && uv_ur.y <= 1.0) ? texture(TEXTURE, uv_ur).a : 0.0;
         float alpha_dl = (uv_dl.x >= 0.0 && uv_dl.x <= 1.0 && uv_dl.y >= 0.0 && uv_dl.y <= 1.0) ? texture(TEXTURE, uv_dl).a : 0.0;
         alpha_diff += abs(alpha_center - alpha_ur) + abs(alpha_center - alpha_dl);
         
-        // 修复：更激进的去白边策略
-        // 1. 阈值上限降至 0.05，让边缘迅速变黑，不再与原色混合
-        // 2. 只有在非边缘区域 (diff 极小) 才保留原色
         float outline_factor = smoothstep(0.001, 0.05, alpha_diff);
-        final_color.rgb = mix(final_color.rgb, outline_color.rgb, outline_factor);
         
-        // ========== 绘制瞳孔 ==========
+        if (outline_factor > 0.0) {
+            // 如果是在原本透明的区域（外部描边），直接使用描边颜色
+            if (alpha_center < 0.01) {
+                final_color.rgb = outline_color.rgb;
+            } else {
+                final_color.rgb = mix(final_color.rgb, outline_color.rgb, outline_factor);
+            }
+            // 增强 Alpha 以显示外部描边
+            final_color.a = max(final_color.a, outline_factor * outline_color.a);
+        }
+    }
+        
+    // ========== 绘制瞳孔 ==========
+    // 限制瞳孔在原眼眶范围内（避免溢出到外部描边区域或纹理外）
+    if (socket_sample.a > 0.01) {
         if (pupil_scale > 0.001) {
             vec2 pupil_center = vec2(0.5) + pupil_offset * 0.2;
             vec2 pupil_uv_centered = (uv - pupil_center) / pupil_scale;
