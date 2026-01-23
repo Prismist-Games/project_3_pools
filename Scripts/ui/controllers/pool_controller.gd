@@ -20,6 +20,9 @@ var _hovered_slot_index: int = -1
 ## 当前被按下的slot索引 (-1表示无，用于处理鼠标移出后松开的情况)
 var _pressed_slot_index: int = -1
 
+## 本地输入锁 (防止快速点击导致的逻辑重入)
+var _local_input_lock: bool = false
+
 func setup(grid: HBoxContainer) -> void:
 	lottery_slots_grid = grid
 	_init_slots()
@@ -76,6 +79,10 @@ func play_all_refresh_animations(pools: Array, clicked_slot_idx: int = -1) -> vo
 	# 确保标记已设置（兜底，调用方应该已经设置了）
 	_is_animating_refresh = true
 	
+	# 关键修复：刷新动画期间锁定 UI (移动到最前，防止关盖动画期间出现输入空窗期)
+	if game_ui and game_ui.has_method("lock_ui"):
+		game_ui.lock_ui("pool_refresh")
+	
 	# 1. 先让被点击的 slot 关盖 (不再强制检查 is_drawing，因为物品飞走后该状态可能已被重置)
 	if clicked_slot_idx >= 0 and clicked_slot_idx < _slots.size():
 		var clicked_slot = get_slot_node(clicked_slot_idx)
@@ -96,10 +103,6 @@ func play_all_refresh_animations(pools: Array, clicked_slot_idx: int = -1) -> vo
 	# 2. 对所有 slot 并行播放推挤刷新动画
 	# 使用 Dictionary 作为共享引用容器（lambda 捕获值副本问题）
 	var state := {"pending": 0}
-	
-	# 关键修复：刷新动画期间锁定 UI
-	if game_ui and game_ui.has_method("lock_ui"):
-		game_ui.lock_ui("pool_refresh")
 	
 	for i in range(3):
 		var slot = get_slot_node(i)
@@ -304,6 +307,8 @@ func _calculate_upgradeable_state(item: ItemInstance) -> bool:
 # --- Input Handlers ---
 
 func _on_slot_input(event: InputEvent, index: int) -> void:
+	if _local_input_lock: return
+	
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			var slot = get_slot_node(index) as LotterySlotUI
@@ -403,10 +408,15 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 					
 					# Draw logic
 					if game_ui.state_machine:
+						# 关键修复：设置本地输入锁，防止快速点击导致的多重触发或盖子状态异常
+						_local_input_lock = true
+						
 						game_ui.state_machine.transition_to(&"Drawing", {"pool_index": index})
 						var drawing_state = game_ui.state_machine.get_state(&"Drawing")
 						if drawing_state and drawing_state.has_method("draw"):
 							await drawing_state.draw()
+							
+						_local_input_lock = false
 				
 				# 松开后重置按下状态
 				_pressed_slot_index = -1
