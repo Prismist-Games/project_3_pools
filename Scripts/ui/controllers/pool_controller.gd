@@ -313,6 +313,10 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			var slot = get_slot_node(index) as LotterySlotUI
 			
+			# [Fix] Check if interaction is allowed (Reveal gating / Drawing state restrictions)
+			if not _is_slot_interaction_allowed(slot, index):
+				return
+
 			if event.pressed:
 				# 1. 核心门控：UI 锁定中禁止一切点击
 				# 允许在确认选择的状态下点击 (如 PreciseSelection, Modal)
@@ -532,3 +536,38 @@ func handle_global_mouse_release() -> void:
 		if slot and slot.has_method("handle_mouse_release"):
 			slot.handle_mouse_release()
 		_pressed_slot_index = -1
+func _is_slot_interaction_allowed(slot: LotterySlotUI, index: int) -> bool:
+	if not slot:
+		return false
+		
+	# 1. Block input if slot is revealing
+	if slot.get("_is_reveal_in_progress"):
+		return false
+		
+	# 2. Block interaction with drawn items (Lid Open) unless in specific states
+	if slot.is_drawing:
+		var state_name = &""
+		if game_ui and game_ui.state_machine:
+			state_name = game_ui.state_machine.get_current_state_name()
+		
+		# Allow: Precise Selection (only first 2 slots)
+		if state_name == &"PreciseSelection" and index < 2:
+			return true
+			
+		# Allow: Skill Selection (All slots allowed)
+		if state_name == &"SkillSelection":
+			return true
+			
+		# Allow: Generic Modal Selection
+		if state_name == &"Modal":
+			return true
+			
+		# Allow: Pending Items (Replacing/Recycling logic)
+		# Check if this specific slot contains the pending item
+		if not InventorySystem.pending_items.is_empty() and slot._top_item_id != &"":
+			return true
+			
+		# Otherwise, block interaction with drawn items
+		return false
+		
+	return true
