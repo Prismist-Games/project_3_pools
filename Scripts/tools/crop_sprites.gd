@@ -2,7 +2,7 @@
 extends EditorScript
 
 # 目标目录
-const TARGET_DIR: String = "res://assets/sprites/the_rabbit/"
+const TARGET_DIR: String = "res://assets/sprites/lottery_slots/"
 
 func _run() -> void:
 	var dir = DirAccess.open(TARGET_DIR)

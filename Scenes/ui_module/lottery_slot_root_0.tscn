@@ -420,6 +420,7 @@ script = ExtResource("1_1b0mf")
 [node name="Lottery Slot_mask" type="Sprite2D" parent="."]
 clip_children = 2
 texture = ExtResource("2_gntc1")
+offset = Vector2(3.105, 23.865)
 
 [node name="Lottery Slot_backgrounds" type="Node2D" parent="Lottery Slot_mask"]
 script = ExtResource("3_ba2ho")
@@ -427,17 +428,21 @@ color = Color(0.10980392, 0.654902, 0.91764706, 1)
 
 [node name="Slot_background_side" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_backgrounds"]
 modulate = Color(0.10980392, 0.654902, 0.91764706, 1)
+position = Vector2(466, 8)
 texture = ExtResource("4_662jj")
 
 [node name="Slot_background_wall" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_backgrounds"]
 modulate = Color(0.10980392, 0.654902, 0.91764706, 1)
+position = Vector2(-274, -258)
 texture = ExtResource("5_drypt")
 
 [node name="Slot_background_floor" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_backgrounds"]
 modulate = Color(0.10980392, 0.654902, 0.91764706, 1)
+position = Vector2(-36, 461)
 texture = ExtResource("6_7fxrg")
 
 [node name="Slot_background_outline" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_backgrounds"]
+position = Vector2(-60, 33)
 texture = ExtResource("7_yj02r")
 
 [node name="Lottery Slot_item_root" type="Node2D" parent="Lottery Slot_mask"]
@@ -504,9 +509,9 @@ rotation = -3.1415927
 texture = ExtResource("15_7fxrg")
 
 [node name="Lottery Slot_lid" type="Sprite2D" parent="Lottery Slot_mask"]
-visible = false
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 texture = ExtResource("10_4aaut")
+offset = Vector2(0, -87.65)
 
 [node name="Lottery Slot_lid_icon" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_lid"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
@@ -529,11 +534,13 @@ vertical_alignment = 1
 [node name="Lottery Slot_lid_outline" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_lid"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 texture = ExtResource("12_p4alg")
+offset = Vector2(-4.45, 67.34)
 
 [node name="Lottery Slot_lid_psudo" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_lid"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 position = Vector2(0, -550)
 texture = ExtResource("10_4aaut")
+offset = Vector2(0, -87.65)
 
 [node name="Lottery Slot_lid_icon" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_lid/Lottery Slot_lid_psudo"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
@@ -556,29 +563,34 @@ vertical_alignment = 1
 [node name="Lottery Slot_lid_outline" type="Sprite2D" parent="Lottery Slot_mask/Lottery Slot_lid/Lottery Slot_lid_psudo"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 texture = ExtResource("12_p4alg")
+offset = Vector2(-4.45, 71.995)
 
 [node name="Lottery Slot_outline" type="Sprite2D" parent="."]
 modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
+position = Vector2(23, 42)
 texture = ExtResource("13_r08pi")
 
 [node name="Shadow" type="Sprite2D" parent="Lottery Slot_outline"]
+position = Vector2(-1, 0)
 texture = ExtResource("14_ktq0d")
 
 [node name="Lottery Slot_right_screen" type="Sprite2D" parent="."]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
+position = Vector2(439, 45)
 texture = ExtResource("16_l1p8v")
 
 [node name="Lottery Slot_right_screen_fill" type="Sprite2D" parent="Lottery Slot_right_screen"]
 modulate = Color(0.61960787, 0.9137255, 0.40392157, 1)
 show_behind_parent = true
 clip_children = 2
+position = Vector2(-9, -9)
 texture = ExtResource("15_do7yb")
 
 [node name="Lottery Required Items Icon Grid" type="VBoxContainer" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill"]
-offset_left = 342.0
-offset_top = -257.75
-offset_right = 484.0
-offset_bottom = 292.25
+offset_left = -88.0
+offset_top = -293.75
+offset_right = 54.0
+offset_bottom = 276.25
 mouse_filter = 2
 theme_override_constants/separation = -35
 
@@ -663,10 +675,10 @@ texture = ExtResource("17_g23h7")
 expand_mode = 3
 
 [node name="Lottery Required Items Icon Grid_psudo" type="VBoxContainer" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill"]
-offset_left = 187.0
-offset_top = -258.0
-offset_right = 329.0
-offset_bottom = 292.0
+offset_left = -243.0
+offset_top = -294.0
+offset_right = -101.0
+offset_bottom = 276.0
 mouse_filter = 2
 theme_override_constants/separation = -35
 
@@ -752,28 +764,30 @@ expand_mode = 3
 
 [node name="ScreenEffectOverlay" type="ColorRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill"]
 material = SubResource("ShaderMaterial_o6rv1")
-offset_left = 307.0
-offset_top = -276.0
-offset_right = 523.0
-offset_bottom = 350.0
+offset_left = -123.0
+offset_top = -312.0
+offset_right = 93.0
+offset_bottom = 314.0
 mouse_filter = 2
 
 [node name="Lottery Slot_top_screen" type="Sprite2D" parent="."]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
+position = Vector2(13, -409)
 texture = ExtResource("18_yfao2")
 
 [node name="Lottery Slot_top_screen_fill" type="Sprite2D" parent="Lottery Slot_top_screen"]
 self_modulate = Color(0.61960787, 0.9137255, 0.40392157, 1)
 show_behind_parent = true
 clip_children = 2
+position = Vector2(-7, -6)
 texture = ExtResource("19_a03mu")
 
 [node name="Affix Label" type="RichTextLabel" parent="Lottery Slot_top_screen/Lottery Slot_top_screen_fill"]
 clip_contents = false
-offset_left = -120.0
-offset_top = -471.0
-offset_right = 267.0
-offset_bottom = -348.0
+offset_left = -126.0
+offset_top = -56.0
+offset_right = 261.0
+offset_bottom = 67.0
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.15274194, 0.24557048, 0.08210931, 1)
 theme_override_fonts/normal_font = ExtResource("20_3gq3c")
@@ -809,10 +823,10 @@ min_font_size = 52
 
 [node name="Price Label" type="RichTextLabel" parent="Lottery Slot_top_screen/Lottery Slot_top_screen_fill"]
 clip_contents = false
-offset_left = -176.0
-offset_top = -471.0
-offset_right = 175.0
-offset_bottom = -348.0
+offset_left = -182.0
+offset_top = -56.0
+offset_right = 169.0
+offset_bottom = 67.0
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.15294118, 0.24705882, 0.08235294, 1)
 theme_override_fonts/normal_font = ExtResource("20_3gq3c")
@@ -837,15 +851,15 @@ scroll_active = false
 vertical_alignment = 1
 
 [node name="Price Icon" type="Sprite2D" parent="Lottery Slot_top_screen/Lottery Slot_top_screen_fill"]
-position = Vector2(-234, -405.25)
+position = Vector2(-240, 9.75)
 texture = ExtResource("20_ihuts")
 
 [node name="ScreenEffectOverlay" type="ColorRect" parent="Lottery Slot_top_screen/Lottery Slot_top_screen_fill"]
 material = SubResource("ShaderMaterial_d80ls")
-offset_left = -329.0
-offset_top = -507.0
-offset_right = 320.0
-offset_bottom = -314.0
+offset_left = -335.0
+offset_top = -92.0
+offset_right = 314.0
+offset_bottom = 101.0
 mouse_filter = 2
 
 [node name="Lottery Slot_description_screen" type="Sprite2D" parent="."]
@@ -880,8 +894,8 @@ vertical_alignment = 1
 [node name="Description Label_psudo" type="RichTextLabel" parent="Lottery Slot_description_screen/Lottery Slot_description_screen_fill/Description Label"]
 layout_mode = 0
 offset_left = -783.0
-offset_right = -21.0
-offset_bottom = 431.0
+offset_right = -29.534973
+offset_bottom = 465.406
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.9098039, 1, 1, 1)
 theme_override_font_sizes/normal_font_size = 60
