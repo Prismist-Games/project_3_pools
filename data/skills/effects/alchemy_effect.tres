@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="AlchemySkillEffect" load_steps=2 format=3 uid="uid://bb11em7gmrwt5"]
 
-[ext_resource type="Script" uid="uid://cv3nw7dfd4u5o" path="res://scripts/resources/skill_resources/skill_effects/alchemy_skill_effect.gd" id="1"]
+[ext_resource type="Script" uid="uid://6iw2ns0tw24u" path="res://scripts/resources/skill_resources/skill_effects/alchemy_skill_effect.gd" id="1"]
 
 [resource]
 script = ExtResource("1")

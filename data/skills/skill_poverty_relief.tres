@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="SkillData" load_steps=5 format=3 uid="uid://86ltrqibrok0"]
 
 [ext_resource type="Resource" uid="uid://05d6oguy0c7r" path="res://data/skills/effects/poverty_relief_effect.tres" id="1"]
-[ext_resource type="Script" uid="uid://chtekk8cofiub" path="res://scripts/resources/skill_resources/skill_effect.gd" id="1_6oro4"]
-[ext_resource type="Script" uid="uid://dlo38q68d6m5r" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
+[ext_resource type="Script" uid="uid://bx0a7yoddneuc" path="res://scripts/resources/skill_resources/skill_effect.gd" id="1_6oro4"]
+[ext_resource type="Script" uid="uid://bmujciq40focn" path="res://scripts/resources/skill_resources/skill_data.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://buh55gt76b2wo" path="res://assets/sprites/icons/skills/贫困救济.png" id="3_i6ixg"]
 
 [resource]

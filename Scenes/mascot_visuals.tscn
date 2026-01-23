@@ -1309,12 +1309,14 @@ shader_parameter/pupil_scale = 0.5
 shader_parameter/pupil_color = Color(0.18, 0.18, 0.18, 1)
 shader_parameter/pupil_outline_color = Color(0, 0, 0, 1)
 shader_parameter/pupil_outline_thickness = 0.10000000149012
+shader_parameter/eye_ver_squash = 1.0
 
 [node name="MascotVisuals" type="Node2D"]
 
 [node name="TheRabbitAnimator" type="Node" parent="." node_paths=PackedStringArray("anim_tree")]
 script = ExtResource("1_fu8yu")
 anim_tree = NodePath("../AnimationTree")
+squint_pupil_scale = 0.25
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeStateMachine_otpb1")

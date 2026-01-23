@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="TimeFreezeSkillEffect" load_steps=2 format=3 uid="uid://b4l3g0in8q10c"]
 
-[ext_resource type="Script" uid="uid://cjjjvw5h15gx3" path="res://scripts/resources/skill_resources/skill_effects/time_freeze_skill_effect.gd" id="1"]
+[ext_resource type="Script" uid="uid://7gqltsg22t4t" path="res://scripts/resources/skill_resources/skill_effects/time_freeze_skill_effect.gd" id="1"]
 
 [resource]
 script = ExtResource("1")

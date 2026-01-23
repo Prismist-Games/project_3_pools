@@ -48,7 +48,6 @@ var _left_eye_fill: Sprite2D
 var _right_eye_fill: Sprite2D
 
 var _default_eye_texture: Texture2D
-var _default_eye_scale: Vector2 = Vector2.ONE
 
 var _playback: AnimationNodeStateMachinePlayback
 var _current_state_name: StringName = STATE_RABBIT_IDLE
@@ -204,7 +203,6 @@ func _init_eye_materials() -> void:
 	# 捕获初始状态作为默认动画目标
 	if _left_eye_fill:
 		_default_eye_texture = _left_eye_fill.texture
-		_default_eye_scale = _left_eye_fill.scale
 
 	# 确保材质实例独立 (Resource Local To Scene)
 	if _left_eye_fill and _left_eye_fill.material:
@@ -255,35 +253,34 @@ func set_auto_blink(enabled: bool) -> void:
 
 ## 执行一次纯粹的眨眼 (不改变形状)
 func blink_once() -> void:
-	_run_blink_sequence(Callable())
+	# 眨眼动作：从当前 squash 变到 0 再变回
+	for eye in [_left_eye_fill, _right_eye_fill]:
+		if not eye or not eye.material: continue
+		var current_squash = eye.material.get_shader_parameter("eye_ver_squash")
+		var tween = create_tween()
+		tween.tween_property(eye.material, "shader_parameter/eye_ver_squash", 0.0, blink_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		tween.tween_property(eye.material, "shader_parameter/eye_ver_squash", current_squash, blink_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 ## 供 AnimationPlayer 调用：切换到不耐烦眯眯眼
 func squint_eyes() -> void:
-	# 眯眼逻辑：通过眨眼动作切换到眯眼纹理
-	var target_tex = squint_eye_texture if squint_eye_texture else _default_eye_texture
-	_run_blink_sequence(func(): _set_eyes_texture(target_tex))
+	# 眯眼逻辑：通过 shader 参数实现垂直压缩，确保描边均匀
+	_run_blink_sequence_shader(0.25)
 
 ## 供 AnimationPlayer 调用：恢复正常眼眶
 func restore_eyes() -> void:
-	# 恢复逻辑：通过眨眼动作切换回默认纹理
-	_run_blink_sequence(func(): _set_eyes_texture(_default_eye_texture))
+	# 恢复逻辑：将 shader 参数恢复到 1.0
+	_run_blink_sequence_shader(1.0)
 
-## 核心眨眼序列动画
-func _run_blink_sequence(on_closed_callback: Callable) -> void:
+## 核心眨眼序列动画 (Shader 版本)
+func _run_blink_sequence_shader(target_squash: float) -> void:
 	for eye in [_left_eye_fill, _right_eye_fill]:
-		if not eye: continue
+		if not eye or not eye.material: continue
 		var tween = create_tween()
-		# 闭眼
-		tween.tween_property(eye, "scale:y", 0.0, blink_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-		# 闭合时的回调 (用于切换贴图等)
-		if on_closed_callback.is_valid():
-			tween.tween_callback(on_closed_callback)
-		# 睁眼
-		tween.tween_property(eye, "scale:y", _default_eye_scale.y, blink_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		# 闭眼 (压缩到 0)
+		tween.tween_property(eye.material, "shader_parameter/eye_ver_squash", 0.0, blink_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		# 睁眼 (恢复到目标压缩值)
+		tween.tween_property(eye.material, "shader_parameter/eye_ver_squash", target_squash, blink_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
-func _set_eyes_texture(tex: Texture2D) -> void:
-	if _left_eye_fill: _left_eye_fill.texture = tex
-	if _right_eye_fill: _right_eye_fill.texture = tex
 
 func _reset_blink_timer() -> void:
 	_blink_timer = randf_range(blink_interval_min, blink_interval_max)
