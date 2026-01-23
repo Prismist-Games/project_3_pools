@@ -1,4 +1,4 @@
-[gd_scene load_steps=106 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=107 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://rr7qyh0d2fdb" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://rg8ahiwfwlxb" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
@@ -64,6 +64,7 @@
 [ext_resource type="Texture2D" uid="uid://b7qsbdjotcn0r" path="res://assets/sprites/frames/rabbit_popup_button.png" id="73_1wqh7"]
 [ext_resource type="Texture2D" uid="uid://hrp7bsul1woh" path="res://assets/sprites/frames/rabbit_popup_button_pressed.png" id="74_1wndc"]
 [ext_resource type="Texture2D" uid="uid://c4l4gf83h8vwl" path="res://assets/sprites/frames/rabbit_popup_button_hover.png" id="75_n1634"]
+[ext_resource type="Texture2D" uid="uid://bxosm4gokui6b" path="res://assets/sprites/frames/rabbit_popup_pole.png" id="76_fx7i4"]
 [ext_resource type="Texture2D" uid="uid://bdvxak6mqassm" path="res://assets/sprites/icons/language_icon.png" id="78_vjbw4"]
 [ext_resource type="Texture2D" uid="uid://dgoq2kyyp1gpg" path="res://assets/sprites/icons/language_icon_pressed.png" id="79_fn8r1"]
 [ext_resource type="Texture2D" uid="uid://dkiduci7dgu3v" path="res://assets/sprites/icons/language_icon_hover.png" id="80_ug1ds"]
@@ -1837,17 +1838,34 @@ color = Color(0, 0, 0, 0.5019608)
 z_index = 11
 layout_mode = 0
 offset_left = 1657.0
-offset_top = -1110.0
+offset_top = 580.0
 offset_right = 4372.0
 offset_bottom = 2365.0
 texture = ExtResource("72_d4tgn")
+stretch_mode = 5
+
+[node name="Popup Pole" type="TextureRect" parent="Popup Window"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -57.0
+offset_top = -4660.0
+offset_right = 57.0
+offset_bottom = -1515.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("76_fx7i4")
 
 [node name="Popup_RichTextLabel" type="RichTextLabel" parent="Popup Window"]
 layout_mode = 0
 offset_left = 487.0
-offset_top = 2592.0
+offset_top = 902.0
 offset_right = 2219.0
-offset_bottom = 3138.0
+offset_bottom = 1448.0
 mouse_filter = 2
 theme_override_fonts/normal_font = ExtResource("91_036e7")
 theme_override_font_sizes/normal_font_size = 68
@@ -1860,9 +1878,9 @@ vertical_alignment = 1
 [node name="Popup_button" type="TextureButton" parent="Popup Window"]
 layout_mode = 0
 offset_left = 1062.0
-offset_top = 3440.0
+offset_top = 1750.0
 offset_right = 1630.0
-offset_bottom = 3703.0
+offset_bottom = 2013.0
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("73_1wqh7")
 texture_pressed = ExtResource("74_1wndc")

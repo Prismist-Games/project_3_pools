@@ -178,7 +178,7 @@ func _init_era_popup() -> void:
 	
 	if popup_window:
 		# 强制设置初始位置到隐藏位置
-		popup_window.position.y = -4000
+		popup_window.position.y = -2200
 	
 	if popup_button:
 		popup_button.pressed.connect(_hide_era_popup)
@@ -1162,11 +1162,11 @@ func _show_era_popup(era_index: int) -> void:
 	# 触发时代面板出现音效
 	EventBus.game_event.emit(&"era_panel_opened", null)
 	
-	# 弹出 Window (从 -4000 到 -1100)
+	# 弹出 Window (从 -2200 到 580)	
 	var win_tween = create_tween()
 	win_tween.set_trans(Tween.TRANS_BACK)
 	win_tween.set_ease(Tween.EASE_OUT)
-	win_tween.tween_property(popup_window, "position:y", -1110.0, 0.6)
+	win_tween.tween_property(popup_window, "position:y", 580.0, 0.6)
 
 
 ## 显示游戏结束弹窗
@@ -1190,7 +1190,7 @@ func _show_ending_popup() -> void:
 	var win_tween = create_tween()
 	win_tween.set_trans(Tween.TRANS_BACK)
 	win_tween.set_ease(Tween.EASE_OUT)
-	win_tween.tween_property(popup_window, "position:y", -1110.0, 0.6)
+	win_tween.tween_property(popup_window, "position:y", 580.0, 0.6)
 
 
 ## 隐藏时代切换弹窗
@@ -1202,11 +1202,11 @@ func _hide_era_popup() -> void:
 		unlock_ui("era_popup")
 		return
 	
-	# 隐藏 Window (从 -700 到 -4000)
+	# 隐藏 Window (从 580 到 -2200)
 	var win_tween = create_tween()
 	win_tween.set_trans(Tween.TRANS_BACK)
 	win_tween.set_ease(Tween.EASE_IN)
-	win_tween.tween_property(popup_window, "position:y", -4000.0, 0.5)
+	win_tween.tween_property(popup_window, "position:y", -2200.0, 0.5)
 	
 	# 延迟隐藏 Mask
 	await win_tween.finished
