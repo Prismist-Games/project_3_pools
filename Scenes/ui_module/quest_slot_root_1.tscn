@@ -1,6 +1,6 @@
 [gd_scene load_steps=32 format=3 uid="uid://05ku7kwq0dxp"]
 
-[ext_resource type="Script" uid="uid://con7nyakgbhan" path="res://scripts/ui/components/quest_slot_ui.gd" id="1_cf02l"]
+[ext_resource type="Script" uid="uid://bwxgrdhgavm8e" path="res://scripts/ui/components/quest_slot_ui.gd" id="1_cf02l"]
 [ext_resource type="Texture2D" uid="uid://bk6w30hxghp51" path="res://assets/sprites/quest_slots/基地-7.png" id="2_5cnt1"]
 [ext_resource type="Script" uid="uid://rg8ahiwfwlxb" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="3_xy8au"]
 [ext_resource type="Texture2D" uid="uid://b6sygmv0sgt3g" path="res://assets/sprites/quest_slots/基地-3.png" id="4_8oyay"]
@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="8_uawe1"]
 [ext_resource type="FontFile" uid="uid://bpg3iakb3o07a" path="res://assets/fonts/51282.otf" id="9_x1b4l"]
 [ext_resource type="Texture2D" uid="uid://nju4di4bai4r" path="res://assets/sprites/icons/items/item_shape_centered.png" id="10_8oyay"]
-[ext_resource type="Shader" uid="uid://cjs8tedhdkq2m" path="res://assets/shaders/desaturate.gdshader" id="10_cm3rb"]
+[ext_resource type="Shader" uid="uid://ckftk5sr2t1ye" path="res://assets/shaders/desaturate.gdshader" id="10_cm3rb"]
 [ext_resource type="Texture2D" uid="uid://davbf6tu8eie1" path="res://assets/sprites/quest_slots/quality_label.PNG" id="11_8oyay"]
 [ext_resource type="Texture2D" uid="uid://h5k15o8ewu4i" path="res://assets/sprites/icons/item_rarity_glow.PNG" id="12_xy8au"]
 [ext_resource type="Texture2D" uid="uid://jirxtbdwgrjx" path="res://assets/sprites/icons/tick_green.png" id="13_n0e4s"]
@@ -33,10 +33,6 @@ shader_parameter/inside = false
 shader_parameter/add_margins = false
 shader_parameter/number_of_images = Vector2(1, 1)
 shader_parameter/saturation = 1.0
-shader_parameter/preview_stroke_mode = false
-shader_parameter/stroke_color = Color(0.36408392, 0.36408395, 0.36408386, 1)
-shader_parameter/fill_color = Color(0.8546343, 0.85463387, 0.85463387, 1)
-shader_parameter/stroke_threshold = 0.2990000142025
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cm3rb"]
 atlas = ExtResource("10_8oyay")
@@ -205,6 +201,7 @@ script = ExtResource("1_cf02l")
 [node name="Quest Slot_mask" type="Sprite2D" parent="."]
 clip_children = 1
 texture = ExtResource("2_5cnt1")
+offset = Vector2(80.35, 18.51)
 
 [node name="Quest Slot_background" type="Node2D" parent="Quest Slot_mask"]
 script = ExtResource("3_xy8au")
@@ -212,17 +209,21 @@ color = Color(1, 0.79607844, 0.03137255, 1)
 
 [node name="Slot_background_side" type="Sprite2D" parent="Quest Slot_mask/Quest Slot_background"]
 modulate = Color(1, 0.79607844, 0.03137255, 1)
+position = Vector2(693, -92)
 texture = ExtResource("4_8oyay")
 
 [node name="Slot_background_wall" type="Sprite2D" parent="Quest Slot_mask/Quest Slot_background"]
 modulate = Color(1, 0.79607844, 0.03137255, 1)
+position = Vector2(-164, -259)
 texture = ExtResource("5_cm3rb")
 
 [node name="Slot_background_floor" type="Sprite2D" parent="Quest Slot_mask/Quest Slot_background"]
 modulate = Color(1, 0.79607844, 0.03137255, 1)
+position = Vector2(-28, 314)
 texture = ExtResource("6_cpuw7")
 
 [node name="Slot_background_outline" type="Sprite2D" parent="Quest Slot_mask/Quest Slot_background"]
+position = Vector2(-7, -36)
 texture = ExtResource("7_2pth6")
 
 [node name="Quest Reward Icon" type="TextureRect" parent="Quest Slot_mask"]
@@ -367,6 +368,7 @@ offset = Vector2(0, -26.175)
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="."]
 self_modulate = Color(0.99607843, 0.90588236, 0.2901961, 1)
+position = Vector2(78, -34)
 texture = ExtResource("15_vvcjj")
 
 [node name="Quest Slot_outline" type="Sprite2D" parent="Quest Slot_outline"]
