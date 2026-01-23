@@ -226,6 +226,12 @@ func _setup_precise_display() -> void:
 		if slot_2.lid_sprite:
 			slot_2.lid_sprite.position.y = 0
 		slot_2.current_pool_item_type = -1
+		
+		# 关键修复：强制重置 slot[2] 的交互状态
+		# 如果他是触发 PreciseSelection 的源头，_is_reveal_in_progress 可能仍为 true
+		# 从而导致在背包满（Replacing 流程跳过 exit 清理）的情况下该槽位被永久锁定
+		slot_2._is_reveal_in_progress = false
+		slot_2.is_drawing = false
 	
 	# 通知背包控制器，考虑当前的 options 进行角标高亮
 	if controller and controller.inventory_controller:
