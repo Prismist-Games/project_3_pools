@@ -85,6 +85,16 @@ texture={
 "roughness/mode": 0,
 "roughness/src_normal": ""
 }
+audio_stream_wav={
+"compress/mode": 1,
+"edit/loop_mode": 0,
+"edit/normalize": false,
+"edit/trim": false,
+"force/8_bit": false,
+"force/max_rate": false,
+"force/max_rate_hz": 44100,
+"force/mono": false
+}
 
 [internationalization]
 

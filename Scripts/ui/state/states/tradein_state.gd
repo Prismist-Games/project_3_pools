@@ -121,6 +121,10 @@ func _execute_trade_in_sequence(slot_index: int, item: ItemInstance) -> void:
 		return
 	
 	# 1. 物品从 item slot 飞入 lottery slot
+	# 立即收回取消按钮，防止中途取消
+	if controller.cancel_button_controller:
+		controller.cancel_button_controller.hide_cancel_button_silent()
+
 	var start_pos = controller.inventory_controller.get_slot_global_position(slot_index)
 	var start_scale = controller.inventory_controller.get_slot_global_scale(slot_index)
 	var target_pos = lottery_slot.get_main_icon_global_position()

@@ -35,6 +35,22 @@ var pending_item: ItemInstance:
 				pending_items.append(v)
 				pending_queue_changed.emit(pending_items)
 
+var _is_batch_updating: bool = false
+var _pending_inventory_change: bool = false
+var _pending_order_update: bool = false
+
+func begin_update() -> void:
+	_is_batch_updating = true
+
+func end_update() -> void:
+	_is_batch_updating = false
+	if _pending_inventory_change:
+		inventory_changed.emit(inventory)
+		_pending_inventory_change = false
+	if _pending_order_update:
+		EventBus.orders_updated.emit(OrderSystem.current_orders)
+		_pending_order_update = false
+
 var selected_slot_index: int = -1:
 	set(v):
 		var old = selected_slot_index
@@ -99,8 +115,13 @@ func add_item_instance(item: ItemInstance) -> bool:
 		if inventory[i] == null:
 			inventory[i] = item
 			item_added.emit(item, i)
-			inventory_changed.emit(inventory)
-			EventBus.orders_updated.emit(OrderSystem.current_orders) # 触发订单UI更新，以刷新拥有状态
+			
+			if _is_batch_updating:
+				_pending_inventory_change = true
+				_pending_order_update = true
+			else:
+				inventory_changed.emit(inventory)
+				EventBus.orders_updated.emit(OrderSystem.current_orders) # 触发订单UI更新，以刷新拥有状态
 			return true
 	return false
 
@@ -301,6 +322,8 @@ func recycle_all_by_name(item_id: StringName) -> int:
 
 ## 尝试自动将待定队列中的物品放入背包（当空间或种类位释放时）
 func try_auto_add_pending() -> void:
+	begin_update()
+	
 	# 注意：pending_item 的 setter/getter 逻辑会自动处理 pending_items 数组
 	while not pending_items.is_empty():
 		var next_item = pending_items[0]
@@ -315,6 +338,8 @@ func try_auto_add_pending() -> void:
 		
 		# 如果不能自动添加（种类限制或没格子），则停止自动处理，等待玩家手动交互
 		break
+	
+	end_update()
 
 
 func _has_empty_slot() -> bool:

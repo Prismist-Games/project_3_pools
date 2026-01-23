@@ -20,6 +20,9 @@ var _hovered_slot_index: int = -1
 ## 当前被按下的slot索引 (-1表示无，用于处理鼠标移出后松开的情况)
 var _pressed_slot_index: int = -1
 
+## 本地输入锁 (防止快速点击导致的逻辑重入)
+var _local_input_lock: bool = false
+
 func setup(grid: HBoxContainer) -> void:
 	lottery_slots_grid = grid
 	_init_slots()
@@ -76,6 +79,10 @@ func play_all_refresh_animations(pools: Array, clicked_slot_idx: int = -1) -> vo
 	# 确保标记已设置（兜底，调用方应该已经设置了）
 	_is_animating_refresh = true
 	
+	# 关键修复：刷新动画期间锁定 UI (移动到最前，防止关盖动画期间出现输入空窗期)
+	if game_ui and game_ui.has_method("lock_ui"):
+		game_ui.lock_ui("pool_refresh")
+	
 	# 1. 先让被点击的 slot 关盖 (不再强制检查 is_drawing，因为物品飞走后该状态可能已被重置)
 	if clicked_slot_idx >= 0 and clicked_slot_idx < _slots.size():
 		var clicked_slot = get_slot_node(clicked_slot_idx)
@@ -96,10 +103,6 @@ func play_all_refresh_animations(pools: Array, clicked_slot_idx: int = -1) -> vo
 	# 2. 对所有 slot 并行播放推挤刷新动画
 	# 使用 Dictionary 作为共享引用容器（lambda 捕获值副本问题）
 	var state := {"pending": 0}
-	
-	# 关键修复：刷新动画期间锁定 UI
-	if game_ui and game_ui.has_method("lock_ui"):
-		game_ui.lock_ui("pool_refresh")
 	
 	for i in range(3):
 		var slot = get_slot_node(i)
@@ -153,18 +156,8 @@ func _start_slot_refresh(slot: Control, pool_data: Variant, state: Dictionary) -
 
 func _calculate_order_hints(pool_type: int) -> Dictionary:
 	# 1. 收集所有订单需求的物品 ID 和对应的最低品质要求
-	# Dictionary[item_id: StringName] -> min_rarity: int (取所有订单中该物品的最低品质要求)
-	var required_items: Dictionary = {} # {item_id: max_required_rarity}
-	for order in OrderSystem.current_orders:
-		for req in order.requirements:
-			var id = req.get("item_id", &"")
-			var min_rarity = req.get("min_rarity", 0)
-			if id != &"":
-				# 改为取最高品质要求，确保只有满足最高要求时才消失
-				if id in required_items:
-					required_items[id] = maxi(required_items[id], min_rarity)
-				else:
-					required_items[id] = min_rarity
+	# Optimization: Use cached requirements from OrderSystem
+	var required_items: Dictionary = OrderSystem.get_required_items()
 	
 	# 2. 获取该池子类型下的所有物品，并过滤出被订单要求的
 	var pool_items = GameManager.get_items_for_type(pool_type)
@@ -196,9 +189,10 @@ func _calculate_order_hints(pool_type: int) -> Dictionary:
 
 func update_pending_display(items: Array[ItemInstance], source_pool_idx: int) -> void:
 	if items.is_empty():
-		for i in range(3):
-			var slot = get_slot_node(i)
-			if slot.has_method("update_pending_display"):
+		# Optimization: Only clear the specific slot that had pending items
+		if source_pool_idx >= 0 and source_pool_idx < _slots.size():
+			var slot = get_slot_node(source_pool_idx)
+			if slot and slot.has_method("update_pending_display"):
 				slot.update_pending_display([])
 		return
 	
@@ -255,11 +249,12 @@ func _calculate_badge_state(item: ItemInstance) -> int:
 	# 与 InventoryController 保持一致的逻辑
 	if not OrderSystem: return 0
 	
-	var max_required = -1
-	for order in OrderSystem.current_orders:
-		for req in order.requirements:
-			if req.get("item_id", &"") == item.item_data.id:
-				max_required = maxi(max_required, req.get("min_rarity", 0))
+	# Optimization: Use cached requirements
+	var required_items = OrderSystem.get_required_items()
+	if not required_items.has(item.item_data.id):
+		return 0
+		
+	var max_required = required_items[item.item_data.id]
 	
 	if max_required == -1:
 		return 0
@@ -312,10 +307,16 @@ func _calculate_upgradeable_state(item: ItemInstance) -> bool:
 # --- Input Handlers ---
 
 func _on_slot_input(event: InputEvent, index: int) -> void:
+	if _local_input_lock: return
+	
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			var slot = get_slot_node(index) as LotterySlotUI
 			
+			# [Fix] Check if interaction is allowed (Reveal gating / Drawing state restrictions)
+			if not _is_slot_interaction_allowed(slot, index):
+				return
+
 			if event.pressed:
 				# 1. 核心门控：UI 锁定中禁止一切点击
 				# 允许在确认选择的状态下点击 (如 PreciseSelection, Modal)
@@ -404,17 +405,22 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 						slot.handle_mouse_release()
 					return
 					
-				if not game_ui.is_ui_locked() and not _is_animating_refresh and InventorySystem.pending_items.is_empty():
+				if not game_ui.is_ui_locked() and not _is_animating_refresh and not game_ui._is_vfx_processing and InventorySystem.pending_items.is_empty():
 					# 记录当前点击的奖池索引，用于后续 pending 物品的定位
 					game_ui.last_clicked_pool_idx = index
 					game_ui.pending_source_pool_idx = index
 					
 					# Draw logic
 					if game_ui.state_machine:
+						# 关键修复：设置本地输入锁，防止快速点击导致的多重触发或盖子状态异常
+						_local_input_lock = true
+						
 						game_ui.state_machine.transition_to(&"Drawing", {"pool_index": index})
 						var drawing_state = game_ui.state_machine.get_state(&"Drawing")
 						if drawing_state and drawing_state.has_method("draw"):
 							await drawing_state.draw()
+							
+						_local_input_lock = false
 				
 				# 松开后重置按下状态
 				_pressed_slot_index = -1
@@ -530,3 +536,38 @@ func handle_global_mouse_release() -> void:
 		if slot and slot.has_method("handle_mouse_release"):
 			slot.handle_mouse_release()
 		_pressed_slot_index = -1
+func _is_slot_interaction_allowed(slot: LotterySlotUI, index: int) -> bool:
+	if not slot:
+		return false
+		
+	# 1. Block input if slot is revealing
+	if slot.get("_is_reveal_in_progress"):
+		return false
+		
+	# 2. Block interaction with drawn items (Lid Open) unless in specific states
+	if slot.is_drawing:
+		var state_name = &""
+		if game_ui and game_ui.state_machine:
+			state_name = game_ui.state_machine.get_current_state_name()
+		
+		# Allow: Precise Selection (only first 2 slots)
+		if state_name == &"PreciseSelection" and index < 2:
+			return true
+			
+		# Allow: Skill Selection (All slots allowed)
+		if state_name == &"SkillSelection":
+			return true
+			
+		# Allow: Generic Modal Selection
+		if state_name == &"Modal":
+			return true
+			
+		# Allow: Pending Items (Replacing/Recycling logic)
+		# Check if this specific slot contains the pending item
+		if not InventorySystem.pending_items.is_empty() and slot._top_item_id != &"":
+			return true
+			
+		# Otherwise, block interaction with drawn items
+		return false
+		
+	return true

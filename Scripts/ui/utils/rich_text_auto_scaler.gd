@@ -23,6 +23,10 @@ func _ready() -> void:
 	item_rect_changed.connect(_on_item_rect_changed)
 
 func _process(_delta: float) -> void:
+	# Optimization: Don't process if not visible or not in tree
+	if not is_visible_in_tree():
+		return
+
 	# Check for text changes since there's no 'text_changed' signal for RichTextLabel
 	if text != _last_text:
 		_last_text = text
@@ -59,9 +63,9 @@ func update_font_size() -> void:
 		
 		# RichTextLabel has horizontal_alignment in Godot 4.3+
 		var text_size: Vector2 = font.get_multiline_string_size(
-			measure_text, 
-			horizontal_alignment, 
-			wrap_width, 
+			measure_text,
+			horizontal_alignment,
+			wrap_width,
 			current_font_size
 		)
 		

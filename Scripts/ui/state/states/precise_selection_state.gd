@@ -67,10 +67,10 @@ func exit() -> void:
 	
 	# 正常退出流程：关闭所有打开的槽位并刷新
 	if controller and selected_slot_index != -1:
-		# 1. 手动关闭所有可能打开的槽位 (0 和 1)
-		for i in range(2):
+		# 1. 手动关闭所有可能打开的槽位 (0, 1, 2) - 尤其 Slot 2 可能因意外状态残留
+		for i in range(3):
 			var slot = _get_slot(i)
-			if slot and slot.is_drawing:
+			if slot and (slot.is_drawing or slot._is_reveal_in_progress):
 				slot.play_close_sequence() # 异步关盖，不一定非要 await，因为下一步有统一刷新
 		
 		# 2. 调用统一的刷新动画
@@ -131,7 +131,7 @@ func select_option(index: int) -> void:
 		var other_index = 1 - index
 		var other_slot = _get_slot(other_index)
 		if other_slot:
-			other_slot.close_lid()
+			other_slot.play_close_sequence()
 		
 		InventorySystem.pending_item = item_instance
 		# ERA_4: 抽奖后递减保质期
@@ -148,7 +148,7 @@ func select_option(index: int) -> void:
 		var other_index = 1 - index # 0 -> 1, 1 -> 0
 		var other_slot = _get_slot(other_index)
 		if other_slot:
-			other_slot.close_lid()
+			other_slot.play_close_sequence()
 		
 		# 2. 将选中的物品加入 pending 队列（它会显示在当前选中的 slot 里）
 		InventorySystem.pending_item = item_instance

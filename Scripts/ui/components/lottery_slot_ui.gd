@@ -1312,6 +1312,10 @@ func set_hover_action_state(hover_type: HoverType) -> void:
 	else:
 		_enable_hover_visuals(hover_type)
 
+## 是否允许显示 hover 视觉 (例如回收/合成提示)
+func can_show_hover_visuals() -> bool:
+	return not _is_reveal_in_progress
+
 
 ## 启用hover视觉效果
 func _enable_hover_visuals(hover_type: HoverType) -> void:
