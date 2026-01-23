@@ -24,7 +24,7 @@ resources_spreadsheet_view/freeze_first_column=true
 [application]
 
 config/name="Project 3 Pools"
-run/main_scene="uid://3vd6vr0ax1kf"
+run/main_scene="uid://cf1cjj8xlhblr"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -84,6 +84,16 @@ texture={
 "process/size_limit": 0,
 "roughness/mode": 0,
 "roughness/src_normal": ""
+}
+audio_stream_wav={
+"compress/mode": 1,
+"edit/loop_mode": 0,
+"edit/normalize": false,
+"edit/trim": false,
+"force/8_bit": false,
+"force/max_rate": false,
+"force/max_rate_hz": 44100,
+"force/mono": false
 }
 
 [internationalization]

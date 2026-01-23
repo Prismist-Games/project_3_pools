@@ -401,7 +401,7 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 						slot.handle_mouse_release()
 					return
 					
-				if not game_ui.is_ui_locked() and not _is_animating_refresh and InventorySystem.pending_items.is_empty():
+				if not game_ui.is_ui_locked() and not _is_animating_refresh and not game_ui._is_vfx_processing and InventorySystem.pending_items.is_empty():
 					# 记录当前点击的奖池索引，用于后续 pending 物品的定位
 					game_ui.last_clicked_pool_idx = index
 					game_ui.pending_source_pool_idx = index
