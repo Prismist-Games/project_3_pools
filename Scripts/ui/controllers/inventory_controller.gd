@@ -156,18 +156,18 @@ func _calculate_badge_state(item: ItemInstance) -> int:
 	# Access OrderSystem directly (Controller knows about Systems)
 	if not OrderSystem: return 0
 	
-	# Optimization: Use cached requirements
-	var required_items = OrderSystem.get_required_items()
+	# Optimization: Use cached requirements (Min requirement to show green check if it satisfies *any* order)
+	var required_items = OrderSystem.get_min_required_items()
 	if not required_items.has(item.item_data.id):
 		return 0
 		
-	var max_required = required_items[item.item_data.id]
+	var min_required = required_items[item.item_data.id]
 	
-	if max_required == -1:
+	if min_required == -1:
 		return 0
 	
-	# 只有满足所有订单中该物品最高的品质要求，才显示绿勾
-	if item.rarity >= max_required:
+	# 只要满足任一订单（该物品的最低需求品质），显示绿勾
+	if item.rarity >= min_required:
 		return 2
 	return 1
 
