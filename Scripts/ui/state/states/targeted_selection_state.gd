@@ -135,6 +135,20 @@ func exit() -> void:
 		
 		controller.last_clicked_pool_idx = -1
 		controller.pending_source_pool_idx = -1
+	elif controller and source_pool_index != -1:
+		# 关键修复：如果以非确认状态退出（如取消、中断），强制重置 slot 状态
+		# 否则 Drawing 状态遗留的 is_drawing/=true 会导致该 slot 永久不可交互
+		var slot = _get_lottery_slot(source_pool_index)
+		if slot:
+			slot._is_reveal_in_progress = false
+			slot.is_drawing = false
+			if slot.backgrounds:
+				slot.backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
+			
+			# [修复] 强制重置盖子位置（修复取消后盖子悬空的问题）
+			if slot.get("lid_sprite"): # 使用 get 安全访问，或假定 LotterySlotUI 结构
+				var tween = slot.create_tween()
+				tween.tween_property(slot.lid_sprite, "position:y", 0.0, 0.1)
 	
 	# 清理状态
 	_has_acted = false
@@ -460,13 +474,13 @@ func _play_panel_fall() -> void:
 	# 重置所有 hover/press 状态
 	_reset_all_visual_states()
 	
+	# 播放落下动画
 	var tween = controller.create_tween()
 	tween.set_ease(Tween.EASE_IN)
 	tween.set_trans(Tween.TRANS_BACK)
 	tween.tween_property(_panel, "position:x", PANEL_HIDDEN_X, ANIMATION_DURATION)
 	
-	# 发出面板关闭信号（用于音效）
-	EventBus.game_event.emit(&"targeted_panel_closed", null)
+	# EventBus.game_event.emit(&"targeted_panel_closed", null) # 用户反馈此时不需要音效，以保持与鼠标移开时的静音一致
 	
 	await tween.finished
 	
