@@ -110,23 +110,28 @@ func update_order_display(order_data: OrderData, req_states: Array = []) -> void
 	
 	_update_requirements(order_data.requirements, req_states)
 	
-	# 1. 判定是否满足全部条件
-	var is_satisfied = false
+	# 1. 判定状态
+	var has_enough_items = order_data.can_fulfill(InventorySystem.inventory)
+	var is_selection_ready = false
+
 	if is_submit_mode:
-		# 提交模式：根据当前已选中的物品判定
-		is_satisfied = _check_order_satisfied(order_data, req_states)
-		_set_protrude(is_satisfied)
+		# 提交模式：根据当前已选中的物品判定是否满足提交条件（用于突出显示）
+		is_selection_ready = _check_order_satisfied(order_data, req_states)
+		_set_protrude(is_selection_ready)
+		
+		# 在提交模式下，背景颜色依然基于"是否拥有足够物品"来显示绿色提示
+		# 这样玩家能知道哪些订单是可以完成的
+		_update_background_color(has_enough_items)
 	else:
 		# 非提交模式：根据背包中是否持有足够物品判定
-		is_satisfied = order_data.can_fulfill(InventorySystem.inventory)
+		# 此时 is_selection_ready 只需要在这里复用 has_enough_items 逻辑吗？
+		# 不，非提交模式不展示选中预览，所以不需要 is_selection_ready
 		_reset_protrude()
-	
-	# 2. 更新背景颜色
-	_update_background_color(is_satisfied)
+		_update_background_color(has_enough_items)
 	
 	# 3. 更新奖励显示
 	if reward_label:
-		if is_submit_mode and is_satisfied:
+		if is_submit_mode and is_selection_ready:
 			var selected_items: Array[ItemInstance] = []
 			for idx in InventorySystem.multi_selected_indices:
 				if idx >= 0 and idx < InventorySystem.inventory.size():
