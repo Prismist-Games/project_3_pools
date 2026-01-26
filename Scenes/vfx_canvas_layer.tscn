@@ -24,6 +24,9 @@ shader_parameter/vignette_softness = 0.4870000231325
 [node name="VFX CanvasLayer" type="CanvasLayer"]
 layer = 1000
 
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
+
 [node name="Film Grain" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_n0t2p")
 anchors_preset = 15
