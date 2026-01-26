@@ -630,7 +630,7 @@ scale = Vector2(2.39, 2.39)
 texture = ExtResource("6_simg3")
 
 [node name="wall_with_floor_left" type="Sprite2D" parent="Background"]
-position = Vector2(-2935, -583.25)
+position = Vector2(-2927, -583.25)
 scale = Vector2(2.39, 2.39)
 texture = ExtResource("7_nbd70")
 
