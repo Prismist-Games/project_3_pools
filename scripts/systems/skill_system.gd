@@ -216,14 +216,22 @@ func _on_effect_triggered(type: String, skill_id: String) -> void:
 	ctx.skill_id = skill_id
 	ctx.type = type
 	
-	print("[SkillSystem] Emitting skill feedback for skill_id: ", skill_id, " type: ", type)
+	if _is_buffering_feedback:
+		_feedback_buffer.append(ctx)
+		print("[SkillSystem] Buffering feedback for skill_id: ", skill_id, " type: ", type)
+	else:
+		_emit_skill_feedback(ctx)
+
+
+func _emit_skill_feedback(ctx: SkillFeedbackContext) -> void:
+	print("[SkillSystem] Emitting skill feedback for skill_id: ", ctx.skill_id, " type: ", ctx.type)
 	
 	# 核心视觉与逻辑事件
 	EventBus.game_event.emit(&"skill_visual_feedback", ctx)
 	EventBus.game_event.emit(&"skill_triggered", ctx)
 
 	# --- 信号派发 (单次触发模式) ---
-	match type:
+	match ctx.type:
 		SkillEffect.TRIGGER_PENDING:
 			# 技能进入待命状态（如充能开始）
 			EventBus.game_event.emit(&"skill_pending", ctx)
@@ -253,5 +261,19 @@ func _on_game_event(event_id: StringName, context: RefCounted) -> void:
 # Helper class for wrapping feedback data
 class SkillFeedbackContext extends RefCounted:
 	var skill_id: String = ""
-
 	var type: String = ""
+
+
+# --- Feedback Buffering ---
+var _feedback_buffer: Array[SkillFeedbackContext] = []
+var _is_buffering_feedback: bool = false
+
+func start_buffering() -> void:
+	_is_buffering_feedback = true
+	_feedback_buffer.clear()
+
+func stop_and_flush_buffering() -> void:
+	_is_buffering_feedback = false
+	for ctx in _feedback_buffer:
+		_emit_skill_feedback(ctx)
+	_feedback_buffer.clear()

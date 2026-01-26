@@ -115,10 +115,17 @@ func draw() -> void:
 		captured_items.append(item)
 	
 	EventBus.item_obtained.connect(capture_fn)
+	
+	# Start buffering skill feedback to prevent spoilers before reveal
+	SkillSystem.start_buffering()
+	
 	var success = PoolSystem.draw_from_pool(pool_index)
 	EventBus.item_obtained.disconnect(capture_fn)
 	
 	if not success:
+		# Flush immediately on failure (though unlikely to have triggered skills)
+		SkillSystem.stop_and_flush_buffering()
+		
 		# 如果抽奖失败，恢复队列（虽然此时队列应该是空的）
 		if controller.vfx_manager:
 			controller.vfx_manager.is_paused = false
@@ -145,6 +152,9 @@ func draw() -> void:
 	# 关键检查：如果词缀触发了状态转换（如 TradeIn），则不继续执行揭示序列
 	# 此时状态机已经不在 Drawing 状态了
 	if machine.get_current_state_name() != &"Drawing":
+		# Flush on transition interruption to ensure feedback is shown
+		SkillSystem.stop_and_flush_buffering()
+		
 		# 词缀已处理流程（如 TradeIn），解锁 UI 并退出
 		controller.unlock_ui("draw")
 		controller.set_updates_suppressed(false)
@@ -171,6 +181,9 @@ func draw() -> void:
 	# 如果 pending 为空，说明物品可能已经进背包了（VFX 正在播，但由于我们暂停了，它们还没动）
 	# 我们仍然开启盖子以显示内部或仅仅作为状态转换的视觉停留
 	await slot.play_reveal_sequence(display_items)
+
+	# Reveal finished, flush buffered skill feedback
+	SkillSystem.stop_and_flush_buffering()
 
 	# [Reveal Phase End] 更新抽奖栏订单角标
 	if controller.pool_controller:

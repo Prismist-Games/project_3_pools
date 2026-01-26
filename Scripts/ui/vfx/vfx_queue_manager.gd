@@ -237,6 +237,9 @@ func _execute_fly_to_inventory(task: Dictionary) -> void:
 	if task.get("is_merge", false):
 		EventBus.game_event.emit(&"item_merged", item)
 	
+	if source_slot:
+		EventBus.game_event.emit(&"item_landed_from_draw", item)
+	
 	EventBus.game_event.emit(&"item_placed", item)
 	
 	# 清理 rarity 相关资源
@@ -308,6 +311,9 @@ func _execute_fly_to_recycle(task: Dictionary) -> void:
 		recycle_icon_node.modulate.a = 1.0
 		# 让飞行的 Sprite 瞬间消失
 		fly_sprite.visible = false
+	
+	if source_lottery_slot:
+		EventBus.game_event.emit(&"item_landed_from_draw", item)
 	
 	# 清理 rarity 相关资源
 	var rarity_tween = fly_sprite.get_meta("rarity_tween", null)

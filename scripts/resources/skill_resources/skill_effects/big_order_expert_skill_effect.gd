@@ -57,3 +57,4 @@ func get_visual_state() -> String:
 	if _is_pending:
 		return TRIGGER_PENDING
 	return ""
+

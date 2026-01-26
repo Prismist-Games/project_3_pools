@@ -13,3 +13,4 @@ var order_data: OrderData = null
 
 ## 扩展数据槽（例如订单类型、是否主线订单等）
 var meta: Dictionary = {}
+

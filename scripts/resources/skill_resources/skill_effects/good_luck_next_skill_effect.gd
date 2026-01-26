@@ -51,3 +51,4 @@ func get_visual_state() -> String:
 	if SkillSystem.skill_state.good_luck_active:
 		return TRIGGER_PENDING
 	return ""
+

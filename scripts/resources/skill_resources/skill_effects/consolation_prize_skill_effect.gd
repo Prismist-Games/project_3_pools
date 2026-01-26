@@ -12,7 +12,7 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	match event_id:
 		&"draw_requested":
 			_handle_draw_requested(context as DrawContext)
-		&"item_obtained":
+		&"item_landed_from_draw":
 			_handle_item_obtained(context as ItemInstance)
 
 
@@ -30,27 +30,33 @@ func _handle_item_obtained(item: ItemInstance) -> void:
 	
 	var state = SkillSystem.skill_state
 	
-	# 使用独立标记检测安慰奖是否激活
+	# 1. 检测是否应该消耗激活状态 (Consolation Prize Active)
 	if state.consolation_prize_active:
-		state.consolation_prize_active = false
-		# 同时清除共享标记（如果没有其他技能也在使用）
-		if not state.good_luck_active:
-			state.next_draw_guaranteed_rare = false
+		# 只有当获得的物品確實是稀有及以上时，才视为消耗了这次保底机会
+		# (如果是稀碎奖池的后续普通物品，则不消耗，也不升级，保留给下一次真正的抽奖)
+		if item.rarity >= Constants.Rarity.RARE:
+			state.consolation_prize_active = false
+			# 只有在没有其他技能(如时来运转)共享此标记时才清除
+			if not state.good_luck_active:
+				state.next_draw_guaranteed_rare = false
 			
-		if item.rarity < Constants.Rarity.RARE:
 			triggered.emit(TRIGGER_ACTIVATE)
-			item.rarity = Constants.Rarity.RARE
+			state.consecutive_commons = 0
+			return
 		else:
-			# Even if naturally rare or better, we consider the skill "effect" consumed and active contextually
-			# But strictly speaking if it didn't change anything, maybe we don't flash? 
-			# Let's flash to show "Protection Used" or just "Skill Active".
-			triggered.emit(TRIGGER_ACTIVATE)
+			# [Bug Fix] 如果在激活状态下收到了普通物品 (例如稀碎奖池的第2/3个物品)
+			# 玩家期望即使是同一批次的物品也能享受到刚刚触发的保底效果
+			# 因此，我们在这里立即升级物品并消耗保底
+			state.consolation_prize_active = false
+			if not state.good_luck_active:
+				state.next_draw_guaranteed_rare = false
 			
-		# 当触发安慰奖后重置计数
-		state.consecutive_commons = 0
-		return
-	
-	# 计数逻辑：每个普通物品+1
+			item.rarity = Constants.Rarity.RARE
+			triggered.emit(TRIGGER_ACTIVATE)
+			state.consecutive_commons = 0
+			return
+
+	# 2. 计数逻辑：每个普通物品+1
 	if item.rarity == Constants.Rarity.COMMON:
 		state.consecutive_commons += 1
 		# 检查是否达到阈值
@@ -68,3 +74,4 @@ func get_visual_state() -> String:
 	if SkillSystem.skill_state.consolation_prize_active:
 		return TRIGGER_PENDING
 	return ""
+
