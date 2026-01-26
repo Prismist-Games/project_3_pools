@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://di352n8ybklcw"]
+
+[ext_resource type="Shader" uid="uid://dniwhw7n2jov7" path="res://assets/shaders/film_grain.gdshader" id="1_p5fgm"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nvwxn"]
+frequency = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_x0dnr"]
+width = 1920
+height = 1080
+noise = SubResource("FastNoiseLite_nvwxn")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n0t2p"]
+shader = ExtResource("1_p5fgm")
+shader_parameter/grain_speed = 12.50000059375
+shader_parameter/grain_bounce = 0.400000019
+shader_parameter/grain_scale = 1.0
+shader_parameter/grain_amount = 0.30000001425
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_x0dnr")
+shader_parameter/vignette_intensity = 0.3690000175275
+shader_parameter/vignette_radius = 0.7990000379525
+shader_parameter/vignette_softness = 0.4870000231325
+
+[node name="VFX CanvasLayer" type="CanvasLayer"]
+layer = 1000
+
+[node name="Film Grain" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_n0t2p")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

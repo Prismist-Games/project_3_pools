@@ -42,6 +42,7 @@ AnimationDirector="*res://scripts/systems/animation_director.gd"
 EraManager="*res://scripts/globals/era_manager.gd"
 AudioManager="*res://scripts/globals/audio_manager.gd"
 LocaleManager="*res://scripts/globals/locale_manager.gd"
+VfxCanvasLayer="*res://scenes/vfx_canvas_layer.tscn"
 
 [display]
 
