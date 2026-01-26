@@ -23,25 +23,34 @@ func _on_game_event(event_id: StringName, _payload: RefCounted) -> void:
 
 
 # --- Optimization: Requirement Cache ---
-var _cached_required_items: Dictionary = {} # {item_id: max_required_rarity}
+var _cached_max_required_items: Dictionary = {} # {item_id: max_required_rarity}
+var _cached_min_required_items: Dictionary = {} # {item_id: min_required_rarity}
 var _cache_dirty: bool = true
 
-func get_required_items() -> Dictionary:
+func get_max_required_items() -> Dictionary:
 	if _cache_dirty:
 		_rebuild_cache()
-	return _cached_required_items
+	return _cached_max_required_items
+
+func get_min_required_items() -> Dictionary:
+	if _cache_dirty:
+		_rebuild_cache()
+	return _cached_min_required_items
 
 func _rebuild_cache() -> void:
-	_cached_required_items.clear()
+	_cached_max_required_items.clear()
+	_cached_min_required_items.clear()
 	for order in current_orders:
 		for req in order.requirements:
 			var id = req.get("item_id", &"")
 			var rarity = req.get("min_rarity", 0)
 			if id != &"":
-				if id in _cached_required_items:
-					_cached_required_items[id] = maxi(_cached_required_items[id], rarity)
+				if id in _cached_max_required_items:
+					_cached_max_required_items[id] = maxi(_cached_max_required_items[id], rarity)
+					_cached_min_required_items[id] = mini(_cached_min_required_items[id], rarity)
 				else:
-					_cached_required_items[id] = rarity
+					_cached_max_required_items[id] = rarity
+					_cached_min_required_items[id] = rarity
 	_cache_dirty = false
 
 func _mark_cache_dirty() -> void:
