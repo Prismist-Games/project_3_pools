@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/the_machine_front.png-95c3f17a8157d6e1b11f0a7
 
 [params]
 
-compress/mode=1
+compress/mode=4
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

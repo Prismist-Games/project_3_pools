@@ -59,6 +59,7 @@ var _trig_recycle_lid_closed: bool = false
 
 var _has_recycled_items: bool = false # 追踪回收周期内是否有物品成功回收
 var _era_nodes: Array[Node2D] = []
+var _hover_tooltip: Control # 时代提示节点
 
 # ... existing code ...
 
@@ -187,6 +188,10 @@ func _find_required_nodes() -> void:
 			
 			if node:
 				_era_nodes.append(node)
+		
+		# 缓存时代提示节点
+		_hover_tooltip = wand_fill.get_node_or_null("Hover_tooltip")
+		
 		print("[RabbitAnimator] Era visual nodes found: ", _era_nodes.size())
 
 func _cache_initial_transforms() -> void:
@@ -322,4 +327,11 @@ func _update_era_visuals(era_index: int) -> void:
 		if _era_nodes[i]:
 			_era_nodes[i].visible = (i == era_index)
 	
-	print("[RabbitAnimator] Era visuals updated to Index: ", era_index)
+	# 更新时代提示文字
+	if _hover_tooltip:
+		var tooltip_key = "TOOLTIP_ERA_" + str(era_index + 1)
+		if era_index > 3:
+			tooltip_key = "TOOLTIP_ERA_4"
+		_hover_tooltip.tooltip_text = tooltip_key
+	
+	print("[RabbitAnimator] Era visuals updated to Index: %d, Tooltip: TOOLTIP_ERA_%d" % [era_index, era_index + 1])
