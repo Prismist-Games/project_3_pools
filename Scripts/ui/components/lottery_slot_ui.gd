@@ -130,6 +130,10 @@ var _current_hint_ids: Array[StringName] = []
 ## 记录当前池子配置数据（用于金币变化时更新显示屏颜色）
 var _current_pool_data: Variant = null
 
+## 抖动动画变量
+var _shake_tween: Tween = null
+var _base_shake_pos: Vector2 = Vector2.ZERO
+
 # 队列物品显示配置（可在编辑器中调整）
 @export var queue_1_offset: Vector2 = Vector2(-116, 7)
 @export var queue_1_scale: float = 0.75
@@ -854,16 +858,25 @@ func close_lid() -> void:
 
 ## 播放抖动动画（用于以旧换新投入后的反馈）
 func play_shake() -> void:
-	var original_pos = position
+	if _shake_tween and _shake_tween.is_valid():
+		# 如果正在抖动，先杀掉旧动画并复位，避免位置偏移累积
+		_shake_tween.kill()
+		position = _base_shake_pos
+	else:
+		# 如果是新开始抖动，记录当前位置为基准
+		_base_shake_pos = position
+
 	var shake_amount = 8.0
 	var shake_duration = 0.08
 	var shake_count = 3
 	
-	var tween = create_tween()
+	_shake_tween = create_tween()
 	for i in range(shake_count):
 		var direction = 1 if i % 2 == 0 else -1
-		tween.tween_property(self, "position:x", original_pos.x + shake_amount * direction, shake_duration)
-	tween.tween_property(self, "position:x", original_pos.x, shake_duration)
+		_shake_tween.tween_property(self, "position:x", _base_shake_pos.x + shake_amount * direction, shake_duration)
+	
+	# 最后回归基准位置
+	_shake_tween.tween_property(self, "position:x", _base_shake_pos.x, shake_duration)
 
 func _reset_item_transforms() -> void:
 	if _initial_transforms.is_empty(): return
