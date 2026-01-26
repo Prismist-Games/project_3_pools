@@ -658,6 +658,17 @@ func update_queue_display(items: Array) -> void:
 	# item_main 永远显示 items[0]
 	if items.size() > 0:
 		var top_item = items[0]
+
+		
+		# [修复] 必须更新 _top_item_id，否则 Controller 无法正确检测到物品，导致无法交互（如回收）
+		if top_item is ItemInstance:
+			_top_item_id = top_item.item_data.id
+		elif top_item is Dictionary:
+			var t_data = top_item.get("item_data")
+			if t_data and t_data is ItemData:
+				_top_item_id = t_data.id
+			else:
+				_top_item_id = top_item.get("id", &"")
 		
 		item_main.texture = top_item.item_data.icon if top_item is ItemInstance else top_item.get("icon")
 		item_main.visible = true
@@ -786,6 +797,20 @@ func play_queue_advance_anim() -> void:
 	if q1_texture != null:
 		# 我们现在可以传递真实的 ItemInstance
 		var next_item = _current_items[0] if not _current_items.is_empty() else null
+		
+		# [修复] 动画结束，更新 Top Item ID
+		if next_item:
+			if next_item is ItemInstance:
+				_top_item_id = next_item.item_data.id
+			elif next_item is Dictionary:
+				var t_data = next_item.get("item_data")
+				if t_data and t_data is ItemData:
+					_top_item_id = t_data.id
+				else:
+					_top_item_id = next_item.get("id", &"")
+		else:
+			_top_item_id = &""
+			
 		badge_refresh_requested.emit(pool_index, next_item)
 		
 		# 更新背景颜色以匹配新的主物品品质
