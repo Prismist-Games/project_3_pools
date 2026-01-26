@@ -7,6 +7,6 @@
 script = ExtResource("1_mybj3")
 id = &"order_completed"
 stream = ExtResource("2_tpju2")
-volume_db = -20.0
+volume_db = -8.0
 max_polyphony = 1
 bus = "SFX"

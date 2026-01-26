@@ -7,6 +7,6 @@
 script = ExtResource("1_7hdeu")
 id = &"item_obtained"
 stream = ExtResource("2_q2tvh")
-volume_db = -30.0
+volume_db = -18.0
 max_polyphony = 1
 bus = "SFX"

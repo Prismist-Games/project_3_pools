@@ -7,6 +7,6 @@
 script = ExtResource("1_jipo4")
 id = &"order_lid_opened"
 stream = ExtResource("2_jipo4")
-volume_db = -15.0
+volume_db = -3.0
 target_duration = 1.0
 bus = "SFX"

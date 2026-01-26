@@ -7,6 +7,6 @@
 script = ExtResource("1_piw5m")
 id = &"rarity_reveal_step"
 stream = ExtResource("2_wrvqe")
-volume_db = -15.0
+volume_db = -3.0
 max_polyphony = 1
 bus = "RarityReveal"

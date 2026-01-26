@@ -7,5 +7,5 @@
 script = ExtResource("1_f2mjk")
 id = &"skill_activated"
 stream = ExtResource("2_f2mjk")
-volume_db = -15.0
+volume_db = -3.0
 bus = "SFX"

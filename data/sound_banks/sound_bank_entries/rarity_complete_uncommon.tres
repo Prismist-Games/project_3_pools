@@ -7,6 +7,6 @@
 script = ExtResource("1_ruh4h")
 id = &"rarity_complete_uncommon"
 stream = ExtResource("2_ruh4h")
-volume_db = -23.0
+volume_db = -11.0
 max_polyphony = 1
 bus = "SFX"

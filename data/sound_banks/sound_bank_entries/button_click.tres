@@ -11,6 +11,6 @@ stream_0/stream = ExtResource("2")
 script = ExtResource("1")
 id = &"button_click"
 stream = SubResource("AudioStreamRandomizer_whwk5")
-volume_db = -15.0
+volume_db = -3.0
 max_polyphony = 1
 bus = "SFX"

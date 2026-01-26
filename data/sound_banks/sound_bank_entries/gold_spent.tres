@@ -7,5 +7,5 @@
 script = ExtResource("1_2l837")
 id = &"gold_spent"
 stream = ExtResource("2_7ddye")
-volume_db = -20.0
+volume_db = -8.0
 bus = "SFX"

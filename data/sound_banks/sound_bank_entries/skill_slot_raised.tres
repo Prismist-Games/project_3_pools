@@ -7,5 +7,5 @@
 script = ExtResource("1_ac3e2")
 id = &"skill_slot_raised"
 stream = ExtResource("2_ac3e2")
-volume_db = -15.0
+volume_db = -3.0
 bus = "SFX"

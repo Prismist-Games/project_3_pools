@@ -7,5 +7,5 @@
 script = ExtResource("1_fumv2")
 id = &"targeted_panel_closed"
 stream = ExtResource("2_fumv2")
-volume_db = -5.0
+volume_db = 3.0
 bus = "SFX"

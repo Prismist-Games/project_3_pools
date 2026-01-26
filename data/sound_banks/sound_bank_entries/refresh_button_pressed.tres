@@ -7,5 +7,5 @@
 script = ExtResource("1_cqlm5")
 id = &"order_refresh_button_pressed"
 stream = ExtResource("2_06rw1")
-volume_db = -15.0
+volume_db = -3.0
 bus = "SFX"

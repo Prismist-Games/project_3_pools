@@ -1357,6 +1357,7 @@ libraries = {
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="The Rabbit/MascotVisuals"]
 volume_db = -10.0
+bus = &"SFX"
 
 [node name="TheRabbitLeftArm" type="Sprite2D" parent="The Rabbit/MascotVisuals"]
 visible = false

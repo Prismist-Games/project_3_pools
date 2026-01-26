@@ -7,6 +7,6 @@
 script = ExtResource("1")
 id = &"dlc_panel_entered"
 stream = ExtResource("2")
-volume_db = -15.0
+volume_db = -3.0
 max_polyphony = 1
 bus = "SFX"

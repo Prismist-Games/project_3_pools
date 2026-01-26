@@ -7,5 +7,5 @@
 script = ExtResource("1_c7mpf")
 id = &"switch_off"
 stream = ExtResource("2_ltw7k")
-volume_db = -20.0
+volume_db = -8.0
 bus = "SFX"

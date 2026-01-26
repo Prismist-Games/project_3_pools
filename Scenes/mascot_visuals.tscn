@@ -1335,7 +1335,8 @@ libraries = {
 }
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-volume_db = -17.0
+volume_db = -12.0
+bus = &"SFX"
 
 [node name="TheRabbitLeftArm" type="Sprite2D" parent="."]
 self_modulate = Color(0.9882353, 0.4392157, 0.3529412, 1)
