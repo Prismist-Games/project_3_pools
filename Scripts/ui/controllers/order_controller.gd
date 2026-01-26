@@ -238,12 +238,59 @@ func _on_slot_input(event: InputEvent, index: int) -> void:
 			if game_ui and game_ui.is_ui_locked():
 				return
 			
-			if game_ui.state_machine and game_ui.state_machine.get_ui_mode() == Constants.UIMode.SUBMIT:
+			if game_ui.state_machine:
+				var current_mode = game_ui.state_machine.get_ui_mode()
 				var order_idx = index - 1 if index != -1 else -1
-				_handle_smart_select_for_order(order_idx)
+				
+				if current_mode == Constants.UIMode.SUBMIT:
+					_handle_smart_select_for_order(order_idx)
+				elif current_mode == Constants.UIMode.NORMAL:
+					_handle_click_in_normal_mode(index)
 		elif event.pressed:
 			# 可以在这里处理按下时的视觉反馈
 			pass
+
+func _handle_click_in_normal_mode(index: int) -> void:
+	# 1. 获取对应的订单数据
+	var order = _get_order_by_slot_index(index)
+	if not order: return
+	
+	# 2. 检查是否可满足 (Smart Select 能找到足够的物品)
+	var smart_indices = order.find_smart_selection(InventorySystem.inventory)
+	
+	# 临时构建选中物品列表进行校验
+	var temp_items = []
+	for idx in smart_indices:
+		temp_items.append(InventorySystem.inventory[idx])
+	
+	var validation = order.validate_selection(temp_items)
+	
+	if validation.valid:
+		# 3. 切换到提交模式
+		if game_ui.state_machine and game_ui.state_machine.has_method("transition_to"):
+			# 先清除任何现有的选择（确保干净的状态）
+			InventorySystem.multi_selected_indices.clear()
+			InventorySystem.multi_selection_changed.emit([])
+			if InventorySystem.selected_slot_index != -1:
+				InventorySystem.selected_slot_index = -1
+			
+			game_ui.state_machine.transition_to(&"Submitting")
+			
+			# 4. 执行智能选择
+			var order_idx = index - 1 if index != -1 else -1
+			_handle_smart_select_for_order(order_idx)
+
+func _get_order_by_slot_index(index: int) -> OrderData:
+	if index == -1:
+		for o in OrderSystem.current_orders:
+			if o.is_mainline: return o
+		return null
+	
+	var order_idx = index - 1
+	if order_idx >= 0 and order_idx < OrderSystem.current_orders.size():
+		var o = OrderSystem.current_orders[order_idx]
+		if not o.is_mainline: return o
+	return null
 
 func _handle_smart_select_for_order(order_index: int) -> void:
 	var order: OrderData = null
