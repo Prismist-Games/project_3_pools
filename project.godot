@@ -23,10 +23,14 @@ resources_spreadsheet_view/freeze_first_column=true
 
 [application]
 
-config/name="Project 3 Pools"
+config/name="Bunny's Burden"
+config/name_localized={
+"en": "Bunny's Burden",
+"zh": "邦尼不对"
+}
 run/main_scene="uid://3vd6vr0ax1kf"
 config/features=PackedStringArray("4.5", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://dnim86r7rfxxk"
 
 [autoload]
 
@@ -100,6 +104,7 @@ audio_stream_wav={
 [internationalization]
 
 locale/translations=PackedStringArray("res://data/internationalization/internationalization.en.translation", "res://data/internationalization/internationalization.zh.translation")
+locale/locale_filter_mode=0
 
 [rendering]
 
