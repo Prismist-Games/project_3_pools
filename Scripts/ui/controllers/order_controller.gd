@@ -269,8 +269,7 @@ func _handle_click_in_normal_mode(index: int) -> void:
 		# 3. 切换到提交模式
 		if game_ui.state_machine and game_ui.state_machine.has_method("transition_to"):
 			# 先清除任何现有的选择（确保干净的状态）
-			InventorySystem.multi_selected_indices.clear()
-			InventorySystem.multi_selection_changed.emit([])
+			InventorySystem.selected_indices_for_order = []
 			if InventorySystem.selected_slot_index != -1:
 				InventorySystem.selected_slot_index = -1
 			
