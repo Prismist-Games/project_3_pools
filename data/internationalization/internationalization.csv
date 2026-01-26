@@ -28,7 +28,7 @@ RARITY_UNKNOWN,Unknown,未知
 # Era Tooltips (时代提示)
 # =====================================================================
 TOOLTIP_ERA_1,[color=gold]VANILLA ERA[/color]\nThe most primal era. The best era. [color=red]No special rules.[/color],[color=gold]香草时代[/color]\n最原始的时代，最好的时代，[color=red]没有特殊规则[/color]。
-TOOLTIP_ERA_2,[color=gold]VOLATILE ERA[/color]\nPrices become extremely unstable. Pool costs will [color=red]fluctuate randomly[/color] after each draw.,[color=gold]波动时代[/color]\n价格变得及其不稳定，每次抽奖后，奖池的金币消耗会[color=red]随机变化[/color]。
+TOOLTIP_ERA_2,[color=gold]VOLATILE ERA[/color]\nPrices become extremely unstable. Pool costs will [color=red]fluctuate randomly[/color] after each draw.,[color=gold]波动时代[/color]\n价格变得及其不稳定，每次抽獎后，奖池的金币消耗会[color=red]随机变化[/color]。
 TOOLTIP_ERA_3,[color=gold]MODERN ERA[/color]\nStricter standards and limits. Your inventory can only hold [color=red]7 different item types[/color].,[color=gold]摩登时代[/color]\n更严格的标准和限制，背包中只能保留[color=red]7种不同种类的道具[/color]。
 TOOLTIP_ERA_4,[color=gold]DECAY ERA[/color]\nAll items have an expiry date. Expired items become [color=red]junk[/color] and can only be [color=red]recycled[/color].,[color=gold]变质时代[/color]\n所有物品都有[color=red]保质期[/color]，逾期的物品会变成[color=red]废品[/color]，只能用于[color=red]回收[/color]。
 
@@ -94,7 +94,7 @@ AFFIX_VOLATILE_DESC,Only draws  [img=60]res://assets/sprites/icons/rarity_common
 SKILL_NAME_ALCHEMY,Alchemy,炼金术
 SKILL_NAME_AUTO_RESTOCK,Auto Restock,自动补货
 SKILL_NAME_BIG_ORDER_EXPERT,Big Order Expert,大订单专家
-SKILL_NAME_CONSOLATION_PRIZE,Consolation Prize,安慰奖
+SKILL_NAME_CONSOLATION_PRIZE,Consolation Prize,安慰獎
 SKILL_NAME_CORNERS_CUTTING,Corners Cutting,偷工减料
 SKILL_NAME_FRUGAL,Frugal,精打细算
 SKILL_NAME_GOOD_LUCK_NEXT,Good Luck Next,时来运转
@@ -108,19 +108,19 @@ SKILL_NAME_VIP_DISCOUNT,VIP Discount,贵宾折扣
 
 # Skill Descriptions (技能描述)
 SKILL_DESC_ALCHEMY,When recycling  [img=60]res://assets/sprites/icons/rarity_rare.png[/img]  + items: 25% chance to gain 5 Gold.,回收 [img=60]res://assets/sprites/icons/rarity_rare.png[/img] 及以上品质物品时，25% 几率获得 5 金币。
-SKILL_DESC_AUTO_RESTOCK,After completing any order: next draw gives +1 item.,完成任意订单后，下次抽奖额外获得 1 个物品。
+SKILL_DESC_AUTO_RESTOCK,After completing any order: next draw gives +1 item.,完成任意订单后，下次抽獎额外获得 1 个物品。
 SKILL_DESC_BIG_ORDER_EXPERT,Completing orders requiring 4+ items: +5 Gold.,完成需求4个物品的订单时，额外获得 5 金币。
 SKILL_DESC_CONSOLATION_PRIZE,After drawing 3  [img=60]res://assets/sprites/icons/rarity_common.png[/img]  in a row: next draw guaranteed  [img=60]res://assets/sprites/icons/rarity_rare.png[/img]  +.,连续抽到 3 个 [img=60]res://assets/sprites/icons/rarity_common.png[/img] 品质物品后，下次抽取必定获得 [img=60]res://assets/sprites/icons/rarity_rare.png[/img] 品质以上的物品。
-SKILL_DESC_CORNERS_CUTTING,"When generating new orders: 20% chance to reduce requirement by 1, reward unchanged (min 1).",刷新出新订单时，20% 概率使订单需求物品数量 -1，且奖励不变（最低为 1）。
-SKILL_DESC_FRUGAL,When Gold < 10: draw cost -2 (min 1).,当前金币 < 10 时，抽奖金币消耗 -2（最低为 1）。
+SKILL_DESC_CORNERS_CUTTING,"When generating new orders: 20% chance to reduce requirement by 1, reward unchanged (min 1).",刷新出新订单时，20% 几率使订单需求物品数量 -1，且獎励不变（最低为 1）。
+SKILL_DESC_FRUGAL,When Gold < 10: draw cost -2 (min 1).,当前金币 < 10 时，抽獎金币消耗 -2（最低为 1）。
 SKILL_DESC_GOOD_LUCK_NEXT,After completing any order: next draw guaranteed  [img=60]res://assets/sprites/icons/rarity_rare.png[/img]  +.,完成任意订单后，下次抽取必定获得 [img=60]res://assets/sprites/icons/rarity_rare.png[/img] 品质以上物品。
 SKILL_DESC_HARD_ORDER_EXPERT,Completing orders requiring  [img=60]res://assets/sprites/icons/rarity_epic.png[/img]  + items: +10 Gold.,完成需要 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 以上品质物品的订单时，额外获得 10 金币。
-SKILL_DESC_LUCKY_7,When Gold is a multiple of 7 or ends in 7:  [img=60]res://assets/sprites/icons/rarity_epic.png[/img]  and  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  chance is doubled.,当前金币数量为7的倍数或尾数为7时，抽到 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 和 [img=60]res://assets/sprites/icons/rarity_legendary.png[/img] 品质的概率翻倍。
+SKILL_DESC_LUCKY_7,When Gold is a multiple of 7 or ends in 7:  [img=60]res://assets/sprites/icons/rarity_epic.png[/img]  and  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  chance is doubled.,当前金币数量为7的倍数或尾数为7时，抽到 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 和 [img=60]res://assets/sprites/icons/rarity_legendary.png[/img] 品质的几率翻倍。
 SKILL_DESC_NEGOTIATOR,When drawing or merging  [img=60]res://assets/sprites/icons/rarity_epic.png[/img]  + items: all orders gain 1 refresh.,抽到或合成 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 及以上品质物品时，所有订单获得 1 次刷新次数。
-SKILL_DESC_OCD,"When submitting: if all items are same type, reward is doubled.",提交订单时若所有物品为同一形状，则奖励翻倍。
-SKILL_DESC_POVERTY_RELIEF,When Gold < 5: order reward +5.,持有金币 < 5 时，完成订单的金币奖励额外 +5。
-SKILL_DESC_TIME_FREEZE,When refreshing an order: 20% chance to not consume refresh count.,刷新单个订单时，20% 概率不消耗该订单的刷新次数。
-SKILL_DESC_VIP_DISCOUNT,"""Precise"" and ""Targeted"" pools cost 1 less Gold.","""精准""和""有的放矢""词缀的奖池金币消耗减少 1。"
+SKILL_DESC_OCD,"When submitting: if all items are same type, reward is doubled.",提交订单时若所有物品为同一形状，则獎励翻倍。
+SKILL_DESC_POVERTY_RELIEF,When Gold < 5: order reward +5.,持有金币 < 5 时，完成订单的金币獎励额外 +5。
+SKILL_DESC_TIME_FREEZE,When refreshing an order: 20% chance to not consume refresh count.,刷新单个订单时，20% 几率不消耗该订单的刷新次数。
+SKILL_DESC_VIP_DISCOUNT,"""Precise"" and ""Targeted"" pools cost 1 less Gold.","""精准""和""有的放矢""词缀的獎池金币消耗减少 1。"
 
 # =====================================================================
 # UI Mode Labels (UI 模式标签)
@@ -155,15 +155,15 @@ DIALOG_SKILL_FULL,Skill slots full! Choose one to replace.,技能槽满！请选
 DIALOG_TARGETED,Choose item type.,请选择一种物品。
 DIALOG_TRADE_IN,Choose an item to exchange.,请选择要置换的物品。
 DIALOG_PRECISE,Choose one item.,请选择一件物品。
-DIALOG_INVENTORY_FULL,"Inventory full, Replace an item or recycle the new one.",背包已满，请替换一件背包内的物品，或回收当前奖品。
-DIALOG_ERA3_TYPE_FULL,"Too many item types, replace or recycle.",物品种类过多，请替换一种背包内的物品，或回收当前奖品。
+DIALOG_INVENTORY_FULL,"Inventory full, Replace an item or recycle the new one.",背包已满，请替换一件背包内的物品，或回收当前獎品。
+DIALOG_ERA3_TYPE_FULL,"Too many item types, replace or recycle.",
 DIALOG_RECYCLE,Choose items to recycle.,请选择要回收的物品。
 DIALOG_SUBMIT,Choose items to submit.,请选择要提交的物品。
 
 # =====================================================================
 # Order Card (订单卡片)
 # =====================================================================
-ORDER_REWARD,"Reward: ","奖励: "
+ORDER_REWARD,"Reward: ","獎励: "
 ORDER_REWARD_GOLD,%d Gold,%d 金币
 ORDER_REWARD_PREVIEW,%d -> %d Gold,%d -> %d 金币
 ORDER_REFRESH,Refresh (%d),刷新 (%d)
@@ -174,16 +174,16 @@ ORDER_REFRESH,Refresh (%d),刷新 (%d)
 AFFIX_CHOOSE_ONE,Choose One,二选一
 MODAL_SKILL_UNLOCK,Unlock New Skill,解锁新技能
 MODAL_SKILL_SELECT_PROMPT,Choose a skill to add:,请选择一个技能加入你的技能槽：
-MODAL_PRECISE_TITLE,Precise: Choose One,精准抽奖：二选一
+MODAL_PRECISE_TITLE,Precise: Choose One,精准抽獎：二选一
 MODAL_PRECISE_PROMPT,Choose one item:,请选择一个物品：
 MODAL_TARGETED_TITLE,Targeted: Choose Type,有的放矢：选择类型
 MODAL_CONFIRM,Confirm,确认
 MODAL_CANCEL,Cancel,取消
 MODAL_ABANDON,Abandon,放弃
-MODAL_ERA_1,[font_size=100][color=gold]VANILLA ERA[/color][/font_size]\n\nThe most primal era. The best era. [color=#019EF3]No special rules.[/color],[font_size=100][color=gold]香草时代[/color][/font_size]\n\n最原始的时代，最好的时代，[color=#019EF3]没有特殊规则[/color]。
-MODAL_ERA_2,[font_size=100][color=gold]VOLATILE ERA[/color][/font_size]\n\nPrices become extremely unstable. Pool costs will [color=#019EF3]fluctuate randomly[/color] after each draw.,[font_size=100][color=gold]波动时代[/color][/font_size]\n\n价格变得及其不稳定，每次抽奖后，奖池的金币消耗会[color=#019EF3]随机变化[/color]。
-MODAL_ERA_3,[font_size=100][color=gold]MODERN ERA[/color][/font_size]\n\nStricter standards and limits. Your inventory can only hold [color=#019EF3]7 different item types[/color].,[font_size=100][color=gold]摩登时代[/color][/font_size]\n\n更严格的标准和限制，背包中只能保留[color=#019EF3]7种不同种类的道具[/color]。
-MODAL_ERA_4,[font_size=100][color=gold]DECAY ERA[/color][/font_size]\n\nAll items have an [color=#019EF3]expiry date[/color]. Expired items become [color=#019EF3]junk[/color] and can only be [color=#019EF3]recycled[/color].,[font_size=100][color=gold]变质时代[/color][/font_size]\n\n所有物品都有[color=#019EF3]保质期[/color]，逾期的物品会变成[color=#019EF3]废品[/color]，只能用于[color=#019EF3]回收[/color]。
+MODAL_ERA_1,[font_size=100][color=gold]VANILLA ERA[/color][/font_size]\n\nThe most primal era. The best era. [color=black]No special rules.[/color],[font_size=100][color=gold]香草时代[/color][/font_size]\n\n最原始的时代，最好的时代，[color=black]没有特殊规则[/color]。
+MODAL_ERA_2,[font_size=100][color=gold]VOLATILE ERA[/color][/font_size]\n\nPrices become extremely unstable. Pool costs will [color=black]fluctuate randomly[/color] after each draw.,[font_size=100][color=gold]波动时代[/color][/font_size]\n\n价格变得及其不稳定，每次抽奖后，奖池的金币消耗会[color=black]随机变化[/color]。
+MODAL_ERA_3,[font_size=100][color=gold]MODERN ERA[/color][/font_size]\n\nStricter standards and limits. Your inventory can only hold [color=black]7 different item types[/color].,[font_size=100][color=gold]摩登时代[/color][/font_size]\n\n更严格的标准和限制，背包中只能保留[color=black]7种不同种类的道具[/color]。
+MODAL_ERA_4,[font_size=100][color=gold]DECAY ERA[/color][/font_size]\n\nAll items have an [color=black]expiry date[/color]. Expired items become [color=black]junk[/color] and can only be [color=black]recycled[/color].,[font_size=100][color=gold]变质时代[/color][/font_size]\n\n所有物品都有[color=black]保质期[/color]，逾期的物品会变成[color=black]废品[/color]，只能用于[color=black]回收[/color]。
 MODAL_ERA_ENDING,[font_size=100][color=gold]THANKS FOR PLAYING[/color][/font_size]\n\nWe will continue to improve the game based on your feedback. See you in the near future!,[font_size=100][color=gold]感谢游玩[/color][/font_size]\n\n我们会基于你的反馈继续完善这个游戏，期待再见！
 
 # =====================================================================
