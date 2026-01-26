@@ -219,6 +219,7 @@ func update_pending_display(items: Array[ItemInstance], source_pool_idx: int) ->
 					if slot.has_method("set_upgradeable_badge"):
 						slot.set_upgradeable_badge(false)
 
+
 func set_slots_locked(locked: bool) -> void:
 	for i in range(3):
 		var slot = get_slot_node(i)
@@ -244,7 +245,6 @@ func _get_slot_node(index: int) -> Control: # Backward compatibility
 	return get_slot_node(index)
 
 func _calculate_badge_state(item: ItemInstance) -> int:
-	var badge_state = 0
 	if item.is_expired: return 0
 	# 与 InventoryController 保持一致的逻辑
 	if not OrderSystem: return 0
@@ -286,7 +286,11 @@ func _calculate_upgradeable_state(item: ItemInstance) -> bool:
 		# 【修复】关键：排除自匹配。
 		# 在批量抽奖（如“稀碎的”）中，物品可能已在数据层进入背包。
 		# 我们必须确保是找到了“另一个”同名物品，而不是匹配到了由于数据提前同步而在背包里存在的“自己”。
-		if inv_item == item:
+		# 【修复】关键：排除自匹配。
+		# 在批量抽奖（如“稀碎的”）中，物品可能已在数据层进入背包。
+		# 我们必须确保是找到了“另一个”同名物品，而不是匹配到了由于数据提前同步而在背包里存在的“自己”。
+		# 使用 get_instance_id() 进行更稳健的比较 (防止对象引用的潜在不一致)
+		if inv_item == item or inv_item.get_instance_id() == item.get_instance_id():
 			continue
 			
 		if inv_item.sterile:
@@ -474,11 +478,13 @@ func _on_badge_refresh_requested(index: int, item: ItemInstance) -> void:
 	# 注意：如果 play_queue_advance_anim 传了 null，说明真的没东西了，不该去 pending_items 里抓东西
 	if target_item and target_item is ItemInstance:
 		# 更新角标
+		# print("[PoolController] Badge refresh for item: ", target_item.item_data.id, " Rarity: ", target_item.rarity)
 		var badge = _calculate_badge_state(target_item)
 		if slot.has_method("update_status_badge"):
 			slot.update_status_badge(badge)
 		
 		var is_upgradeable = _calculate_upgradeable_state(target_item)
+		# print("[PoolController] Upgradeable state: ", is_upgradeable)
 		if slot.has_method("set_upgradeable_badge"):
 			slot.set_upgradeable_badge(is_upgradeable)
 	else:

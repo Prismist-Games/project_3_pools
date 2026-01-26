@@ -516,22 +516,14 @@ func play_reveal_sequence(items: Array, skip_pop_anim: bool = false, skip_shuffl
 		# 触发获取物品的通用音效
 		# AudioManager.play_sfx(&"item_obtained") - Moved to VfxQueueManager
 	
+
 		# === [NEW] 揭示完成：立即刷新角标状态 ===
 		# 此时物品已显示真身，需要更新左上角的订单角标状态
-		# 注意：这里我们主动请求 Controller 刷新该 slot 的 hint
 		if not items.is_empty():
-			# 尝试获取 items[0] 的 ID
 			var revealed_item = items[0]
-			var _revealed_id = revealed_item.item_data.id if revealed_item is ItemInstance else revealed_item.get("id", &"")
-			
-			# 我们并不直接管理角标逻辑，而是发出信号让 Controller/System 知道“视觉数据”已更新
-			# 但由于 OrderHint 逻辑比较复杂且分散，这里我们通过发射 reveal_finished 信号
-			# 并让 Controller 监听该信号来触发特定的刷新逻辑，或者直接在这里如果能访问到 helper 的话...
-			# 最简单直接的：发射一个专门的信号
-			pass # 逻辑已移至 DrawingState.draw() 中的 await slot.play_reveal_sequence() 之后
-			
-			# 如果 DrawingState.draw() 中的刷新还不够及时（如需在停留期间就显示），可以在这里发射信号
-			# reveal_finished.emit(pool_index) # 这个信号在函数末尾才发，可能晚了点
+			# 只有当它是有效的 ItemInstance 时才请求刷新，从而正确显示"可合成"或"订单需求"角标
+			if revealed_item is ItemInstance:
+				badge_refresh_requested.emit(pool_index, revealed_item)
 	
 		# === 6. 揭示后停留 ===
 		# 物品显形后，停留一段时间再进行后续流程（入包/Pending）
@@ -1186,14 +1178,17 @@ func _reset_push_positions() -> void:
 ## =====================================================================
 
 ## 初始化所有角标到隐藏状态
+## 初始化所有角标到隐藏状态
 func _init_badges() -> void:
 	# Status 角标 (LR - Lower Right，隐藏位 90°)
 	if status_badge:
+		status_badge.visible = true # 确保可见，隐藏通过旋转实现
 		status_badge.rotation = BADGE_HIDE_ROTATION_RIGHT
 		_status_badge_visible = false
 	
 	# Upgradeable 角标 (UR - Upper Right，隐藏位 -90°)
 	if upgradeable_badge:
+		upgradeable_badge.visible = true # 确保可见，隐藏通过旋转实现
 		upgradeable_badge.rotation = BADGE_HIDE_ROTATION_LEFT
 		_upgradeable_badge_visible = false
 
@@ -1249,6 +1244,8 @@ func update_status_badge(badge_state: int) -> void:
 	# 再次检查，防止动画期间状态已变或节点失效
 	if not status_badge or _status_badge_request_id != my_id: return
 	
+	status_badge.visible = true # 强制可见
+	
 	# 更新纹理
 	if should_show:
 		match badge_state:
@@ -1279,6 +1276,8 @@ func set_upgradeable_badge(should_show: bool) -> void:
 	
 	# 再次检查
 	if not upgradeable_badge or _upgradeable_badge_request_id != my_id: return
+	
+	upgradeable_badge.visible = true # 强制可见
 	
 	# 只在状态变化时播放动画
 	if should_show != _upgradeable_badge_visible:

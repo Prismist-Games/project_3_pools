@@ -175,10 +175,6 @@ func draw() -> void:
 	# 而不是 pending_items。因为已进入背包的物品也需要先在 Slot 里显示出来，
 	# 然后通过 VFX 队列模拟飞入背包的过程。
 	var display_items = captured_items
-	if display_items.is_empty():
-		display_items = InventorySystem.pending_items.duplicate()
-	
-	# 如果 pending 为空，说明物品可能已经进背包了（VFX 正在播，但由于我们暂停了，它们还没动）
 	# 我们仍然开启盖子以显示内部或仅仅作为状态转换的视觉停留
 	await slot.play_reveal_sequence(display_items)
 
