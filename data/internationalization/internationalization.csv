@@ -180,10 +180,10 @@ MODAL_TARGETED_TITLE,Targeted: Choose Type,有的放矢：选择类型
 MODAL_CONFIRM,Confirm,确认
 MODAL_CANCEL,Cancel,取消
 MODAL_ABANDON,Abandon,放弃
-MODAL_ERA_1,[font_size=100][color=gold]VANILLA ERA[/color][/font_size]\n\nThe most primal era. The best era. [color=red]No special rules.[/color],[font_size=100][color=gold]香草时代[/color][/font_size]\n\n最原始的时代，最好的时代，[color=red]没有特殊规则[/color]。
-MODAL_ERA_2,[font_size=100][color=gold]VOLATILE ERA[/color][/font_size]\n\nPrices become extremely unstable. Pool costs will [color=red]fluctuate randomly[/color] after each draw.,[font_size=100][color=gold]波动时代[/color][/font_size]\n\n价格变得及其不稳定，每次抽奖后，奖池的金币消耗会[color=red]随机变化[/color]。
-MODAL_ERA_3,[font_size=100][color=gold]MODERN ERA[/color][/font_size]\n\nStricter standards and limits. Your inventory can only hold [color=red]7 different item types[/color].,[font_size=100][color=gold]摩登时代[/color][/font_size]\n\n更严格的标准和限制，背包中只能保留[color=red]7种不同种类的道具[/color]。
-MODAL_ERA_4,[font_size=100][color=gold]DECAY ERA[/color][/font_size]\n\nAll items have an [color=red]expiry date[/color]. Expired items become [color=red]junk[/color] and can only be [color=red]recycled[/color].,[font_size=100][color=gold]变质时代[/color][/font_size]\n\n所有物品都有[color=red]保质期[/color]，逾期的物品会变成[color=red]废品[/color]，只能用于[color=red]回收[/color]。
+MODAL_ERA_1,[font_size=100][color=gold]VANILLA ERA[/color][/font_size]\n\nThe most primal era. The best era. [color=#019EF3]No special rules.[/color],[font_size=100][color=gold]香草时代[/color][/font_size]\n\n最原始的时代，最好的时代，[color=#019EF3]没有特殊规则[/color]。
+MODAL_ERA_2,[font_size=100][color=gold]VOLATILE ERA[/color][/font_size]\n\nPrices become extremely unstable. Pool costs will [color=#019EF3]fluctuate randomly[/color] after each draw.,[font_size=100][color=gold]波动时代[/color][/font_size]\n\n价格变得及其不稳定，每次抽奖后，奖池的金币消耗会[color=#019EF3]随机变化[/color]。
+MODAL_ERA_3,[font_size=100][color=gold]MODERN ERA[/color][/font_size]\n\nStricter standards and limits. Your inventory can only hold [color=#019EF3]7 different item types[/color].,[font_size=100][color=gold]摩登时代[/color][/font_size]\n\n更严格的标准和限制，背包中只能保留[color=#019EF3]7种不同种类的道具[/color]。
+MODAL_ERA_4,[font_size=100][color=gold]DECAY ERA[/color][/font_size]\n\nAll items have an [color=#019EF3]expiry date[/color]. Expired items become [color=#019EF3]junk[/color] and can only be [color=#019EF3]recycled[/color].,[font_size=100][color=gold]变质时代[/color][/font_size]\n\n所有物品都有[color=#019EF3]保质期[/color]，逾期的物品会变成[color=#019EF3]废品[/color]，只能用于[color=#019EF3]回收[/color]。
 MODAL_ERA_ENDING,[font_size=100][color=gold]THANKS FOR PLAYING[/color][/font_size]\n\nWe will continue to improve the game based on your feedback. See you in the near future!,[font_size=100][color=gold]感谢游玩[/color][/font_size]\n\n我们会基于你的反馈继续完善这个游戏，期待再见！
 
 # =====================================================================
@@ -203,7 +203,7 @@ LEGACY_TOOLTIP,Order Reward Boost,订单收益加成
 # =====================================================================
 # ERA_3 DLC Panel (第三时代 DLC 面板)
 # =====================================================================
-DLC_TYPE_COUNT,Item Types: %d / %d,物品种类: %d / %d
+DLC_TYPE_COUNT,Item Types\n%d / %d,道具种类\n%d / %d
 
 # =====================================================================
 # Cancel Dialogs (取消按钮对话)

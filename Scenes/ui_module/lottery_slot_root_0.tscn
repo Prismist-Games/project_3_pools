@@ -46,7 +46,7 @@ region = Rect2(1000, 2000, 500, 500)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4aaut"]
 atlas = ExtResource("8_arr72")
-region = Rect2(1500, 1500, 500, 500)
+region = Rect2(1000, 1000, 500, 500)
 
 [sub_resource type="Shader" id="Shader_yj02r"]
 code = "shader_type canvas_item;
@@ -576,7 +576,7 @@ texture = ExtResource("14_ktq0d")
 
 [node name="Lottery Slot_right_screen" type="Sprite2D" parent="."]
 self_modulate = Color(0.08235294, 0.5254902, 0.43529412, 1)
-position = Vector2(439, 45)
+position = Vector2(434, 39)
 texture = ExtResource("16_l1p8v")
 
 [node name="Lottery Slot_right_screen_fill" type="Sprite2D" parent="Lottery Slot_right_screen"]
@@ -587,10 +587,10 @@ position = Vector2(-9, -9)
 texture = ExtResource("15_do7yb")
 
 [node name="Lottery Required Items Icon Grid" type="VBoxContainer" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill"]
-offset_left = -88.0
-offset_top = -293.75
-offset_right = 54.0
-offset_bottom = 276.25
+offset_left = -83.0
+offset_top = -287.75
+offset_right = 59.0
+offset_bottom = 282.25
 mouse_filter = 2
 theme_override_constants/separation = -35
 
@@ -675,10 +675,10 @@ texture = ExtResource("17_g23h7")
 expand_mode = 3
 
 [node name="Lottery Required Items Icon Grid_psudo" type="VBoxContainer" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill"]
-offset_left = -243.0
-offset_top = -294.0
-offset_right = -101.0
-offset_bottom = 276.0
+offset_left = -238.0
+offset_top = -288.0
+offset_right = -96.0
+offset_bottom = 282.0
 mouse_filter = 2
 theme_override_constants/separation = -35
 
@@ -764,10 +764,10 @@ expand_mode = 3
 
 [node name="ScreenEffectOverlay" type="ColorRect" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill"]
 material = SubResource("ShaderMaterial_o6rv1")
-offset_left = -123.0
-offset_top = -312.0
-offset_right = 93.0
-offset_bottom = 314.0
+offset_left = -118.0
+offset_top = -306.0
+offset_right = 98.0
+offset_bottom = 320.0
 mouse_filter = 2
 
 [node name="Lottery Slot_top_screen" type="Sprite2D" parent="."]
