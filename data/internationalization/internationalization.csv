@@ -25,6 +25,14 @@ RARITY_MYTHIC,Mythic,神话
 RARITY_UNKNOWN,Unknown,未知
 
 # =====================================================================
+# Era Tooltips (时代提示)
+# =====================================================================
+TOOLTIP_ERA_1,[color=gold]VANILLA ERA[/color]\nThe most primal era. The best era. [color=red]No special rules.[/color],[color=gold]香草时代[/color]\n最原始的时代，最好的时代，[color=red]没有特殊规则[/color]。
+TOOLTIP_ERA_2,[color=gold]VOLATILE ERA[/color]\nPrices become extremely unstable. Pool costs will [color=red]fluctuate randomly[/color] after each draw.,[color=gold]波动时代[/color]\n价格变得及其不稳定，每次抽奖后，奖池的金币消耗会[color=red]随机变化[/color]。
+TOOLTIP_ERA_3,[color=gold]MODERN ERA[/color]\nStricter standards and limits. Your inventory can only hold [color=red]7 different item types[/color].,[color=gold]摩登时代[/color]\n更严格的标准和限制，背包中只能保留[color=red]7种不同种类的道具[/color]。
+TOOLTIP_ERA_4,[color=gold]DECAY ERA[/color]\nAll items have an expiry date. Expired items become [color=red]junk[/color] and can only be [color=red]recycled[/color].,[color=gold]变质时代[/color]\n所有物品都有[color=red]保质期[/color]，逾期的物品会变成[color=red]废品[/color]，只能用于[color=red]回收[/color]。
+
+# =====================================================================
 # Item Names (物品名称) - Keys must match resource file names exactly
 # =====================================================================
 TRIANGLE_CONE,Traffic Cone,三角桶
@@ -172,10 +180,10 @@ MODAL_TARGETED_TITLE,Targeted: Choose Type,有的放矢：选择类型
 MODAL_CONFIRM,Confirm,确认
 MODAL_CANCEL,Cancel,取消
 MODAL_ABANDON,Abandon,放弃
-MODAL_ERA_1,[font_size=100][color=gold]VANILLA ERA[/color][/font_size]\n\nThe most primal era. The best era. No special rules.,[font_size=100][color=gold]香草时代[/color][/font_size]\n\n最原始的时代，最好的时代，没有特殊规则。
-MODAL_ERA_2,[font_size=100][color=gold]VOLATILE ERA[/color][/font_size]\n\nPrices become extremely unstable. Pool costs will fluctuate randomly after each draw.,[font_size=100][color=gold]波动时代[/color][/font_size]\n\n价格变得及其不稳定，每次抽奖后，奖池的金币消耗会随机变化。
-MODAL_ERA_3,[font_size=100][color=gold]MODERN ERA[/color][/font_size]\n\nStricter standards and limits. Your inventory can only hold 7 different item types.,[font_size=100][color=gold]摩登时代[/color][/font_size]\n\n更严格的标准和限制，背包中只能保留7种不同种类的道具。
-MODAL_ERA_4,[font_size=100][color=gold]DECAY ERA[/color][/font_size]\n\nAll items have an expiry date. Expired items become junk and can only be recycled.,[font_size=100][color=gold]变质时代[/color][/font_size]\n\n所有物品都有保质期，逾期的物品会变成废品，只能用于回收。
+MODAL_ERA_1,[font_size=100][color=gold]VANILLA ERA[/color][/font_size]\n\nThe most primal era. The best era. [color=red]No special rules.[/color],[font_size=100][color=gold]香草时代[/color][/font_size]\n\n最原始的时代，最好的时代，[color=red]没有特殊规则[/color]。
+MODAL_ERA_2,[font_size=100][color=gold]VOLATILE ERA[/color][/font_size]\n\nPrices become extremely unstable. Pool costs will [color=red]fluctuate randomly[/color] after each draw.,[font_size=100][color=gold]波动时代[/color][/font_size]\n\n价格变得及其不稳定，每次抽奖后，奖池的金币消耗会[color=red]随机变化[/color]。
+MODAL_ERA_3,[font_size=100][color=gold]MODERN ERA[/color][/font_size]\n\nStricter standards and limits. Your inventory can only hold [color=red]7 different item types[/color].,[font_size=100][color=gold]摩登时代[/color][/font_size]\n\n更严格的标准和限制，背包中只能保留[color=red]7种不同种类的道具[/color]。
+MODAL_ERA_4,[font_size=100][color=gold]DECAY ERA[/color][/font_size]\n\nAll items have an [color=red]expiry date[/color]. Expired items become [color=red]junk[/color] and can only be [color=red]recycled[/color].,[font_size=100][color=gold]变质时代[/color][/font_size]\n\n所有物品都有[color=red]保质期[/color]，逾期的物品会变成[color=red]废品[/color]，只能用于[color=red]回收[/color]。
 MODAL_ERA_ENDING,[font_size=100][color=gold]THANKS FOR PLAYING[/color][/font_size]\n\nWe will continue to improve the game based on your feedback. See you in the near future!,[font_size=100][color=gold]感谢游玩[/color][/font_size]\n\n我们会基于你的反馈继续完善这个游戏，期待再见！
 
 # =====================================================================
