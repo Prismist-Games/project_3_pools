@@ -77,8 +77,8 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 			# 4. 执行置换：移除旧物品
 			InventorySystem.remove_items([item_to_trade])
 			
-			# 5. 发出 item_obtained 信号
-			EventBus.item_obtained.emit(new_item_instance)
+			# 5. 返回新物品实例 (由 State 负责发射信号)
+			return new_item_instance
 	})
 	
 	EventBus.game_event.emit(&"enter_selection_mode", selection_data)

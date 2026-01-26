@@ -130,8 +130,12 @@ func _execute_trade_in_sequence(slot_index: int, item: ItemInstance) -> void:
 	var target_pos = lottery_slot.get_main_icon_global_position()
 	var target_scale = lottery_slot.get_main_icon_global_scale()
 	
-	# 隐藏原槽位图标
-	item_slot.hide_icon()
+	# 视觉上立即清空槽位（包括背景、角标等），模拟物品已被拿走
+	if item_slot.has_method("update_display"):
+		item_slot.update_display(null) # 立即清空显示
+	else:
+		item_slot.hide_icon() # 兜底
+		
 	item_slot.is_vfx_target = true
 	
 	# 创建飞行精灵
@@ -175,18 +179,14 @@ func _execute_trade_in_sequence(slot_index: int, item: ItemInstance) -> void:
 		lottery_slot._is_reveal_in_progress = true
 	
 	var captured_items: Array[ItemInstance] = []
-	var capture_fn = func(new_item: ItemInstance):
-		captured_items.append(new_item)
-	EventBus.item_obtained.connect(capture_fn)
 	
 	# 4. 执行置换回调
 	if on_trade_callback.is_valid():
-		on_trade_callback.call(item)
-	EventBus.item_obtained.disconnect(capture_fn)
+		var new_item = on_trade_callback.call(item)
+		if new_item is ItemInstance:
+			captured_items.append(new_item)
 	
-	# ERA_4: 抽奖后递减保质期
-	ShelfLifeEffect.trigger_shelf_life_decrement()
-	
+
 	# 5. --- 复用标准揭示序列 ---
 	# 震动结束，现在开始像正常抽奖一样“开门出货”
 	var display_items: Array = captured_items
@@ -204,6 +204,14 @@ func _execute_trade_in_sequence(slot_index: int, item: ItemInstance) -> void:
 		
 		# 关键修复：不要手动设置 is_drawing = true，否则 play_reveal_sequence 会跳过动画
 		await lottery_slot.play_reveal_sequence(display_items)
+		
+		# 延迟发射信号：确保物品完全揭示后再通知系统添加物品
+		# 这样可以防止订单角标在物品显示前就变绿
+		for new_item in captured_items:
+			EventBus.item_obtained.emit(new_item)
+            
+		# ERA_4: 抽奖后递减保质期 (移至物品获得后，确保新物品也能正确参与判定)
+		ShelfLifeEffect.trigger_shelf_life_decrement()
 		
 		# [Reveal Phase End] 更新抽奖栏订单角标
 		if controller.pool_controller:
