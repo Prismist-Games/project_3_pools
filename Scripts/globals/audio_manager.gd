@@ -157,6 +157,7 @@ func play_sfx_timed(sfx_id: StringName, target_duration: float) -> void:
 	player.play()
 
 ## 播放音效并通过 Pitch Shift Bus 调整音调
+## 播放音效并直接设置音调 (修复 WebGL 不支持 Bus Effect Pitch Shift 的问题)
 func play_sfx_with_pitch(sfx_id: StringName, pitch_scale: float) -> void:
 	if not _sfx_registry.has(sfx_id):
 		return
@@ -165,15 +166,14 @@ func play_sfx_with_pitch(sfx_id: StringName, pitch_scale: float) -> void:
 	if not entry.stream:
 		return
 	
-
 	var player = _get_idle_sfx_player()
 	player.stream = entry.stream
 	player.volume_db = entry.volume_db
-	player.bus = &"RarityReveal" # 使用 Pitch Shift Bus
-	player.pitch_scale = 1.0 # 保持为 1.0，通过 Bus 效果调整
 	
-	# 设置 Bus 的 Pitch Shift 效果
-	_set_bus_pitch_shift(&"RarityReveal", pitch_scale)
+	# 直接使用 entries 中定义的 Bus，不再强制使用 RarityReveal Bus
+	player.bus = entry.bus
+	# 直接设置 pitch_scale (改变播放速度和音调)，这种方式在 WebGL 上更稳定
+	player.pitch_scale = pitch_scale
 	
 	player.play()
 	
