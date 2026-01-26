@@ -795,6 +795,14 @@ func play_queue_advance_anim() -> void:
 		# 我们现在可以传递真实的 ItemInstance
 		var next_item = _current_items[0] if not _current_items.is_empty() else null
 		badge_refresh_requested.emit(pool_index, next_item)
+		
+		# 更新背景颜色以匹配新的主物品品质
+		if next_item and backgrounds:
+			var rarity = next_item.rarity if next_item is ItemInstance else next_item.get("rarity", 0)
+			if rarity == -1:
+				backgrounds.color = Constants.COLOR_BG_SLOT_EMPTY
+			else:
+				backgrounds.color = Constants.get_rarity_border_color(rarity)
 	
 	if had_q2:
 		item_queue_1.texture = q2_texture

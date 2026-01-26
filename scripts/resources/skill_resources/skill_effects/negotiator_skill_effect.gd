@@ -20,3 +20,4 @@ func _handle_item_check(item: ItemInstance) -> void:
 	if item.rarity >= rarity_threshold:
 		triggered.emit(TRIGGER_INSTANT)
 		EventBus.game_event.emit(&"add_order_refreshes", null)
+

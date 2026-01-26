@@ -577,6 +577,9 @@ func _on_inventory_changed(inventory: Array) -> void:
 	_perform_inventory_update(inventory)
 
 func _on_pending_queue_changed(items: Array[ItemInstance]) -> void:
+	if _suppress_immediate_updates:
+		return
+		
 	if items.is_empty():
 		pool_controller.update_pending_display([], -1)
 		pending_source_pool_idx = -1 # 保留本地状态

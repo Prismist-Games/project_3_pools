@@ -17,3 +17,4 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	if randf() < chance:
 		triggered.emit(TRIGGER_INSTANT)
 		ctx.set_value("consume_refresh", false)
+

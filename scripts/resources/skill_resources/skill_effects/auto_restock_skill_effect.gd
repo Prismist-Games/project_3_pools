@@ -68,3 +68,4 @@ func get_visual_state() -> String:
 	if SkillSystem.skill_state.next_draw_extra_item:
 		return TRIGGER_PENDING
 	return ""
+
