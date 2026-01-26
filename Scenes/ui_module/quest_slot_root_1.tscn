@@ -405,20 +405,22 @@ clip_children = 2
 texture = ExtResource("22_xy8au")
 
 [node name="Refresh Count Label" type="RichTextLabel" parent="Refresh Button/Refresh Screen_outline/Refresh Screen_fill"]
-offset_left = -41.5
+offset_left = -43.5
 offset_top = -53.5
-offset_right = 32.5
-offset_bottom = 42.5
+offset_right = 28.5
+offset_bottom = 41.5
 mouse_filter = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 84
+theme_override_font_sizes/normal_font_size = 72
 bbcode_enabled = true
-text = "2"
+text = "2
+"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ScreenEffectOverlay" type="ColorRect" parent="Refresh Button/Refresh Screen_outline/Refresh Screen_fill"]
+visible = false
 material = SubResource("ShaderMaterial_8oyay")
 offset_left = -54.5
 offset_top = -66.5
