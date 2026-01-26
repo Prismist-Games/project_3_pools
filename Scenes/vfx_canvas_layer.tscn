@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://di352n8ybklcw"]
+[gd_scene load_steps=5 format=3 uid="uid://cnsltnqwtbvko"]
 
-[ext_resource type="Shader" uid="uid://dniwhw7n2jov7" path="res://assets/shaders/film_grain.gdshader" id="1_p5fgm"]
+[ext_resource type="Shader" path="res://assets/shaders/film_grain.gdshader" id="1_p5fgm"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_nvwxn"]
 frequency = 1.0
@@ -17,7 +17,7 @@ shader_parameter/grain_bounce = 0.400000019
 shader_parameter/grain_scale = 1.0
 shader_parameter/grain_amount = 0.30000001425
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_x0dnr")
-shader_parameter/vignette_intensity = 0.3690000175275
+shader_parameter/vignette_intensity = 0.50000002375
 shader_parameter/vignette_radius = 0.7990000379525
 shader_parameter/vignette_softness = 0.4870000231325
 
