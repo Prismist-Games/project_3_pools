@@ -72,7 +72,7 @@ ITEM_UNKNOWN,Unknown Item,未知物品
 # Pool Affix Names (奖池词缀名称)
 # =====================================================================
 AFFIX_FRAGMENTED,Fragmented,稀碎的
-AFFIX_HARDENED,Hardened,硬化的
+AFFIX_HARDENED,Hardened,石化的
 AFFIX_PRECISE,Precise,精准的
 AFFIX_PURIFIED,Purified,提纯的
 AFFIX_TARGETED,Targeted,有的放矢
@@ -80,13 +80,13 @@ AFFIX_TRADE_IN,Trade-in,以旧换新
 AFFIX_VOLATILE,Volatile,波动的
 
 # Pool Affix Descriptions (奖池词缀描述)
-AFFIX_FRAGMENTED_DESC,Draw 3 items at once but all are  [img=60]res://assets/sprites/icons/rarity_common.png[/img]  quality.,一次抽取 3 件物品，但必定是 [img=60]res://assets/sprites/icons/rarity_common.png[/img] 品质。
-AFFIX_HARDENED_DESC,"Higher quality, but items are Sterile and cannot be merged.",物品的品质提升，但带有绝育效果，无法合成。
-AFFIX_PRECISE_DESC,Choose one from 2 different items.,从2个不同的候选物品中任选其一。
-AFFIX_PURIFIED_DESC,Guaranteed  [img=60]res://assets/sprites/icons/rarity_rare.png[/img]  quality or above.,必定抽出 [img=60]res://assets/sprites/icons/rarity_rare.png[/img] 及以上品质的物品。
-AFFIX_TARGETED_DESC,Choose item type before drawing.,指定一种物品抽取。
-AFFIX_TRADE_IN_DESC,"Consume 1 item to exchange for same quality item, small chance to upgrade.",使用背包内的 1 件物品随机置换同品质物品，极小几率提升品质。
-AFFIX_VOLATILE_DESC,Only draws  [img=60]res://assets/sprites/icons/rarity_common.png[/img]  or  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  (high  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  chance).,仅会抽出 [img=60]res://assets/sprites/icons/rarity_common.png[/img] 或 [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]品质的物品，  ( [img=60]res://assets/sprites/icons/rarity_legendary.png[/img] 品质道具几率大幅提升)。
+AFFIX_FRAGMENTED_DESC,[color=gold][Fragmented][/color]\nDraw 3 items at once but all are  [img=60]res://assets/sprites/icons/rarity_common.png[/img]  quality.,[color=gold][稀碎的][/color]\n一次抽取 3 件物品，但必定是 [img=60]res://assets/sprites/icons/rarity_common.png[/img] 品质。
+AFFIX_HARDENED_DESC,"[color=gold][Hardened][/color]\nHigher quality, but items cannot be merged.",[color=gold][石化的][/color]\n物品的品质提升，但无法合成。
+AFFIX_PRECISE_DESC,[color=gold][Precise][/color]\nChoose one from 2 different items.,[color=gold][精准的][/color]\n从2个不同的候选物品中任选其一。
+AFFIX_PURIFIED_DESC,[color=gold][Purified][/color]\nGuaranteed  [img=60]res://assets/sprites/icons/rarity_rare.png[/img]  quality or above.,[color=gold][提纯的][/color]\n必定抽出 [img=60]res://assets/sprites/icons/rarity_rare.png[/img] 及以上品质的物品。
+AFFIX_TARGETED_DESC,[color=gold][Targeted][/color]\nChoose item type before drawing.,[color=gold][有的放矢][/color]\n指定一种物品抽取。
+AFFIX_TRADE_IN_DESC,"[color=gold][Trade-in][/color]\nConsume 1 item to exchange for same quality item, small chance to upgrade.",[color=gold][以旧换新][/color]\n使用背包内的 1 件物品随机置换同品质物品，极小几率提升品质。
+AFFIX_VOLATILE_DESC,[color=gold][Volatile][/color]\nOnly draws  [img=60]res://assets/sprites/icons/rarity_common.png[/img]  or  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  (high  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  chance).,[color=gold][波动的][/color]\n仅会抽出 [img=60]res://assets/sprites/icons/rarity_common.png[/img] 或 [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]品质的物品，  ( [img=60]res://assets/sprites/icons/rarity_legendary.png[/img] 品质道具几率大幅提升)。
 
 # =====================================================================
 # Skill Names (技能名称)
