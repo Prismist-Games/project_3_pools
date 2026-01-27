@@ -994,11 +994,27 @@ func _update_visuals(pool: Variant, target_pseudo: bool) -> void:
 	# 更新价格 (始终保持可见)
 	if target_price:
 		var cost_text = ""
+		var cost_gold: int = 0
 		if pool is Dictionary and pool.has("price_text"):
 			cost_text = pool.price_text
+			cost_gold = pool.get("gold_cost", 0)
 		else:
-			var cost_gold: int = pool.get("gold_cost") if "gold_cost" in pool else 0
+			cost_gold = pool.get("gold_cost") if "gold_cost" in pool else 0
 			cost_text = str(cost_gold)
+		
+		# 波动时代价格变动指示
+		if EraManager.current_config and EraManager.current_config.has_price_fluctuation():
+			var original_price: int = 0
+			if pool is Dictionary:
+				original_price = pool.get("base_gold_cost", 0)
+			elif pool is PoolConfig:
+				if pool.affix_data:
+					original_price = pool.affix_data.base_gold_cost
+			
+			if cost_gold > original_price:
+				cost_text += "[color=red][font_size=36]▲[/font_size][/color]"
+			elif cost_gold < original_price:
+				cost_text += "[color=blue][font_size=36]▼[/font_size][/color]"
 		
 		target_price.text = cost_text
 		target_price.visible = true # 强制保持可见，即使文本为空

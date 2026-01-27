@@ -793,7 +793,7 @@ theme_override_colors/default_color = Color(0.15274194, 0.24557048, 0.08210931, 
 theme_override_fonts/normal_font = ExtResource("20_3gq3c")
 theme_override_font_sizes/normal_font_size = 72
 bbcode_enabled = true
-text = "AFFIX"
+text = "FRAGMENTED"
 scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 2
@@ -832,7 +832,7 @@ theme_override_colors/default_color = Color(0.15294118, 0.24705882, 0.08235294, 
 theme_override_fonts/normal_font = ExtResource("20_3gq3c")
 theme_override_font_sizes/normal_font_size = 84
 bbcode_enabled = true
-text = "9"
+text = "9[color=blue][font_size=36]▲"
 scroll_active = false
 vertical_alignment = 1
 
