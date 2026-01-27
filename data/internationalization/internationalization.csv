@@ -29,7 +29,7 @@ RARITY_UNKNOWN,Unknown,未知
 # =====================================================================
 TOOLTIP_ERA_1,[color=gold]VANILLA ERA[/color]\nThe most primal era. The best era. [color=red]No special rules.[/color],[color=gold]香草时代[/color]\n最原始的时代，最好的时代，[color=red]没有特殊规则[/color]。
 TOOLTIP_ERA_2,[color=gold]VOLATILE ERA[/color]\nPrices become extremely unstable. Pool costs will [color=red]fluctuate randomly[/color] after each draw.,[color=gold]波动时代[/color]\n价格变得及其不稳定，每次抽獎后，奖池的金币消耗会[color=red]随机变化[/color]。
-TOOLTIP_ERA_3,[color=gold]MODERN ERA[/color]\nStricter standards and limits. Your inventory can only hold [color=red]7 different item types[/color].,[color=gold]摩登时代[/color]\n更严格的标准和限制，背包中只能保留[color=red]7种不同种类的道具[/color]。
+TOOLTIP_ERA_3,[color=gold]MODERN ERA[/color]\nStricter standards and limits. Your inventory can only hold [color=red]7 different item types[/color].,[color=gold]摩登时代[/color]\n更严格的标准和限制，物品栏中只能保留[color=red]7种不同种类的物品[/color]。
 TOOLTIP_ERA_4,[color=gold]DECAY ERA[/color]\nAll items have an expiry date. Expired items become [color=red]junk[/color] and can only be [color=red]recycled[/color].,[color=gold]变质时代[/color]\n所有物品都有[color=red]保质期[/color]，逾期的物品会变成[color=red]废品[/color]，只能用于[color=red]回收[/color]。
 
 # =====================================================================
@@ -85,8 +85,8 @@ AFFIX_HARDENED_DESC,"[color=gold][Hardened][/color]\nHigher quality, but items c
 AFFIX_PRECISE_DESC,[color=gold][Precise][/color]\nChoose one from 2 different items.,[color=gold][精准的][/color]\n从2个不同的候选物品中任选其一。
 AFFIX_PURIFIED_DESC,[color=gold][Purified][/color]\nGuaranteed  [img=60]res://assets/sprites/icons/rarity_rare.png[/img]  quality or above.,[color=gold][提纯的][/color]\n必定抽出 [img=60]res://assets/sprites/icons/rarity_rare.png[/img] 及以上品质的物品。
 AFFIX_TARGETED_DESC,[color=gold][Targeted][/color]\nChoose item type before drawing.,[color=gold][有的放矢][/color]\n指定一种物品抽取。
-AFFIX_TRADE_IN_DESC,"[color=gold][Trade-in][/color]\nConsume 1 item to exchange for same quality item, small chance to upgrade.",[color=gold][以旧换新][/color]\n使用背包内的 1 件物品随机置换同品质物品，极小几率提升品质。
-AFFIX_VOLATILE_DESC,[color=gold][Volatile][/color]\nOnly draws  [img=60]res://assets/sprites/icons/rarity_common.png[/img]  or  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  (high  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  chance).,[color=gold][波动的][/color]\n仅会抽出 [img=60]res://assets/sprites/icons/rarity_common.png[/img] 或 [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]品质的物品，  ( [img=60]res://assets/sprites/icons/rarity_legendary.png[/img] 品质道具几率大幅提升)。
+AFFIX_TRADE_IN_DESC,"[color=gold][Trade-in][/color]\nConsume 1 item to exchange for same quality item, small chance to upgrade.",[color=gold][以旧换新][/color]\n使用物品栏内的 1 件物品随机置换同品质物品，极小几率提升品质。
+AFFIX_VOLATILE_DESC,[color=gold][Volatile][/color]\nOnly draws  [img=60]res://assets/sprites/icons/rarity_common.png[/img]  or  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  (high  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  chance).,[color=gold][波动的][/color]\n仅会抽出 [img=60]res://assets/sprites/icons/rarity_common.png[/img] 或 [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]品质的物品，  ( [img=60]res://assets/sprites/icons/rarity_legendary.png[/img] 品质物品几率大幅提升)。
 
 # =====================================================================
 # Skill Names (技能名称)
@@ -130,8 +130,8 @@ UI_MODE_SUBMIT,Submit Mode: Select items and click order to submit.,提交模式
 UI_MODE_RECYCLE,Recycle Mode: Select items and execute.,回收模式：请选择物品并点击执行。
 UI_MODE_REPLACE,Trade-in: Select item to exchange.,以旧换新：请选择用来置换的物品。
 
-UI_INVENTORY_FULL_SINGLE,Inventory Full! Click slot to replace or discard to the right.,背包已满！请点击格子替换或点击右端丢弃
-UI_INVENTORY_FULL_MULTI,Inventory Full! %d items pending. Replace or discard.,背包已满！还有 %d 个物品待处理，请替换或丢弃
+UI_INVENTORY_FULL_SINGLE,Inventory Full! Click slot to replace or discard to the right.,物品栏已满！请点击格子替换或点击右端丢弃
+UI_INVENTORY_FULL_MULTI,Inventory Full! %d items pending. Replace or discard.,物品栏已满！还有 %d 个物品待处理，请替换或丢弃
 
 # UI Buttons (UI 按钮)
 BTN_DISCARD_NEW,Discard New Item,丢弃新物品
@@ -155,7 +155,7 @@ DIALOG_SKILL_FULL,Skill slots full! Choose one to replace.,技能槽满！请选
 DIALOG_TARGETED,Choose item type.,请选择一种物品。
 DIALOG_TRADE_IN,Choose an item to exchange.,请选择要置换的物品。
 DIALOG_PRECISE,Choose one item.,请选择一件物品。
-DIALOG_INVENTORY_FULL,"Inventory full, Replace an item or recycle the new one.",背包已满，请替换一件背包内的物品，或回收当前獎品。
+DIALOG_INVENTORY_FULL,"Inventory full, Replace an item or recycle the new one.",物品栏已满，请替换一件物品栏内的物品，或回收当前獎品。
 DIALOG_ERA3_TYPE_FULL,"Too many item types, replace or recycle.",
 DIALOG_RECYCLE,Choose items to recycle.,请选择要回收的物品。
 DIALOG_SUBMIT,Choose items to submit.,请选择要提交的物品。
@@ -182,7 +182,7 @@ MODAL_CANCEL,Cancel,取消
 MODAL_ABANDON,Abandon,放弃
 MODAL_ERA_1,[font_size=100][color=gold]VANILLA ERA[/color][/font_size]\n\nThe most primal era. The best era. [color=black]No special rules.[/color],[font_size=100][color=gold]香草时代[/color][/font_size]\n\n最原始的时代，最好的时代，[color=black]没有特殊规则[/color]。
 MODAL_ERA_2,[font_size=100][color=gold]VOLATILE ERA[/color][/font_size]\n\nPrices become extremely unstable. Pool costs will [color=black]fluctuate randomly[/color] after each draw.,[font_size=100][color=gold]波动时代[/color][/font_size]\n\n价格变得及其不稳定，每次抽奖后，奖池的金币消耗会[color=black]随机变化[/color]。
-MODAL_ERA_3,[font_size=100][color=gold]MODERN ERA[/color][/font_size]\n\nStricter standards and limits. Your inventory can only hold [color=black]7 different item types[/color].,[font_size=100][color=gold]摩登时代[/color][/font_size]\n\n更严格的标准和限制，背包中只能保留[color=black]7种不同种类的道具[/color]。
+MODAL_ERA_3,[font_size=100][color=gold]MODERN ERA[/color][/font_size]\n\nStricter standards and limits. Your inventory can only hold [color=black]7 different item types[/color].,[font_size=100][color=gold]摩登时代[/color][/font_size]\n\n更严格的标准和限制，物品栏中只能保留[color=black]7种不同种类的物品[/color]。
 MODAL_ERA_4,[font_size=100][color=gold]DECAY ERA[/color][/font_size]\n\nAll items have an [color=black]expiry date[/color]. Expired items become [color=black]junk[/color] and can only be [color=black]recycled[/color].,[font_size=100][color=gold]变质时代[/color][/font_size]\n\n所有物品都有[color=black]保质期[/color]，逾期的物品会变成[color=black]废品[/color]，只能用于[color=black]回收[/color]。
 MODAL_ERA_ENDING,[font_size=100][color=gold]THANKS FOR PLAYING[/color][/font_size]\n\nWe will continue to improve the game based on your feedback. See you in the near future!,[font_size=100][color=gold]感谢游玩[/color][/font_size]\n\n我们会基于你的反馈继续完善这个游戏，期待再见！
 
@@ -203,7 +203,7 @@ LEGACY_TOOLTIP,Order Reward Boost,订单收益加成
 # =====================================================================
 # ERA_3 DLC Panel (第三时代 DLC 面板)
 # =====================================================================
-DLC_TYPE_COUNT,Item Types\n%d / %d,道具种类\n%d / %d
+DLC_TYPE_COUNT,Item Types\n%d / %d,物品种类\n%d / %d
 
 # =====================================================================
 # Cancel Dialogs (取消按钮对话)
