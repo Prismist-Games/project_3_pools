@@ -141,7 +141,7 @@ func update_order_display(order_data: OrderData, req_states: Array = []) -> void
 			
 			var preview = order_data.calculate_preview_rewards(selected_items)
 			if preview.gold != order_data.reward_gold:
-				reward_label.text = "%d[font_size=48]←%d[/font_size]" % [preview.gold, order_data.reward_gold]
+				reward_label.text = "%d[font_size=48]《%d[/font_size]" % [preview.gold, order_data.reward_gold]
 			else:
 				reward_label.text = str(order_data.reward_gold)
 		else:
