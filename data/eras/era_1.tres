@@ -1,8 +1,12 @@
 [gd_resource type="Resource" script_class="EraConfig" load_steps=2 format=3 uid="uid://xl7cwkdnnl41"]
 
-[ext_resource type="Script" path="res://scripts/resources/era_config.gd" id="1"]
+[ext_resource type="Script" uid="uid://dv6apuvfy3y6m" path="res://scripts/resources/era_config.gd" id="1"]
 
 [resource]
 script = ExtResource("1")
 era_name = "普通时代"
-starting_gold = 30
+count_2_items = 0.35
+count_4_items = 0.0
+rarity_uncommon = 0.45
+rarity_rare = 0.15
+rarity_epic = 0.0

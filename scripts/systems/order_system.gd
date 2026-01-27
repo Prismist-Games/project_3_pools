@@ -230,6 +230,7 @@ func _submit_all_satisfied(selected_indices: Array[int]) -> bool:
 		return false
 	
 	# 全局检查：确保每个选中物品都属于至少一个可满足订单的需求
+	# (此处逻辑保留原有检查，确保安全性)
 	for item in selected_items:
 		if item == null:
 			continue
@@ -247,18 +248,46 @@ func _submit_all_satisfied(selected_indices: Array[int]) -> bool:
 				break
 		
 		if not is_needed_by_any_order:
-			# 这个物品不属于任何可满足订单的需求
 			return false
 		
 	# 按索引倒序排列，方便替换
 	satisfied_indices.sort()
 	satisfied_indices.reverse()
 	
+	# === 关键修复：正确分配物品给每个订单 ===
+	# 创建一个可用物品池的副本，用于在分配过程中扣除
+	var remaining_items = selected_items.duplicate()
+	
 	for idx in satisfied_indices:
 		var order = current_orders[idx]
-		var validation = order.validate_selection(selected_items)
-		# 提交
-		_execute_submission(order, selected_items, validation.total_submitted_bonus)
+		
+		# 为当前订单收集专门的物品列表
+		var items_for_this_order: Array[ItemInstance] = []
+		
+		# 根据需求从 remaining_items 中“抓取”物品
+		for req in order.requirements:
+			var req_id = req.get("item_id", &"")
+			var req_min_rarity = req.get("min_rarity", 0)
+			var req_count = req.get("count", 1)
+			var count_found = 0
+			
+			# 倒序遍历以便安全移除
+			for k in range(remaining_items.size() - 1, -1, -1):
+				if count_found >= req_count:
+					break
+					
+				var item = remaining_items[k]
+				if item.item_data.id == req_id and item.rarity >= req_min_rarity:
+					items_for_this_order.append(item)
+					remaining_items.remove_at(k)
+					count_found += 1
+		
+		# 此时 items_for_this_order 应该包含了该订单所需的所有物品（且不与其他订单混淆）
+		# 重新验证一次该子集是否满足订单（理论上应该满足，除非 remaining_items 不够了）
+		var validation = order.validate_selection(items_for_this_order)
+		
+		# 提交 - 使用专属物品列表
+		_execute_submission(order, items_for_this_order, validation.total_submitted_bonus)
 		
 		# 替换
 		if order.is_mainline:
@@ -318,15 +347,16 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 	var order = OrderData.new()
 	var rng = GameManager.rng
 	
-	# 1. 决定需求项总数 (按概率分布: 20%=2个, 65%=3个, 15%=4个)
-	var count_roll: float = rng.randf()
-	var original_requirement_count: int
-	if count_roll < 0.20:
-		original_requirement_count = 2
-	elif count_roll < 0.85: # 0.20 + 0.65
-		original_requirement_count = 3
-	else:
-		original_requirement_count = 4
+	# 1. 决定需求项总数
+	# 默认权重: 20%=2个, 65%=3个, 15%=4个
+	var count_weights = PackedFloat32Array([0.20, 0.65, 0.15])
+	
+	# 尝试从当前时代配置获取权重
+	if EraManager.current_config:
+		count_weights = EraManager.current_config.get_count_weights()
+		
+	var count_index = Constants.pick_weighted_index(count_weights, rng)
+	var original_requirement_count = count_index + 2 # index 0 -> 2 reqs, 1 -> 3 reqs, etc.
 	
 	# 技能：偷工减料 - 减少需求数量但奖励按原数量计算
 	var corners_ctx = ContextProxy.new({"requirement_count": original_requirement_count})
@@ -339,8 +369,12 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 		push_error("OrderSystem: No normal items found! Cannot generate order.")
 		return order
 
-	# 订单需求品质权重 (普通40%, 优秀35%, 稀有20%, 史诗5%, 传说0%)
-	var order_rarity_weights = PackedFloat32Array([0.40, 0.35, 0.20, 0.05, 0.0])
+	# 订单需求品质权重 (默认: 普通40%, 优秀35%, 稀有20%, 史诗5%, 传说0%, 神话0%)
+	var order_rarity_weights = PackedFloat32Array([0.40, 0.35, 0.20, 0.05, 0.0, 0.0])
+	
+	# 尝试从当前时代配置获取权重
+	if EraManager.current_config:
+		order_rarity_weights = EraManager.current_config.get_rarity_weights()
 	
 	# 累计需求品质加成（加算）- 基于原始数量计算
 	var total_requirement_bonus: float = 0.0
