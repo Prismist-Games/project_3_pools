@@ -108,7 +108,7 @@ SKILL_NAME_VIP_DISCOUNT,VIP Discount,贵宾折扣
 
 # Skill Descriptions (技能描述)
 SKILL_DESC_ALCHEMY,When recycling  [img=60]res://assets/sprites/icons/rarity_rare.png[/img]  + items: 25% chance to gain 5 Gold.,回收 [img=60]res://assets/sprites/icons/rarity_rare.png[/img] 及以上品质物品时，25% 几率获得 5 金币。
-SKILL_DESC_AUTO_RESTOCK,After completing any order: next draw gives +1 item.,完成任意订单后，下次抽獎额外获得 1 个物品。
+SKILL_DESC_AUTO_RESTOCK,After completing any order: duplicate the item you draw next.,完成任意订单后，复制下一个抽到的物品。
 SKILL_DESC_BIG_ORDER_EXPERT,Completing orders requiring 4+ items: +5 Gold.,完成需求4个物品的订单时，额外获得 5 金币。
 SKILL_DESC_CONSOLATION_PRIZE,After drawing 3  [img=60]res://assets/sprites/icons/rarity_common.png[/img]  in a row: next draw guaranteed  [img=60]res://assets/sprites/icons/rarity_rare.png[/img]  +.,连续抽到 3 个 [img=60]res://assets/sprites/icons/rarity_common.png[/img] 品质物品后，下次抽取必定获得 [img=60]res://assets/sprites/icons/rarity_rare.png[/img] 品质以上的物品。
 SKILL_DESC_CORNERS_CUTTING,"When generating new orders: 20% chance to reduce requirement by 1, reward unchanged (min 1).",刷新出新订单时，20% 几率使订单需求物品数量 -1，且獎励不变（最低为 1）。
@@ -155,7 +155,7 @@ DIALOG_SKILL_FULL,Skill slots full! Choose one to replace.,技能槽满！请选
 DIALOG_TARGETED,Choose item type.,请选择一种物品。
 DIALOG_TRADE_IN,Choose an item to exchange.,请选择要置换的物品。
 DIALOG_PRECISE,Choose one item.,请选择一件物品。
-DIALOG_INVENTORY_FULL,"Inventory full, Replace an item or recycle the new one.",物品栏已满，请替换一件物品栏内的物品，或回收当前獎品。
+DIALOG_INVENTORY_FULL,"Inventory full, Replace an item or recycle the new one.",物品栏已满，请替换一件物品，或回收当前獎品。
 DIALOG_ERA3_TYPE_FULL,"Too many item types, replace or recycle.",
 DIALOG_RECYCLE,Choose items to recycle.,请选择要回收的物品。
 DIALOG_SUBMIT,Choose items to submit.,请选择要提交的物品。
