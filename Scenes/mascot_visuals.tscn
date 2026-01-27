@@ -1,9 +1,9 @@
 [gd_scene load_steps=106 format=3 uid="uid://b2mfixaghaocc"]
 
 [ext_resource type="Script" uid="uid://cbgpwgg5nq1ds" path="res://scripts/ui/the_rabbit_animator.gd" id="1_fu8yu"]
-[ext_resource type="AudioStream" uid="uid://bmus83sm4cx3t" path="res://assets/audio/sfx/381588__dorianmastin__snd_impactheavywall01.wav" id="2_kmeeb"]
+[ext_resource type="AudioStream" uid="uid://cldvf162nxs2d" path="res://assets/audio/sfx/knock_machine_1.wav" id="2_22g54"]
 [ext_resource type="Texture2D" uid="uid://ciklekvdp5hak" path="res://assets/sprites/the_rabbit/the_rabbit_left_arm.png" id="2_vpgxp"]
-[ext_resource type="AudioStream" uid="uid://hp7wuy3elrv2" path="res://assets/audio/sfx/381591__dorianmastin__snd_impactheavywall04.wav" id="3_cs4hr"]
+[ext_resource type="AudioStream" uid="uid://ce3jnyf7biswh" path="res://assets/audio/sfx/knock_machine_2.wav" id="3_3luby"]
 [ext_resource type="Texture2D" uid="uid://deairpal3cmlr" path="res://assets/sprites/the_rabbit/the_rabbit_left_thumb.png" id="3_kmeeb"]
 [ext_resource type="Texture2D" uid="uid://bsdf5iwmcegpx" path="res://assets/sprites/the_rabbit/the_rabbit_left_palm.png" id="4_cs4hr"]
 [ext_resource type="Texture2D" uid="uid://bjlpf6bxe6kb1" path="res://assets/sprites/the_rabbit/the_rabbit_wand_stick.PNG" id="5_nc5n7"]
@@ -706,7 +706,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.45, 0.55, 0.65, 0.8),
 "transitions": PackedFloat32Array(1, 0.5, 2, 1, 0.5, 2, 1, 1),
 "update": 0,
-"values": [0.0, -0.9, 0.2, 0.0, -0.9, 0.3, 0.0, 0.0]
+"values": [0.0, -0.08726646259971647, 0.2, 0.0, -0.017453292519943295, 0.3, 0.0, 0.0]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -718,11 +718,11 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.25, 0.3, 0.55, 0.6, 0.65, 1),
 "transitions": PackedFloat32Array(1, 0.2, 1, 1, 0.2, 1, 1, 1),
 "update": 0,
-"values": [Vector2(3750, 1488), Vector2(3750, 1488), Vector2(3750, 1515), Vector2(3750, 1488), Vector2(3750, 1488), Vector2(3750, 1520), Vector2(3750, 1488), Vector2(3750, 1488)]
+"values": [Vector2(3750, 1488), Vector2(3750, 1488), Vector2(3750, 1495), Vector2(3750, 1488), Vector2(3750, 1488), Vector2(3750, 1492), Vector2(3750, 1488), Vector2(3750, 1488)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
-tracks/2/enabled = true
+tracks/2/enabled = false
 tracks/2/path = NodePath(".:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
@@ -730,7 +730,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.25, 0.3, 0.55, 0.6, 0.65, 1),
 "transitions": PackedFloat32Array(1, 0.5, 1, 1, 0.5, 1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, 15), Vector2(0, -8), Vector2(0, 0), Vector2(0, 20), Vector2(0, 0), Vector2(0, 0)]
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, 2), Vector2(0, -8), Vector2(0, 0), Vector2(0, 1), Vector2(0, 0), Vector2(0, 0)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -742,7 +742,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.55, 0.65, 0.75),
 "transitions": PackedFloat32Array(1, 0.5, 1, 1, 0.5, 1, 1),
 "update": 0,
-"values": [0.031002952, 0.031, -0.1, 0.031, 0.031, -0.15, 0.031]
+"values": [0.031002952, 0.031, 0.017453292519943295, 0.031, 0.031, 0.017453292519943295, 0.031]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -754,7 +754,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.55, 0.65, 0.75),
 "transitions": PackedFloat32Array(1, 0.5, 1, 1, 0.5, 1, 1),
 "update": 0,
-"values": [0.031703457, 0.032, 0.08, 0.032, 0.032, 0.1, 0.032]
+"values": [0.031703457, 0.032, 0.012217304763960109, 0.032, 0.032, 0.017453292519943295, 0.032]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -766,7 +766,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.35, 0.55, 0.7),
 "transitions": PackedFloat32Array(1, 0.5, 1, 0.5, 1),
 "update": 0,
-"values": [-0.08134746, -0.15, -0.081, -0.18, -0.081]
+"values": [-0.08134746, -0.11519173063162615, -0.081, -0.10995574287564296, -0.081]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -778,7 +778,7 @@ tracks/6/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.35, 0.55, 0.7),
 "transitions": PackedFloat32Array(1, 0.5, 1, 0.5, 1),
 "update": 0,
-"values": [0.06733266, 0.15, 0.067, 0.18, 0.067]
+"values": [0.06733266, 0.08028514559173956, 0.067, 0.10471975511965978, 0.067]
 }
 tracks/7/type = "audio"
 tracks/7/imported = false
@@ -790,7 +790,7 @@ tracks/7/keys = {
 "clips": [{
 "end_offset": 0.0,
 "start_offset": 0.0,
-"stream": ExtResource("2_kmeeb")
+"stream": ExtResource("2_22g54")
 }],
 "times": PackedFloat32Array(0.2)
 }
@@ -805,7 +805,7 @@ tracks/8/keys = {
 "clips": [{
 "end_offset": 0.0,
 "start_offset": 0.0,
-"stream": ExtResource("3_cs4hr")
+"stream": ExtResource("3_3luby")
 }],
 "times": PackedFloat32Array(0.55)
 }
@@ -1335,7 +1335,6 @@ libraries = {
 }
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-volume_db = -12.0
 bus = &"SFX"
 
 [node name="TheRabbitLeftArm" type="Sprite2D" parent="."]
