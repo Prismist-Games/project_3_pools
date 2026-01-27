@@ -1049,9 +1049,9 @@ texture = ExtResource("21_ue141")
 
 [node name="Money_label" type="RichTextLabel" parent="The Machine/TheMachineDisplay/TheMachineDisplayFill"]
 offset_left = -254.0
-offset_top = -100.0
+offset_top = -88.11881
 offset_right = 254.0
-offset_bottom = 77.0
+offset_bottom = 88.88119
 theme_override_colors/default_color = Color(1, 0.8862745, 0, 1)
 theme_override_font_sizes/normal_font_size = 100
 bbcode_enabled = true
@@ -1734,6 +1734,7 @@ offset_right = 7018.0
 offset_bottom = 3983.0
 mouse_force_pass_scroll_events = false
 color = Color(0, 0, 0, 0.5019608)
+metadata/_edit_lock_ = true
 
 [node name="Popup Window" type="TextureRect" parent="."]
 z_index = 11

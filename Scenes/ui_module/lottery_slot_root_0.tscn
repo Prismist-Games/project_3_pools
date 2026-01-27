@@ -583,7 +583,7 @@ texture = ExtResource("16_l1p8v")
 modulate = Color(0.61960787, 0.9137255, 0.40392157, 1)
 show_behind_parent = true
 clip_children = 2
-position = Vector2(-9, -9)
+position = Vector2(-2, -3)
 texture = ExtResource("15_do7yb")
 
 [node name="Lottery Required Items Icon Grid" type="VBoxContainer" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill"]
@@ -785,9 +785,9 @@ texture = ExtResource("19_a03mu")
 [node name="Affix Label" type="RichTextLabel" parent="Lottery Slot_top_screen/Lottery Slot_top_screen_fill"]
 clip_contents = false
 offset_left = -126.0
-offset_top = -56.0
+offset_top = -60.0
 offset_right = 261.0
-offset_bottom = 67.0
+offset_bottom = 63.0
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.15274194, 0.24557048, 0.08210931, 1)
 theme_override_fonts/normal_font = ExtResource("20_3gq3c")
@@ -851,7 +851,7 @@ scroll_active = false
 vertical_alignment = 1
 
 [node name="Price Icon" type="Sprite2D" parent="Lottery Slot_top_screen/Lottery Slot_top_screen_fill"]
-position = Vector2(-240, 9.75)
+position = Vector2(-233, 9.75)
 texture = ExtResource("20_ihuts")
 
 [node name="ScreenEffectOverlay" type="ColorRect" parent="Lottery Slot_top_screen/Lottery Slot_top_screen_fill"]
