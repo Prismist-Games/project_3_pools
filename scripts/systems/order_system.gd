@@ -94,7 +94,7 @@ func refresh_order(index: int) -> OrderData:
 	EventBus.game_event.emit(&"order_refresh_logic_check", ctx) # 改名避免冲突
 	
 	if order.is_mainline:
-		current_orders[index] = _generate_mainline_order() # 主线不减少刷新次数? 或者减少? 暂时保持原样
+		current_orders[index] = _generate_mainline_order(true) # 主线刷新，使用下一时代规则
 	else:
 		if ctx.get_value("consume_refresh"):
 			order.refresh_count -= 1
@@ -198,7 +198,7 @@ func _submit_single_order(index: int, selected_indices: Array[int]) -> bool:
 	
 	# 替换订单
 	if order.is_mainline:
-		current_orders[index] = _generate_mainline_order()
+		current_orders[index] = _generate_mainline_order(true) # 完成主线后刷新
 	else:
 		current_orders[index] = _generate_normal_order()
 		
@@ -291,7 +291,7 @@ func _submit_all_satisfied(selected_indices: Array[int]) -> bool:
 		
 		# 替换
 		if order.is_mainline:
-			current_orders[idx] = _generate_mainline_order()
+			current_orders[idx] = _generate_mainline_order(true) # 完成主线后刷新
 		else:
 			current_orders[idx] = _generate_normal_order()
 			
@@ -436,7 +436,7 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 	return order
 
 
-func _generate_mainline_order() -> OrderData:
+func _generate_mainline_order(is_refresh: bool = false) -> OrderData:
 	var order = OrderData.new()
 	order.is_mainline = true
 	var rng = GameManager.rng
@@ -446,7 +446,22 @@ func _generate_mainline_order() -> OrderData:
 		push_error("OrderSystem: No items found for mainline order!")
 		return order
 
-	# 主线需求：2个随机史诗品质的物品，必须来自不同种类且名称不同
+	# 主线需求：2个随机物品，必须来自不同种类且名称不同
+	# 
+	# 关键设计：
+	# - Era 1（香草时代，era_index=0）初始订单：1个稀有 + 1个史诗
+	# - Era 2+ 或完成主线后刷新的新订单：2个史诗
+	#
+	# is_refresh 用于区分：
+	# - false: 游戏初始化时生成（给当前时代玩家完成的任务）
+	# - true: 完成主线后刷新（给下一个时代玩家完成的任务）
+	var mainline_rarities: Array[Constants.Rarity] = []
+	if not is_refresh and EraManager.current_era_index == 0:
+		# 游戏初始化时，第一时代的首个主线订单：一蓝一紫
+		mainline_rarities = [Constants.Rarity.RARE, Constants.Rarity.EPIC]
+	else:
+		# 完成主线后刷新（给下一时代），或非第一时代：两紫
+		mainline_rarities = [Constants.Rarity.EPIC, Constants.Rarity.EPIC]
 	
 	# 按种类 (item_type) 分组
 	var items_by_type: Dictionary = {} # item_type -> Array[ItemData]
@@ -467,14 +482,16 @@ func _generate_mainline_order() -> OrderData:
 		var shuffled_items = normal_items.duplicate()
 		shuffled_items.shuffle()
 		var used_names: Array[StringName] = []
+		var fallback_idx := 0
 		for item in shuffled_items:
 			if item.id not in used_names:
 				order.requirements.append({
 					"item_id": item.id,
-					"min_rarity": Constants.Rarity.EPIC,
+					"min_rarity": mainline_rarities[fallback_idx] if fallback_idx < mainline_rarities.size() else Constants.Rarity.EPIC,
 					"count": 1
 				})
 				used_names.append(item.id)
+				fallback_idx += 1
 				if used_names.size() >= 2:
 					break
 		order.reward_gold = 100
@@ -499,9 +516,11 @@ func _generate_mainline_order() -> OrderData:
 		var item_data = valid_items[rng.randi() % valid_items.size()]
 		used_item_ids.append(item_data.id)
 		
+		# 根据索引使用对应的品质要求
+		var required_rarity = mainline_rarities[i] if i < mainline_rarities.size() else Constants.Rarity.EPIC
 		order.requirements.append({
 			"item_id": item_data.id,
-			"min_rarity": Constants.Rarity.EPIC,
+			"min_rarity": required_rarity,
 			"count": 1
 		})
 
