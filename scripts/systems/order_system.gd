@@ -347,15 +347,16 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 	var order = OrderData.new()
 	var rng = GameManager.rng
 	
-	# 1. 决定需求项总数 (按概率分布: 20%=2个, 65%=3个, 15%=4个)
-	var count_roll: float = rng.randf()
-	var original_requirement_count: int
-	if count_roll < 0.20:
-		original_requirement_count = 2
-	elif count_roll < 0.85: # 0.20 + 0.65
-		original_requirement_count = 3
-	else:
-		original_requirement_count = 4
+	# 1. 决定需求项总数
+	# 默认权重: 20%=2个, 65%=3个, 15%=4个
+	var count_weights = PackedFloat32Array([0.20, 0.65, 0.15])
+	
+	# 尝试从当前时代配置获取权重
+	if EraManager.current_config:
+		count_weights = EraManager.current_config.get_count_weights()
+		
+	var count_index = Constants.pick_weighted_index(count_weights, rng)
+	var original_requirement_count = count_index + 2 # index 0 -> 2 reqs, 1 -> 3 reqs, etc.
 	
 	# 技能：偷工减料 - 减少需求数量但奖励按原数量计算
 	var corners_ctx = ContextProxy.new({"requirement_count": original_requirement_count})
@@ -368,8 +369,12 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 		push_error("OrderSystem: No normal items found! Cannot generate order.")
 		return order
 
-	# 订单需求品质权重 (普通40%, 优秀35%, 稀有20%, 史诗5%, 传说0%)
-	var order_rarity_weights = PackedFloat32Array([0.40, 0.35, 0.20, 0.05, 0.0])
+	# 订单需求品质权重 (默认: 普通40%, 优秀35%, 稀有20%, 史诗5%, 传说0%, 神话0%)
+	var order_rarity_weights = PackedFloat32Array([0.40, 0.35, 0.20, 0.05, 0.0, 0.0])
+	
+	# 尝试从当前时代配置获取权重
+	if EraManager.current_config:
+		order_rarity_weights = EraManager.current_config.get_rarity_weights()
 	
 	# 累计需求品质加成（加算）- 基于原始数量计算
 	var total_requirement_bonus: float = 0.0
