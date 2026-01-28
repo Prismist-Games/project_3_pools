@@ -681,7 +681,6 @@ offset_right = 358.75
 offset_bottom = 251.75
 scale = Vector2(0.945, 0.945)
 tooltip_text = "Skill Description"
-mouse_default_cursor_shape = 16
 texture = ExtResource("9_8hb1a")
 script = ExtResource("10_k01008e5batl")
 
@@ -714,7 +713,6 @@ offset_right = 358.75
 offset_bottom = 251.75
 scale = Vector2(0.945, 0.945)
 tooltip_text = "Skill Description"
-mouse_default_cursor_shape = 16
 texture = ExtResource("9_8hb1a")
 script = ExtResource("10_k01008e5batl")
 
@@ -746,7 +744,6 @@ offset_right = 358.75
 offset_bottom = 251.75
 scale = Vector2(0.945, 0.945)
 tooltip_text = "Skill Description"
-mouse_default_cursor_shape = 16
 texture = ExtResource("9_8hb1a")
 script = ExtResource("10_k01008e5batl")
 
