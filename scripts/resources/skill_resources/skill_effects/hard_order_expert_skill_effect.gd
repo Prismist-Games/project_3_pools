@@ -2,7 +2,7 @@ extends SkillEffect
 class_name HardOrderExpertSkillEffect
 
 ## 【困难订单专家】
-## 完成需要史诗以上品质物品的订单时，额外获得 10 金币。
+## 完成订单时若提交了史诗以上品质的物品，额外获得 10 金币。
 ## VFX: 订单区域有紫色需求订单时白色(Pending)
 
 @export var rarity_threshold: int = Constants.Rarity.EPIC
