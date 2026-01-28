@@ -156,7 +156,7 @@ DIALOG_TARGETED,Choose item type.,请选择一种物品。
 DIALOG_TRADE_IN,Choose an item to exchange.,请选择要置换的物品。
 DIALOG_PRECISE,Choose one item.,请选择一件物品。
 DIALOG_INVENTORY_FULL,"Inventory full, Replace an item or recycle the new one.",物品栏已满，请替换一件物品，或回收当前奖品。
-DIALOG_ERA3_TYPE_FULL,"Too many item types, replace or recycle.",
+DIALOG_ERA3_TYPE_FULL,"Too many item types, replace or recycle.", 物品种类过多，请替换或回收。
 DIALOG_RECYCLE,Choose items to recycle.,请选择要回收的物品。
 DIALOG_SUBMIT,Choose items to submit.,请选择要提交的物品。
 
