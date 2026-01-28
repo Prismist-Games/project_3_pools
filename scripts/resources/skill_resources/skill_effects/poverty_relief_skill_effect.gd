@@ -2,10 +2,10 @@ extends SkillEffect
 class_name PovertyReliefSkillEffect
 
 ## 【贫困救济】
-## 提交订单时，GameManager.gold < 5，奖励 +5。
-## VFX: 金币<5时白色(Pending)，完成订单时若触发变黄色(Activate)
+## 提交订单时，GameManager.gold <= 10，额外获得 +5 金币。
+## VFX: 金币<=10时白色(Pending)，完成订单时若触发变黄色(Activate)
 
-@export var gold_threshold: int = 5
+@export var gold_threshold: int = 10
 @export var bonus_gold: int = 5
 
 ## 当前是否处于激活状态
@@ -22,7 +22,7 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 
 func _handle_gold_changed() -> void:
 	var was_pending = _is_pending
-	_is_pending = GameManager.gold < gold_threshold
+	_is_pending = GameManager.gold <= gold_threshold
 	
 	# 状态变化时发送信号
 	if _is_pending and not was_pending:
@@ -34,7 +34,7 @@ func _handle_gold_changed() -> void:
 func _handle_order_completed(ctx: OrderCompletedContext) -> void:
 	if ctx == null: return
 	
-	if GameManager.gold < gold_threshold:
+	if GameManager.gold <= gold_threshold:
 		triggered.emit(TRIGGER_ACTIVATE)
 		ctx.reward_gold += bonus_gold
 
@@ -43,4 +43,3 @@ func get_visual_state() -> String:
 	if _is_pending:
 		return TRIGGER_PENDING
 	return ""
-

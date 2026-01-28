@@ -118,7 +118,7 @@ SKILL_DESC_HARD_ORDER_EXPERT,Completing orders requiring  [img=60]res://assets/s
 SKILL_DESC_LUCKY_7,When Gold is a multiple of 7 or ends in 7:  [img=60]res://assets/sprites/icons/rarity_epic.png[/img]  and  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  chance is doubled.,当前金币数量为7的倍数或尾数为7时，抽到 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 和 [img=60]res://assets/sprites/icons/rarity_legendary.png[/img] 品质的几率翻倍。
 SKILL_DESC_NEGOTIATOR,When drawing or merging  [img=60]res://assets/sprites/icons/rarity_epic.png[/img]  + items: all orders gain 1 refresh.,抽到或合成 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 及以上品质物品时，所有订单获得 1 次刷新次数。
 SKILL_DESC_OCD,"If all items used to submit an order are of the same quality, the final Gold reward is doubled.",如果用于提交某个订单的所有物品具有相同品质，此订单的最终金币獎励翻倍。
-SKILL_DESC_POVERTY_RELIEF,When Gold < 5: order reward +5.,持有金币 < 5 时，完成订单的金币獎励额外 +5。
+SKILL_DESC_POVERTY_RELIEF,When Gold ≤ 10: gain 5 Gold after submitting orders.,持有金币≤10时，成功提交订单后获得5金币。
 SKILL_DESC_TIME_FREEZE,When refreshing an order: 20% chance to not consume refresh count.,刷新单个订单时，20% 几率不消耗该订单的刷新次数。
 SKILL_DESC_VIP_DISCOUNT,"""Precise"" and ""Targeted"" pools cost 1 less Gold.","""精准""和""有的放矢""词缀的獎池金币消耗减少 1。"
 
