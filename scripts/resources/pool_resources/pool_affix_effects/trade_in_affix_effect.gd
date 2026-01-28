@@ -31,6 +31,9 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 	# 从 meta 中获取 pool_index（由 PoolSystem 设置）
 	var pool_index: int = ctx.meta.get("pool_index", -1)
 	
+	# 捕捉上下文中的最小品质要求（包含技能 Buff，如大订单专家）
+	var ctx_min_rarity := ctx.min_rarity
+	
 	# 进入选择模式
 	var selection_data = ContextProxy.new({
 		"type": "trade_in",
@@ -48,6 +51,12 @@ func on_event(event_id: StringName, context: RefCounted) -> void:
 				
 			# 2. 决定新物品品质 (5% 概率升级)
 			var rarity = item_to_trade.rarity
+			
+			# [Fix] 应用技能带来的品质提升 (例如大订单专家的保底史诗)
+			# 如果上下文中有更高的品质要求，强制提升
+			if ctx_min_rarity > rarity:
+				rarity = ctx_min_rarity
+			
 			if GameManager.rng.randf() < 0.05:
 				rarity = min(rarity + 1, Constants.Rarity.MYTHIC)
 				
