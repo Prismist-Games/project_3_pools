@@ -25,6 +25,14 @@ RARITY_MYTHIC,Mythic,神话
 RARITY_UNKNOWN,Unknown,未知
 
 # =====================================================================
+# Era Names (时代名称)
+# =====================================================================
+ERA_1,VANILLA ERA,香草时代
+ERA_2,VOLATILE ERA,波动时代
+ERA_3,MODERN ERA,摩登时代
+ERA_4,DECAY ERA,变质时代
+
+# =====================================================================
 # Era Tooltips (时代提示)
 # =====================================================================
 TOOLTIP_ERA_1,[color=gold]VANILLA ERA[/color]\nThe most primal era. The best era. [color=red]No special rules.[/color],[color=gold]香草时代[/color]\n最原始的时代，最好的时代，[color=red]没有特殊规则[/color]。
@@ -146,6 +154,8 @@ BTN_NEXT,NEXT,下一页
 
 # Currency Display
 UI_GOLD_DISPLAY,Gold: %d,金币: %d
+
+MAIN_QUEST_LABEL,NEXT ERA,解锁新时代
 
 # =====================================================================
 # Dialog Messages (对话消息)

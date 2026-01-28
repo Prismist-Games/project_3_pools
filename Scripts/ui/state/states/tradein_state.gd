@@ -209,7 +209,7 @@ func _execute_trade_in_sequence(slot_index: int, item: ItemInstance) -> void:
 		# 这样可以防止订单角标在物品显示前就变绿
 		for new_item in captured_items:
 			EventBus.item_obtained.emit(new_item)
-            
+			
 		# ERA_4: 抽奖后递减保质期 (移至物品获得后，确保新物品也能正确参与判定)
 		ShelfLifeEffect.trigger_shelf_life_decrement()
 		

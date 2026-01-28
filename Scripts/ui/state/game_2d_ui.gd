@@ -60,6 +60,17 @@ var era_label: Control = null
 @onready var popup_button: BaseButton = find_child("Popup_button", true)
 @onready var popup_label: RichTextLabel = find_child("Popup_RichTextLabel", true)
 
+# --- ERA Indicator 节点引用 ---
+@onready var era_indicator: Sprite2D = find_child("Era Indicator", true)
+@onready var era_indicator_label: RichTextLabel = find_child("Era Indicator_label", true)
+
+const ERA_COLORS = {
+	0: Color("#FC705A"),
+	1: Color("#DBA4EC"),
+	2: Color("#339A80"),
+	3: Color("#81D371")
+}
+
 # --- 教程幻灯片 ---
 @onready var tutorial_slideshow_scene: PackedScene = preload("res://scenes/ui/tutorial_slideshow.tscn")
 var tutorial_slideshow: CanvasLayer = null
@@ -1214,6 +1225,10 @@ func _hide_era_popup() -> void:
 	# 延迟隐藏 Mask
 	await win_tween.finished
 	
+	# 时代指示器更新动画 (时机：popup window 收起动画结束后)
+	if EraManager:
+		_update_era_indicator(EraManager.current_era_index)
+	
 	var mask_tween = create_tween()
 	mask_tween.tween_property(screen_mask, "modulate:a", 0.0, 0.3)
 	await mask_tween.finished
@@ -1318,6 +1333,30 @@ func _update_dlc_panel_visibility() -> void:
 	# 更新 DLC Label
 	if has_type_limit:
 		_update_dlc_label()
+
+
+## 时代指示器更新动画逻辑
+func _update_era_indicator(era_index: int) -> void:
+	if not era_indicator or not era_indicator_label:
+		return
+	
+	var tw = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	
+	# a. era_indicator的y降到-100 (动画时间根据需求设定，这里设为0.4s)
+	tw.tween_property(era_indicator, "position:y", -100.0, 0.4)
+	
+	# b. 更新1.和2. (在降到-100之后)
+	tw.tween_callback(func():
+		# 1. 更新文本 (使用 ERA_1 到 ERA_4 的 key)
+		era_indicator_label.text = "ERA_%d" % (era_index + 1)
+		# 2. 更新 self_modulate 颜色
+		era_indicator.self_modulate = ERA_COLORS.get(era_index, Color.WHITE)
+		# 更新label的tooltip
+		era_indicator_label.tooltip_text = "TOOLTIP_ERA_%d" % (era_index + 1)
+	)
+	
+	# c. era_indicator的y升到-220
+	tw.tween_property(era_indicator, "position:y", -220.0, 0.4)
 
 
 ## 更新 DLC Label 显示当前种类数量

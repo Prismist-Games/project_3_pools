@@ -1,4 +1,4 @@
-[gd_scene load_steps=102 format=3 uid="uid://cf1cjj8xlhblr"]
+[gd_scene load_steps=104 format=3 uid="uid://cf1cjj8xlhblr"]
 
 [ext_resource type="Script" uid="uid://rr7qyh0d2fdb" path="res://scripts/ui/state/game_2d_ui.gd" id="1_x7wb1"]
 [ext_resource type="Script" uid="uid://rg8ahiwfwlxb" path="res://scripts/ui/utils/slot_background_color_setter.gd" id="2_ovo1l"]
@@ -57,8 +57,10 @@
 [ext_resource type="Texture2D" uid="uid://qlu81dcv2v71" path="res://assets/sprites/the_machine_dlc/dlc_screen_outline.png" id="41_4tp6t"]
 [ext_resource type="Texture2D" uid="uid://c5hf5dhl1twpv" path="res://assets/sprites/the_machine_dlc/dlc_screen_fill.png" id="42_p2bqf"]
 [ext_resource type="PackedScene" uid="uid://basts7bbr2vav" path="res://scenes/ui_module/lottery_slot_root_0.tscn" id="44_jptrp"]
+[ext_resource type="Texture2D" uid="uid://c4jlkbe3ly0xg" path="res://assets/sprites/quest_slots/era_indicator.PNG" id="48_fx7i4"]
 [ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="51_8y6ih"]
 [ext_resource type="Shader" uid="uid://ckftk5sr2t1ye" path="res://assets/shaders/desaturate.gdshader" id="53_simg3"]
+[ext_resource type="Texture2D" uid="uid://cnhrucrx81r76" path="res://assets/sprites/icons/main_quest.PNG" id="54_nbd70"]
 [ext_resource type="Texture2D" uid="uid://davbf6tu8eie1" path="res://assets/sprites/quest_slots/quality_label.PNG" id="54_ug1ds"]
 [ext_resource type="Texture2D" uid="uid://dueqqf84ep58p" path="res://assets/sprites/frames/rabbit_popup.png" id="72_d4tgn"]
 [ext_resource type="Texture2D" uid="uid://b7qsbdjotcn0r" path="res://assets/sprites/frames/rabbit_popup_button.png" id="73_1wqh7"]
@@ -1315,6 +1317,26 @@ offset_right = -186.36363
 offset_bottom = -997.2727
 script = ExtResource("113_quest")
 
+[node name="Era Indicator" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root"]
+position = Vector2(-344.545, -82.72728)
+texture = ExtResource("48_fx7i4")
+
+[node name="Era Indicator_label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Era Indicator"]
+offset_left = -219.09088
+offset_top = -125.4545
+offset_right = 221.81818
+offset_bottom = -8.181793
+mouse_default_cursor_shape = 16
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("91_036e7")
+theme_override_font_sizes/normal_font_size = 48
+bbcode_enabled = true
+text = "VOLATILE ERA"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("10_4tp6t")
+
 [node name="Quest Slot_mask" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root"]
 clip_children = 1
 texture = ExtResource("25_y6c7h")
@@ -1342,6 +1364,34 @@ texture = ExtResource("28_mfdr7")
 [node name="Slot_background_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot_background"]
 position = Vector2(-7, -36)
 texture = ExtResource("29_xpfcn")
+
+[node name="Main Quest Reward Icon" type="TextureRect" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask"]
+offset_left = -394.0
+offset_top = -50.909103
+offset_right = -308.0
+offset_bottom = 15.090897
+texture = ExtResource("54_nbd70")
+expand_mode = 5
+
+[node name="Main Quest Reward Label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Reward Icon"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 90.0
+offset_top = -97.0
+offset_right = 979.0
+offset_bottom = 96.0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("91_036e7")
+theme_override_font_sizes/normal_font_size = 71
+bbcode_enabled = true
+text = "MAIN_QUEST_LABEL"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
 
 [node name="Main Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask"]
 offset_left = -147.0
@@ -1403,6 +1453,7 @@ scale = Vector2(1.8, 1.8)
 texture = ExtResource("54_ug1ds")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask"]
+visible = false
 modulate = Color(1, 0.79607844, 0.03137255, 1)
 texture = ExtResource("30_iq50s")
 offset = Vector2(100, 0)
