@@ -268,6 +268,25 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "一键生成7种物品"
 
+[node name="GenerateOrderItemsButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "一键生成所有订单物品"
+
+[node name="GenerateSpecificOrderRow" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OrderIndexOption" type="OptionButton" parent="MarginContainer/ScrollContainer/VBoxContainer/GenerateSpecificOrderRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GenerateSpecificOrderButton" type="Button" parent="MarginContainer/ScrollContainer/VBoxContainer/GenerateSpecificOrderRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "生成指定订单物品"
+
 [node name="HSeparator8" type="HSeparator" parent="MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 

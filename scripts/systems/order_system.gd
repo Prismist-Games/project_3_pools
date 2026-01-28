@@ -281,6 +281,12 @@ func _submit_all_satisfied(selected_indices: Array[int]) -> bool:
 	# 最后统一消耗选中的物品
 	InventorySystem.remove_items(selected_items)
 	
+	# 记录提交数量，用于触发多订单相关技能
+	var submitted_orders_count = satisfied_indices.size()
+	if submitted_orders_count >= 2:
+		var context = ContextProxy.new({"count": submitted_orders_count})
+		EventBus.game_event.emit(&"multi_orders_completed", context)
+
 	_mark_cache_dirty()
 	EventBus.orders_updated.emit(current_orders)
 	return true

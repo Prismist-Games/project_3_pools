@@ -17,6 +17,9 @@ extends PanelContainer
 
 @onready var generate_button: Button = %GenerateButton
 @onready var generate_batch_button: Button = %GenerateBatchButton
+@onready var generate_order_items_button: Button = %GenerateOrderItemsButton
+@onready var order_index_option: OptionButton = %OrderIndexOption
+@onready var generate_specific_order_button: Button = %GenerateSpecificOrderButton
 @onready var skill_select_button: Button = %SkillSelectButton
 @onready var skill_selector_option: OptionButton = %SkillSelectorOption
 @onready var add_skill_button: Button = %AddSkillButton
@@ -96,6 +99,9 @@ func _setup_generation_ui() -> void:
 	item_type_option.clear()
 	item_type_option.add_item("全部", -1)
 	
+	_setup_order_list()
+	EventBus.orders_updated.connect(func(_orders): _setup_order_list())
+	
 	for type in Constants.get_normal_item_types():
 		item_type_option.add_item(Constants.type_to_display_name(type), type)
 	
@@ -155,6 +161,8 @@ func _connect_signals() -> void:
 	item_type_option.item_selected.connect(_on_item_type_selected)
 	generate_button.pressed.connect(_on_generate_pressed)
 	generate_batch_button.pressed.connect(_on_generate_batch_pressed)
+	generate_order_items_button.pressed.connect(_on_generate_order_items_pressed)
+	generate_specific_order_button.pressed.connect(_on_generate_specific_order_pressed)
 	
 	# 连接技能选择测试按钮
 	skill_select_button.pressed.connect(_on_skill_select_pressed)
@@ -428,6 +436,88 @@ func _on_generate_batch_pressed() -> void:
 		EventBus.item_obtained.emit(instance)
 		
 	print("[DebugConsole] 已一键批量生成 7 个道具")
+
+
+func _on_generate_order_items_pressed() -> void:
+	"""一键生成所有订单所需的物品"""
+	if not OrderSystem:
+		return
+		
+	var count = 0
+	for order in OrderSystem.current_orders:
+		if order == null:
+			continue
+			
+		for req in order.requirements:
+			var item_id = req.get("item_id")
+			var min_rarity = req.get("min_rarity", 0)
+			# 部分订单可能没有 count 字段，默认为 1
+			var req_count = req.get("count", 1)
+			
+			var item_data = GameManager.get_item_data(item_id)
+			if item_data:
+				for i in range(req_count):
+					var instance = ItemInstance.new(item_data, min_rarity, false)
+					EventBus.item_obtained.emit(instance)
+					count += 1
+	
+	print("[DebugConsole] 已生成当前所有订单需求的 %d 个物品" % count)
+
+
+func _setup_order_list() -> void:
+	"""更新订单下拉列表"""
+	if not order_index_option or not OrderSystem:
+		return
+		
+	var selected_idx = order_index_option.selected
+	order_index_option.clear()
+	
+	for i in range(OrderSystem.current_orders.size()):
+		var order = OrderSystem.current_orders[i]
+		if order == null:
+			order_index_option.add_item("Order %d (Empty)" % i, i)
+			continue
+			
+		var type_str = "Main" if order.is_mainline else "Normal"
+		var reward = str(order.reward_gold)
+		order_index_option.add_item("Order %d [%s] ($%s)" % [i, type_str, reward], i)
+		
+	# 尝试保持之前的选择，如果越界则选0
+	if selected_idx >= 0 and selected_idx < order_index_option.get_item_count():
+		order_index_option.selected = selected_idx
+	elif order_index_option.get_item_count() > 0:
+		order_index_option.selected = 0
+
+
+func _on_generate_specific_order_pressed() -> void:
+	"""生成指定订单的物品"""
+	if not OrderSystem:
+		return
+		
+	var index = order_index_option.get_selected_id()
+	if index < 0 or index >= OrderSystem.current_orders.size():
+		print("[DebugConsole] 无效的订单索引")
+		return
+		
+	var order = OrderSystem.current_orders[index]
+	if order == null:
+		print("[DebugConsole] 订单为空")
+		return
+		
+	var count = 0
+	for req in order.requirements:
+		var item_id = req.get("item_id")
+		var min_rarity = req.get("min_rarity", 0)
+		var req_count = req.get("count", 1)
+		
+		var item_data = GameManager.get_item_data(item_id)
+		if item_data:
+			for i in range(req_count):
+				var instance = ItemInstance.new(item_data, min_rarity, false)
+				EventBus.item_obtained.emit(instance)
+				count += 1
+				
+	print("[DebugConsole] 已为订单 %d 生成 %d 个物品" % [index, count])
 
 
 func _on_skill_select_pressed() -> void:
