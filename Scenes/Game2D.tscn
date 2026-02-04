@@ -17,7 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://dp2k5ss5oefjc" path="res://assets/sprites/the_machine/the_machine_slot_outline.png" id="8_xqbja"]
 [ext_resource type="Texture2D" uid="uid://b6xu5iewxjacd" path="res://assets/sprites/icons/skills/偷工減料.png" id="9_8hb1a"]
 [ext_resource type="Texture2D" uid="uid://2sp6p7grlidd" path="res://assets/sprites/the_machine/the_machine_slot_outline_front.png" id="9_fvhsr"]
-[ext_resource type="Script" path="res://scripts/ui/utils/custom_tooltip.gd" id="10_4tp6t"]
+[ext_resource type="Script" uid="uid://cxmygyseak5g5" path="res://scripts/ui/utils/custom_tooltip.gd" id="10_4tp6t"]
 [ext_resource type="Script" uid="uid://bqt3gx0qvwmya" path="res://scripts/ui/skill_icon_ui.gd" id="10_k01008e5batl"]
 [ext_resource type="Texture2D" uid="uid://b5gnskrlq8d81" path="res://assets/sprites/the_machine/the_machine_top.png" id="11_h0822"]
 [ext_resource type="Texture2D" uid="uid://balbu2vdssbb4" path="res://assets/sprites/the_machine/the_machine_top_outline_behind.png" id="12_lql4v"]
@@ -768,6 +768,12 @@ offset = Vector2(333, -1244.5)
 texture = ExtResource("9_fvhsr")
 offset = Vector2(-91, -1261.5)
 
+[node name="TheMachineFront" type="Sprite2D" parent="The Machine"]
+self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
+position = Vector2(806, 365)
+scale = Vector2(3, 3)
+texture = ExtResource("17_tmso7")
+
 [node name="TheMachineSide" type="Sprite2D" parent="The Machine"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 position = Vector2(-980, 274)
@@ -779,12 +785,6 @@ show_behind_parent = true
 clip_children = 2
 position = Vector2(1, -3)
 texture = ExtResource("17_ug1ds")
-
-[node name="TheMachineFront" type="Sprite2D" parent="The Machine"]
-self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
-position = Vector2(809.17, 364.91)
-scale = Vector2(3, 3)
-texture = ExtResource("17_tmso7")
 
 [node name="TheMachineSwitch_Recycle" type="Node2D" parent="The Machine"]
 position = Vector2(1478, 1270)
@@ -1453,7 +1453,6 @@ scale = Vector2(1.8, 1.8)
 texture = ExtResource("54_ug1ds")
 
 [node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask"]
-visible = false
 modulate = Color(1, 0.79607844, 0.03137255, 1)
 texture = ExtResource("30_iq50s")
 offset = Vector2(100, 0)
@@ -1652,12 +1651,13 @@ position = Vector2(1001, 21.5)
 texture = ExtResource("93_m40pb")
 
 [node name="Item Choice Grid" type="HBoxContainer" parent="5 Choose 1"]
-offset_left = -472.5
-offset_top = 14.5
-offset_right = 1467.5
-offset_bottom = 318.5
+offset_left = -586.5
+offset_top = 13.0
+offset_right = 1813.5
+offset_bottom = 13.0
 scale = Vector2(0.5, 0.5)
-theme_override_constants/separation = 650
+theme_override_constants/separation = 550
+alignment = 1
 
 [node name="Item Choice Root_0" type="Control" parent="5 Choose 1/Item Choice Grid"]
 layout_mode = 2

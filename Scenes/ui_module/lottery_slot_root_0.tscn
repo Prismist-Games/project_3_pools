@@ -583,14 +583,14 @@ texture = ExtResource("16_l1p8v")
 modulate = Color(0.61960787, 0.9137255, 0.40392157, 1)
 show_behind_parent = true
 clip_children = 2
-position = Vector2(-2, -3)
+position = Vector2(-7, -6)
 texture = ExtResource("15_do7yb")
 
 [node name="Lottery Required Items Icon Grid" type="VBoxContainer" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill"]
-offset_left = -83.0
-offset_top = -287.75
-offset_right = 59.0
-offset_bottom = 282.25
+offset_left = -71.0
+offset_top = -283.75
+offset_right = 71.0
+offset_bottom = 286.25
 mouse_filter = 2
 theme_override_constants/separation = -35
 
@@ -675,10 +675,10 @@ texture = ExtResource("17_g23h7")
 expand_mode = 3
 
 [node name="Lottery Required Items Icon Grid_psudo" type="VBoxContainer" parent="Lottery Slot_right_screen/Lottery Slot_right_screen_fill"]
-offset_left = -238.0
-offset_top = -288.0
-offset_right = -96.0
-offset_bottom = 282.0
+offset_left = -226.0
+offset_top = -284.0
+offset_right = -84.0
+offset_bottom = 286.0
 mouse_filter = 2
 theme_override_constants/separation = -35
 
