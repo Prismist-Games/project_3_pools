@@ -283,7 +283,7 @@ func _cache_icon_nodes() -> void:
 	if not grid:
 		return
 	
-	for i in range(4):
+	for i in range(3):
 		var root = grid.get_node_or_null("Item Choice Root_" + str(i))
 		if root:
 			var background = root.get_node_or_null("Item_background") as Sprite2D
