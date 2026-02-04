@@ -404,9 +404,9 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 	
 	# 3. 设定基础奖励：根据原始需求数量计算 (2=5, 3=7, 4=10)
 	var base_rewards = {
-		2: 5,
-		3: 7,
-		4: 10
+		2: 3,
+		3: 5,
+		4: 7
 	}
 	
 	# 显示奖励 = 基础奖励 * (1 + 需求品质加成之和)

@@ -4,7 +4,7 @@ class_name EraConfig
 ## 时代配置资源，定义每个时代的起始状态和全局效果。
 
 @export var era_name: String = "时代 1"
-@export var starting_gold: int = 30
+@export var starting_gold: int = 20
 @export var inventory_size: int = 10
 
 ## 时代全局效果列表（按顺序应用）
