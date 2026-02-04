@@ -1639,19 +1639,19 @@ libraries = {
 &"": SubResource("AnimationLibrary_u4yck")
 }
 
-[node name="4 Choose 1" type="Sprite2D" parent="."]
+[node name="5 Choose 1" type="Sprite2D" parent="."]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 position = Vector2(4414, 1742)
 scale = Vector2(2, 2)
 texture = ExtResource("92_taegb")
 
-[node name="Pole" type="Sprite2D" parent="4 Choose 1"]
+[node name="Pole" type="Sprite2D" parent="5 Choose 1"]
 self_modulate = Color(0.09803922, 0.6117647, 0.5019608, 1)
 show_behind_parent = true
 position = Vector2(1001, 21.5)
 texture = ExtResource("93_m40pb")
 
-[node name="Item Choice Grid" type="HBoxContainer" parent="4 Choose 1"]
+[node name="Item Choice Grid" type="HBoxContainer" parent="5 Choose 1"]
 offset_left = -472.5
 offset_top = 14.5
 offset_right = 1467.5
@@ -1659,20 +1659,20 @@ offset_bottom = 318.5
 scale = Vector2(0.5, 0.5)
 theme_override_constants/separation = 650
 
-[node name="Item Choice Root_0" type="Control" parent="4 Choose 1/Item Choice Grid"]
+[node name="Item Choice Root_0" type="Control" parent="5 Choose 1/Item Choice Grid"]
 layout_mode = 2
 
-[node name="Item_background" type="Sprite2D" parent="4 Choose 1/Item Choice Grid/Item Choice Root_0"]
+[node name="Item_background" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_0"]
 self_modulate = Color(0.05490196, 0.3529412, 0.28627452, 1)
 texture = ExtResource("94_jqdmi")
 region_enabled = true
 region_rect = Rect2(20, 26, 351, 334)
 
-[node name="Item_icon" type="Sprite2D" parent="4 Choose 1/Item Choice Grid/Item Choice Root_0/Item_background"]
+[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_0/Item_background"]
 scale = Vector2(0.75, 0.75)
 texture = SubResource("AtlasTexture_jqdmi")
 
-[node name="Input Area" type="Control" parent="4 Choose 1/Item Choice Grid/Item Choice Root_0"]
+[node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_0"]
 anchors_preset = 0
 offset_left = -163.0
 offset_top = -154.0
@@ -1680,20 +1680,20 @@ offset_right = 162.0
 offset_bottom = 154.0
 mouse_default_cursor_shape = 2
 
-[node name="Item Choice Root_1" type="Control" parent="4 Choose 1/Item Choice Grid"]
+[node name="Item Choice Root_1" type="Control" parent="5 Choose 1/Item Choice Grid"]
 layout_mode = 2
 
-[node name="Item_background" type="Sprite2D" parent="4 Choose 1/Item Choice Grid/Item Choice Root_1"]
+[node name="Item_background" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_1"]
 self_modulate = Color(0.05490196, 0.3529412, 0.28627452, 1)
 texture = ExtResource("94_jqdmi")
 region_enabled = true
 region_rect = Rect2(20, 26, 351, 334)
 
-[node name="Item_icon" type="Sprite2D" parent="4 Choose 1/Item Choice Grid/Item Choice Root_1/Item_background"]
+[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_1/Item_background"]
 scale = Vector2(0.75, 0.75)
 texture = SubResource("AtlasTexture_jqdmi")
 
-[node name="Input Area" type="Control" parent="4 Choose 1/Item Choice Grid/Item Choice Root_1"]
+[node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_1"]
 anchors_preset = 0
 offset_left = -163.0
 offset_top = -154.0
@@ -1701,20 +1701,20 @@ offset_right = 162.0
 offset_bottom = 154.0
 mouse_default_cursor_shape = 2
 
-[node name="Item Choice Root_2" type="Control" parent="4 Choose 1/Item Choice Grid"]
+[node name="Item Choice Root_2" type="Control" parent="5 Choose 1/Item Choice Grid"]
 layout_mode = 2
 
-[node name="Item_background" type="Sprite2D" parent="4 Choose 1/Item Choice Grid/Item Choice Root_2"]
+[node name="Item_background" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_2"]
 self_modulate = Color(0.05490196, 0.3529412, 0.28627452, 1)
 texture = ExtResource("94_jqdmi")
 region_enabled = true
 region_rect = Rect2(20, 26, 351, 334)
 
-[node name="Item_icon" type="Sprite2D" parent="4 Choose 1/Item Choice Grid/Item Choice Root_2/Item_background"]
+[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_2/Item_background"]
 scale = Vector2(0.75, 0.75)
 texture = SubResource("AtlasTexture_jqdmi")
 
-[node name="Input Area" type="Control" parent="4 Choose 1/Item Choice Grid/Item Choice Root_2"]
+[node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_2"]
 anchors_preset = 0
 offset_left = -163.0
 offset_top = -154.0
@@ -1722,20 +1722,20 @@ offset_right = 162.0
 offset_bottom = 154.0
 mouse_default_cursor_shape = 2
 
-[node name="Item Choice Root_3" type="Control" parent="4 Choose 1/Item Choice Grid"]
+[node name="Item Choice Root_3" type="Control" parent="5 Choose 1/Item Choice Grid"]
 layout_mode = 2
 
-[node name="Item_background" type="Sprite2D" parent="4 Choose 1/Item Choice Grid/Item Choice Root_3"]
+[node name="Item_background" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_3"]
 self_modulate = Color(0.05490196, 0.3529412, 0.28627452, 1)
 texture = ExtResource("94_jqdmi")
 region_enabled = true
 region_rect = Rect2(20, 26, 351, 334)
 
-[node name="Item_icon" type="Sprite2D" parent="4 Choose 1/Item Choice Grid/Item Choice Root_3/Item_background"]
+[node name="Item_icon" type="Sprite2D" parent="5 Choose 1/Item Choice Grid/Item Choice Root_3/Item_background"]
 scale = Vector2(0.75, 0.75)
 texture = SubResource("AtlasTexture_jqdmi")
 
-[node name="Input Area" type="Control" parent="4 Choose 1/Item Choice Grid/Item Choice Root_3"]
+[node name="Input Area" type="Control" parent="5 Choose 1/Item Choice Grid/Item Choice Root_3"]
 anchors_preset = 0
 offset_left = -163.0
 offset_top = -154.0
