@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cppyh38s818ov" path="res://assets/sprites/quest_slots/基地-2.png" id="5_cm3rb"]
 [ext_resource type="Texture2D" uid="uid://fb6h3kogm80w" path="res://assets/sprites/quest_slots/基地-4.png" id="6_cpuw7"]
 [ext_resource type="Texture2D" uid="uid://w7eym4f1436o" path="res://assets/sprites/quest_slots/基地-1.png" id="7_2pth6"]
-[ext_resource type="Texture2D" uid="uid://ddmgresex11px" path="res://assets/sprites/icons/money.png" id="8_uawe1"]
+[ext_resource type="Texture2D" uid="uid://d3xb6e3385m7k" path="res://assets/sprites/icons/coupon.png" id="8_xy8au"]
 [ext_resource type="FontFile" uid="uid://bpg3iakb3o07a" path="res://assets/fonts/51282.otf" id="9_x1b4l"]
 [ext_resource type="Texture2D" uid="uid://nju4di4bai4r" path="res://assets/sprites/icons/items/item_shape_centered.png" id="10_8oyay"]
 [ext_resource type="Shader" uid="uid://ckftk5sr2t1ye" path="res://assets/shaders/desaturate.gdshader" id="10_cm3rb"]
@@ -231,7 +231,7 @@ offset_left = -394.0
 offset_top = -59.25
 offset_right = -308.0
 offset_bottom = 6.75
-texture = ExtResource("8_uawe1")
+texture = ExtResource("8_xy8au")
 expand_mode = 5
 
 [node name="Quest Reward Label" type="RichTextLabel" parent="Quest Slot_mask/Quest Reward Icon"]

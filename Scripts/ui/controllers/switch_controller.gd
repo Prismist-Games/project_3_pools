@@ -80,7 +80,7 @@ func _on_item_recycled_for_sound(_dx: int, _item: RefCounted) -> void:
 		_has_recycled_since_open = true
 
 func update_switch_visuals(mode: Constants.UIMode) -> void:
-	update_submit_visuals(mode == Constants.UIMode.SUBMIT)
+	update_submit_visuals(mode == Constants.UIMode.SUBMIT or mode == Constants.UIMode.ERA_SUBMIT)
 	update_recycle_visuals(mode == Constants.UIMode.RECYCLE)
 
 func update_submit_visuals(is_on: bool) -> void:
@@ -278,17 +278,23 @@ func _on_submit_switch_input(event: InputEvent) -> void:
 				print("[SwitchController] Click ignored: UI is locked")
 				return
 			
-			# 使用 get_ui_mode() 代替 GameManager 检查
-			if game_ui.state_machine.get_ui_mode() == Constants.UIMode.NORMAL:
+			var current_submit_mode = game_ui.state_machine.get_ui_mode()
+			if current_submit_mode == Constants.UIMode.NORMAL:
+				# 从 NORMAL 进入普通提交模式
 				game_ui.state_machine.transition_to(&"Submitting")
 				InventorySystem.selected_indices_for_order = []
-				# 清除单项选中状态，因为提交与整理是不同操作
 				if InventorySystem.selected_slot_index != -1:
 					InventorySystem.selected_slot_index = -1
-			elif game_ui.state_machine.get_ui_mode() == Constants.UIMode.SUBMIT:
+			elif current_submit_mode == Constants.UIMode.SUBMIT:
+				# 普通提交模式下确认提交
 				var submitting_state = game_ui.state_machine.get_state(&"Submitting")
 				if submitting_state:
 					await submitting_state.submit_order()
+			elif current_submit_mode == Constants.UIMode.ERA_SUBMIT:
+				# 时代提交模式下确认提交
+				var era_submitting_state = game_ui.state_machine.get_state(&"EraSubmitting")
+				if era_submitting_state:
+					await era_submitting_state.submit_order()
 
 func _on_recycle_switch_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -375,7 +381,7 @@ func _update_recyclable_item_hover_state(is_hovering: bool) -> void:
 	
 	# 仅在 NORMAL 模式或存在待处理物品的状态（Replacing 等通常属于 NORMAL 逻辑分支）下允许
 	# 注意：如果正在批量回收（RECYCLE 模式），我们不在此处处理单项 hover 视觉，因为全员都是可回收的
-	if ui_mode == Constants.UIMode.RECYCLE or ui_mode == Constants.UIMode.SUBMIT:
+	if ui_mode == Constants.UIMode.RECYCLE or ui_mode == Constants.UIMode.SUBMIT or ui_mode == Constants.UIMode.ERA_SUBMIT:
 		return
 	
 	var selected_idx = InventorySystem.selected_slot_index

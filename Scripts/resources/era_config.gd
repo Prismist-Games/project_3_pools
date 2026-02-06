@@ -10,6 +10,14 @@ class_name EraConfig
 ## 时代全局效果列表（按顺序应用）
 @export var effects: Array[Resource] = []
 
+## 主线（时代）订单配置
+@export_group("Mainline Order")
+## 每个时代订单的需求项数量
+@export var mainline_requirement_count: int = 2
+## 每个需求项的最低品质要求列表（按顺序对应每个需求项）
+## 例如 [RARE, EPIC] 表示第1个需求要稀有，第2个需求要史诗
+@export var mainline_rarities: Array[int] = [2, 3] # 默认：RARE, EPIC
+
 ## 订单生成配置
 @export_group("Order Generation")
 @export_subgroup("Order Count Weights")

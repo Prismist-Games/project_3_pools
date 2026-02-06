@@ -5,6 +5,8 @@
 [resource]
 script = ExtResource("1")
 era_name = "普通时代"
+mainline_requirement_count = 2
+mainline_rarities = Array[int]([1, 2])
 count_2_items = 0.35
 count_4_items = 0.0
 rarity_uncommon = 0.45

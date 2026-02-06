@@ -479,8 +479,8 @@ func _setup_order_list() -> void:
 			continue
 			
 		var type_str = "Main" if order.is_mainline else "Normal"
-		var reward = str(order.reward_gold)
-		order_index_option.add_item("Order %d [%s] ($%s)" % [i, type_str, reward], i)
+		var reward = str(order.reward_coupon) if not order.is_mainline else "ERA"
+		order_index_option.add_item("Order %d [%s] (%s)" % [i, type_str, reward], i)
 		
 	# 尝试保持之前的选择，如果越界则选0
 	if selected_idx >= 0 and selected_idx < order_index_option.get_item_count():

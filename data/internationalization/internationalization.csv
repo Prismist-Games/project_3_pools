@@ -122,11 +122,11 @@ SKILL_DESC_CONSOLATION_PRIZE,After drawing 3  [img=60]res://assets/sprites/icons
 SKILL_DESC_CORNERS_CUTTING,"When generating new orders: 20% chance to reduce requirement by 1, reward unchanged (min 1).",刷新出新订单时，20% 几率使订单需求物品数量 -1，且獎励不变（最低为 1）。
 SKILL_DESC_FRUGAL,When Gold < 10: draw cost -2 (min 1).,当前金币 < 10 时，抽獎金币消耗 -2（最低为 1）。
 SKILL_DESC_GOOD_LUCK_NEXT,After completing any order: next draw guaranteed a [img=60]res://assets/sprites/icons/rarity_rare.png[/img]  + item.,完成任意订单后，下次抽取必定获得一个 [img=60]res://assets/sprites/icons/rarity_rare.png[/img] 品质以上的物品。
-SKILL_DESC_HARD_ORDER_EXPERT,When submitting [img=60]res://assets/sprites/icons/rarity_epic.png[/img] + items to complete an order: +5 Gold.,完成订单时若提交了 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 及以上品质的物品，额外获得 5 金币。
+SKILL_DESC_HARD_ORDER_EXPERT,When submitting [img=60]res://assets/sprites/icons/rarity_epic.png[/img] + items to complete an order: +2 Gold.,完成订单时若提交了 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 及以上品质的物品，额外获得 2 金币。
 SKILL_DESC_LUCKY_7,When Gold is a multiple of 7 or ends in 7:  [img=60]res://assets/sprites/icons/rarity_epic.png[/img]  and  [img=60]res://assets/sprites/icons/rarity_legendary.png[/img]  chance is doubled.,当前金币数量为7的倍数或尾数为7时，抽到 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 和 [img=60]res://assets/sprites/icons/rarity_legendary.png[/img] 品质的几率翻倍。
 SKILL_DESC_NEGOTIATOR,When drawing or merging  [img=60]res://assets/sprites/icons/rarity_epic.png[/img]  + items: all orders gain 1 refresh.,抽到或合成 [img=60]res://assets/sprites/icons/rarity_epic.png[/img] 及以上品质物品时，所有订单获得 1 次刷新次数。
-SKILL_DESC_OCD,"If all items used to submit an order are of the same quality, the final Gold reward is doubled.",如果用于提交某个订单的所有物品具有相同品质，此订单的最终金币獎励翻倍。
-SKILL_DESC_POVERTY_RELIEF,When Gold ≤ 10: gain 5 Gold after submitting orders.,持有金币≤10时，成功提交订单后获得5金币。
+SKILL_DESC_OCD,"If all items used to submit an order are of the same quality, the final reward is doubled.",如果用于提交某个订单的所有物品具有相同品质，此订单的最终奖励翻倍。
+SKILL_DESC_POVERTY_RELIEF,When Gold ≤ 10: gain 3 Gold after submitting orders.,持有金币≤10时，成功提交订单后获得3金币。
 SKILL_DESC_TIME_FREEZE,When refreshing an order: 20% chance to not consume refresh count.,刷新单个订单时，20% 几率不消耗该订单的刷新次数。
 SKILL_DESC_VIP_DISCOUNT,"""Precise"" and ""Targeted"" pools cost 1 less Gold.","""精准""和""有的放矢""词缀的獎池金币消耗减少 1。"
 
@@ -148,9 +148,12 @@ BTN_CONFIRM_SUBMIT,Confirm Submit,确认提交
 BTN_RECYCLE_MODE,Recycle Mode,回收模式
 BTN_CONFIRM_RECYCLE,Confirm Recycle,确认回收
 BTN_CANCEL,Cancel,取消
+BTN_CONFIRM,Confirm,确定
 BTN_CONTINUE,Good,行
 BTN_PREVIOUS,PREV,上一页
 BTN_NEXT,NEXT,下一页
+BTN_FORFEIT,FORFEIT,放弃
+BTN_EXTRACTION,EXTRACT,前往下一时代
 
 # Currency Display
 UI_GOLD_DISPLAY,Gold: %d,金币: %d
@@ -169,6 +172,7 @@ DIALOG_INVENTORY_FULL,"Inventory full, Replace an item or recycle the new one.",
 DIALOG_ERA3_TYPE_FULL,"Too many item types, replace or recycle one type of items.",物品种类过多，请替换或回收一种物品种类。
 DIALOG_RECYCLE,Choose items to recycle.,请选择要回收的物品。
 DIALOG_SUBMIT,Choose items to submit.,请选择要提交的物品。
+DIALOG_ERA_SUBMIT,Choose items to complete the era goal.,请选择物品来完成时代目标。
 
 # =====================================================================
 # Order Card (订单卡片)
@@ -195,6 +199,7 @@ MODAL_ERA_2,[font_size=100][color=gold]VOLATILE ERA[/color][/font_size]\n\nPrice
 MODAL_ERA_3,[font_size=100][color=gold]MODERN ERA[/color][/font_size]\n\nStricter standards and limits. Your inventory can only hold [color=black]7 different item types[/color].,[font_size=100][color=gold]摩登时代[/color][/font_size]\n\n更严格的标准和限制，物品栏中只能保留[color=black]7种不同种类的物品[/color]。
 MODAL_ERA_4,[font_size=100][color=gold]DECAY ERA[/color][/font_size]\n\nAll items have an [color=black]expiry date[/color]. Expired items become [color=black]junk[/color] and can only be [color=black]recycled[/color].,[font_size=100][color=gold]变质时代[/color][/font_size]\n\n所有物品都有[color=black]保质期[/color]，逾期的物品会变成[color=black]废品[/color]，只能用于[color=black]回收[/color]。
 MODAL_ERA_ENDING,[font_size=100][color=gold]THANKS FOR PLAYING[/color][/font_size]\n\nWe will continue to improve the game based on your feedback. See you in the near future!,[font_size=100][color=gold]感谢游玩[/color][/font_size]\n\n我们会基于你的反馈继续完善这个游戏，期待再见！
+MODAL_FORFEIT_CONFIRM,[font_size=100][color=gold]Bad luck?[/color][/font_size]\n\nGive it another try?,[font_size=100][color=gold]运气不好？[/color][/font_size]\n\n重开一把呗？
 
 # =====================================================================
 # Pool Card (奖池卡片)

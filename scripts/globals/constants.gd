@@ -150,7 +150,8 @@ func rarity_bonus(rarity: int) -> float:
 
 enum UIMode {
 	NORMAL, ## 整理模式
-	SUBMIT, ## 提交模式
+	SUBMIT, ## 普通提交模式（积分订单）
+	ERA_SUBMIT, ## 时代提交模式（时代订单）
 	RECYCLE, ## 回收模式
 	REPLACE, ## 以旧换新模式
 	LOCKED ## 锁定模式 (精准选择/有的放矢)

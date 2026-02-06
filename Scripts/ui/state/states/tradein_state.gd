@@ -13,6 +13,12 @@ extends "res://scripts/ui/state/ui_state.gd"
 ## 引用到主控制器
 var controller: Node = null
 
+
+func _get_tree_safe() -> SceneTree:
+	if is_instance_valid(controller) and controller.is_inside_tree():
+		return controller.get_tree()
+	return null
+
 ## 来源奖池索引
 var pool_index: int = -1
 
@@ -67,7 +73,9 @@ func _open_empty_slot() -> void:
 		return
 	
 	# 确保在 DrawingState 退出逻辑之后执行
-	await controller.get_tree().process_frame
+	var tree := _get_tree_safe()
+	if not tree: return
+	await tree.process_frame
 	
 	var slot = _get_lottery_slot()
 	if slot and slot.has_method("open_lid_for_trade_in"):
@@ -165,7 +173,9 @@ func _execute_trade_in_sequence(slot_index: int, item: ItemInstance) -> void:
 		
 	if lottery_slot.has_method("play_shake"):
 		lottery_slot.play_shake()
-		await controller.get_tree().create_timer(0.3).timeout # 等待震动完成
+		var tree2 := _get_tree_safe()
+		if not tree2: return
+		await tree2.create_timer(0.3).timeout # 等待震动完成
 	
 	# 恢复背包槽位状态
 	item_slot.is_vfx_target = false

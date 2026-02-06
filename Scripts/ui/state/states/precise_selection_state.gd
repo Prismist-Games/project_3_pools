@@ -10,6 +10,12 @@ extends "res://scripts/ui/state/ui_state.gd"
 ## 引用到主控制器
 var controller: Node = null
 
+
+func _get_tree_safe() -> SceneTree:
+	if is_instance_valid(controller) and controller.is_inside_tree():
+		return controller.get_tree()
+	return null
+
 ## 可选物品列表 (最多 2 个)
 var options: Array[ItemInstance] = []
 
@@ -239,7 +245,11 @@ func _setup_precise_display() -> void:
 	
 	# 等待所有揭示动画完成
 	while sync_state.finished_count < total_to_wait:
-		await controller.get_tree().process_frame
+		var tree := _get_tree_safe()
+		if not tree: return
+		await tree.process_frame
+	
+	if not is_instance_valid(controller): return
 	
 	# 揭示完成，允许玩家选择
 	_reveal_complete = true

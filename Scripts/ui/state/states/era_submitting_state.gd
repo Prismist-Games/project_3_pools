@@ -1,10 +1,10 @@
 extends "res://scripts/ui/state/ui_state.gd"
 
-## SubmittingState - 普通提交模式（积分订单）
+## EraSubmittingState - 时代提交模式（主线订单）
 ##
-## 触发: IdleState 下点击 Submit 开关或点击普通订单
-## 效果: 奖池锁定，背包多选，普通订单可交互
-## 特性: 共享物品机制（一物多满足）
+## 触发: IdleState 下点击主线订单
+## 效果: 奖池锁定，背包多选，主线订单可交互
+## 特性: 独占物品机制（不共享）
 
 var controller: Node = null
 
@@ -22,7 +22,7 @@ func exit() -> void:
 	InventorySystem.interaction_mode = InventorySystem.InteractionMode.NORMAL
 	InventorySystem.selected_indices_for_order = []
 	if controller:
-		controller.unlock_ui("submit")
+		controller.unlock_ui("era_submit")
 
 func can_transition_to(next_state: StringName) -> bool:
 	return next_state in [&"Idle", &"SkillSelection", &"Modal"]
@@ -33,42 +33,36 @@ func handle_input(_event: InputEvent) -> bool:
 func cancel() -> void:
 	machine.transition_to(&"Idle")
 
-## 执行普通订单提交
+## 执行时代订单提交
 func submit_order() -> void:
 	if not controller:
-		push_error("[SubmittingState] controller 未设置")
+		push_error("[EraSubmittingState] controller 未设置")
 		return
 	
-	controller.lock_ui("submit")
+	controller.lock_ui("era_submit")
 	
 	var indices = InventorySystem.multi_selected_indices.duplicate()
 	InventorySystem.selected_indices_for_order = []
 	
-	# 使用新的普通提交预检查
-	var will_submit_orders = OrderSystem.preview_normal_submit(indices)
+	# 预检查哪个主线订单可被满足
+	var will_submit_orders = OrderSystem.preview_era_submit(indices)
 	
 	if will_submit_orders.is_empty():
 		EventBus.game_event.emit(&"order_submission_failed", null)
-		controller.unlock_ui("submit")
+		controller.unlock_ui("era_submit")
 		return
 	
+	# 找到对应的主线 UI 槽位
 	var satisfying_slots: Array[Control] = []
-	
-	for order in will_submit_orders:
-		var slot: Control = null
-		
-		if controller.order_controller:
-			for ui_idx in range(1, 5):
-				var ui_slot = controller.order_controller.quest_slots_grid.get_node_or_null("Quest Slot_root_" + str(ui_idx))
-				if ui_slot:
-					var displayed_order_idx = ui_idx - 1
-					if displayed_order_idx < OrderSystem.current_orders.size():
-						if OrderSystem.current_orders[displayed_order_idx] == order:
-							slot = ui_slot
-							break
-		
-		if slot:
-			satisfying_slots.append(slot)
+	if controller.order_controller:
+		var mainline_orders = OrderSystem.get_mainline_orders()
+		for order in will_submit_orders:
+			for i in range(mainline_orders.size()):
+				if mainline_orders[i] == order:
+					var slot = controller.order_controller.get_slot_node(-(i + 1))
+					if slot:
+						satisfying_slots.append(slot)
+					break
 	
 	InventorySystem.multi_selected_indices = []
 	
@@ -104,8 +98,8 @@ func submit_order() -> void:
 	else:
 		await tree.process_frame
 	
-	# 执行普通提交
-	var success = OrderSystem.submit_normal(indices)
+	# 执行时代提交
+	var success = OrderSystem.submit_era(indices)
 	
 	if success:
 		tree = _get_tree_safe()
@@ -134,8 +128,9 @@ func submit_order() -> void:
 			if not tree: return
 			await tree.create_timer(max_open_duration).timeout
 		
-		if machine.get_current_state_name() == &"Submitting":
+		# 时代提交成功后，状态可能已自动跳转（如到技能选择）
+		if machine.get_current_state_name() == &"EraSubmitting":
 			machine.transition_to(&"Idle")
 	
 	if is_instance_valid(controller):
-		controller.unlock_ui("submit")
+		controller.unlock_ui("era_submit")

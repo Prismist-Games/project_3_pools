@@ -9,6 +9,7 @@ extends Node
 
 # --- 信号 ---
 signal gold_changed(amount: int)
+signal coupon_changed(amount: int)
 signal order_selection_changed(index: int)
 signal ui_mode_changed(mode: int)
 
@@ -17,6 +18,11 @@ var gold: int = 0:
 	set(v):
 		gold = v
 		gold_changed.emit(gold)
+
+var coupon: int = 0:
+	set(v):
+		coupon = v
+		coupon_changed.emit(coupon)
 
 
 # --- UI 状态 ---
@@ -93,6 +99,13 @@ func spend_gold(amount: int) -> bool:
 		EventBus.game_event.emit(&"gold_spent", null)
 		return true
 	return false
+
+func add_coupon(amount: int) -> void:
+	coupon += amount
+	EventBus.game_event.emit(&"coupon_gained", null)
+
+func reset_coupon() -> void:
+	coupon = 0
 
 
 # --- 数据查询方法 ---

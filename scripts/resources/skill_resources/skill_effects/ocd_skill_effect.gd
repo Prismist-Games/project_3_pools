@@ -104,7 +104,7 @@ func _handle_order_completed(ctx: OrderCompletedContext) -> void:
 	
 	if consistent:
 		triggered.emit(TRIGGER_ACTIVATE)
-		ctx.reward_gold = int(ctx.reward_gold * multiplier)
+		ctx.reward_coupon = int(ctx.reward_coupon * multiplier)
 
 
 func get_visual_state() -> String:

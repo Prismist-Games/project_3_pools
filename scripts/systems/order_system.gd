@@ -1,19 +1,24 @@
 extends Node
 
 ## 订单系统：管理订单生成、刷新、提交。
+##
+## 架构：current_orders = [普通0, 普通1, 普通2, 普通3, 主线0, 主线1]
+## 索引 0-3: 普通积分订单
+## 索引 4-5: 时代主线订单
 
 var current_orders: Array[OrderData] = []
 
+## 主线订单在 current_orders 中的起始索引
+const MAINLINE_START_INDEX: int = 4
+const MAINLINE_COUNT: int = 2
+
 func _ready() -> void:
-	# 等待 GameManager 和 UnlockManager 初始化完成
 	if not GameManager.is_node_ready():
 		await GameManager.ready
 	if not UnlockManager.is_node_ready():
 		await UnlockManager.ready
 	
-	# 初始生成订单
 	call_deferred("initialize_orders")
-	
 	EventBus.game_event.connect(_on_game_event)
 
 
@@ -58,19 +63,20 @@ func _mark_cache_dirty() -> void:
 # ---------------------------------------
 
 
-## 初始化订单 (仅限系统初始化时使用，不再对玩家开放“全部刷新”功能)
+## 初始化订单
 func initialize_orders() -> void:
 	current_orders.clear()
 	
-	# 使用 UnlockManager 控制订单数量
 	var count = UnlockManager.order_limit
 		
-	# 1. 生成 count 个普通订单 (对应下方 4 个槽位)
+	# 1. 生成普通积分订单
 	for i in range(count):
 		current_orders.append(_generate_normal_order())
 		
-	# 2. 生成 1 个额外的主线订单
-	current_orders.append(_generate_mainline_order())
+	# 2. 生成 2 个独立主线订单（确保不重叠物品）
+	var mainline_orders = _generate_mainline_order_pair()
+	current_orders.append(mainline_orders[0])
+	current_orders.append(mainline_orders[1])
 	
 	_mark_cache_dirty()
 	EventBus.orders_updated.emit(current_orders)
@@ -80,7 +86,6 @@ func refresh_order(index: int) -> OrderData:
 	if index < 0 or index >= current_orders.size():
 		return null
 	
-	# 检查订单刷新是否已解锁
 	if not UnlockManager.is_unlocked(UnlockManager.Feature.ORDER_REFRESH):
 		return current_orders[index]
 
@@ -88,13 +93,12 @@ func refresh_order(index: int) -> OrderData:
 	if order.refresh_count <= 0:
 		return order
 		
-	# 技能检测上下文
 	var ctx = ContextProxy.new({"consume_refresh": true, "index": index})
-	# EventBus.game_event.emit(&"order_refresh_requested", ctx) # 这里的 emit 导致了循环调用，因为 UI 层监听同名事件来触发动画
-	EventBus.game_event.emit(&"order_refresh_logic_check", ctx) # 改名避免冲突
+	EventBus.game_event.emit(&"order_refresh_logic_check", ctx)
 	
 	if order.is_mainline:
-		current_orders[index] = _generate_mainline_order(true) # 主线刷新，使用下一时代规则
+		# 主线订单刷新：重新生成一对（确保互不重叠）
+		_refresh_mainline_orders()
 	else:
 		if ctx.get_value("consume_refresh"):
 			order.refresh_count -= 1
@@ -114,7 +118,7 @@ func _add_refresh_to_all_orders() -> void:
 	EventBus.orders_updated.emit(current_orders)
 
 
-## 刷新所有普通订单（保留主线订单，用于时代切换等场景）
+## 刷新所有普通订单（保留主线订单）
 func refresh_all_normal_orders() -> void:
 	for i in range(current_orders.size()):
 		var order = current_orders[i]
@@ -122,9 +126,29 @@ func refresh_all_normal_orders() -> void:
 			current_orders[i] = _generate_normal_order()
 	_mark_cache_dirty()
 	EventBus.orders_updated.emit(current_orders)
-## 预检查哪些订单会被提交（供 UI 使用，包含全局物品必要性检查）
-## 返回会被提交的订单列表，如果返回空则表示不会进行任何提交
-func preview_submit(selected_indices: Array[int]) -> Array[OrderData]:
+
+
+## 仅刷新两个主线订单（时代完成后调用）
+func refresh_mainline_orders() -> void:
+	_refresh_mainline_orders()
+	_mark_cache_dirty()
+	EventBus.orders_updated.emit(current_orders)
+
+
+func _refresh_mainline_orders() -> void:
+	var pair = _generate_mainline_order_pair()
+	for i in range(MAINLINE_COUNT):
+		var idx = MAINLINE_START_INDEX + i
+		if idx < current_orders.size():
+			current_orders[idx] = pair[i]
+
+
+# ===========================================================================
+# 普通提交（积分订单，共享物品机制）
+# ===========================================================================
+
+## 预检查哪些积分订单会被提交（供 UI 使用）
+func preview_normal_submit(selected_indices: Array[int]) -> Array[OrderData]:
 	var inventory = InventorySystem.inventory
 	var selected_items: Array[ItemInstance] = []
 	for idx in selected_indices:
@@ -134,9 +158,11 @@ func preview_submit(selected_indices: Array[int]) -> Array[OrderData]:
 	if selected_items.is_empty():
 		return []
 	
-	# 找出所有可满足的订单
+	# 只检查普通（非主线）订单
 	var satisfied_orders: Array[OrderData] = []
 	for order in current_orders:
+		if order.is_mainline:
+			continue
 		if order.validate_selection(selected_items).valid:
 			satisfied_orders.append(order)
 			
@@ -147,67 +173,24 @@ func preview_submit(selected_indices: Array[int]) -> Array[OrderData]:
 	for item in selected_items:
 		if item == null:
 			continue
-			
 		var is_needed_by_any_order = false
 		for order in satisfied_orders:
 			for req in order.requirements:
 				var item_id = req.get("item_id", &"")
 				var min_rarity = req.get("min_rarity", 0)
-				
 				if item.item_data.id == item_id and item.rarity >= min_rarity:
 					is_needed_by_any_order = true
 					break
 			if is_needed_by_any_order:
 				break
-		
 		if not is_needed_by_any_order:
-			# 这个物品不属于任何可满足订单的需求
 			return []
 	
 	return satisfied_orders
 
 
-func submit_order(index: int, selected_indices: Array[int] = []) -> bool:
-	if index != -1:
-		return _submit_single_order(index, selected_indices)
-	else:
-		return _submit_all_satisfied(selected_indices)
-
-
-func _submit_single_order(index: int, selected_indices: Array[int]) -> bool:
-	if index < 0 or index >= current_orders.size():
-		return false
-		
-	var order = current_orders[index]
-	var inventory = InventorySystem.inventory
-	
-	var selected_items: Array[ItemInstance] = []
-	for idx in selected_indices:
-		if idx >= 0 and idx < inventory.size() and inventory[idx] != null:
-			selected_items.append(inventory[idx])
-			
-	var validation = order.validate_selection(selected_items)
-	if not validation.valid:
-		return false
-		
-	# 执行提交核心逻辑
-	_execute_submission(order, selected_items, validation.total_submitted_bonus)
-	
-	# 消耗物品
-	InventorySystem.remove_items(selected_items)
-	
-	# 替换订单
-	if order.is_mainline:
-		current_orders[index] = _generate_mainline_order(true) # 完成主线后刷新
-	else:
-		current_orders[index] = _generate_normal_order()
-		
-	_mark_cache_dirty()
-	EventBus.orders_updated.emit(current_orders)
-	return true
-
-
-func _submit_all_satisfied(selected_indices: Array[int]) -> bool:
+## 执行普通提交（积分订单，共享物品）
+func submit_normal(selected_indices: Array[int]) -> bool:
 	var inventory = InventorySystem.inventory
 	var selected_items: Array[ItemInstance] = []
 	for idx in selected_indices:
@@ -217,11 +200,12 @@ func _submit_all_satisfied(selected_indices: Array[int]) -> bool:
 	if selected_items.is_empty():
 		return false
 	
-	# 找出所有可满足的订单
 	var satisfied_orders: Array[OrderData] = []
 	var satisfied_indices: Array[int] = []
 	for i in range(current_orders.size()):
 		var order = current_orders[i]
+		if order.is_mainline:
+			continue
 		if order.validate_selection(selected_items).valid:
 			satisfied_orders.append(order)
 			satisfied_indices.append(i)
@@ -229,59 +213,39 @@ func _submit_all_satisfied(selected_indices: Array[int]) -> bool:
 	if satisfied_indices.is_empty():
 		return false
 	
-	# 全局检查：确保每个选中物品都属于至少一个可满足订单的需求
-	# (此处逻辑保留原有检查，确保安全性)
+	# 全局检查
 	for item in selected_items:
 		if item == null:
 			continue
-			
 		var is_needed_by_any_order = false
 		for order in satisfied_orders:
 			for req in order.requirements:
 				var item_id = req.get("item_id", &"")
 				var min_rarity = req.get("min_rarity", 0)
-				
 				if item.item_data.id == item_id and item.rarity >= min_rarity:
 					is_needed_by_any_order = true
 					break
 			if is_needed_by_any_order:
 				break
-		
 		if not is_needed_by_any_order:
 			return false
-		
-	# 按索引倒序排列，方便替换
+	
 	satisfied_indices.sort()
 	satisfied_indices.reverse()
 	
-	# === 修复：共享物品可被多个订单使用，每个订单都计算该物品的品质加成 ===
-	# 不再从物品池中移除物品，让每个订单都能使用相同的 selected_items 计算 bonus
-	# 这与预览阶段的逻辑保持一致
-	
 	for idx in satisfied_indices:
 		var order = current_orders[idx]
-		
-		# 直接使用所有选中物品验证（与预览逻辑一致）
 		var validation = order.validate_selection(selected_items)
-		
-		# 理论上不会失败，因为前面已经预验证过
 		if not validation.valid:
-			push_warning("OrderSystem: Order validation failed unexpectedly for order at index %d" % idx)
+			push_warning("OrderSystem: Normal order validation failed unexpectedly at index %d" % idx)
 			continue
 		
-		# 提交 - 使用完整的选中物品列表
-		_execute_submission(order, selected_items, validation.total_submitted_bonus)
-		
-		# 替换
-		if order.is_mainline:
-			current_orders[idx] = _generate_mainline_order(true) # 完成主线后刷新
-		else:
-			current_orders[idx] = _generate_normal_order()
+		_execute_normal_submission(order, selected_items, validation.total_submitted_bonus)
+		current_orders[idx] = _generate_normal_order()
 			
-	# 最后统一消耗选中的物品
+	# 统一消耗选中的物品
 	InventorySystem.remove_items(selected_items)
 	
-	# 记录提交数量，用于触发多订单相关技能
 	var submitted_orders_count = satisfied_indices.size()
 	if submitted_orders_count >= 2:
 		var context = ContextProxy.new({"count": submitted_orders_count})
@@ -292,107 +256,175 @@ func _submit_all_satisfied(selected_indices: Array[int]) -> bool:
 	return true
 
 
-func _execute_submission(order: OrderData, items_to_consume: Array[ItemInstance], total_submitted_bonus: float) -> void:
-	# 创建上下文，允许技能修改奖励
+func _execute_normal_submission(order: OrderData, items_to_consume: Array[ItemInstance], total_submitted_bonus: float) -> void:
 	var context = OrderCompletedContext.new()
-	# 最终奖励 = 显示奖励 * (1 + 提交物品品质加成之和)
-	context.reward_gold = roundi(order.reward_gold * (1.0 + total_submitted_bonus))
+	context.reward_coupon = roundi(order.reward_coupon * (1.0 + total_submitted_bonus))
 	context.submitted_items = items_to_consume
 	context.order_data = order
 	
-	# 发出信号让技能系统进一步修改
 	EventBus.order_completed.emit(context)
-	# 发出通用事件信号，以便音效播放等系统响应
 	EventBus.game_event.emit(&"order_completed", context)
 	
-	# 主线订单没有金币奖励，只有普通订单才发放金币
-	if not order.is_mainline:
-		GameManager.add_gold(context.reward_gold)
+	# 普通订单奖励积分
+	GameManager.add_coupon(context.reward_coupon)
+
+
+# ===========================================================================
+# 时代提交（主线订单，独占物品机制）
+# ===========================================================================
+
+## 预检查哪个时代订单会被提交
+func preview_era_submit(selected_indices: Array[int]) -> Array[OrderData]:
+	var inventory = InventorySystem.inventory
+	var selected_items: Array[ItemInstance] = []
+	for idx in selected_indices:
+		if idx >= 0 and idx < inventory.size() and inventory[idx] != null:
+			selected_items.append(inventory[idx])
 	
-	# 主线订单完成后触发时代切换流程
-	if order.is_mainline:
-		_on_mainline_completed()
+	if selected_items.is_empty():
+		return []
+	
+	# 只检查主线订单，使用独占验证
+	var satisfied_orders: Array[OrderData] = []
+	for order in current_orders:
+		if not order.is_mainline:
+			continue
+		if order.validate_selection_exclusive(selected_items).valid:
+			satisfied_orders.append(order)
+	
+	# 时代提交不共享：最多只能满足一个主线订单
+	if satisfied_orders.size() > 1:
+		satisfied_orders = [satisfied_orders[0]]
+	
+	return satisfied_orders
 
 
-func _on_mainline_completed() -> void:
-	# 刷新所有普通订单
+## 执行时代提交（主线订单，独占物品）
+func submit_era(selected_indices: Array[int]) -> bool:
+	var inventory = InventorySystem.inventory
+	var selected_items: Array[ItemInstance] = []
+	for idx in selected_indices:
+		if idx >= 0 and idx < inventory.size() and inventory[idx] != null:
+			selected_items.append(inventory[idx])
+	
+	if selected_items.is_empty():
+		return false
+	
+	# 找到第一个可满足的主线订单（独占验证）
+	var target_order: OrderData = null
 	for i in range(current_orders.size()):
 		var order = current_orders[i]
-		if order != null and not order.is_mainline:
-			current_orders[i] = _generate_normal_order()
+		if not order.is_mainline:
+			continue
+		var check = order.validate_selection_exclusive(selected_items)
+		if check.valid:
+			target_order = order
+			break
+	
+	if target_order == null:
+		return false
+	
+	var validation = target_order.validate_selection_exclusive(selected_items)
+	
+	# 消耗被独占验证确认使用的物品
+	var consumed: Array[ItemInstance] = []
+	consumed.assign(validation.consumed_items)
+	InventorySystem.remove_items(consumed)
+	
+	# 执行主线完成逻辑
+	_execute_era_submission(target_order, consumed)
 	
 	_mark_cache_dirty()
 	EventBus.orders_updated.emit(current_orders)
+	return true
+
+
+func _execute_era_submission(order: OrderData, items_consumed: Array[ItemInstance]) -> void:
+	var context = OrderCompletedContext.new()
+	context.reward_coupon = 0 # 主线订单不给积分
+	context.submitted_items = items_consumed
+	context.order_data = order
 	
-	# 如果是最后一个时代 (Era 4, 索引为 3)，直接触发游戏结束，不再选技能
+	EventBus.order_completed.emit(context)
+	EventBus.game_event.emit(&"order_completed", context)
+	
+	_on_mainline_completed()
+
+
+func _on_mainline_completed() -> void:
+	# 1. 刷新两个主线订单（难度由下一时代配置决定）
+	refresh_mainline_orders()
+	
+	# 2. 不刷新普通积分订单（保留现有）
+	# 3. 不清空背包（保留物品）
+	# 4. 重置金币由 EraManager 处理
+	
+	# 如果是最后一个时代，直接触发游戏结束
 	if EraManager.current_era_index >= 3:
 		EraManager.advance_to_next_era()
 	else:
-		# 请求技能选择弹窗（复用奖池3选1 UI）
+		# 请求技能选择弹窗
 		EventBus.modal_requested.emit(&"skill_selection", null)
 
+
+# ===========================================================================
+# 兼容旧接口（保留 submit_order 和 preview_submit 用于过渡）
+# ===========================================================================
+
+func preview_submit(selected_indices: Array[int]) -> Array[OrderData]:
+	return preview_normal_submit(selected_indices)
+
+func submit_order(index: int, selected_indices: Array[int] = []) -> bool:
+	if index == -1:
+		return submit_normal(selected_indices)
+	return false
+
+
+# ===========================================================================
+# 订单生成
+# ===========================================================================
 
 func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 	var order = OrderData.new()
 	var rng = GameManager.rng
 	
-	# 1. 决定需求项总数
-	# 默认权重: 20%=2个, 65%=3个, 15%=4个
 	var count_weights = PackedFloat32Array([0.20, 0.65, 0.15])
-	
-	# 尝试从当前时代配置获取权重
 	if EraManager.current_config:
 		count_weights = EraManager.current_config.get_count_weights()
 		
 	var count_index = Constants.pick_weighted_index(count_weights, rng)
-	var original_requirement_count = count_index + 2 # index 0 -> 2 reqs, 1 -> 3 reqs, etc.
-	
-	# 技能：偷工减料 - 减少需求数量但奖励按原数量计算
+	var original_requirement_count = count_index + 2
+
 	var corners_ctx = ContextProxy.new({"requirement_count": original_requirement_count})
 	EventBus.game_event.emit(&"order_requirement_count_generating", corners_ctx)
 	var actual_requirement_count: int = corners_ctx.get_value("requirement_count")
-	actual_requirement_count = maxi(1, actual_requirement_count) # 保底至少1个
+	actual_requirement_count = maxi(1, actual_requirement_count)
 	
 	var normal_items = GameManager.get_all_normal_items()
 	if normal_items.is_empty():
 		push_error("OrderSystem: No normal items found! Cannot generate order.")
 		return order
 
-	# 订单需求品质权重 (默认: 普通40%, 优秀35%, 稀有20%, 史诗5%, 传说0%, 神话0%)
 	var order_rarity_weights = PackedFloat32Array([0.40, 0.35, 0.20, 0.05, 0.0, 0.0])
-	
-	# 尝试从当前时代配置获取权重
 	if EraManager.current_config:
 		order_rarity_weights = EraManager.current_config.get_rarity_weights()
 	
-	# 累计需求品质加成（加算）- 基于原始数量计算
 	var total_requirement_bonus: float = 0.0
-	
-	# 已使用的物品ID，用于避免同一订单内重复
 	var used_item_ids: Array[StringName] = []
 	
-	# 生成指定数量的需求项（使用实际数量，但奖励按原始数量算）
 	for i in range(actual_requirement_count):
-		# 过滤掉已经使用的物品
 		var available_items: Array[ItemData] = []
 		for item in normal_items:
 			if item.id not in used_item_ids:
 				available_items.append(item)
 		
-		# 如果没有可用物品了，跳过（理论上不会发生，因为物品数量 > 最大需求数量）
 		if available_items.is_empty():
 			break
 		
 		var item_data = available_items.pick_random()
 		used_item_ids.append(item_data.id)
-		
-		var count = 1 # 每个需求项固定需要 1 个物品
-		
-		# 2. 决定品质要求（使用订单专用权重，不使用全局抽奖权重）
+		var count = 1
 		var min_rarity = Constants.pick_weighted_index(order_rarity_weights, rng) as Constants.Rarity
-		
-		# 累加该需求的品质加成（使用 Constants.rarity_bonus）
-		# 例如：Epic = 0.4，两个 Epic 就是 0.4 + 0.4 = 0.8
 		total_requirement_bonus += Constants.rarity_bonus(min_rarity) * count
 			
 		order.requirements.append({
@@ -401,20 +433,15 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 			"count": count
 		})
 
-	
-	# 3. 设定基础奖励：根据原始需求数量计算 (2=5, 3=7, 4=10)
 	var base_rewards = {
 		2: 3,
 		3: 5,
 		4: 7
 	}
 	
-	# 显示奖励 = 基础奖励 * (1 + 需求品质加成之和)
-	# 注意：使用 original_requirement_count 计算奖励，而不是 actual_requirement_count
-	var base_gold = base_rewards.get(original_requirement_count, 7)
-	order.reward_gold = roundi(base_gold * (1.0 + total_requirement_bonus))
+	var base_coupon = base_rewards.get(original_requirement_count, 7)
+	order.reward_coupon = roundi(base_coupon * (1.0 + total_requirement_bonus))
 
-	
 	if force_refresh_count >= 0:
 		order.refresh_count = force_refresh_count
 	else:
@@ -425,75 +452,72 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 	return order
 
 
-func _generate_mainline_order(is_refresh: bool = false) -> OrderData:
-	var order = OrderData.new()
-	order.is_mainline = true
+## 生成一对主线订单（确保它们不会要求相同的物品）
+func _generate_mainline_order_pair() -> Array[OrderData]:
+	var order_a = OrderData.new()
+	order_a.is_mainline = true
+	var order_b = OrderData.new()
+	order_b.is_mainline = true
 	var rng = GameManager.rng
 	
 	var normal_items = GameManager.get_all_normal_items()
 	if normal_items.is_empty():
-		push_error("OrderSystem: No items found for mainline order!")
-		return order
+		push_error("OrderSystem: No items found for mainline orders!")
+		return [order_a, order_b]
 
-	# 主线需求：2个随机物品，必须来自不同种类且名称不同
-	# 
-	# 关键设计：
-	# - Era 1（香草时代，era_index=0）初始订单：1个稀有 + 1个史诗
-	# - Era 2+ 或完成主线后刷新的新订单：2个史诗
-	#
-	# is_refresh 用于区分：
-	# - false: 游戏初始化时生成（给当前时代玩家完成的任务）
-	# - true: 完成主线后刷新（给下一个时代玩家完成的任务）
-	var mainline_rarities: Array[Constants.Rarity] = []
-	if not is_refresh and EraManager.current_era_index == 0:
-		# 游戏初始化时，第一时代的首个主线订单：一蓝一紫
-		mainline_rarities = [Constants.Rarity.RARE, Constants.Rarity.EPIC]
-	else:
-		# 完成主线后刷新（给下一时代），或非第一时代：两紫
-		mainline_rarities = [Constants.Rarity.EPIC, Constants.Rarity.EPIC]
-	
-	# 按种类 (item_type) 分组
-	var items_by_type: Dictionary = {} # item_type -> Array[ItemData]
+	# 获取时代配置中的主线品质要求
+	var cfg = EraManager.current_config
+	var mainline_rarities: Array[int] = [Constants.Rarity.RARE, Constants.Rarity.EPIC]
+	var req_count: int = 2
+	if cfg:
+		mainline_rarities = cfg.mainline_rarities.duplicate()
+		req_count = cfg.mainline_requirement_count
+
+	# 按种类分组
+	var items_by_type: Dictionary = {}
 	for item in normal_items:
 		var type_key = item.item_type
 		if not items_by_type.has(type_key):
 			items_by_type[type_key] = []
 		items_by_type[type_key].append(item)
 	
-	# 获取所有有物品的种类
 	var available_types = items_by_type.keys()
 	available_types.shuffle()
 	
-	# 确保至少有2个不同种类
-	if available_types.size() < 2:
-		push_error("OrderSystem: Not enough item types for mainline order (need 2, have %d)" % available_types.size())
-		# Fallback: 从现有物品中随机选2个不同名称的
-		var shuffled_items = normal_items.duplicate()
-		shuffled_items.shuffle()
-		var used_names: Array[StringName] = []
-		var fallback_idx := 0
-		for item in shuffled_items:
-			if item.id not in used_names:
-				order.requirements.append({
-					"item_id": item.id,
-					"min_rarity": mainline_rarities[fallback_idx] if fallback_idx < mainline_rarities.size() else Constants.Rarity.EPIC,
-					"count": 1
-				})
-				used_names.append(item.id)
-				fallback_idx += 1
-				if used_names.size() >= 2:
-					break
-		order.reward_gold = 100
-		order.refresh_count = 0
-		return order
+	# 两个主线订单总共需要 req_count * 2 个不同的物品
+	# 优先从不同种类中选取
+	var all_used_item_ids: Array[StringName] = []
 	
-	# 从前2个种类中各选1个物品
-	var used_item_ids: Array[StringName] = []
-	for i in range(2):
-		var type_key = available_types[i]
+	# 生成订单 A
+	_fill_mainline_order(order_a, items_by_type, available_types, all_used_item_ids, mainline_rarities, req_count, rng)
+	
+	# 生成订单 B（排除订单 A 已用的物品）
+	_fill_mainline_order(order_b, items_by_type, available_types, all_used_item_ids, mainline_rarities, req_count, rng)
+	
+	order_a.reward_coupon = 0
+	order_a.refresh_count = 0
+	order_b.reward_coupon = 0
+	order_b.refresh_count = 0
+	
+	return [order_a, order_b]
+
+
+func _fill_mainline_order(
+	order: OrderData,
+	items_by_type: Dictionary,
+	available_types: Array,
+	used_item_ids: Array[StringName],
+	rarities: Array[int],
+	req_count: int,
+	rng: RandomNumberGenerator
+) -> void:
+	var added: int = 0
+	
+	# 先尝试从不同种类中选取
+	for type_key in available_types:
+		if added >= req_count:
+			break
 		var items_in_type: Array = items_by_type[type_key]
-		
-		# 从该种类中随机选一个（避免重复名称，虽然跨种类应该不会有同名）
 		var valid_items: Array = []
 		for item in items_in_type:
 			if item.id not in used_item_ids:
@@ -505,17 +529,48 @@ func _generate_mainline_order(is_refresh: bool = false) -> OrderData:
 		var item_data = valid_items[rng.randi() % valid_items.size()]
 		used_item_ids.append(item_data.id)
 		
-		# 根据索引使用对应的品质要求
-		var required_rarity = mainline_rarities[i] if i < mainline_rarities.size() else Constants.Rarity.EPIC
+		var required_rarity = rarities[added] if added < rarities.size() else Constants.Rarity.EPIC
 		order.requirements.append({
 			"item_id": item_data.id,
 			"min_rarity": required_rarity,
 			"count": 1
 		})
+		added += 1
+	
+	# 如果种类不够（极少见），从剩余物品中补充
+	if added < req_count:
+		var all_items = []
+		for type_key in items_by_type:
+			all_items.append_array(items_by_type[type_key])
+		all_items.shuffle()
+		
+		for item in all_items:
+			if added >= req_count:
+				break
+			if item.id not in used_item_ids:
+				used_item_ids.append(item.id)
+				var required_rarity = rarities[added] if added < rarities.size() else Constants.Rarity.EPIC
+				order.requirements.append({
+					"item_id": item.id,
+					"min_rarity": required_rarity,
+					"count": 1
+				})
+				added += 1
 
-	
-	# 主线奖励：高额金币 (例如 100)
-	order.reward_gold = 100
-	order.refresh_count = 0 # 主线通常不可刷新，或者跟随普通逻辑
-	
-	return order
+
+## 获取所有主线订单
+func get_mainline_orders() -> Array[OrderData]:
+	var result: Array[OrderData] = []
+	for order in current_orders:
+		if order.is_mainline:
+			result.append(order)
+	return result
+
+
+## 获取所有普通订单
+func get_normal_orders() -> Array[OrderData]:
+	var result: Array[OrderData] = []
+	for order in current_orders:
+		if not order.is_mainline:
+			result.append(order)
+	return result

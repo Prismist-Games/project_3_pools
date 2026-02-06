@@ -6,4 +6,6 @@
 [resource]
 script = ExtResource("1")
 era_name = "保质期时代"
+mainline_requirement_count = 3
+mainline_rarities = Array[int]([2, 3, 4])
 effects = Array[Resource]([ExtResource("1_lvcee")])

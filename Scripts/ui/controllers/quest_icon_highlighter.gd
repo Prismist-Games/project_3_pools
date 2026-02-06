@@ -85,11 +85,11 @@ func _highlight_matching_icons(item_ids: Array[StringName]) -> void:
 		var icon_nodes = _get_matching_icons_from_slot(slot, item_ids)
 		icons_to_highlight.append_array(icon_nodes)
 	
-	# 2. 检查主线订单
-	var main_slot = order_controller.main_quest_slot
-	if main_slot and main_slot.visible:
-		var icon_nodes = _get_matching_icons_from_slot(main_slot, item_ids, true)
-		icons_to_highlight.append_array(icon_nodes)
+	# 2. 检查主线订单（两个槽位）
+	for main_slot in order_controller.main_quest_slots:
+		if main_slot and main_slot.visible:
+			var icon_nodes = _get_matching_icons_from_slot(main_slot, item_ids, true)
+			icons_to_highlight.append_array(icon_nodes)
 	
 	# 3. 取消当前不在新列表中的高亮
 	var to_unhighlight: Array[Node] = []

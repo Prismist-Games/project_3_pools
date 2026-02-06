@@ -11,6 +11,7 @@ var background_setter: Node2D
 
 var order_index: int = -1
 var is_submit_mode: bool = false
+var is_era_submit_mode: bool = false
 var _current_order: OrderData = null
 var _original_mouse_filter: Control.MouseFilter = Control.MOUSE_FILTER_STOP
 var _original_background_color: Color = Color.WHITE
@@ -87,7 +88,11 @@ func play_refresh_anim() -> void:
 
 func set_submit_mode(active: bool) -> void:
 	is_submit_mode = active
-	# 退出提交模式时复位突出状态
+	if not active:
+		_reset_protrude()
+
+func set_era_submit_mode(active: bool) -> void:
+	is_era_submit_mode = active
 	if not active:
 		_reset_protrude()
 
@@ -100,7 +105,10 @@ func update_order_display(order_data: OrderData, req_states: Array = []) -> void
 	visible = true
 	
 	if reward_icon:
-		reward_icon.texture = preload("res://assets/sprites/icons/money.png")
+		if order_data.is_mainline:
+			reward_icon.texture = preload("res://assets/sprites/icons/money.png")
+		else:
+			reward_icon.texture = preload("res://assets/sprites/icons/coupon.png")
 	
 	if refresh_label:
 		refresh_label.text = str(order_data.refresh_count)
@@ -114,24 +122,20 @@ func update_order_display(order_data: OrderData, req_states: Array = []) -> void
 	var has_enough_items = order_data.can_fulfill(InventorySystem.inventory)
 	var is_selection_ready = false
 
-	if is_submit_mode:
+	if is_submit_mode or is_era_submit_mode:
 		# 提交模式：根据当前已选中的物品判定是否满足提交条件（用于突出显示）
 		is_selection_ready = _check_order_satisfied(order_data, req_states)
 		_set_protrude(is_selection_ready)
-		
-		# 在提交模式下，背景颜色依然基于"是否拥有足够物品"来显示绿色提示
-		# 这样玩家能知道哪些订单是可以完成的
 		_update_background_color(has_enough_items)
 	else:
-		# 非提交模式：根据背包中是否持有足够物品判定
-		# 此时 is_selection_ready 只需要在这里复用 has_enough_items 逻辑吗？
-		# 不，非提交模式不展示选中预览，所以不需要 is_selection_ready
 		_reset_protrude()
 		_update_background_color(has_enough_items)
 	
 	# 3. 更新奖励显示
 	if reward_label:
-		if is_submit_mode and is_selection_ready:
+		if order_data.is_mainline:
+			reward_label.text = "ERA"
+		elif (is_submit_mode or is_era_submit_mode) and is_selection_ready:
 			var selected_items: Array[ItemInstance] = []
 			for idx in InventorySystem.multi_selected_indices:
 				if idx >= 0 and idx < InventorySystem.inventory.size():
@@ -140,12 +144,12 @@ func update_order_display(order_data: OrderData, req_states: Array = []) -> void
 						selected_items.append(item)
 			
 			var preview = order_data.calculate_preview_rewards(selected_items)
-			if preview.gold != order_data.reward_gold:
-				reward_label.text = "%d[font_size=48]《%d[/font_size]" % [preview.gold, order_data.reward_gold]
+			if preview.coupon != order_data.reward_coupon:
+				reward_label.text = "%d[font_size=48]《%d[/font_size]" % [preview.coupon, order_data.reward_coupon]
 			else:
-				reward_label.text = str(order_data.reward_gold)
+				reward_label.text = str(order_data.reward_coupon)
 		else:
-			reward_label.text = str(order_data.reward_gold)
+			reward_label.text = str(order_data.reward_coupon)
 
 func _update_background_color(satisfied: bool) -> void:
 	if not background_setter: return

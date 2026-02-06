@@ -7,7 +7,8 @@ class_name OrderData
 ## { "item_id": StringName, "min_rarity": int, "count": int }
 @export var requirements: Array[Dictionary] = []
 
-@export var reward_gold: int = 0
+## 积分订单奖励（普通订单使用）
+@export var reward_coupon: int = 0
 
 ## 剩余刷新次数
 @export var refresh_count: int = 1
@@ -82,16 +83,39 @@ func find_smart_selection(inventory: Array) -> Array[int]:
 	return result_indices
 
 
-## 计算奖励预览：返回是否满足以及计算后的金币/奖券
+## 智能选择（独占模式）：每个物品只能用于一个需求，不共享
+func find_smart_selection_exclusive(inventory: Array) -> Array[int]:
+	var result_indices: Array[int] = []
+	
+	for req in requirements:
+		var item_id = req.get("item_id", &"")
+		var min_rarity = req.get("min_rarity", 0)
+		
+		var best_idx = -1
+		for i in range(inventory.size()):
+			if i in result_indices:
+				continue # 已被其他需求占用
+			var it = inventory[i]
+			if it != null and not it.is_expired and it.item_data.id == item_id and it.rarity >= min_rarity:
+				if best_idx == -1 or it.rarity > inventory[best_idx].rarity:
+					best_idx = i
+		
+		if best_idx != -1:
+			result_indices.append(best_idx)
+			
+	return result_indices
+
+
+## 计算奖励预览：返回是否满足以及计算后的积分
 func calculate_preview_rewards(selected_items: Array) -> Dictionary:
 	var res = {
 		"is_satisfied": false,
-		"gold": reward_gold,
+		"coupon": reward_coupon,
 		"fulfilled_requirements": [] # 记录哪些需求已满足
 	}
 	
 	# 检查单个需求的满足情况（用于图标亮起）
-	# 修改：一个物品可以满足多个需求（不消耗匹配项）
+	# 一个物品可以满足多个需求（不消耗匹配项）
 	for i in range(requirements.size()):
 		var req = requirements[i]
 		var item_id = req.get("item_id", &"")
@@ -109,12 +133,12 @@ func calculate_preview_rewards(selected_items: Array) -> Dictionary:
 	var validation = validate_selection(selected_items)
 	if validation.valid:
 		res.is_satisfied = true
-		res.gold = roundi(reward_gold * (1.0 + validation.total_submitted_bonus))
+		res.coupon = roundi(reward_coupon * (1.0 + validation.total_submitted_bonus))
 	
 	return res
 
 
-## 检查提供的物品列表是否满足订单需求（手动选择模式）
+## 检查提供的物品列表是否满足订单需求（共享物品模式）
 func validate_selection(selected_items: Array) -> Dictionary:
 	var result = {
 		"valid": false,
@@ -133,12 +157,10 @@ func validate_selection(selected_items: Array) -> Dictionary:
 		
 	var total_bonus = 0.0
 	
-	# 步骤 1: 检查所有订单需求是否满足
 	for req in requirements:
 		var item_id = req.get("item_id", &"")
 		var min_rarity = req.get("min_rarity", 0)
 		
-		# 寻找最佳匹配项（最高品质以获得最高加成）
 		var best_match: ItemInstance = null
 		for it in selected_items:
 			if it != null and it.item_data.id == item_id and it.rarity >= min_rarity:
@@ -146,15 +168,53 @@ func validate_selection(selected_items: Array) -> Dictionary:
 					best_match = it
 		
 		if best_match == null:
-			return result # 任何一个需求没满足，整个订单就不合法
+			return result
 		
-		# 计算该槽位提交物品的品质加成（基于实际提交品质，而非溢出差值）
-		# 例如：提交一个 Epic 物品，加成 = 0.4
 		total_bonus += Constants.rarity_bonus(best_match.rarity)
-	
-	# 注意：允许玩家提交额外物品（用于触发强迫症等技能）
-	# 不再拒绝包含"不必要物品"的选择
 			
 	result.valid = true
 	result.total_submitted_bonus = total_bonus
+	return result
+
+
+## 检查提供的物品列表是否满足订单需求（独占模式：每个物品只能用于一个需求）
+func validate_selection_exclusive(selected_items: Array) -> Dictionary:
+	var result = {
+		"valid": false,
+		"total_submitted_bonus": 0.0,
+		"consumed_items": [] as Array[ItemInstance]
+	}
+	
+	if selected_items.is_empty() and not requirements.is_empty():
+		return result
+	
+	for item in selected_items:
+		if item != null and item.is_expired:
+			result["reason"] = "expired"
+			return result
+	
+	var total_bonus = 0.0
+	var used_items: Array[ItemInstance] = []
+	
+	for req in requirements:
+		var item_id = req.get("item_id", &"")
+		var min_rarity = req.get("min_rarity", 0)
+		
+		var best_match: ItemInstance = null
+		for it in selected_items:
+			if it in used_items:
+				continue
+			if it != null and it.item_data.id == item_id and it.rarity >= min_rarity:
+				if best_match == null or it.rarity > best_match.rarity:
+					best_match = it
+		
+		if best_match == null:
+			return result
+		
+		used_items.append(best_match)
+		total_bonus += Constants.rarity_bonus(best_match.rarity)
+	
+	result.valid = true
+	result.total_submitted_bonus = total_bonus
+	result.consumed_items = used_items
 	return result

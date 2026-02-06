@@ -183,7 +183,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yh5b1"]
 shader = SubResource("Shader_2kwm8")
-shader_parameter/scanline_count = 25.0000011875
+shader_parameter/scanline_count = 39.3430018687925
 shader_parameter/scanline_alpha = 0.15
 shader_parameter/scanline_speed = 10.0
 shader_parameter/vignette_intensity = 0.4
@@ -787,7 +787,7 @@ position = Vector2(1, -3)
 texture = ExtResource("17_ug1ds")
 
 [node name="TheMachineSwitch_Recycle" type="Node2D" parent="The Machine"]
-position = Vector2(1478, 1270)
+position = Vector2(1493, 1353)
 
 [node name="Switch_mask" type="Sprite2D" parent="The Machine/TheMachineSwitch_Recycle"]
 clip_children = 1
@@ -933,7 +933,7 @@ mouse_default_cursor_shape = 2
 [node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/TheMachineSwitch_Recycle"]
 
 [node name="TheMachineSwitch_Submit" type="Node2D" parent="The Machine"]
-position = Vector2(1796, 1270)
+position = Vector2(1811, 1353)
 
 [node name="Switch_mask" type="Sprite2D" parent="The Machine/TheMachineSwitch_Submit"]
 clip_children = 1
@@ -1035,22 +1035,21 @@ mouse_default_cursor_shape = 2
 [node name="AnimationPlayer" type="AnimationPlayer" parent="The Machine/TheMachineSwitch_Submit"]
 
 [node name="TheMachineDisplay" type="Sprite2D" parent="The Machine"]
-position = Vector2(1652, 855)
+position = Vector2(1667, 938)
 texture = ExtResource("4_6b2j4")
 
 [node name="TheMachineDisplayFill" type="Sprite2D" parent="The Machine/TheMachineDisplay"]
 self_modulate = Color(0.08235294, 0.53333336, 0.6313726, 1)
 show_behind_parent = true
 clip_children = 2
-position = Vector2(-8, -13)
 scale = Vector2(1.01, 1.01)
 texture = ExtResource("21_ue141")
 
 [node name="Money_label" type="RichTextLabel" parent="The Machine/TheMachineDisplay/TheMachineDisplayFill"]
 offset_left = -254.0
-offset_top = -88.11881
+offset_top = -166.33664
 offset_right = 254.0
-offset_bottom = 88.88119
+offset_bottom = 10.663361
 theme_override_colors/default_color = Color(1, 0.8862745, 0, 1)
 theme_override_font_sizes/normal_font_size = 100
 bbcode_enabled = true
@@ -1072,11 +1071,11 @@ grow_vertical = 2
 texture = ExtResource("51_8y6ih")
 
 [node name="Coupon_label" type="RichTextLabel" parent="The Machine/TheMachineDisplay/TheMachineDisplayFill"]
-visible = false
-offset_left = -265.5
-offset_top = 8.5
-offset_right = 259.5
-offset_bottom = 145.5
+offset_left = -254.0
+offset_top = -23.762337
+offset_right = 254.0
+offset_bottom = 153.23767
+theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/normal_font_size = 100
 bbcode_enabled = true
 text = "123"
@@ -1099,9 +1098,9 @@ texture = ExtResource("25_ccvlu")
 [node name="ScreenEffectOverlay" type="ColorRect" parent="The Machine/TheMachineDisplay/TheMachineDisplayFill"]
 material = SubResource("ShaderMaterial_yh5b1")
 offset_left = -330.0
-offset_top = -128.00014
+offset_top = -198.01984
 offset_right = 329.0
-offset_bottom = 112.546005
+offset_bottom = 184.66107
 scale = Vector2(1, 0.985258)
 mouse_filter = 2
 
@@ -1307,7 +1306,7 @@ scale = Vector2(1.1, 1.1)
 
 [node name="QuestSystem" type="Node2D" parent="The Rabbit"]
 
-[node name="Main Quest Slot_root" type="Control" parent="The Rabbit/QuestSystem"]
+[node name="Main Quest Slot_root_0" type="Control" parent="The Rabbit/QuestSystem"]
 z_index = 3
 layout_mode = 3
 anchors_preset = 0
@@ -1317,11 +1316,11 @@ offset_right = -186.36363
 offset_bottom = -997.2727
 script = ExtResource("113_quest")
 
-[node name="Era Indicator" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root"]
+[node name="Era Indicator" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0"]
 position = Vector2(-344.545, -82.72728)
 texture = ExtResource("48_fx7i4")
 
-[node name="Era Indicator_label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Era Indicator"]
+[node name="Era Indicator_label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Era Indicator"]
 offset_left = -219.09088
 offset_top = -125.4545
 offset_right = 221.81818
@@ -1337,35 +1336,35 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("10_4tp6t")
 
-[node name="Quest Slot_mask" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root"]
+[node name="Quest Slot_mask" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0"]
 clip_children = 1
 texture = ExtResource("25_y6c7h")
 offset = Vector2(80.35, 18.51)
 
-[node name="Main Quest Slot_background" type="Node2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask"]
+[node name="Main Quest Slot_background" type="Node2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask"]
 script = ExtResource("2_ovo1l")
 color = Color(0.9882353, 0.3647059, 0.3764706, 1)
 
-[node name="Slot_background_side" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot_background"]
+[node name="Slot_background_side" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask/Main Quest Slot_background"]
 modulate = Color(0.9882353, 0.3647059, 0.3764706, 1)
 position = Vector2(693, -92)
 texture = ExtResource("26_5jtl3")
 
-[node name="Slot_background_wall" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot_background"]
+[node name="Slot_background_wall" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask/Main Quest Slot_background"]
 modulate = Color(0.9882353, 0.3647059, 0.3764706, 1)
 position = Vector2(-164, -259)
 texture = ExtResource("27_lyel0")
 
-[node name="Slot_background_floor" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot_background"]
+[node name="Slot_background_floor" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask/Main Quest Slot_background"]
 modulate = Color(0.9882353, 0.3647059, 0.3764706, 1)
 position = Vector2(-28, 314)
 texture = ExtResource("28_mfdr7")
 
-[node name="Slot_background_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot_background"]
+[node name="Slot_background_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask/Main Quest Slot_background"]
 position = Vector2(-7, -36)
 texture = ExtResource("29_xpfcn")
 
-[node name="Main Quest Reward Icon" type="TextureRect" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask"]
+[node name="Main Quest Reward Icon" type="TextureRect" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask"]
 offset_left = -394.0
 offset_top = -50.909103
 offset_right = -308.0
@@ -1373,7 +1372,7 @@ offset_bottom = 15.090897
 texture = ExtResource("54_nbd70")
 expand_mode = 5
 
-[node name="Main Quest Reward Label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Reward Icon"]
+[node name="Main Quest Reward Label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask/Main Quest Reward Icon"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -1393,7 +1392,7 @@ fit_content = true
 scroll_active = false
 vertical_alignment = 1
 
-[node name="Main Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask"]
+[node name="Main Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask"]
 offset_left = -147.0
 offset_top = 23.75
 offset_right = 1053.0
@@ -1402,70 +1401,70 @@ scale = Vector2(0.5, 0.5)
 theme_override_constants/separation = 400
 alignment = 2
 
-[node name="Main Quest Slot Item_root_0" type="Control" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid"]
+[node name="Main Quest Slot Item_root_0" type="Control" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask/Main Quest Slot Items Grid"]
 layout_mode = 2
 
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0"]
+[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0"]
 material = SubResource("ShaderMaterial_xy8au")
 position = Vector2(0, -17.5)
 scale = Vector2(0.9, 0.9)
 texture = SubResource("AtlasTexture_cm3rb")
 
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
+[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 show_behind_parent = true
 texture = ExtResource("83_taegb")
 
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0"]
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0"]
 position = Vector2(104.399994, -134.5)
 scale = Vector2(1.3499999, 1.3499999)
 texture = ExtResource("87_u8s40")
 
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0"]
+[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
 position = Vector2(0, 172.5)
 scale = Vector2(1.8, 1.8)
 texture = ExtResource("54_ug1ds")
 
-[node name="Main Quest Slot Item_root_1" type="Control" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid"]
+[node name="Main Quest Slot Item_root_1" type="Control" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask/Main Quest Slot Items Grid"]
 layout_mode = 2
 
-[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1"]
+[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1"]
 material = SubResource("ShaderMaterial_xy8au")
 position = Vector2(0, -17.5)
 scale = Vector2(0.9, 0.9)
 texture = SubResource("AtlasTexture_cm3rb")
 
-[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
+[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
 modulate = Color(0.18431373, 0.74509805, 0.2, 1)
 show_behind_parent = true
 texture = ExtResource("83_taegb")
 
-[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1"]
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1"]
 position = Vector2(104.399994, -134.5)
 scale = Vector2(1.3499999, 1.3499999)
 texture = ExtResource("87_u8s40")
 
-[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1"]
+[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1"]
 modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
 position = Vector2(0, 172.5)
 scale = Vector2(1.8, 1.8)
 texture = ExtResource("54_ug1ds")
 
-[node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_mask"]
+[node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_mask"]
 modulate = Color(1, 0.79607844, 0.03137255, 1)
 texture = ExtResource("30_iq50s")
 offset = Vector2(100, 0)
 
-[node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root"]
+[node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0"]
 self_modulate = Color(0.99607843, 0.90588236, 0.2901961, 1)
 position = Vector2(29.999958, -34)
 texture = ExtResource("33_0ehwc")
 
-[node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root/Quest Slot_outline"]
+[node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0/Quest Slot_outline"]
 texture = ExtResource("34_oeaov")
 
-[node name="Input Area" type="Control" parent="The Rabbit/QuestSystem/Main Quest Slot_root"]
+[node name="Input Area" type="Control" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0"]
 anchors_preset = 0
 offset_left = -461.0
 offset_top = -127.0
@@ -1473,7 +1472,178 @@ offset_right = 624.5454
 offset_bottom = 162.0
 mouse_default_cursor_shape = 2
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/QuestSystem/Main Quest Slot_root"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/QuestSystem/Main Quest Slot_root_0"]
+libraries = {
+&"": SubResource("AnimationLibrary_jdak2")
+}
+
+[node name="Main Quest Slot_root_1" type="Control" parent="The Rabbit/QuestSystem"]
+z_index = 3
+layout_mode = 3
+anchors_preset = 0
+offset_left = -186.36363
+offset_top = -1296.3636
+offset_right = -186.36363
+offset_bottom = -1296.3636
+script = ExtResource("113_quest")
+
+[node name="Era Indicator" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1"]
+position = Vector2(-344.545, -82.72728)
+texture = ExtResource("48_fx7i4")
+
+[node name="Era Indicator_label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Era Indicator"]
+offset_left = -219.09088
+offset_top = -125.4545
+offset_right = 221.81818
+offset_bottom = -8.181793
+mouse_default_cursor_shape = 16
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("91_036e7")
+theme_override_font_sizes/normal_font_size = 48
+bbcode_enabled = true
+text = "VOLATILE ERA"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("10_4tp6t")
+
+[node name="Quest Slot_mask" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1"]
+clip_children = 1
+texture = ExtResource("25_y6c7h")
+offset = Vector2(80.35, 18.51)
+
+[node name="Main Quest Slot_background" type="Node2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask"]
+script = ExtResource("2_ovo1l")
+color = Color(0.9882353, 0.3647059, 0.3764706, 1)
+
+[node name="Slot_background_side" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask/Main Quest Slot_background"]
+modulate = Color(0.9882353, 0.3647059, 0.3764706, 1)
+position = Vector2(693, -92)
+texture = ExtResource("26_5jtl3")
+
+[node name="Slot_background_wall" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask/Main Quest Slot_background"]
+modulate = Color(0.9882353, 0.3647059, 0.3764706, 1)
+position = Vector2(-164, -259)
+texture = ExtResource("27_lyel0")
+
+[node name="Slot_background_floor" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask/Main Quest Slot_background"]
+modulate = Color(0.9882353, 0.3647059, 0.3764706, 1)
+position = Vector2(-28, 314)
+texture = ExtResource("28_mfdr7")
+
+[node name="Slot_background_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask/Main Quest Slot_background"]
+position = Vector2(-7, -36)
+texture = ExtResource("29_xpfcn")
+
+[node name="Main Quest Reward Icon" type="TextureRect" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask"]
+offset_left = -394.0
+offset_top = -50.909103
+offset_right = -308.0
+offset_bottom = 15.090897
+texture = ExtResource("54_nbd70")
+expand_mode = 5
+
+[node name="Main Quest Reward Label" type="RichTextLabel" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask/Main Quest Reward Icon"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 90.0
+offset_top = -97.0
+offset_right = 979.0
+offset_bottom = 96.0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("91_036e7")
+theme_override_font_sizes/normal_font_size = 71
+bbcode_enabled = true
+text = "MAIN_QUEST_LABEL"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[node name="Main Quest Slot Items Grid" type="HBoxContainer" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask"]
+offset_left = -147.0
+offset_top = 23.75
+offset_right = 1053.0
+offset_bottom = 63.75
+scale = Vector2(0.5, 0.5)
+theme_override_constants/separation = 400
+alignment = 2
+
+[node name="Main Quest Slot Item_root_0" type="Control" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask/Main Quest Slot Items Grid"]
+layout_mode = 2
+
+[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0"]
+material = SubResource("ShaderMaterial_xy8au")
+position = Vector2(0, -17.5)
+scale = Vector2(0.9, 0.9)
+texture = SubResource("AtlasTexture_cm3rb")
+
+[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0/Item_icon"]
+modulate = Color(0.18431373, 0.74509805, 0.2, 1)
+show_behind_parent = true
+texture = ExtResource("83_taegb")
+
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0"]
+position = Vector2(104.399994, -134.5)
+scale = Vector2(1.3499999, 1.3499999)
+texture = ExtResource("87_u8s40")
+
+[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_0"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+position = Vector2(0, 172.5)
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("54_ug1ds")
+
+[node name="Main Quest Slot Item_root_1" type="Control" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask/Main Quest Slot Items Grid"]
+layout_mode = 2
+
+[node name="Item_icon" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1"]
+material = SubResource("ShaderMaterial_xy8au")
+position = Vector2(0, -17.5)
+scale = Vector2(0.9, 0.9)
+texture = SubResource("AtlasTexture_cm3rb")
+
+[node name="Item_rarity" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1/Item_icon"]
+modulate = Color(0.18431373, 0.74509805, 0.2, 1)
+show_behind_parent = true
+texture = ExtResource("83_taegb")
+
+[node name="Item_status" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1"]
+position = Vector2(104.399994, -134.5)
+scale = Vector2(1.3499999, 1.3499999)
+texture = ExtResource("87_u8s40")
+
+[node name="Item_requirement" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask/Main Quest Slot Items Grid/Main Quest Slot Item_root_1"]
+modulate = Color(0.99215686, 0.5921569, 0.18431373, 1)
+position = Vector2(0, 172.5)
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("54_ug1ds")
+
+[node name="Quest Slot_lid" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_mask"]
+modulate = Color(1, 0.79607844, 0.03137255, 1)
+texture = ExtResource("30_iq50s")
+offset = Vector2(100, 0)
+
+[node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1"]
+self_modulate = Color(0.99607843, 0.90588236, 0.2901961, 1)
+position = Vector2(29.999958, -34)
+texture = ExtResource("33_0ehwc")
+
+[node name="Quest Slot_outline" type="Sprite2D" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1/Quest Slot_outline"]
+texture = ExtResource("34_oeaov")
+
+[node name="Input Area" type="Control" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1"]
+anchors_preset = 0
+offset_left = -461.0
+offset_top = -127.0
+offset_right = 624.5454
+offset_bottom = 162.0
+mouse_default_cursor_shape = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="The Rabbit/QuestSystem/Main Quest Slot_root_1"]
 libraries = {
 &"": SubResource("AnimationLibrary_jdak2")
 }
@@ -1555,6 +1725,24 @@ layout_mode = 2
 
 [node name="Quest Slot_root_4" parent="The Rabbit/QuestSystem/Quest Slots Grid" instance=ExtResource("87_n6ers")]
 layout_mode = 2
+
+[node name="Extraction_button" type="Button" parent="The Rabbit/QuestSystem"]
+offset_left = -838.1818
+offset_top = -1719.0908
+offset_right = -92.18182
+offset_bottom = -1584.0908
+theme_override_fonts/font = ExtResource("91_036e7")
+theme_override_font_sizes/font_size = 100
+text = "BTN_EXTRACTION"
+
+[node name="Forfeit_button" type="Button" parent="The Rabbit/QuestSystem"]
+offset_left = 14.545455
+offset_top = -1720.909
+offset_right = 760.5455
+offset_bottom = -1585.909
+theme_override_fonts/font = ExtResource("91_036e7")
+theme_override_font_sizes/font_size = 100
+text = "BTN_FORFEIT"
 
 [node name="The Machine DLC" type="Node2D" parent="."]
 z_index = 3
@@ -1772,6 +1960,7 @@ offset_right = 4372.0
 offset_bottom = 2365.0
 texture = ExtResource("72_d4tgn")
 stretch_mode = 5
+metadata/_edit_lock_ = true
 
 [node name="Popup Pole" type="TextureRect" parent="Popup Window"]
 show_behind_parent = true
@@ -1804,18 +1993,53 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Popup_button" type="TextureButton" parent="Popup Window"]
-layout_mode = 0
-offset_left = 1062.0
-offset_top = 1750.0
-offset_right = 1630.0
-offset_bottom = 2013.0
+[node name="Popup_button_container" type="HBoxContainer" parent="Popup Window"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -926.0
+offset_top = 79.0
+offset_right = 926.0
+offset_bottom = 342.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 114
+alignment = 1
+
+[node name="Popup_cancel_button" type="TextureButton" parent="Popup Window/Popup_button_container"]
+self_modulate = Color(0.41598046, 0.41598043, 0.4159804, 1)
+layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("73_1wqh7")
 texture_pressed = ExtResource("74_1wndc")
 texture_hover = ExtResource("75_n1634")
 
-[node name="Button_RichTextLabel" type="RichTextLabel" parent="Popup Window/Popup_button"]
+[node name="Button_RichTextLabel" type="RichTextLabel" parent="Popup Window/Popup_button_container/Popup_cancel_button"]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 19.0
+offset_right = 549.0
+offset_bottom = 242.0
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("91_036e7")
+theme_override_font_sizes/normal_font_size = 68
+bbcode_enabled = true
+text = "BTN_CANCEL"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Popup_continue_button" type="TextureButton" parent="Popup Window/Popup_button_container"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("73_1wqh7")
+texture_pressed = ExtResource("74_1wndc")
+texture_hover = ExtResource("75_n1634")
+
+[node name="Button_RichTextLabel" type="RichTextLabel" parent="Popup Window/Popup_button_container/Popup_continue_button"]
 layout_mode = 0
 offset_left = 21.0
 offset_top = 19.0
@@ -1830,6 +2054,28 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Popup_confirm_button" type="TextureButton" parent="Popup Window/Popup_button_container"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("73_1wqh7")
+texture_pressed = ExtResource("74_1wndc")
+texture_hover = ExtResource("75_n1634")
+
+[node name="Button_RichTextLabel" type="RichTextLabel" parent="Popup Window/Popup_button_container/Popup_confirm_button"]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 19.0
+offset_right = 549.0
+offset_bottom = 242.0
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("91_036e7")
+theme_override_font_sizes/normal_font_size = 68
+bbcode_enabled = true
+text = "BTN_CONFIRM"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Buttons_Hbox" type="HBoxContainer" parent="."]
 layout_mode = 0
 offset_left = 5477.0
@@ -1838,6 +2084,7 @@ offset_right = 6124.0
 offset_bottom = 328.0
 scale = Vector2(0.75, 0.75)
 theme_override_constants/separation = 50
+metadata/_edit_lock_ = true
 
 [node name="Language Switch" type="TextureButton" parent="Buttons_Hbox"]
 layout_mode = 2

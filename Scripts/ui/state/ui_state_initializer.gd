@@ -12,6 +12,7 @@ const DrawingState = preload("res://scripts/ui/state/states/drawing_state.gd")
 const ReplacingState = preload("res://scripts/ui/state/states/replacing_state.gd")
 const PreciseSelectionState = preload("res://scripts/ui/state/states/precise_selection_state.gd")
 const SubmittingState = preload("res://scripts/ui/state/states/submitting_state.gd")
+const EraSubmittingState = preload("res://scripts/ui/state/states/era_submitting_state.gd")
 const RecyclingState = preload("res://scripts/ui/state/states/recycling_state.gd")
 const TradeInState = preload("res://scripts/ui/state/states/tradein_state.gd")
 const ModalState = preload("res://scripts/ui/state/states/modal_state.gd")
@@ -54,6 +55,10 @@ func _register_states() -> void:
 	var submitting_state = SubmittingState.new()
 	submitting_state.controller = controller
 	state_machine.register_state(&"Submitting", submitting_state)
+	
+	var era_submitting_state = EraSubmittingState.new()
+	era_submitting_state.controller = controller
+	state_machine.register_state(&"EraSubmitting", era_submitting_state)
 	
 	var recycling_state = RecyclingState.new()
 	recycling_state.controller = controller

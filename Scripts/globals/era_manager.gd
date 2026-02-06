@@ -60,14 +60,18 @@ func _apply_era_reset() -> void:
 		push_error("EraManager: 无法加载时代 %d 的配置!" % current_era_index)
 		return
 	
-	# 重置金币
+	# 重置金币到固定数量
 	GameManager.gold = cfg.starting_gold
 	
-	# 重置背包大小和清空背包
+	# 不清空背包（保留物品），仅在需要时调整背包大小
 	UnlockManager.inventory_size = cfg.inventory_size
-	InventorySystem.initialize_inventory(cfg.inventory_size)
+	if InventorySystem.inventory.size() != cfg.inventory_size:
+		InventorySystem.resize_inventory(cfg.inventory_size)
 	
-	# 刷新奖池 (ERA_2 价格波动等效果需要数据更新)
+	# 不刷新普通积分订单（保留现有）
+	# 仅在 OrderSystem 中刷新主线订单
+	
+	# 刷新奖池
 	if PoolSystem.is_node_ready():
 		PoolSystem.refresh_pools()
 	

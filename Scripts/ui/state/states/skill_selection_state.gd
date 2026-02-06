@@ -14,6 +14,13 @@ extends "res://scripts/ui/state/ui_state.gd"
 ## 主控制器引用
 var controller: Node = null
 
+
+## 安全获取 SceneTree（场景重载时 controller 可能已被释放）
+func _get_tree_safe() -> SceneTree:
+	if is_instance_valid(controller) and controller.is_inside_tree():
+		return controller.get_tree()
+	return null
+
 ## 可选的技能列表 (最多 3 个)
 var selectable_skills: Array[SkillData] = []
 
@@ -151,7 +158,9 @@ func _add_skill_to_slot(skill: SkillData, _slot_index: int) -> void:
 	EventBus.game_event.emit(&"skill_selected", null)
 	
 	# 等待一小段时间让动画播放
-	await controller.get_tree().create_timer(0.4).timeout
+	var tree := _get_tree_safe()
+	if not tree: return
+	await tree.create_timer(0.4).timeout
 	
 	# 返回 Idle
 	machine.transition_to(&"Idle")
@@ -216,7 +225,9 @@ func _on_skill_slot_clicked(slot_index: int) -> void:
 		controller.skill_slot_controller.animate_slot_down(slot_index)
 	
 	# 等待降下动画
-	await controller.get_tree().create_timer(0.35).timeout
+	var tree := _get_tree_safe()
+	if not tree: return
+	await tree.create_timer(0.35).timeout
 	
 	# 替换技能 (会自动触发 SkillSlotController 的刷新/升起动画)
 	SkillSystem.replace_skill(slot_index, selected_skill)
@@ -225,7 +236,9 @@ func _on_skill_slot_clicked(slot_index: int) -> void:
 	EventBus.game_event.emit(&"skill_selected", null)
 	
 	# 等待升起动画
-	await controller.get_tree().create_timer(0.4).timeout
+	tree = _get_tree_safe()
+	if not tree: return
+	await tree.create_timer(0.4).timeout
 	
 	# 返回 Idle
 	machine.transition_to(&"Idle")
@@ -252,8 +265,11 @@ func _setup_skill_display() -> void:
 	
 	# 等待所有动画播放完成
 	while sync_state.finished_count < total_to_wait:
-		await controller.get_tree().process_frame
+		var tree := _get_tree_safe()
+		if not tree: return
+		await tree.process_frame
 	
+	if not is_instance_valid(controller): return
 	if controller.pool_controller:
 		controller.pool_controller._is_animating_refresh = false
 	

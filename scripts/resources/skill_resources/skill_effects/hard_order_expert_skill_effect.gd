@@ -2,11 +2,11 @@ extends SkillEffect
 class_name HardOrderExpertSkillEffect
 
 ## 【困难订单专家】
-## 完成订单时若提交了史诗以上品质的物品，额外获得 10 金币。
+## 完成订单时若提交了史诗以上品质的物品，额外获得 2 金币。
 ## VFX: 订单区域有紫色需求订单时白色(Pending)
 
 @export var rarity_threshold: int = Constants.Rarity.EPIC
-@export var bonus_gold: int = 10
+@export var bonus_gold: int = 2
 
 ## 当前是否处于激活状态
 var _is_pending: bool = false
@@ -59,7 +59,7 @@ func _handle_order_completed(ctx: OrderCompletedContext) -> void:
 			break
 	if has_hard:
 		triggered.emit(TRIGGER_ACTIVATE)
-		ctx.reward_gold += bonus_gold
+		GameManager.add_gold(bonus_gold)
 
 
 func get_visual_state() -> String:

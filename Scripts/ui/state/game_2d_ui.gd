@@ -20,7 +20,16 @@ const GOLD_ICON_MAX_COUNT: int = 5 # 最大飘散金币数
 @onready var item_slots_grid: GridContainer = find_child("Item Slots Grid", true)
 @onready var lottery_slots_grid: HBoxContainer = find_child("Lottery Slots Grid", true)
 @onready var quest_slots_grid: VBoxContainer = find_child("Quest Slots Grid", true)
-@onready var main_quest_slot: Control = find_child("Main Quest Slot_root", true)
+@onready var main_quest_slot_0: Control = find_child("Main Quest Slot_root_0", true)
+@onready var main_quest_slot_1: Control = find_child("Main Quest Slot_root_1", true)
+
+## 积分（Coupon）显示
+@onready var coupon_label: RichTextLabel = find_child("Coupon_label", true)
+@onready var coupon_icon: TextureRect = find_child("Coupon_icon", true)
+
+## 积分动画状态
+var _displayed_coupon: int = 0
+var _coupon_tween: Tween = null
 
 @onready var submit_switch: Node2D = find_child("TheMachineSwitch_Submit", true)
 @onready var recycle_switch: Node2D = find_child("TheMachineSwitch_Recycle", true)
@@ -57,8 +66,15 @@ var era_label: Control = null
 # --- ERA Popup 节点引用 ---
 @onready var screen_mask: Control = find_child("Screen Mask", true)
 @onready var popup_window: Control = find_child("Popup Window", true)
-@onready var popup_button: BaseButton = find_child("Popup_button", true)
 @onready var popup_label: RichTextLabel = find_child("Popup_RichTextLabel", true)
+@onready var popup_cancel_button: BaseButton = find_child("Popup_cancel_button", true)
+@onready var popup_continue_button: BaseButton = find_child("Popup_continue_button", true)
+@onready var popup_confirm_button: BaseButton = find_child("Popup_confirm_button", true)
+@onready var forfeit_button: Button = find_child("Forfeit_button", true)
+@onready var extraction_button: Button = find_child("Extraction_button", true)
+
+var _popup_confirm_callback: Callable = Callable()
+var _popup_cancel_callback: Callable = Callable()
 
 # --- ERA Indicator 节点引用 ---
 @onready var era_indicator: Sprite2D = find_child("Era Indicator", true)
@@ -121,6 +137,7 @@ func _ready() -> void:
 	
 	# 3. 基础信号绑定
 	GameManager.gold_changed.connect(_on_gold_changed)
+	GameManager.coupon_changed.connect(_on_coupon_changed)
 
 	
 	InventorySystem.inventory_changed.connect(_on_inventory_changed)
@@ -159,8 +176,8 @@ func _ready() -> void:
 	# 6. 初始化 DLC 面板状态（根据当前时代）
 	_update_dlc_panel_visibility()
 
-	# 7. 初始化 Era Popup
-	_init_era_popup()
+	# 7. 初始化弹窗
+	_init_popups()
 	
 	# 8. 监听转场结束（用于显示教程）
 	EventBus.menu_transition_finished.connect(_on_menu_transition_finished)
@@ -182,7 +199,7 @@ func _perform_orders_update(orders: Array) -> void:
 	if pool_controller:
 		pool_controller.refresh_all_order_hints(true)
 
-func _init_era_popup() -> void:
+func _init_popups() -> void:
 	if screen_mask:
 		screen_mask.visible = false
 		screen_mask.modulate.a = 0
@@ -191,8 +208,26 @@ func _init_era_popup() -> void:
 		# 强制设置初始位置到隐藏位置
 		popup_window.position.y = -2200
 	
-	if popup_button:
-		popup_button.pressed.connect(_hide_era_popup)
+	if popup_cancel_button:
+		popup_cancel_button.pressed.connect(_on_popup_cancel_pressed)
+		# var label = popup_cancel_button.find_child("Button_RichTextLabel", true)
+		# if label: label.text = "[center]%s[/center]" % tr("BTN_CANCEL")
+		
+	if popup_continue_button:
+		popup_continue_button.pressed.connect(_on_popup_continue_pressed)
+		# var label = popup_continue_button.find_child("Button_RichTextLabel", true)
+		# if label: label.text = "[center]%s[/center]" % tr("BTN_CONTINUE")
+		
+	if popup_confirm_button:
+		popup_confirm_button.pressed.connect(_on_popup_confirm_pressed)
+		# var label = popup_confirm_button.find_child("Button_RichTextLabel", true)
+		# if label: label.text = "[center]%s[/center]" % tr("BTN_CONFIRM")
+	
+	if forfeit_button:
+		forfeit_button.pressed.connect(_on_forfeit_button_pressed)
+	
+	if extraction_button:
+		extraction_button.pressed.connect(_on_extraction_button_pressed)
 
 func _on_language_switch_pressed() -> void:
 	# 触发按钮音效
@@ -240,7 +275,7 @@ func _init_controllers() -> void:
 	order_controller.name = "OrderController"
 	order_controller.game_ui = self
 	add_child(order_controller)
-	order_controller.setup(quest_slots_grid, main_quest_slot)
+	order_controller.setup(quest_slots_grid, [main_quest_slot_0, main_quest_slot_1])
 	
 	switch_controller = SwitchController.new()
 	switch_controller.name = "SwitchController"
@@ -359,6 +394,7 @@ func _handle_rabbit_dialog(from_state: StringName, to_state: StringName) -> void
 		&"Replacing",
 		&"Recycling",
 		&"Submitting",
+		&"EraSubmitting",
 	]
 	
 	var was_dialog_state = from_state in DIALOG_STATES
@@ -407,6 +443,11 @@ func _refresh_all() -> void:
 	# 初始化时直接设置金币显示，不播放动画
 	_displayed_gold = GameManager.gold
 	money_label.text = str(GameManager.gold)
+	
+	# 积分显示
+	_displayed_coupon = GameManager.coupon
+	if coupon_label:
+		coupon_label.text = str(GameManager.coupon)
 
 	inventory_controller.update_all_slots(InventorySystem.inventory)
 	_on_skills_changed(SkillSystem.current_skills)
@@ -466,10 +507,11 @@ func _update_ui_mode_display() -> void:
 	var mode = state_machine.get_ui_mode()
 	var has_pending = not InventorySystem.pending_items.is_empty()
 	
-	# 背包格锁定逻辑：UI 锁、有待定项、或者非正常模式（但以旧换新模式除外）均锁
+	# 背包格锁定逻辑：UI 锁、有待定项、或者非正常模式（但以旧换新模式和提交模式除外）均锁
 	var inventory_locked = is_ui_locked() or has_pending
-	# 只有在非 NORMAL 且非 REPLACE 模式下才强制锁定背包
-	if mode != Constants.UIMode.NORMAL and mode != Constants.UIMode.REPLACE:
+	# 提交模式（普通/时代）和以旧换新模式下背包不锁定
+	if mode != Constants.UIMode.NORMAL and mode != Constants.UIMode.REPLACE \
+		and mode != Constants.UIMode.SUBMIT and mode != Constants.UIMode.ERA_SUBMIT:
 		inventory_locked = true
 	
 	inventory_controller.set_slots_locked(inventory_locked)
@@ -492,7 +534,7 @@ func _update_ui_mode_display() -> void:
 		# 我们需要绕过或模拟这个 mode
 		switch_controller.update_recycle_visuals(true)
 		# Submit 开关仍然根据 mode 走
-		switch_controller.update_submit_visuals(mode == Constants.UIMode.SUBMIT)
+		switch_controller.update_submit_visuals(mode == Constants.UIMode.SUBMIT or mode == Constants.UIMode.ERA_SUBMIT)
 	else:
 		switch_controller.update_switch_visuals(mode)
 
@@ -526,6 +568,31 @@ func _on_gold_changed(val: int) -> void:
 ## 更新金币显示文本（由 tween 调用）
 func _update_gold_display(value: int) -> void:
 	money_label.text = str(value)
+
+
+func _on_coupon_changed(val: int) -> void:
+	if not coupon_label:
+		return
+	
+	var delta = val - _displayed_coupon
+	if delta == 0:
+		_displayed_coupon = val
+		coupon_label.text = str(val)
+		return
+	
+	var duration = GOLD_ANIM_BASE_TIME + log(absf(delta) + 1) * GOLD_ANIM_SCALE
+	duration = clampf(duration, 0.3, 1.5)
+	
+	if _coupon_tween and _coupon_tween.is_valid():
+		_coupon_tween.kill()
+	
+	_coupon_tween = create_tween()
+	_coupon_tween.tween_method(_update_coupon_display, _displayed_coupon, val, duration)
+	_coupon_tween.tween_callback(func(): _displayed_coupon = val)
+
+func _update_coupon_display(value: int) -> void:
+	if coupon_label:
+		coupon_label.text = str(value)
 
 
 ## 生成飘散的金币图标
@@ -797,6 +864,7 @@ func _handle_cancel_button(from_state: StringName, to_state: StringName) -> void
 	# 定义可取消的状态列表
 	const CANCELABLE_STATES: Array[StringName] = [
 		&"Submitting",
+		&"EraSubmitting",
 		&"Recycling",
 		&"TradeIn",
 		&"TargetedSelection",
@@ -1147,9 +1215,11 @@ func _on_era_changed(era_index: int) -> void:
 	if era_index >= 1:
 		_show_era_popup(era_index)
 	
-	# 刷新所有普通订单（保留主线订单）并播放动画
-	OrderSystem.refresh_all_normal_orders()
-	order_controller.play_refresh_all_normal_sequence()
+	# 不再刷新普通订单（保留积分订单）
+	# 主线订单已在 OrderSystem._on_mainline_completed 中刷新
+	
+	# 更新订单显示
+	order_controller.update_orders_display(OrderSystem.current_orders)
 	
 	# 异步处理时代切换，包括动画播放
 	_handle_era_transition(era_index)
@@ -1157,40 +1227,32 @@ func _on_era_changed(era_index: int) -> void:
 
 ## 显示时代切换弹窗
 func _show_era_popup(era_index: int) -> void:
-	if not popup_window or not screen_mask:
-		return
-	
-	# 更新文本
-	if popup_label:
-		var key = "MODAL_ERA_%d" % (era_index + 1)
-		popup_label.text = key
-	
-	# 锁定交互
-	lock_ui("era_popup")
-	
-	# 显示 Mask
-	screen_mask.visible = true
-	var mask_tween = create_tween()
-	mask_tween.tween_property(screen_mask, "modulate:a", 1.0, 0.3)
-	
-	# 触发时代面板出现音效
+	# 时代面板出现音效
 	EventBus.game_event.emit(&"era_panel_opened", null)
-	
-	# 弹出 Window (从 -2200 到 580)	
-	var win_tween = create_tween()
-	win_tween.set_trans(Tween.TRANS_BACK)
-	win_tween.set_ease(Tween.EASE_OUT)
-	win_tween.tween_property(popup_window, "position:y", 580.0, 0.6)
+	_show_modal_popup("MODAL_ERA_%d" % (era_index + 1), false)
 
 
 ## 显示游戏结束弹窗
 func _show_ending_popup() -> void:
+	_show_modal_popup("MODAL_ERA_ENDING", false)
+
+
+## 显示通用弹窗
+func _show_modal_popup(text_key: String, needs_confirm: bool, on_confirm: Callable = Callable(), on_cancel: Callable = Callable()) -> void:
 	if not popup_window or not screen_mask:
 		return
 	
-	# 更新文本为游戏结束
+	_popup_confirm_callback = on_confirm
+	_popup_cancel_callback = on_cancel
+	
+	# 更新文本
 	if popup_label:
-		popup_label.text = "MODAL_ERA_ENDING"
+		popup_label.text = text_key
+	
+	# 根据模式显示/隐藏按钮
+	if popup_cancel_button: popup_cancel_button.visible = needs_confirm
+	if popup_confirm_button: popup_confirm_button.visible = needs_confirm
+	if popup_continue_button: popup_continue_button.visible = not needs_confirm
 	
 	# 锁定交互
 	lock_ui("era_popup")
@@ -1207,8 +1269,8 @@ func _show_ending_popup() -> void:
 	win_tween.tween_property(popup_window, "position:y", 580.0, 0.6)
 
 
-## 隐藏时代切换弹窗
-func _hide_era_popup() -> void:
+## 隐藏通用弹窗
+func _hide_popup() -> void:
 	# 触发按钮音效
 	EventBus.game_event.emit(&"button_click", null)
 	
@@ -1216,7 +1278,7 @@ func _hide_era_popup() -> void:
 		unlock_ui("era_popup")
 		return
 	
-	# 隐藏 Window (从 580 到 -2200)
+	# 隐藏 Window
 	var win_tween = create_tween()
 	win_tween.set_trans(Tween.TRANS_BACK)
 	win_tween.set_ease(Tween.EASE_IN)
@@ -1236,6 +1298,105 @@ func _hide_era_popup() -> void:
 	
 	# 解锁交互
 	unlock_ui("era_popup")
+
+
+func _on_popup_confirm_pressed() -> void:
+	var callback = _popup_confirm_callback
+	_popup_confirm_callback = Callable()
+	_hide_popup()
+	if callback.is_valid():
+		callback.call()
+
+
+func _on_popup_cancel_pressed() -> void:
+	var callback = _popup_cancel_callback
+	_popup_cancel_callback = Callable()
+	_hide_popup()
+	if callback.is_valid():
+		callback.call()
+
+
+func _on_popup_continue_pressed() -> void:
+	_hide_popup()
+
+
+func _on_forfeit_button_pressed() -> void:
+	EventBus.game_event.emit(&"button_click", null)
+	if is_ui_locked(): return
+	_show_modal_popup("MODAL_FORFEIT_CONFIRM", true, _restart_game)
+
+
+func _on_extraction_button_pressed() -> void:
+	EventBus.game_event.emit(&"button_click", null)
+	if not state_machine or is_ui_locked(): return
+	
+	var current_mode = state_machine.get_ui_mode()
+	if current_mode == Constants.UIMode.NORMAL:
+		# 从整理模式进入时代提交模式
+		InventorySystem.selected_indices_for_order = []
+		if InventorySystem.selected_slot_index != -1:
+			InventorySystem.selected_slot_index = -1
+		state_machine.transition_to(&"EraSubmitting")
+	elif current_mode == Constants.UIMode.ERA_SUBMIT:
+		# 已在时代提交模式，执行提交
+		var era_submitting_state = state_machine.get_state(&"EraSubmitting")
+		if era_submitting_state:
+			await era_submitting_state.submit_order()
+
+
+func _restart_game() -> void:
+	# 先重置所有 Autoload 单例的状态
+	_reset_all_game_systems()
+	
+	# 延迟到帧末执行场景重载，确保当前帧的所有协程和回调安全退出
+	get_tree().call_deferred("reload_current_scene")
+
+
+## 重置所有游戏系统到初始状态
+func _reset_all_game_systems() -> void:
+	# 1. 重置技能系统
+	if SkillSystem:
+		SkillSystem.current_skills.clear()
+		SkillSystem._rebuild_effects([])
+		SkillSystem.skill_state = {
+			"consecutive_commons": 0,
+			"next_draw_guaranteed_rare": false,
+			"next_draw_extra_item": false,
+			"consolation_prize_active": false,
+			"good_luck_active": false
+		}
+	
+	# 2. 重置背包系统
+	if InventorySystem:
+		InventorySystem.initialize_inventory(10) # 初始大小
+		InventorySystem.pending_items.clear()
+		InventorySystem.selected_slot_index = -1
+		InventorySystem.multi_selected_indices.clear()
+		InventorySystem.selected_indices_for_order.clear()
+		InventorySystem.interaction_mode = InventorySystem.InteractionMode.NORMAL
+	
+	# 3. 重置游戏管理器
+	if GameManager:
+		GameManager.gold = 30
+		GameManager.coupon = 0
+	
+	# 4. 重置时代管理器（会触发时代效果和金币重置）
+	if EraManager:
+		EraManager.current_era_index = 0
+		EraManager._apply_era_reset()
+	
+	# 5. 重置订单系统
+	if OrderSystem:
+		OrderSystem.initialize_orders()
+	
+	# 6. 重置奖池系统
+	if PoolSystem:
+		PoolSystem.refresh_pools()
+	
+	# 7. 重置解锁管理器（如果需要）
+	if UnlockManager:
+		UnlockManager.inventory_size = 10
+		UnlockManager.order_limit = 4
 
 
 ## 处理时代切换（包括动画播放）

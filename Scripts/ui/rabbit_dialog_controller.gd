@@ -18,6 +18,7 @@ enum DialogType {
 	ERA3_TYPE_FULL, ## 种类满 (ERA3)：道具种类多！请替换背包内的道具，或回收当前奖品
 	RECYCLE, ## 回收模式：请选择要回收的道具（右键取消）
 	SUBMIT, ## 提交模式：请选择要提交的道具（右键取消）
+	ERA_SUBMIT, ## 时代提交模式：请选择要提交的道具来完成时代目标
 }
 
 ## 对话文本 KEY 映射
@@ -31,6 +32,7 @@ const DIALOG_KEYS: Dictionary = {
 	DialogType.ERA3_TYPE_FULL: "DIALOG_ERA3_TYPE_FULL",
 	DialogType.RECYCLE: "DIALOG_RECYCLE",
 	DialogType.SUBMIT: "DIALOG_SUBMIT",
+	DialogType.ERA_SUBMIT: "DIALOG_ERA_SUBMIT",
 }
 
 ## 节点引用
@@ -156,6 +158,8 @@ static func state_to_dialog_type(state_name: StringName) -> DialogType:
 			return DialogType.RECYCLE
 		&"Submitting":
 			return DialogType.SUBMIT
+		&"EraSubmitting":
+			return DialogType.ERA_SUBMIT
 		_:
 			return DialogType.SKILL_SELECT
 
