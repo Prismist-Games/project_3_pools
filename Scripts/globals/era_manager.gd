@@ -17,17 +17,8 @@ func _ready() -> void:
 	if not GameManager.is_node_ready():
 		await GameManager.ready
 	
-	# 监听技能选择完成信号（通过 game_event）
-	EventBus.game_event.connect(_on_game_event)
-	
 	# 启动第一个时代
 	call_deferred("start_era", 0)
-
-
-func _on_game_event(event_id: StringName, _payload: RefCounted) -> void:
-	# 技能选择完成后切换到下一个时代
-	if event_id == &"skill_selected":
-		advance_to_next_era()
 
 
 func _get_era_config(index: int) -> EraConfig:
@@ -54,6 +45,24 @@ func advance_to_next_era() -> void:
 		EventBus.game_event.emit(&"game_ended", null)
 
 
+## 为所有现有物品初始化保质期（进入变质时代时调用）
+func _initialize_shelf_life_for_existing_items(shelf_life_effect: Resource) -> void:
+	if not InventorySystem or not InventorySystem.is_node_ready():
+		return
+	
+	var initialized_count: int = 0
+	for item in InventorySystem.inventory:
+		if item != null and item.shelf_life == -1:
+			# 从上个时代带入的物品，赋予初始保质期
+			item.shelf_life = shelf_life_effect.default_shelf_life
+			initialized_count += 1
+	
+	# 如果有物品被初始化，刷新背包 UI
+	if initialized_count > 0:
+		InventorySystem.inventory_changed.emit(InventorySystem.inventory)
+		print("EraManager: 已为 %d 个现有物品初始化保质期 (%d 回合)" % [initialized_count, shelf_life_effect.default_shelf_life])
+
+
 func _apply_era_reset() -> void:
 	var cfg = current_config
 	if cfg == null:
@@ -67,6 +76,11 @@ func _apply_era_reset() -> void:
 	UnlockManager.inventory_size = cfg.inventory_size
 	if InventorySystem.inventory.size() != cfg.inventory_size:
 		InventorySystem.resize_inventory(cfg.inventory_size)
+	
+	# ERA_4: 如果进入保质期时代，为所有现有物品初始化保质期
+	var shelf_life_effect = cfg.get_effect_of_type("ShelfLifeEffect")
+	if shelf_life_effect:
+		_initialize_shelf_life_for_existing_items(shelf_life_effect)
 	
 	# 不刷新普通积分订单（保留现有）
 	# 仅在 OrderSystem 中刷新主线订单

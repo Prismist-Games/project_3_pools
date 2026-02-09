@@ -7,7 +7,10 @@ class_name OrderData
 ## { "item_id": StringName, "min_rarity": int, "count": int }
 @export var requirements: Array[Dictionary] = []
 
-## 积分订单奖励（普通订单使用）
+## 订单基础价值（按需求的最低品质计算，不含加成）
+@export var base_value: float = 0.0
+
+## 积分订单奖励（显示用，按最低品质满足时的奖励）
 @export var reward_coupon: int = 0
 
 ## 剩余刷新次数
@@ -133,7 +136,9 @@ func calculate_preview_rewards(selected_items: Array) -> Dictionary:
 	var validation = validate_selection(selected_items)
 	if validation.valid:
 		res.is_satisfied = true
-		res.coupon = roundi(reward_coupon * (1.0 + validation.total_submitted_bonus))
+		# 新公式: 奖励 = (基础价值) × (1 + 实际提交品质加成)
+		# 基础价值 = 按订单要求的最低品质计算
+		res.coupon = roundi(base_value * (1.0 + validation.total_submitted_bonus))
 	
 	return res
 
@@ -170,6 +175,7 @@ func validate_selection(selected_items: Array) -> Dictionary:
 		if best_match == null:
 			return result
 		
+		# 只计算实际提交物品的加成
 		total_bonus += Constants.rarity_bonus(best_match.rarity)
 			
 	result.valid = true
@@ -212,6 +218,7 @@ func validate_selection_exclusive(selected_items: Array) -> Dictionary:
 			return result
 		
 		used_items.append(best_match)
+		# 只计算实际提交物品的加成
 		total_bonus += Constants.rarity_bonus(best_match.rarity)
 	
 	result.valid = true

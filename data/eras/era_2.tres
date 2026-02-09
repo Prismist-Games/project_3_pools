@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1")
-era_name = "价格浮动时代"
-mainline_requirement_count = 2
-mainline_rarities = Array[int]([2, 3])
+era_name = "波动时代"
+starting_gold = 30
 effects = Array[Resource]([ExtResource("1_m2n64")])
+mainline_rarities = Array[int]([2, 2])

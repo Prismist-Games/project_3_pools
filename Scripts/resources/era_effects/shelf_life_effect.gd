@@ -17,7 +17,9 @@ func decrement_all_shelf_lives(inventory_system: Node) -> void:
 
 ## 检查物品是否过期
 func is_expired(item: ItemInstance) -> bool:
-	return item.shelf_life <= 0
+	# -1 表示无限保质期（非保质期时代的物品），不应该过期
+	# 0 表示保质期已到，物品过期
+	return item.shelf_life == 0
 
 func get_description() -> String:
 	return "%s：物品有 %d 次抽奖的保质期" % [effect_name, default_shelf_life]

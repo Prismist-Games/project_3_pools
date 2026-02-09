@@ -143,7 +143,25 @@ func rarity_bonus(rarity: int) -> float:
 		Rarity.LEGENDARY:
 			return 1.0
 		Rarity.MYTHIC:
-			return 3.0
+			return 2.0
+		_:
+			return 0.0
+
+
+func rarity_item_value(rarity: int) -> float:
+	match rarity:
+		Rarity.COMMON:
+			return 2.0
+		Rarity.UNCOMMON:
+			return 2.5
+		Rarity.RARE:
+			return 4.0
+		Rarity.EPIC:
+			return 8.0
+		Rarity.LEGENDARY:
+			return 16.0
+		Rarity.MYTHIC:
+			return 32.0
 		_:
 			return 0.0
 

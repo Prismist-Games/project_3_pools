@@ -258,7 +258,9 @@ func submit_normal(selected_indices: Array[int]) -> bool:
 
 func _execute_normal_submission(order: OrderData, items_to_consume: Array[ItemInstance], total_submitted_bonus: float) -> void:
 	var context = OrderCompletedContext.new()
-	context.reward_coupon = roundi(order.reward_coupon * (1.0 + total_submitted_bonus))
+	# 新公式: 奖励 = (基础价值) × (1 + 实际提交品质加成)
+	# 基础价值 = 按订单要求的最低品质计算
+	context.reward_coupon = roundi(order.base_value * (1.0 + total_submitted_bonus))
 	context.submitted_items = items_to_consume
 	context.order_data = order
 	
@@ -352,19 +354,23 @@ func _execute_era_submission(order: OrderData, items_consumed: Array[ItemInstanc
 
 
 func _on_mainline_completed() -> void:
-	# 1. 刷新两个主线订单（难度由下一时代配置决定）
-	refresh_mainline_orders()
-	
-	# 2. 不刷新普通积分订单（保留现有）
-	# 3. 不清空背包（保留物品）
-	# 4. 重置金币由 EraManager 处理
-	
 	# 如果是最后一个时代，直接触发游戏结束
 	if EraManager.current_era_index >= 3:
 		EraManager.advance_to_next_era()
-	else:
-		# 请求技能选择弹窗
-		EventBus.modal_requested.emit(&"skill_selection", null)
+		return
+	
+	# 1. 先推进到下一时代（这样订单才能使用新时代的配置）
+	EraManager.advance_to_next_era()
+	
+	# 2. 刷新两个主线订单（难度由当前（新）时代配置决定）
+	refresh_mainline_orders()
+	
+	# 3. 不刷新普通积分订单（保留现有）
+	# 4. 不清空背包（保留物品）
+	# 5. 重置金币已由 EraManager 处理
+	
+	# 6. 请求技能选择弹窗
+	EventBus.modal_requested.emit(&"skill_selection", null)
 
 
 # ===========================================================================
@@ -410,6 +416,7 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 		order_rarity_weights = EraManager.current_config.get_rarity_weights()
 	
 	var total_requirement_bonus: float = 0.0
+	var total_requirement_value: float = 0.0
 	var used_item_ids: Array[StringName] = []
 	
 	for i in range(actual_requirement_count):
@@ -426,6 +433,7 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 		var count = 1
 		var min_rarity = Constants.pick_weighted_index(order_rarity_weights, rng) as Constants.Rarity
 		total_requirement_bonus += Constants.rarity_bonus(min_rarity) * count
+		total_requirement_value += Constants.rarity_item_value(min_rarity) * count
 			
 		order.requirements.append({
 			"item_id": item_data.id,
@@ -433,14 +441,11 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 			"count": count
 		})
 
-	var base_rewards = {
-		2: 3,
-		3: 5,
-		4: 7
-	}
-	
-	var base_coupon = base_rewards.get(original_requirement_count, 7)
-	order.reward_coupon = roundi(base_coupon * (1.0 + total_requirement_bonus))
+	# 新公式: 奖励 = (基础价值) × (1 + 品质加成)
+	# base_value: 按订单要求的最低品质计算的物品价值总和
+	# reward_coupon: 按最低品质满足时的显示奖励
+	order.base_value = total_requirement_value
+	order.reward_coupon = roundi(total_requirement_value * (1.0 + total_requirement_bonus))
 
 	if force_refresh_count >= 0:
 		order.refresh_count = force_refresh_count
@@ -494,8 +499,11 @@ func _generate_mainline_order_pair() -> Array[OrderData]:
 	# 生成订单 B（排除订单 A 已用的物品）
 	_fill_mainline_order(order_b, items_by_type, available_types, all_used_item_ids, mainline_rarities, req_count, rng)
 	
+	# 主线订单不使用积分奖励
+	order_a.base_value = 0.0
 	order_a.reward_coupon = 0
 	order_a.refresh_count = 0
+	order_b.base_value = 0.0
 	order_b.reward_coupon = 0
 	order_b.refresh_count = 0
 	

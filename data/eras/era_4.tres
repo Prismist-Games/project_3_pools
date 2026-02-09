@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1")
-era_name = "保质期时代"
-mainline_requirement_count = 3
-mainline_rarities = Array[int]([2, 3, 4])
+era_name = "变质时代"
+starting_gold = 30
 effects = Array[Resource]([ExtResource("1_lvcee")])
+mainline_rarities = Array[int]([3, 3])
