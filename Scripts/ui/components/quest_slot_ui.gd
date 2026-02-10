@@ -144,12 +144,14 @@ func update_order_display(order_data: OrderData, req_states: Array = []) -> void
 						selected_items.append(item)
 			
 			var preview = order_data.calculate_preview_rewards(selected_items)
-			if preview.coupon != order_data.reward_coupon:
-				reward_label.text = "%d[font_size=48]《%d[/font_size]" % [preview.coupon, order_data.reward_coupon]
+			if preview.coupon != roundi(order_data.base_value):
+				# 显示：新奖励《基础价值（带删除线效果）
+				reward_label.text = "%d[font_size=48]《%d[/font_size]" % [preview.coupon, roundi(order_data.base_value)]
 			else:
-				reward_label.text = str(order_data.reward_coupon)
+				reward_label.text = str(roundi(order_data.base_value))
 		else:
-			reward_label.text = str(order_data.reward_coupon)
+			# 不满足提交条件时，显示基础价值
+			reward_label.text = str(roundi(order_data.base_value))
 
 func _update_background_color(satisfied: bool) -> void:
 	if not background_setter: return
