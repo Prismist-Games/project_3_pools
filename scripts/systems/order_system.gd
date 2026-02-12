@@ -12,6 +12,13 @@ var current_orders: Array[OrderData] = []
 const MAINLINE_START_INDEX: int = 4
 const MAINLINE_COUNT: int = 2
 
+## 全局刷新次数（四个普通订单共享）
+const INITIAL_GLOBAL_REFRESH_COUNT: int = 4
+var global_refresh_count: int = INITIAL_GLOBAL_REFRESH_COUNT
+
+## 全局刷新次数变更信号
+signal global_refresh_changed(new_count: int)
+
 func _ready() -> void:
 	if not GameManager.is_node_ready():
 		await GameManager.ready
@@ -24,7 +31,7 @@ func _ready() -> void:
 
 func _on_game_event(event_id: StringName, _payload: RefCounted) -> void:
 	if event_id == &"add_order_refreshes":
-		_add_refresh_to_all_orders()
+		_add_global_refreshes(1)
 
 
 # --- Optimization: Requirement Cache ---
@@ -67,6 +74,10 @@ func _mark_cache_dirty() -> void:
 func initialize_orders() -> void:
 	current_orders.clear()
 	
+	# 重置全局刷新次数
+	global_refresh_count = INITIAL_GLOBAL_REFRESH_COUNT
+	global_refresh_changed.emit(global_refresh_count)
+	
 	var count = UnlockManager.order_limit
 		
 	# 1. 生成普通积分订单
@@ -82,43 +93,43 @@ func initialize_orders() -> void:
 	EventBus.orders_updated.emit(current_orders)
 
 
-func refresh_order(index: int) -> OrderData:
+## 消耗一次全局刷新次数（由 UI 在刷新流程开始时调用）
+func consume_global_refresh() -> bool:
+	if global_refresh_count <= 0:
+		return false
+	global_refresh_count -= 1
+	global_refresh_changed.emit(global_refresh_count)
+	return true
+
+
+## 增加全局刷新次数
+func _add_global_refreshes(count: int) -> void:
+	global_refresh_count += count
+	global_refresh_changed.emit(global_refresh_count)
+
+
+## 生成两个候选普通订单供玩家二选一
+func generate_order_candidates() -> Array[OrderData]:
+	return [_generate_normal_order(), _generate_normal_order()]
+
+
+## 将选定的订单应用到指定槽位
+func apply_order_to_slot(index: int, order: OrderData) -> void:
 	if index < 0 or index >= current_orders.size():
-		return null
-	
+		return
+	current_orders[index] = order
+	_mark_cache_dirty()
+	EventBus.orders_updated.emit(current_orders)
+
+
+## 检查是否可以刷新普通订单（全局刷新次数 > 0 且功能已解锁）
+func can_refresh_normal_order() -> bool:
 	if not UnlockManager.is_unlocked(UnlockManager.Feature.ORDER_REFRESH):
-		return current_orders[index]
-
-	var order = current_orders[index]
-	if order.refresh_count <= 0:
-		return order
-		
-	var ctx = ContextProxy.new({"consume_refresh": true, "index": index})
-	EventBus.game_event.emit(&"order_refresh_logic_check", ctx)
-	
-	if order.is_mainline:
-		# 主线订单刷新：重新生成一对（确保互不重叠）
-		_refresh_mainline_orders()
-	else:
-		if ctx.get_value("consume_refresh"):
-			order.refresh_count -= 1
-		current_orders[index] = _generate_normal_order(order.refresh_count)
-		
-	_mark_cache_dirty()
-	EventBus.orders_updated.emit(current_orders)
-	return current_orders[index]
+		return false
+	return global_refresh_count > 0
 
 
-## 为所有普通订单增加刷新次数（由谈判专家技能触发）
-func _add_refresh_to_all_orders() -> void:
-	for order in current_orders:
-		if order != null and not order.is_mainline:
-			order.refresh_count += 1
-	_mark_cache_dirty()
-	EventBus.orders_updated.emit(current_orders)
-
-
-## 刷新所有普通订单（保留主线订单）
+## 刷新所有普通订单（保留主线订单）— 用于时代切换等批量刷新场景
 func refresh_all_normal_orders() -> void:
 	for i in range(current_orders.size()):
 		var order = current_orders[i]
@@ -190,7 +201,9 @@ func preview_normal_submit(selected_indices: Array[int]) -> Array[OrderData]:
 
 
 ## 执行普通提交（积分订单，共享物品）
-func submit_normal(selected_indices: Array[int]) -> bool:
+## 返回被满足的订单在 current_orders 中的索引数组（空数组表示失败）
+## 注意：不再自动生成新订单，调用方需通过二选一流程为每个索引应用新订单
+func submit_normal(selected_indices: Array[int]) -> Array[int]:
 	var inventory = InventorySystem.inventory
 	var selected_items: Array[ItemInstance] = []
 	for idx in selected_indices:
@@ -198,7 +211,7 @@ func submit_normal(selected_indices: Array[int]) -> bool:
 			selected_items.append(inventory[idx])
 	
 	if selected_items.is_empty():
-		return false
+		return []
 	
 	var satisfied_orders: Array[OrderData] = []
 	var satisfied_indices: Array[int] = []
@@ -211,7 +224,7 @@ func submit_normal(selected_indices: Array[int]) -> bool:
 			satisfied_indices.append(i)
 			
 	if satisfied_indices.is_empty():
-		return false
+		return []
 	
 	# 全局检查
 	for item in selected_items:
@@ -228,7 +241,7 @@ func submit_normal(selected_indices: Array[int]) -> bool:
 			if is_needed_by_any_order:
 				break
 		if not is_needed_by_any_order:
-			return false
+			return []
 	
 	satisfied_indices.sort()
 	satisfied_indices.reverse()
@@ -241,7 +254,7 @@ func submit_normal(selected_indices: Array[int]) -> bool:
 			continue
 		
 		_execute_normal_submission(order, selected_items, validation.total_submitted_bonus)
-		current_orders[idx] = _generate_normal_order()
+		# 不再自动生成新订单 — 由 UI 二选一流程处理
 			
 	# 统一消耗选中的物品
 	InventorySystem.remove_items(selected_items)
@@ -253,7 +266,7 @@ func submit_normal(selected_indices: Array[int]) -> bool:
 
 	_mark_cache_dirty()
 	EventBus.orders_updated.emit(current_orders)
-	return true
+	return satisfied_indices
 
 
 func _execute_normal_submission(order: OrderData, items_to_consume: Array[ItemInstance], total_submitted_bonus: float) -> void:
@@ -380,17 +393,17 @@ func _on_mainline_completed() -> void:
 func preview_submit(selected_indices: Array[int]) -> Array[OrderData]:
 	return preview_normal_submit(selected_indices)
 
-func submit_order(index: int, selected_indices: Array[int] = []) -> bool:
+func submit_order(index: int, selected_indices: Array[int] = []) -> Array[int]:
 	if index == -1:
 		return submit_normal(selected_indices)
-	return false
+	return []
 
 
 # ===========================================================================
 # 订单生成
 # ===========================================================================
 
-func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
+func _generate_normal_order() -> OrderData:
 	var order = OrderData.new()
 	var rng = GameManager.rng
 	
@@ -442,17 +455,11 @@ func _generate_normal_order(force_refresh_count: int = -1) -> OrderData:
 		})
 
 	# 新公式: 奖励 = (基础价值) × (1 + 品质加成)
-	# base_value: 按订单要求的最低品质计算的物品价值总和
-	# reward_coupon: 按最低品质满足时的显示奖励
 	order.base_value = total_requirement_value
 	order.reward_coupon = roundi(total_requirement_value * (1.0 + total_requirement_bonus))
 
-	if force_refresh_count >= 0:
-		order.refresh_count = force_refresh_count
-	else:
-		order.refresh_count = 2
-		if GameManager.game_config != null:
-			order.refresh_count = GameManager.game_config.order_refreshes_per_order
+	# refresh_count 已不再使用（全局刷新次数替代），保留字段为 0
+	order.refresh_count = 0
 		
 	return order
 

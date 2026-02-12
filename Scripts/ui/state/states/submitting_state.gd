@@ -52,27 +52,9 @@ func submit_order() -> void:
 		controller.unlock_ui("submit")
 		return
 	
-	var satisfying_slots: Array[Control] = []
-	
-	for order in will_submit_orders:
-		var slot: Control = null
-		
-		if controller.order_controller:
-			for ui_idx in range(1, 5):
-				var ui_slot = controller.order_controller.quest_slots_grid.get_node_or_null("Quest Slot_root_" + str(ui_idx))
-				if ui_slot:
-					var displayed_order_idx = ui_idx - 1
-					if displayed_order_idx < OrderSystem.current_orders.size():
-						if OrderSystem.current_orders[displayed_order_idx] == order:
-							slot = ui_slot
-							break
-		
-		if slot:
-			satisfying_slots.append(slot)
-	
 	InventorySystem.multi_selected_indices = []
 	
-	# 播放关盖动画
+	# 播放关盖动画（仅物品槽，订单槽在二选一时关盖）
 	var max_close_duration: float = 0.0
 	
 	var submitting_item_slots: Array[Control] = []
@@ -88,15 +70,6 @@ func submit_order() -> void:
 			if dur > max_close_duration:
 				max_close_duration = dur
 	
-	for slot in satisfying_slots:
-		if slot.has_node("AnimationPlayer"):
-			var anim_player = slot.get_node("AnimationPlayer")
-			if anim_player.has_animation("lid_close"):
-				anim_player.play("lid_close")
-				var dur = anim_player.get_animation("lid_close").length
-				if dur > max_close_duration:
-					max_close_duration = dur
-	
 	var tree := _get_tree_safe()
 	if not tree: return
 	if max_close_duration > 0.0:
@@ -104,14 +77,15 @@ func submit_order() -> void:
 	else:
 		await tree.process_frame
 	
-	# 执行普通提交
-	var success = OrderSystem.submit_normal(indices)
+	# 执行普通提交（不再自动生成新订单，返回被满足的订单索引）
+	var satisfied_order_indices: Array[int] = OrderSystem.submit_normal(indices)
 	
-	if success:
+	if not satisfied_order_indices.is_empty():
 		tree = _get_tree_safe()
 		if not tree: return
 		await tree.process_frame
 		
+		# 打开物品槽盖子
 		var max_open_duration: float = 0.0
 		
 		for slot in submitting_item_slots:
@@ -120,22 +94,27 @@ func submit_order() -> void:
 				if dur > max_open_duration:
 					max_open_duration = dur
 		
-		for slot in satisfying_slots:
-			if is_instance_valid(slot) and slot.has_node("AnimationPlayer"):
-				var anim_player = slot.get_node("AnimationPlayer")
-				if anim_player.has_animation("lid_open"):
-					anim_player.play("lid_open")
-					var dur = anim_player.get_animation("lid_open").length
-					if dur > max_open_duration:
-						max_open_duration = dur
-		
 		if max_open_duration > 0.0:
 			tree = _get_tree_safe()
 			if not tree: return
 			await tree.create_timer(max_open_duration).timeout
 		
+		# 先过渡到 Idle（解除提交模式锁定），再进行二选一
 		if machine.get_current_state_name() == &"Submitting":
 			machine.transition_to(&"Idle")
+		
+		# 依次为每个被满足的订单执行二选一流程
+		# satisfied_order_indices 是降序排列的，为了更直观的 UX 改为升序
+		satisfied_order_indices.sort()
+		var typed_indices: Array[int] = []
+		typed_indices.assign(satisfied_order_indices)
+		
+		if is_instance_valid(controller):
+			await controller.play_batch_order_pick_flow(typed_indices, typed_indices.size())
+		
+		# 刷新背包角标
+		if is_instance_valid(controller) and controller.inventory_controller:
+			controller.inventory_controller.update_all_slots(InventorySystem.inventory)
 	
 	if is_instance_valid(controller):
 		controller.unlock_ui("submit")

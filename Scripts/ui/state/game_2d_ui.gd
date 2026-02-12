@@ -22,6 +22,8 @@ const GOLD_ICON_MAX_COUNT: int = 5 # 最大飘散金币数
 @onready var quest_slots_grid: VBoxContainer = find_child("Quest Slots Grid", true)
 @onready var main_quest_slot_0: Control = find_child("Main Quest Slot_root_0", true)
 @onready var main_quest_slot_1: Control = find_child("Main Quest Slot_root_1", true)
+@onready var quest_option_slot_0: Control = find_child("Quest Slot Option_root_0", true)
+@onready var quest_option_slot_1: Control = find_child("Quest Slot Option_root_1", true)
 
 ## 积分（Coupon）显示
 @onready var coupon_label: RichTextLabel = find_child("Coupon_label", true)
@@ -276,6 +278,7 @@ func _init_controllers() -> void:
 	order_controller.game_ui = self
 	add_child(order_controller)
 	order_controller.setup(quest_slots_grid, [main_quest_slot_0, main_quest_slot_1])
+	order_controller.setup_option_slots(quest_option_slot_0, quest_option_slot_1)
 	
 	switch_controller = SwitchController.new()
 	switch_controller.name = "SwitchController"
@@ -1105,22 +1108,63 @@ func _on_game_event(event_id: StringName, payload: Variant) -> void:
 	elif event_id == &"order_refresh_requested":
 		var index = payload.get_value("index", -1) if payload is ContextProxy else -1
 		if index != -1 and not is_ui_locked():
-			lock_ui("order_refresh")
-			var order = OrderSystem.current_orders[index]
-			if order.refresh_count <= 0:
-				unlock_ui("order_refresh")
+			if not OrderSystem.can_refresh_normal_order():
 				return
 			
-			await order_controller.play_refresh_sequence(index)
-			var _new_order = OrderSystem.refresh_order(index)
-			order_controller.update_orders_display(OrderSystem.current_orders)
-			await order_controller.play_open_sequence(index)
+			lock_ui("order_refresh")
 			
-			# 关键修复：刷新订单后，需同步更新背包中的角标状态（因为订单需求变了）
+			# 1. 技能钩子：检查是否消耗刷新次数（时间冻结等）
+			var ctx = ContextProxy.new({"consume_refresh": true, "index": index})
+			EventBus.game_event.emit(&"order_refresh_logic_check", ctx)
+			
+			if ctx.get_value("consume_refresh"):
+				OrderSystem.consume_global_refresh()
+			
+			# 2. 执行二选一刷新流程
+			await _play_order_pick_flow(index)
+			
+			# 3. 刷新背包角标
 			if inventory_controller:
 				inventory_controller.update_all_slots(InventorySystem.inventory)
 			
 			unlock_ui("order_refresh")
+
+
+## 二选一刷新流程：展示候选订单 → 玩家选择 → 应用到目标槽位
+## [param target_order_index]: current_orders 中的索引 (0-3)
+func _play_order_pick_flow(target_order_index: int) -> void:
+	# 1. 显示兔子对话
+	if rabbit_dialog_controller:
+		rabbit_dialog_controller.show_dialog(RabbitDialogController.DialogType.ORDER_PICK)
+	
+	# 2. 生成两个候选订单
+	var candidates: Array[OrderData] = OrderSystem.generate_order_candidates()
+	
+	# 3. 通过 OrderController 执行二选一流程（滑入、等待选择、滑出）
+	var chosen_order: OrderData = await order_controller.play_order_pick_sequence(target_order_index, candidates)
+	
+	# 4. 隐藏兔子对话
+	if rabbit_dialog_controller:
+		rabbit_dialog_controller.hide_dialog()
+	
+	# 5. 关盖 → 应用选择 → 更新显示 → 开盖
+	await order_controller.play_refresh_sequence(target_order_index)
+	OrderSystem.apply_order_to_slot(target_order_index, chosen_order)
+	order_controller.update_orders_display(OrderSystem.current_orders)
+	await order_controller.play_open_sequence(target_order_index)
+
+
+## 批量二选一流程：为多个槽位依次执行二选一（用于提交后）
+## [param order_indices]: current_orders 中需要替换的索引数组 (0-3)
+## [param add_refreshes_after]: 完成后增加的全局刷新次数
+func play_batch_order_pick_flow(order_indices: Array[int], add_refreshes_after: int = 0) -> void:
+	for target_index in order_indices:
+		await _play_order_pick_flow(target_index)
+	
+	# 全部选完后增加全局刷新次数
+	if add_refreshes_after > 0:
+		OrderSystem._add_global_refreshes(add_refreshes_after)
+
 
 # --- 订单图标高亮 (Hover) ---
 

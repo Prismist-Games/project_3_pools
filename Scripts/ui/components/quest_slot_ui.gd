@@ -16,6 +16,9 @@ var _current_order: OrderData = null
 var _original_mouse_filter: Control.MouseFilter = Control.MOUSE_FILTER_STOP
 var _original_background_color: Color = Color.WHITE
 
+## "正在被刷新/选择" 高亮色
+const PICKING_HIGHLIGHT_COLOR: Color = Color("#ffffff")
+
 ## 突出动画相关
 const PROTRUDE_OFFSET: float = 100.0 # 向右突出的像素距离
 const PROTRUDE_DURATION: float = 0.2 # 动画时长
@@ -47,6 +50,11 @@ func setup(index: int) -> void:
 	
 	# 记录原始 position.x（只记录 x 坐标，y 由 VBoxContainer 管理）
 	_original_position_x = position.x
+	
+	# 监听全局刷新次数变化，更新刷新标签
+	if not OrderSystem.global_refresh_changed.is_connected(_on_global_refresh_changed):
+		OrderSystem.global_refresh_changed.connect(_on_global_refresh_changed)
+	_update_refresh_display()
 
 func get_order() -> OrderData:
 	return _current_order
@@ -54,8 +62,7 @@ func get_order() -> OrderData:
 func set_locked(locked: bool) -> void:
 	is_locked = locked
 	if refresh_button:
-		# 如果订单本身已经没次数了，保持禁用；否则根据锁定状态设置
-		var has_uses = _current_order and _current_order.refresh_count > 0
+		var has_uses = OrderSystem.global_refresh_count > 0
 		refresh_button.disabled = locked or not has_uses
 
 func _on_refresh_button_pressed() -> void:
@@ -63,6 +70,26 @@ func _on_refresh_button_pressed() -> void:
 	if order_index != -1:
 		EventBus.game_event.emit(&"order_refresh_button_pressed", null)
 		EventBus.game_event.emit(&"order_refresh_requested", ContextProxy.new({"index": order_index - 1}))
+
+## 全局刷新次数变化回调
+func _on_global_refresh_changed(_new_count: int) -> void:
+	_update_refresh_display()
+
+## 更新刷新次数显示（使用全局刷新次数）
+func _update_refresh_display() -> void:
+	if refresh_label:
+		refresh_label.text = str(OrderSystem.global_refresh_count)
+	if refresh_button:
+		var has_uses = OrderSystem.global_refresh_count > 0
+		refresh_button.disabled = is_locked or not has_uses
+
+## 设置"正在被选择"的高亮状态
+func set_picking_highlight(active: bool) -> void:
+	if not background_setter: return
+	if active:
+		background_setter.color = PICKING_HIGHLIGHT_COLOR
+	else:
+		background_setter.color = _original_background_color
 
 ## 设置刷新按钮的视觉状态（按下保持/弹起）和交互锁定
 func set_refresh_visual(active: bool) -> void:
@@ -110,11 +137,8 @@ func update_order_display(order_data: OrderData, req_states: Array = []) -> void
 		else:
 			reward_icon.texture = preload("res://assets/sprites/icons/coupon.png")
 	
-	if refresh_label:
-		refresh_label.text = str(order_data.refresh_count)
-	
-	if refresh_button:
-		refresh_button.disabled = order_data.refresh_count <= 0
+	# 刷新次数使用全局值
+	_update_refresh_display()
 	
 	_update_requirements(order_data.requirements, req_states)
 	

@@ -173,6 +173,7 @@ DIALOG_ERA3_TYPE_FULL,"Too many item types, replace or recycle one type of items
 DIALOG_RECYCLE,Choose items to recycle.,请选择要回收的物品。
 DIALOG_SUBMIT,Choose items to submit.,请选择要提交的物品。
 DIALOG_ERA_SUBMIT,Choose items to complete the era goal.,请选择物品来完成时代目标。
+DIALOG_ORDER_PICK,Choose a new order.,请选择新的订单。
 
 # =====================================================================
 # Order Card (订单卡片)

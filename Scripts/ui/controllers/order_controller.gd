@@ -15,12 +15,58 @@ var _slots: Array[Control] = [] # 普通槽位 (index 1 to 4)
 ## 当前被hover的slot索引 (-100表示无, -1/-2表示主线)
 var _hovered_slot_index: int = -100
 
+# =====================================================================
+# 二选一选项槽位 (Order Pick)
+# =====================================================================
+
+## 两个选项槽位节点
+var _option_slots: Array[Control] = [null, null]
+
+## 选项槽位的隐藏/显示 x 坐标
+const OPTION_HIDDEN_X: float = -150.0
+const OPTION_VISIBLE_X: float = 990.0
+const OPTION_SLIDE_DURATION: float = 0.35
+
+## 玩家选中了某个选项时发出（内部用 await）
+signal _option_selected(chosen_order: OrderData)
+
+## 是否正在进行二选一流程
+var _is_picking: bool = false
+
 func setup(grid: VBoxContainer, main_slots: Array) -> void:
 	quest_slots_grid = grid
 	main_quest_slots.clear()
 	for slot in main_slots:
 		main_quest_slots.append(slot)
 	_init_slots()
+
+
+## 初始化两个选项槽位（由 Game2DUI 调用）
+func setup_option_slots(option_0: Control, option_1: Control) -> void:
+	_option_slots[0] = option_0
+	_option_slots[1] = option_1
+	
+	for i in range(2):
+		var opt_slot = _option_slots[i]
+		if not opt_slot: continue
+		
+		# 初始位置：隐藏在左侧
+		opt_slot.position.x = OPTION_HIDDEN_X
+		
+		# 确保盖子关闭
+		if opt_slot.has_node("AnimationPlayer"):
+			var ap = opt_slot.get_node("AnimationPlayer") as AnimationPlayer
+			if ap.has_animation("lid_close"):
+				ap.play("lid_close")
+				ap.advance(ap.get_animation("lid_close").length)
+		
+		# 连接 Input Area 点击事件
+		var input_area = opt_slot.get_node_or_null("Input Area")
+		if input_area:
+			if input_area.gui_input.is_connected(_on_option_slot_input):
+				input_area.gui_input.disconnect(_on_option_slot_input)
+			input_area.gui_input.connect(_on_option_slot_input.bind(i))
+			input_area.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
 func _init_slots() -> void:
 	_slots.clear()
@@ -216,6 +262,144 @@ func play_refresh_all_normal_sequence() -> void:
 		for ap in open_tasks:
 			if ap.is_playing():
 				await ap.animation_finished
+
+# =====================================================================
+# 二选一流程 (Order Pick)
+# =====================================================================
+
+## 执行单次二选一流程：展示两个候选订单，等待玩家选择，返回选中的订单
+## [param target_order_index]: current_orders 中的目标索引 (0-3)
+## [param candidates]: 两个候选 OrderData
+## 返回玩家选中的 OrderData
+func play_order_pick_sequence(target_order_index: int, candidates: Array[OrderData]) -> OrderData:
+	if candidates.size() < 2:
+		push_error("[OrderController] play_order_pick_sequence 需要至少 2 个候选订单")
+		return candidates[0] if not candidates.is_empty() else null
+	
+	_is_picking = true
+	
+	# 1. 高亮目标槽位
+	var target_slot = _get_slot_node(target_order_index + 1) # 转为 1-based
+	if target_slot and target_slot.has_method("set_picking_highlight"):
+		target_slot.set_picking_highlight(true)
+	
+	# 2. 更新选项槽位上的订单显示
+	for i in range(2):
+		var opt_slot = _option_slots[i]
+		if opt_slot and opt_slot.has_method("update_order_display"):
+			opt_slot.update_order_display(candidates[i], [])
+	
+	# 3. 滑入选项槽位
+	await _slide_option_slots_in()
+	
+	# 4. 打开选项槽位盖子
+	await _open_option_lids()
+	
+	# 5. 等待玩家点击选项
+	var chosen_order: OrderData = await _option_selected
+	
+	# 6. 关闭选项槽位盖子
+	await _close_option_lids()
+	
+	# 7. 滑出选项槽位
+	await _slide_option_slots_out()
+	
+	# 8. 取消目标槽位高亮
+	if target_slot and target_slot.has_method("set_picking_highlight"):
+		target_slot.set_picking_highlight(false)
+	
+	_is_picking = false
+	return chosen_order
+
+
+## 滑入选项槽位 (从 HIDDEN_X 到 VISIBLE_X)
+func _slide_option_slots_in() -> void:
+	var tweens: Array[Tween] = []
+	for i in range(2):
+		var opt_slot = _option_slots[i]
+		if not opt_slot: continue
+		opt_slot.position.x = OPTION_HIDDEN_X
+		var tween = opt_slot.create_tween()
+		tween.set_trans(Tween.TRANS_QUAD)
+		tween.set_ease(Tween.EASE_OUT)
+		tween.tween_property(opt_slot, "position:x", OPTION_VISIBLE_X, OPTION_SLIDE_DURATION)
+		tweens.append(tween)
+	
+	# 等待所有滑入动画完成
+	for tween in tweens:
+		if tween.is_valid() and tween.is_running():
+			await tween.finished
+
+
+## 滑出选项槽位 (从 VISIBLE_X 到 HIDDEN_X)
+func _slide_option_slots_out() -> void:
+	var tweens: Array[Tween] = []
+	for i in range(2):
+		var opt_slot = _option_slots[i]
+		if not opt_slot: continue
+		var tween = opt_slot.create_tween()
+		tween.set_trans(Tween.TRANS_QUAD)
+		tween.set_ease(Tween.EASE_IN)
+		tween.tween_property(opt_slot, "position:x", OPTION_HIDDEN_X, OPTION_SLIDE_DURATION)
+		tweens.append(tween)
+	
+	for tween in tweens:
+		if tween.is_valid() and tween.is_running():
+			await tween.finished
+
+
+## 打开选项槽位的盖子
+func _open_option_lids() -> void:
+	var anim_players: Array[AnimationPlayer] = []
+	for i in range(2):
+		var opt_slot = _option_slots[i]
+		if not opt_slot: continue
+		if opt_slot.has_node("AnimationPlayer"):
+			var ap = opt_slot.get_node("AnimationPlayer") as AnimationPlayer
+			if ap.has_animation("lid_open"):
+				ap.play("lid_open")
+				anim_players.append(ap)
+	
+	for ap in anim_players:
+		if ap.is_playing():
+			await ap.animation_finished
+
+
+## 关闭选项槽位的盖子
+func _close_option_lids() -> void:
+	var anim_players: Array[AnimationPlayer] = []
+	for i in range(2):
+		var opt_slot = _option_slots[i]
+		if not opt_slot: continue
+		if opt_slot.has_node("AnimationPlayer"):
+			var ap = opt_slot.get_node("AnimationPlayer") as AnimationPlayer
+			if ap.has_animation("lid_close"):
+				ap.play("lid_close")
+				anim_players.append(ap)
+	
+	for ap in anim_players:
+		if ap.is_playing():
+			await ap.animation_finished
+
+
+## 选项槽位点击处理
+func _on_option_slot_input(event: InputEvent, option_index: int) -> void:
+	if not _is_picking: return
+	if not (event is InputEventMouseButton): return
+	if event.button_index != MOUSE_BUTTON_LEFT: return
+	if event.pressed: return # 仅响应释放
+	
+	var opt_slot = _option_slots[option_index]
+	if not opt_slot: return
+	
+	# 获取该选项槽位上显示的订单
+	var chosen_order: OrderData = null
+	if opt_slot.has_method("get_order"):
+		chosen_order = opt_slot.get_order()
+	
+	if chosen_order:
+		_option_selected.emit(chosen_order)
+
 
 # --- Helpers ---
 

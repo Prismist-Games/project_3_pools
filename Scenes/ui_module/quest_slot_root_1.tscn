@@ -142,7 +142,7 @@ shader_parameter/screen_curvature = 0.05
 shader_parameter/jitter_intensity = 0.002
 shader_parameter/noise_intensity = 0.05
 
-[sub_resource type="Animation" id="Animation_8ocj1"]
+[sub_resource type="Animation" id="Animation_72h4p"]
 length = 0.001
 tracks/0/type = "bezier"
 tracks/0/imported = false
@@ -156,7 +156,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0)
 }
 
-[sub_resource type="Animation" id="Animation_jdak2"]
+[sub_resource type="Animation" id="Animation_evfmi"]
 resource_name = "lid_close"
 length = 0.7
 tracks/0/type = "bezier"
@@ -171,7 +171,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.7)
 }
 
-[sub_resource type="Animation" id="Animation_jufyi"]
+[sub_resource type="Animation" id="Animation_7etcu"]
 resource_name = "lid_open"
 length = 0.7
 tracks/0/type = "bezier"
@@ -186,11 +186,11 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.7)
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_jdak2"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_umgcm"]
 _data = {
-&"RESET": SubResource("Animation_8ocj1"),
-&"lid_close": SubResource("Animation_jdak2"),
-&"lid_open": SubResource("Animation_jufyi")
+&"RESET": SubResource("Animation_72h4p"),
+&"lid_close": SubResource("Animation_evfmi"),
+&"lid_open": SubResource("Animation_7etcu")
 }
 
 [node name="Quest Slot_root_1" type="Control"]
@@ -430,5 +430,5 @@ mouse_filter = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-&"": SubResource("AnimationLibrary_jdak2")
+&"": SubResource("AnimationLibrary_umgcm")
 }

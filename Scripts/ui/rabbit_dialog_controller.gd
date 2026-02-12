@@ -19,6 +19,7 @@ enum DialogType {
 	RECYCLE, ## 回收模式：请选择要回收的道具（右键取消）
 	SUBMIT, ## 提交模式：请选择要提交的道具（右键取消）
 	ERA_SUBMIT, ## 时代提交模式：请选择要提交的道具来完成时代目标
+	ORDER_PICK, ## 订单二选一：请选择新的订单
 }
 
 ## 对话文本 KEY 映射
@@ -33,6 +34,7 @@ const DIALOG_KEYS: Dictionary = {
 	DialogType.RECYCLE: "DIALOG_RECYCLE",
 	DialogType.SUBMIT: "DIALOG_SUBMIT",
 	DialogType.ERA_SUBMIT: "DIALOG_ERA_SUBMIT",
+	DialogType.ORDER_PICK: "DIALOG_ORDER_PICK",
 }
 
 ## 节点引用
