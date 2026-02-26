@@ -19,3 +19,8 @@ mono_crash.*.json
 # System Logs
 *.log
 .vscode/settings.json
+screenshots
+tests/__pycache__
+
+# GdUnit4 test reports
+reports/
